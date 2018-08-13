@@ -2094,10 +2094,16 @@ End Sub
 
 Public Property Let FormatButtonVisible(nValue As Boolean)
     tbrTop.Buttons("Format").Visible = nValue
+    If Me.Visible Then
+        MakeDPIAwareness
+    End If
 End Property
 
 Public Property Let PageSetupButtonVisible(nValue As Boolean)
     tbrTop.Buttons("PageSetup").Visible = nValue
+    If Me.Visible Then
+        MakeDPIAwareness
+    End If
 End Property
 
 Public Property Let FormatButtonToolTipText(nValue As String)
