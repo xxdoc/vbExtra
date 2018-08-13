@@ -25,11 +25,12 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Command1_Click()
+    PrinterEx.PrintPrevPageSetupButtonVisible = False
+    PrinterEx.HandleMargins = False ' in existing projects it is neccesary to change it to False because I decided to default that propery to True. It could be better to have it to True for new projects, but for existing projects that are already handling margins on their codes it must be set to false (or to remove the magin handling code from it).
     PrinterEx.ShowPrintPreview Me, "MyPrintingRoutine"
 End Sub
 
 Public Sub MyPrintingRoutine()
-    'PrinterEx.HandleMargins = False ' in existing projects it is neccesary to change it to False because I decided to default that propery to True. It could be better to have it to True for new projects, but for existing projects that are already handling margins on their codes it must be set to false (or to remove the magin handling code from it).
     Printer.FontName = "Arial"
     Printer.FontSize = 12
     Printer.FontUnderline = True
