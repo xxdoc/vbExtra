@@ -1,0 +1,2466 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpToolBarDAButtons 
+   Caption         =   "Buttons"
+   ClientHeight    =   6372
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   7680
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   6372
+   ScaleWidth      =   7680
+   Begin VB.CommandButton cmdPaste 
+      Caption         =   "Paste"
+      Enabled         =   0   'False
+      Height          =   375
+      Left            =   5328
+      Style           =   1  'Graphical
+      TabIndex        =   8
+      ToolTipText     =   "Add Button"
+      Top             =   108
+      Width           =   732
+   End
+   Begin VB.CommandButton cmdCopy 
+      Caption         =   "Copy"
+      Height          =   375
+      Left            =   4536
+      Style           =   1  'Graphical
+      TabIndex        =   7
+      ToolTipText     =   "Add Button"
+      Top             =   108
+      Width           =   732
+   End
+   Begin VB.TextBox txtTag 
+      Enabled         =   0   'False
+      Height          =   300
+      Left            =   4285
+      MaxLength       =   32
+      TabIndex        =   14
+      Tag             =   "E"
+      Top             =   1050
+      Width           =   920
+   End
+   Begin VB.TextBox txtOrderToHide 
+      Alignment       =   1  'Right Justify
+      Enabled         =   0   'False
+      Height          =   300
+      Left            =   4785
+      MaxLength       =   3
+      TabIndex        =   20
+      Tag             =   "E"
+      Top             =   1755
+      Width           =   420
+   End
+   Begin VB.Frame Frame30 
+      Caption         =   "Pic30:"
+      Enabled         =   0   'False
+      Height          =   1350
+      Left            =   4620
+      TabIndex        =   41
+      Tag             =   "E"
+      Top             =   3480
+      Width           =   1440
+      Begin VB.CommandButton cmdDeletePic30 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":0000
+         Style           =   1  'Graphical
+         TabIndex        =   44
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   540
+         Width           =   375
+      End
+      Begin VB.CommandButton cmdBrowse30 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":014A
+         Style           =   1  'Graphical
+         TabIndex        =   43
+         Tag             =   "E"
+         ToolTipText     =   "Browse Picture"
+         Top             =   150
+         Width           =   375
+      End
+      Begin VB.PictureBox picImg30 
+         AutoRedraw      =   -1  'True
+         AutoSize        =   -1  'True
+         BackColor       =   &H00C0C0C0&
+         BorderStyle     =   0  'None
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   540
+         Left            =   180
+         ScaleHeight     =   45
+         ScaleMode       =   3  'Pixel
+         ScaleWidth      =   45
+         TabIndex        =   42
+         TabStop         =   0   'False
+         Top             =   270
+         Width           =   540
+      End
+      Begin VB.CommandButton cmdCopy30 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":0294
+         Style           =   1  'Graphical
+         TabIndex        =   45
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   930
+         Width           =   375
+      End
+   End
+   Begin VB.Frame Frame36 
+      Caption         =   "Pic36:"
+      Enabled         =   0   'False
+      Height          =   1350
+      Left            =   6120
+      TabIndex        =   46
+      Tag             =   "E"
+      Top             =   3480
+      Width           =   1440
+      Begin VB.CommandButton cmdDeletePic36 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":081E
+         Style           =   1  'Graphical
+         TabIndex        =   49
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   540
+         Width           =   375
+      End
+      Begin VB.CommandButton cmdBrowse36 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":0968
+         Style           =   1  'Graphical
+         TabIndex        =   48
+         Tag             =   "E"
+         ToolTipText     =   "Browse Picture"
+         Top             =   150
+         Width           =   375
+      End
+      Begin VB.PictureBox picImg36 
+         AutoRedraw      =   -1  'True
+         AutoSize        =   -1  'True
+         BackColor       =   &H00C0C0C0&
+         BorderStyle     =   0  'None
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   540
+         Left            =   180
+         ScaleHeight     =   45
+         ScaleMode       =   3  'Pixel
+         ScaleWidth      =   45
+         TabIndex        =   47
+         TabStop         =   0   'False
+         Top             =   270
+         Width           =   540
+      End
+      Begin VB.CommandButton cmdCopy36 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":0AB2
+         Style           =   1  'Graphical
+         TabIndex        =   50
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   930
+         Width           =   375
+      End
+   End
+   Begin VB.Frame Frame36Alt 
+      Caption         =   "Pic36Alt:"
+      Enabled         =   0   'False
+      Height          =   1350
+      Left            =   6120
+      TabIndex        =   71
+      Tag             =   "E"
+      Top             =   4890
+      Width           =   1440
+      Begin VB.PictureBox picImg36Alt 
+         AutoRedraw      =   -1  'True
+         AutoSize        =   -1  'True
+         BackColor       =   &H00C0C0C0&
+         BorderStyle     =   0  'None
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   540
+         Left            =   180
+         ScaleHeight     =   45
+         ScaleMode       =   3  'Pixel
+         ScaleWidth      =   45
+         TabIndex        =   72
+         TabStop         =   0   'False
+         Top             =   270
+         Width           =   540
+      End
+      Begin VB.CommandButton cmdBrowse36Alt 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":103C
+         Style           =   1  'Graphical
+         TabIndex        =   73
+         Tag             =   "E"
+         ToolTipText     =   "Browse Picture"
+         Top             =   150
+         Width           =   375
+      End
+      Begin VB.CommandButton cmdDeletePic36Alt 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":1186
+         Style           =   1  'Graphical
+         TabIndex        =   74
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   540
+         Width           =   375
+      End
+      Begin VB.CommandButton cmdCopy36Alt 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":12D0
+         Style           =   1  'Graphical
+         TabIndex        =   75
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   930
+         Width           =   375
+      End
+   End
+   Begin VB.Frame Frame30Alt 
+      Caption         =   "Pic30Alt:"
+      Enabled         =   0   'False
+      Height          =   1350
+      Left            =   4620
+      TabIndex        =   66
+      Tag             =   "E"
+      Top             =   4890
+      Width           =   1440
+      Begin VB.PictureBox picImg30Alt 
+         AutoRedraw      =   -1  'True
+         AutoSize        =   -1  'True
+         BackColor       =   &H00C0C0C0&
+         BorderStyle     =   0  'None
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   540
+         Left            =   180
+         ScaleHeight     =   45
+         ScaleMode       =   3  'Pixel
+         ScaleWidth      =   45
+         TabIndex        =   67
+         TabStop         =   0   'False
+         Top             =   270
+         Width           =   540
+      End
+      Begin VB.CommandButton cmdBrowse30Alt 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":185A
+         Style           =   1  'Graphical
+         TabIndex        =   68
+         Tag             =   "E"
+         ToolTipText     =   "Browse Picture"
+         Top             =   150
+         Width           =   375
+      End
+      Begin VB.CommandButton cmdDeletePic30Alt 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":19A4
+         Style           =   1  'Graphical
+         TabIndex        =   69
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   540
+         Width           =   375
+      End
+      Begin VB.CommandButton cmdCopy30Alt 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":1AEE
+         Style           =   1  'Graphical
+         TabIndex        =   70
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   930
+         Width           =   375
+      End
+   End
+   Begin VB.CheckBox chkUseAltPic 
+      Caption         =   "&UseAltPic"
+      Enabled         =   0   'False
+      Height          =   240
+      Left            =   1530
+      TabIndex        =   24
+      Tag             =   "E"
+      Top             =   3120
+      Width           =   1140
+   End
+   Begin VB.Frame Frame16Alt 
+      Caption         =   "Pic16Alt:"
+      Enabled         =   0   'False
+      Height          =   1350
+      Left            =   120
+      TabIndex        =   51
+      Tag             =   "E"
+      Top             =   4890
+      Width           =   1440
+      Begin VB.CommandButton cmdCopy16Alt 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":2078
+         Style           =   1  'Graphical
+         TabIndex        =   55
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   930
+         Width           =   375
+      End
+      Begin VB.CommandButton cmdDeletePic16Alt 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":2602
+         Style           =   1  'Graphical
+         TabIndex        =   54
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   540
+         Width           =   375
+      End
+      Begin VB.CommandButton cmdBrowse16Alt 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":274C
+         Style           =   1  'Graphical
+         TabIndex        =   53
+         Tag             =   "E"
+         ToolTipText     =   "Browse Picture"
+         Top             =   150
+         Width           =   375
+      End
+      Begin VB.PictureBox picImg16Alt 
+         AutoRedraw      =   -1  'True
+         AutoSize        =   -1  'True
+         BackColor       =   &H00C0C0C0&
+         BorderStyle     =   0  'None
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   540
+         Left            =   180
+         ScaleHeight     =   45
+         ScaleMode       =   3  'Pixel
+         ScaleWidth      =   45
+         TabIndex        =   52
+         TabStop         =   0   'False
+         Top             =   270
+         Width           =   540
+      End
+   End
+   Begin VB.Frame Frame20Alt 
+      Caption         =   "Pic20Alt:"
+      Enabled         =   0   'False
+      Height          =   1350
+      Left            =   1620
+      TabIndex        =   56
+      Tag             =   "E"
+      Top             =   4890
+      Width           =   1440
+      Begin VB.CommandButton cmdCopy20Alt 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":2896
+         Style           =   1  'Graphical
+         TabIndex        =   60
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   930
+         Width           =   375
+      End
+      Begin VB.CommandButton cmdDeletePic20Alt 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":2E20
+         Style           =   1  'Graphical
+         TabIndex        =   59
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   540
+         Width           =   375
+      End
+      Begin VB.CommandButton cmdBrowse20Alt 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":2F6A
+         Style           =   1  'Graphical
+         TabIndex        =   58
+         Tag             =   "E"
+         ToolTipText     =   "Browse Picture"
+         Top             =   150
+         Width           =   375
+      End
+      Begin VB.PictureBox picImg20Alt 
+         AutoRedraw      =   -1  'True
+         AutoSize        =   -1  'True
+         BackColor       =   &H00C0C0C0&
+         BorderStyle     =   0  'None
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   540
+         Left            =   180
+         ScaleHeight     =   45
+         ScaleMode       =   3  'Pixel
+         ScaleWidth      =   45
+         TabIndex        =   57
+         TabStop         =   0   'False
+         Top             =   270
+         Width           =   540
+      End
+   End
+   Begin VB.Frame Frame24Alt 
+      Caption         =   "Pic24Alt:"
+      Enabled         =   0   'False
+      Height          =   1350
+      Left            =   3120
+      TabIndex        =   61
+      Tag             =   "E"
+      Top             =   4890
+      Width           =   1440
+      Begin VB.CommandButton cmdCopy24Alt 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":30B4
+         Style           =   1  'Graphical
+         TabIndex        =   65
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   930
+         Width           =   375
+      End
+      Begin VB.CommandButton cmdDeletePic24Alt 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":363E
+         Style           =   1  'Graphical
+         TabIndex        =   64
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   540
+         Width           =   375
+      End
+      Begin VB.CommandButton cmdBrowse24Alt 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":3788
+         Style           =   1  'Graphical
+         TabIndex        =   63
+         Tag             =   "E"
+         ToolTipText     =   "Browse Picture"
+         Top             =   150
+         Width           =   375
+      End
+      Begin VB.PictureBox picImg24Alt 
+         AutoRedraw      =   -1  'True
+         AutoSize        =   -1  'True
+         BackColor       =   &H00C0C0C0&
+         BorderStyle     =   0  'None
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   540
+         Left            =   180
+         ScaleHeight     =   45
+         ScaleMode       =   3  'Pixel
+         ScaleWidth      =   45
+         TabIndex        =   62
+         TabStop         =   0   'False
+         Top             =   270
+         Width           =   540
+      End
+   End
+   Begin VB.Frame Frame24 
+      Caption         =   "Pic24:"
+      Enabled         =   0   'False
+      Height          =   1350
+      Left            =   3120
+      TabIndex        =   36
+      Tag             =   "E"
+      Top             =   3480
+      Width           =   1440
+      Begin VB.CommandButton cmdCopy24 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":38D2
+         Style           =   1  'Graphical
+         TabIndex        =   40
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   930
+         Width           =   375
+      End
+      Begin VB.PictureBox picImg24 
+         AutoRedraw      =   -1  'True
+         AutoSize        =   -1  'True
+         BackColor       =   &H00C0C0C0&
+         BorderStyle     =   0  'None
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   540
+         Left            =   180
+         ScaleHeight     =   45
+         ScaleMode       =   3  'Pixel
+         ScaleWidth      =   45
+         TabIndex        =   37
+         TabStop         =   0   'False
+         Top             =   270
+         Width           =   540
+      End
+      Begin VB.CommandButton cmdBrowse24 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":3E5C
+         Style           =   1  'Graphical
+         TabIndex        =   38
+         Tag             =   "E"
+         ToolTipText     =   "Browse Picture"
+         Top             =   150
+         Width           =   375
+      End
+      Begin VB.CommandButton cmdDeletePic24 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":3FA6
+         Style           =   1  'Graphical
+         TabIndex        =   39
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   540
+         Width           =   375
+      End
+   End
+   Begin VB.Frame Frame20 
+      Caption         =   "Pic20:"
+      Enabled         =   0   'False
+      Height          =   1350
+      Left            =   1620
+      TabIndex        =   31
+      Tag             =   "E"
+      Top             =   3480
+      Width           =   1440
+      Begin VB.CommandButton cmdCopy20 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":40F0
+         Style           =   1  'Graphical
+         TabIndex        =   35
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   930
+         Width           =   375
+      End
+      Begin VB.PictureBox picImg20 
+         AutoRedraw      =   -1  'True
+         AutoSize        =   -1  'True
+         BackColor       =   &H00C0C0C0&
+         BorderStyle     =   0  'None
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   540
+         Left            =   180
+         ScaleHeight     =   45
+         ScaleMode       =   3  'Pixel
+         ScaleWidth      =   45
+         TabIndex        =   32
+         TabStop         =   0   'False
+         Top             =   270
+         Width           =   540
+      End
+      Begin VB.CommandButton cmdBrowse20 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":467A
+         Style           =   1  'Graphical
+         TabIndex        =   33
+         Tag             =   "E"
+         ToolTipText     =   "Browse Picture"
+         Top             =   150
+         Width           =   375
+      End
+      Begin VB.CommandButton cmdDeletePic20 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":47C4
+         Style           =   1  'Graphical
+         TabIndex        =   34
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   540
+         Width           =   375
+      End
+   End
+   Begin VB.TextBox txtPlaceHolderWidth 
+      Alignment       =   1  'Right Justify
+      Enabled         =   0   'False
+      Height          =   300
+      Left            =   1530
+      MaxLength       =   5
+      TabIndex        =   18
+      Tag             =   "E"
+      Top             =   1755
+      Width           =   780
+   End
+   Begin VB.Frame Frame16 
+      Caption         =   "Pic16:"
+      Enabled         =   0   'False
+      Height          =   1350
+      Left            =   120
+      TabIndex        =   26
+      Tag             =   "E"
+      Top             =   3480
+      Width           =   1440
+      Begin VB.CommandButton cmdCopy16 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":490E
+         Style           =   1  'Graphical
+         TabIndex        =   30
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   930
+         Width           =   375
+      End
+      Begin VB.PictureBox picImg16 
+         AutoRedraw      =   -1  'True
+         AutoSize        =   -1  'True
+         BackColor       =   &H00C0C0C0&
+         BorderStyle     =   0  'None
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   540
+         Left            =   120
+         ScaleHeight     =   45
+         ScaleMode       =   3  'Pixel
+         ScaleWidth      =   45
+         TabIndex        =   27
+         TabStop         =   0   'False
+         Top             =   270
+         Width           =   540
+      End
+      Begin VB.CommandButton cmdBrowse16 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":4E98
+         Style           =   1  'Graphical
+         TabIndex        =   28
+         Tag             =   "E"
+         ToolTipText     =   "Browse Picture"
+         Top             =   150
+         Width           =   375
+      End
+      Begin VB.CommandButton cmdDeletePic16 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   7.8
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   930
+         Picture         =   "ptpToolBarDAButtons.pgx":4FE2
+         Style           =   1  'Graphical
+         TabIndex        =   29
+         Tag             =   "E"
+         ToolTipText     =   "Clear Picture"
+         Top             =   540
+         Width           =   375
+      End
+   End
+   Begin VB.CheckBox chkVisible 
+      Caption         =   "&Visible"
+      Enabled         =   0   'False
+      Height          =   240
+      Left            =   1530
+      TabIndex        =   22
+      Tag             =   "E"
+      Top             =   2490
+      Width           =   1140
+   End
+   Begin VB.CheckBox chkChecked 
+      Caption         =   "C&hecked"
+      Enabled         =   0   'False
+      Height          =   240
+      Left            =   1530
+      TabIndex        =   23
+      Tag             =   "E"
+      Top             =   2820
+      Width           =   1140
+   End
+   Begin VB.CheckBox chkEnabled 
+      Caption         =   "&Enabled"
+      Enabled         =   0   'False
+      Height          =   240
+      Left            =   1530
+      TabIndex        =   21
+      Tag             =   "E"
+      Top             =   2160
+      Width           =   1140
+   End
+   Begin VB.ComboBox cboStyle 
+      Enabled         =   0   'False
+      Height          =   300
+      ItemData        =   "ptpToolBarDAButtons.pgx":512C
+      Left            =   1530
+      List            =   "ptpToolBarDAButtons.pgx":512E
+      Style           =   2  'Dropdown List
+      TabIndex        =   10
+      Tag             =   "E"
+      Top             =   660
+      Width           =   3690
+   End
+   Begin VB.TextBox txtToolTipText 
+      Enabled         =   0   'False
+      Height          =   300
+      Left            =   1530
+      MaxLength       =   100
+      TabIndex        =   16
+      Tag             =   "E"
+      Top             =   1395
+      Width           =   3690
+   End
+   Begin VB.TextBox txtKey 
+      Enabled         =   0   'False
+      Height          =   300
+      Left            =   1530
+      MaxLength       =   32
+      TabIndex        =   12
+      Tag             =   "E"
+      Top             =   1035
+      Width           =   2100
+   End
+   Begin VB.HScrollBar hsbIndex 
+      Enabled         =   0   'False
+      Height          =   285
+      Left            =   1440
+      Max             =   1
+      Min             =   1
+      TabIndex        =   2
+      TabStop         =   0   'False
+      Tag             =   "E"
+      Top             =   135
+      Value           =   1
+      Width           =   465
+   End
+   Begin VB.TextBox txtIndex 
+      BackColor       =   &H80000014&
+      Height          =   300
+      Left            =   675
+      Locked          =   -1  'True
+      TabIndex        =   1
+      TabStop         =   0   'False
+      Tag             =   "E"
+      Top             =   135
+      Width           =   690
+   End
+   Begin VB.CommandButton cmdDeleteButton 
+      Enabled         =   0   'False
+      Height          =   375
+      Left            =   3135
+      Picture         =   "ptpToolBarDAButtons.pgx":5130
+      Style           =   1  'Graphical
+      TabIndex        =   4
+      Tag             =   "E"
+      ToolTipText     =   "Remove Button"
+      Top             =   90
+      Width           =   375
+   End
+   Begin VB.CommandButton cmdInsert 
+      Caption         =   "&Insert"
+      Height          =   375
+      Left            =   2025
+      Style           =   1  'Graphical
+      TabIndex        =   3
+      ToolTipText     =   "Add Button"
+      Top             =   90
+      Width           =   1050
+   End
+   Begin VB.CommandButton cmdMovePrevious 
+      Enabled         =   0   'False
+      Height          =   375
+      Left            =   3615
+      Picture         =   "ptpToolBarDAButtons.pgx":527A
+      Style           =   1  'Graphical
+      TabIndex        =   5
+      Tag             =   "E"
+      ToolTipText     =   "Move Button Left"
+      Top             =   90
+      Width           =   375
+   End
+   Begin VB.CommandButton cmdMoveNext 
+      Enabled         =   0   'False
+      Height          =   375
+      Left            =   4020
+      Picture         =   "ptpToolBarDAButtons.pgx":53C4
+      Style           =   1  'Graphical
+      TabIndex        =   6
+      Tag             =   "E"
+      ToolTipText     =   "Move Button Right"
+      Top             =   90
+      Width           =   375
+   End
+   Begin VB.Label lblWarningImgSizes 
+      Caption         =   "Warning: images of different buttons but same DPI are not the same size. Click here to see details."
+      ForeColor       =   &H000000FF&
+      Height          =   456
+      Left            =   3276
+      MouseIcon       =   "ptpToolBarDAButtons.pgx":550E
+      MousePointer    =   99  'Custom
+      TabIndex        =   25
+      Top             =   2808
+      Visible         =   0   'False
+      Width           =   3936
+   End
+   Begin VB.Label lbl 
+      Alignment       =   1  'Right Justify
+      AutoSize        =   -1  'True
+      Caption         =   "Ta&g:"
+      Enabled         =   0   'False
+      Height          =   204
+      Index           =   0
+      Left            =   3852
+      TabIndex        =   13
+      Tag             =   "E"
+      Top             =   1092
+      Width           =   336
+   End
+   Begin VB.Label lbl 
+      Alignment       =   1  'Right Justify
+      AutoSize        =   -1  'True
+      Caption         =   "&OrderToHide:"
+      Enabled         =   0   'False
+      Height          =   204
+      Index           =   5
+      Left            =   3696
+      TabIndex        =   19
+      Tag             =   "E"
+      Top             =   1800
+      Width           =   984
+   End
+   Begin VB.Label lbl 
+      AutoSize        =   -1  'True
+      Caption         =   "&PlaceHolderWidth:"
+      Enabled         =   0   'False
+      Height          =   204
+      Index           =   4
+      Left            =   132
+      TabIndex        =   17
+      Tag             =   "E"
+      Top             =   1800
+      Width           =   1344
+   End
+   Begin VB.Label lbl 
+      AutoSize        =   -1  'True
+      Caption         =   "&ToolTipText:"
+      Enabled         =   0   'False
+      Height          =   204
+      Index           =   3
+      Left            =   576
+      TabIndex        =   15
+      Tag             =   "E"
+      Top             =   1440
+      Width           =   924
+   End
+   Begin VB.Label lbl 
+      AutoSize        =   -1  'True
+      Caption         =   "&Key:"
+      Enabled         =   0   'False
+      Height          =   204
+      Index           =   2
+      Left            =   1140
+      TabIndex        =   11
+      Tag             =   "E"
+      Top             =   1080
+      Width           =   336
+   End
+   Begin VB.Label lbl 
+      AutoSize        =   -1  'True
+      Caption         =   "&Style:"
+      Enabled         =   0   'False
+      Height          =   204
+      Index           =   1
+      Left            =   1080
+      TabIndex        =   9
+      Tag             =   "E"
+      Top             =   720
+      Width           =   420
+   End
+   Begin VB.Label lblHdr 
+      AutoSize        =   -1  'True
+      Caption         =   "Index:"
+      Height          =   195
+      Index           =   0
+      Left            =   180
+      TabIndex        =   0
+      Top             =   180
+      Width           =   435
+   End
+End
+Attribute VB_Name = "ptpToolBarDAButtons"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private mButtons As ToolBarDAButtons
+Private mCurrentButtonIndex As Long
+Private mLoading As Boolean
+Private mStrImagesDifferences As String
+
+Private Sub cboStyle_Click()
+    If Not mLoading Then
+        Changed = True
+        UpdateData
+        ShowCurrentButtonData
+    End If
+End Sub
+
+Private Sub chkChecked_Click()
+    If Not mLoading Then
+        Changed = True
+        UpdateData
+    End If
+End Sub
+
+Private Sub chkEnabled_Click()
+    If Not mLoading Then
+        Changed = True
+        UpdateData
+    End If
+End Sub
+
+Private Sub chkUseAltPic_Click()
+    If Not mLoading Then
+        Changed = True
+        UpdateData
+    End If
+End Sub
+
+Private Sub chkVisible_Click()
+    If Not mLoading Then
+        Changed = True
+        UpdateData
+    End If
+End Sub
+
+Private Sub cmdBrowse16_Click()
+    Dim iDlg As New CommonDialogExObject
+    
+    iDlg.Filter = "Bitmap files|*.bmp"
+    iDlg.ShowOpen
+    If Not iDlg.Canceled Then
+        Changed = True
+        On Error Resume Next
+        Set picImg16.Picture = LoadPicture(iDlg.FileName)
+        If Err.Number <> 0 Then
+            MsgBox "Error: " & Err.Number & ", " & Err.Description, vbCritical
+            On Error GoTo 0
+        End If
+        On Error GoTo 0
+        UpdateData
+        CheckImageSizes
+    End If
+End Sub
+
+Private Sub cmdBrowse16Alt_Click()
+    Dim iDlg As New CommonDialogExObject
+    
+    iDlg.Filter = "Bitmap files|*.bmp"
+    iDlg.ShowOpen
+    If Not iDlg.Canceled Then
+        Changed = True
+        On Error Resume Next
+        Set picImg16Alt.Picture = LoadPicture(iDlg.FileName)
+        If Err.Number <> 0 Then
+            MsgBox "Error: " & Err.Number & ", " & Err.Description, vbCritical
+            On Error GoTo 0
+        End If
+        On Error GoTo 0
+        UpdateData
+        CheckImageSizes
+    End If
+End Sub
+
+Private Sub cmdBrowse20_Click()
+    Dim iDlg As New CommonDialogExObject
+    
+    iDlg.Filter = "Bitmap files|*.bmp"
+    iDlg.ShowOpen
+    If Not iDlg.Canceled Then
+        Changed = True
+        On Error Resume Next
+        Set picImg20.Picture = LoadPicture(iDlg.FileName)
+        If Err.Number <> 0 Then
+            MsgBox "Error: " & Err.Number & ", " & Err.Description, vbCritical
+            On Error GoTo 0
+        End If
+        On Error GoTo 0
+        UpdateData
+        CheckImageSizes
+    End If
+End Sub
+
+Private Sub cmdBrowse20Alt_Click()
+    Dim iDlg As New CommonDialogExObject
+    
+    iDlg.Filter = "Bitmap files|*.bmp"
+    iDlg.ShowOpen
+    If Not iDlg.Canceled Then
+        Changed = True
+        On Error Resume Next
+        Set picImg20Alt.Picture = LoadPicture(iDlg.FileName)
+        If Err.Number <> 0 Then
+            MsgBox "Error: " & Err.Number & ", " & Err.Description, vbCritical
+            On Error GoTo 0
+        End If
+        On Error GoTo 0
+        UpdateData
+        CheckImageSizes
+    End If
+
+End Sub
+
+Private Sub cmdBrowse24_Click()
+    Dim iDlg As New CommonDialogExObject
+    
+    iDlg.Filter = "Bitmap files|*.bmp"
+    iDlg.ShowOpen
+    If Not iDlg.Canceled Then
+        Changed = True
+        On Error Resume Next
+        Set picImg24.Picture = LoadPicture(iDlg.FileName)
+        If Err.Number <> 0 Then
+            MsgBox "Error: " & Err.Number & ", " & Err.Description, vbCritical
+            On Error GoTo 0
+        End If
+        On Error GoTo 0
+        UpdateData
+        CheckImageSizes
+    End If
+End Sub
+
+Private Sub cmdBrowse24Alt_Click()
+    Dim iDlg As New CommonDialogExObject
+    
+    iDlg.Filter = "Bitmap files|*.bmp"
+    iDlg.ShowOpen
+    If Not iDlg.Canceled Then
+        Changed = True
+        On Error Resume Next
+        Set picImg24Alt.Picture = LoadPicture(iDlg.FileName)
+        If Err.Number <> 0 Then
+            MsgBox "Error: " & Err.Number & ", " & Err.Description, vbCritical
+            On Error GoTo 0
+        End If
+        On Error GoTo 0
+        UpdateData
+        CheckImageSizes
+    End If
+End Sub
+
+Private Sub cmdBrowse30_Click()
+    Dim iDlg As New CommonDialogExObject
+    
+    iDlg.Filter = "Bitmap files|*.bmp"
+    iDlg.ShowOpen
+    If Not iDlg.Canceled Then
+        Changed = True
+        On Error Resume Next
+        Set picImg30.Picture = LoadPicture(iDlg.FileName)
+        If Err.Number <> 0 Then
+            MsgBox "Error: " & Err.Number & ", " & Err.Description, vbCritical
+            On Error GoTo 0
+        End If
+        On Error GoTo 0
+        UpdateData
+        CheckImageSizes
+    End If
+
+End Sub
+
+Private Sub cmdBrowse30Alt_Click()
+    Dim iDlg As New CommonDialogExObject
+    
+    iDlg.Filter = "Bitmap files|*.bmp"
+    iDlg.ShowOpen
+    If Not iDlg.Canceled Then
+        Changed = True
+        On Error Resume Next
+        Set picImg30Alt.Picture = LoadPicture(iDlg.FileName)
+        If Err.Number <> 0 Then
+            MsgBox "Error: " & Err.Number & ", " & Err.Description, vbCritical
+            On Error GoTo 0
+        End If
+        On Error GoTo 0
+        UpdateData
+        CheckImageSizes
+    End If
+
+End Sub
+
+Private Sub cmdBrowse36_Click()
+    Dim iDlg As New CommonDialogExObject
+    
+    iDlg.Filter = "Bitmap files|*.bmp"
+    iDlg.ShowOpen
+    If Not iDlg.Canceled Then
+        Changed = True
+        On Error Resume Next
+        Set picImg36.Picture = LoadPicture(iDlg.FileName)
+        If Err.Number <> 0 Then
+            MsgBox "Error: " & Err.Number & ", " & Err.Description, vbCritical
+            On Error GoTo 0
+        End If
+        On Error GoTo 0
+        UpdateData
+        CheckImageSizes
+    End If
+
+End Sub
+
+Private Sub cmdBrowse36Alt_Click()
+    Dim iDlg As New CommonDialogExObject
+    
+    iDlg.Filter = "Bitmap files|*.bmp"
+    iDlg.ShowOpen
+    If Not iDlg.Canceled Then
+        Changed = True
+        On Error Resume Next
+        Set picImg36Alt.Picture = LoadPicture(iDlg.FileName)
+        If Err.Number <> 0 Then
+            MsgBox "Error: " & Err.Number & ", " & Err.Description, vbCritical
+            On Error GoTo 0
+        End If
+        On Error GoTo 0
+        UpdateData
+        CheckImageSizes
+    End If
+
+End Sub
+
+Private Sub cmdCopy16_Click()
+    If Not picImg16.Picture Is Nothing Then
+        Clipboard.Clear
+        Clipboard.SetData picImg16.Picture
+    End If
+End Sub
+
+Private Sub cmdCopy16Alt_Click()
+    If Not picImg16Alt.Picture Is Nothing Then
+        Clipboard.Clear
+        Clipboard.SetData picImg16Alt.Picture
+    End If
+End Sub
+
+Private Sub cmdCopy20_Click()
+    If Not picImg20.Picture Is Nothing Then
+        Clipboard.Clear
+        Clipboard.SetData picImg20.Picture
+    End If
+End Sub
+
+Private Sub cmdCopy20Alt_Click()
+    If Not picImg20Alt.Picture Is Nothing Then
+        Clipboard.Clear
+        Clipboard.SetData picImg20Alt.Picture
+    End If
+End Sub
+
+Private Sub cmdCopy24_Click()
+    If Not picImg24.Picture Is Nothing Then
+        Clipboard.Clear
+        Clipboard.SetData picImg24.Picture
+    End If
+End Sub
+
+Private Sub cmdCopy24Alt_Click()
+    If Not picImg24Alt.Picture Is Nothing Then
+        Clipboard.Clear
+        Clipboard.SetData picImg24Alt.Picture
+    End If
+End Sub
+
+Private Sub cmdCopy30_Click()
+    If Not picImg30.Picture Is Nothing Then
+        Clipboard.Clear
+        Clipboard.SetData picImg30.Picture
+    End If
+End Sub
+
+Private Sub cmdCopy30Alt_Click()
+    If Not picImg30Alt.Picture Is Nothing Then
+        Clipboard.Clear
+        Clipboard.SetData picImg30Alt.Picture
+    End If
+End Sub
+
+Private Sub cmdCopy36_Click()
+    If Not picImg36.Picture Is Nothing Then
+        Clipboard.Clear
+        Clipboard.SetData picImg36.Picture
+    End If
+End Sub
+
+Private Sub cmdCopy36Alt_Click()
+    If Not picImg36Alt.Picture Is Nothing Then
+        Clipboard.Clear
+        Clipboard.SetData picImg36Alt.Picture
+    End If
+End Sub
+
+Private Sub cmdDeleteButton_Click()
+    Dim c As Long
+    
+    For c = 1 To mButtons.Count
+        If mButtons(c).Index = mCurrentButtonIndex Then
+            mButtons.Remove (c)
+            Exit For
+        End If
+    Next c
+    For c = 1 To mButtons.Count
+        If mButtons(c).Index > mCurrentButtonIndex Then
+            mButtons(c).Index = mButtons(c).Index - 1
+        End If
+    Next c
+    
+    Changed = True
+    
+    If mCurrentButtonIndex > mButtons.Count Then mCurrentButtonIndex = mButtons.Count
+    
+    ShowCurrentButtonData
+    
+End Sub
+
+Private Sub cmdDeletePic16_Click()
+    Changed = True
+    Set picImg16.Picture = Nothing
+    UpdateData
+    CheckImageSizes
+End Sub
+
+Private Sub cmdDeletePic16Alt_Click()
+    Changed = True
+    Set picImg16Alt.Picture = Nothing
+    UpdateData
+    CheckImageSizes
+End Sub
+
+Private Sub cmdDeletePic20_Click()
+    Changed = True
+    Set picImg20.Picture = Nothing
+    UpdateData
+    CheckImageSizes
+End Sub
+
+Private Sub cmdDeletePic20Alt_Click()
+    Changed = True
+    Set picImg20Alt.Picture = Nothing
+    UpdateData
+    CheckImageSizes
+End Sub
+
+Private Sub cmdDeletePic24_Click()
+    Changed = True
+    Set picImg24.Picture = Nothing
+    UpdateData
+    CheckImageSizes
+End Sub
+
+Private Sub cmdDeletePic24Alt_Click()
+    Changed = True
+    Set picImg24Alt.Picture = Nothing
+    UpdateData
+    CheckImageSizes
+End Sub
+
+Private Sub cmdDeletePic30_Click()
+    Changed = True
+    Set picImg30.Picture = Nothing
+    UpdateData
+    CheckImageSizes
+End Sub
+
+Private Sub cmdDeletePic30Alt_Click()
+    Changed = True
+    Set picImg30Alt.Picture = Nothing
+    UpdateData
+    CheckImageSizes
+End Sub
+
+Private Sub cmdDeletePic36_Click()
+    Changed = True
+    Set picImg36.Picture = Nothing
+    UpdateData
+    CheckImageSizes
+End Sub
+
+Private Sub cmdDeletePic36Alt_Click()
+    Changed = True
+    Set picImg36Alt.Picture = Nothing
+    UpdateData
+    CheckImageSizes
+End Sub
+
+Private Sub cmdInsert_Click()
+    Dim iButton As ToolBarDAButton
+    Dim c As Long
+    
+    Changed = True
+    
+    Set iButton = New ToolBarDAButton
+    iButton.Index = mCurrentButtonIndex + 1
+    
+    For c = 1 To mButtons.Count
+        If mButtons(c).Index > mCurrentButtonIndex Then
+            mButtons(c).Index = mButtons(c).Index + 1
+        End If
+    Next c
+    
+    mCurrentButtonIndex = mCurrentButtonIndex + 1
+    mButtons.AddButtonObject iButton
+    ShowCurrentButtonData
+    
+End Sub
+
+Private Sub cmdMoveNext_Click()
+    Dim iButton As ToolBarDAButton
+    Dim iButton2 As ToolBarDAButton
+    
+    Changed = True
+    Set iButton = GetCurrentButton
+    Set iButton2 = GetButtonWithIndex(mCurrentButtonIndex + 1)
+    iButton.Index = iButton.Index + 1
+    iButton2.Index = iButton2.Index - 1
+    mCurrentButtonIndex = mCurrentButtonIndex + 1
+    ShowCurrentButtonData
+End Sub
+
+Private Sub cmdMovePrevious_Click()
+    Dim iButton As ToolBarDAButton
+    Dim iButton2 As ToolBarDAButton
+    
+    Changed = True
+    Set iButton = GetCurrentButton
+    Set iButton2 = GetButtonWithIndex(mCurrentButtonIndex - 1)
+    iButton.Index = iButton.Index - 1
+    iButton2.Index = iButton2.Index + 1
+    mCurrentButtonIndex = mCurrentButtonIndex - 1
+    ShowCurrentButtonData
+End Sub
+
+Private Sub cmdCopy_Click()
+    Set gToolBarDAButtonCopied = GetCurrentButton.Clone
+    cmdPaste.Enabled = True
+End Sub
+
+Private Sub cmdPaste_Click()
+    Dim iButton As ToolBarDAButton
+    Dim c As Long
+    Dim iIndex As Long
+    
+    If MsgBox("It will replace any current data on this button, continue?", vbYesNo) = vbNo Then Exit Sub
+    
+    If Not gToolBarDAButtonCopied Is Nothing Then
+        Set iButton = gToolBarDAButtonCopied.Clone
+        iButton.Index = mCurrentButtonIndex
+        
+        For c = 1 To mButtons.Count
+            If mButtons(c).Index = mCurrentButtonIndex Then
+                iIndex = c
+                Exit For
+            End If
+        Next c
+        
+        mButtons.AddButtonObject iButton, , , iIndex
+        mButtons.Remove iIndex
+        ShowCurrentButtonData
+        Changed = True
+    End If
+End Sub
+
+Private Sub hsbIndex_Change()
+    mCurrentButtonIndex = hsbIndex.Value
+    ShowCurrentButtonData
+End Sub
+
+Private Sub lblWarningImgSizes_Click()
+    MsgBox mStrImagesDifferences, vbInformation
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    Dim iButtons As ToolBarDAButtons
+    Dim iButton As ToolBarDAButton
+    Dim c As Long
+    Dim c2 As Long
+    Dim iTb As ToolBarDA
+    
+    FixOrderToHide
+    Set iButtons = New ToolBarDAButtons
+    
+    For c = 1 To mButtons.Count
+        For c2 = 1 To mButtons.Count
+            If mButtons(c2).Index = c Then
+                Set iButton = mButtons(c2).Clone
+                iButtons.AddButtonObject iButton
+                'Debug.Print iButton.Tag
+            End If
+        Next c2
+    Next c
+    
+    Set iTb = SelectedControls(0)
+    Set iTb.Buttons = iButtons
+End Sub
+
+Private Sub PropertyPage_Initialize()
+    mCurrentButtonIndex = 0
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    Dim iTBB As ToolBarDAButton
+    Dim iButton As ToolBarDAButton
+    
+    SetTextBoxNumeric txtPlaceHolderWidth
+    SetTextBoxNumeric txtOrderToHide
+    cboStyle.Clear
+    cboStyle.AddItem "0 - vxTBDefault"
+    cboStyle.AddItem "1 - vxTBCheck"
+    cboStyle.AddItem "2 - vxTBButtonGroup"
+    cboStyle.AddItem "3 - vxTBSeparator"
+    cboStyle.AddItem "4 - vxTBPlaceholder"
+    
+    Set mButtons = New ToolBarDAButtons
+    
+    For Each iTBB In SelectedControls(0).Buttons
+        Set iButton = iTBB.Clone
+        mButtons.AddButtonObject iButton
+    Next
+    
+    If mButtons.Count > 0 Then
+        If mCurrentButtonIndex = 0 Then
+            mCurrentButtonIndex = 1
+        End If
+    End If
+    ShowCurrentButtonData
+    CheckImageSizes
+    
+    cmdPaste.Enabled = Not gToolBarDAButtonCopied Is Nothing
+End Sub
+
+Private Sub PropertyPage_Terminate()
+    Set mButtons = Nothing
+End Sub
+
+Private Sub ShowCurrentButtonData()
+    Dim iButton As ToolBarDAButton
+    Dim c As Long
+    Dim iActiveControl As Control
+    
+    If mCurrentButtonIndex > mButtons.Count Then
+        mCurrentButtonIndex = mButtons.Count
+    End If
+    If (mCurrentButtonIndex > 0) Then
+        On Error Resume Next
+        Set iActiveControl = PropertyPage.ActiveControl
+        On Error GoTo 0
+        txtIndex.Text = mCurrentButtonIndex
+        
+        Set iButton = GetCurrentButton
+        
+        mLoading = True
+
+        cboStyle.ListIndex = iButton.Style
+        txtIndex.Text = iButton.Index
+        txtKey.Text = iButton.Key
+        txtTag.Text = iButton.Tag
+        txtToolTipText.Text = iButton.ToolTipText
+        txtPlaceHolderWidth.Text = iButton.Width
+        txtOrderToHide.Text = iButton.OrderToHide
+        chkEnabled.Value = CLng(iButton.Enabled) * -1
+        chkVisible.Value = CLng(iButton.Visible) * -1
+        chkChecked.Value = CLng(iButton.Checked) * -1
+        chkUseAltPic.Value = CLng(iButton.UseAltPic) * -1
+        
+        cboStyle.Enabled = True
+        txtIndex.Enabled = True
+        txtKey.Enabled = True
+        txtTag.Enabled = True
+        txtToolTipText.Enabled = (iButton.Style <> vxTBPlaceholder) And (iButton.Style <> vxTBSeparator)
+        chkEnabled.Enabled = (iButton.Style <> vxTBPlaceholder) And (iButton.Style <> vxTBSeparator)
+        chkUseAltPic.Enabled = (iButton.Style <> vxTBPlaceholder) And (iButton.Style <> vxTBSeparator)
+        chkChecked.Enabled = (iButton.Style = vxTBCheck) Or (iButton.Style = vxTBButtonGroup)
+        
+        chkVisible.Enabled = True
+        
+        
+        Frame16.Enabled = True
+        cmdDeletePic16.Enabled = Not iButton.Pic16 Is Nothing
+        Frame20.Enabled = True
+        cmdDeletePic20.Enabled = Not iButton.Pic20 Is Nothing
+        Frame24.Enabled = True
+        cmdDeletePic24.Enabled = Not iButton.Pic24 Is Nothing
+        Frame30.Enabled = True
+        cmdDeletePic30.Enabled = Not iButton.Pic30 Is Nothing
+        Frame36.Enabled = True
+        cmdDeletePic36.Enabled = Not iButton.Pic36 Is Nothing
+        
+        Set picImg16.Picture = iButton.Pic16
+        Set picImg20.Picture = iButton.Pic20
+        Set picImg24.Picture = iButton.Pic24
+        Set picImg30.Picture = iButton.Pic30
+        Set picImg36.Picture = iButton.Pic36
+        
+        Frame16Alt.Enabled = True
+        cmdDeletePic16Alt.Enabled = Not iButton.Pic16Alt Is Nothing
+        Frame20Alt.Enabled = True
+        cmdDeletePic20Alt.Enabled = Not iButton.Pic20Alt Is Nothing
+        Frame24Alt.Enabled = True
+        cmdDeletePic24Alt.Enabled = Not iButton.Pic24Alt Is Nothing
+        Frame30Alt.Enabled = True
+        cmdDeletePic30Alt.Enabled = Not iButton.Pic30Alt Is Nothing
+        Frame36Alt.Enabled = True
+        cmdDeletePic36Alt.Enabled = Not iButton.Pic36Alt Is Nothing
+        
+        Set picImg16Alt.Picture = iButton.Pic16Alt
+        Set picImg20Alt.Picture = iButton.Pic20Alt
+        Set picImg24Alt.Picture = iButton.Pic24Alt
+        Set picImg30Alt.Picture = iButton.Pic30Alt
+        Set picImg36Alt.Picture = iButton.Pic36Alt
+        
+        If (iButton.Style = vxTBDefault) Or (iButton.Style = vxTBCheck) Or (iButton.Style = vxTBButtonGroup) Then
+            cmdBrowse16.Enabled = True
+            cmdBrowse20.Enabled = True
+            cmdBrowse24.Enabled = True
+            cmdBrowse30.Enabled = True
+            cmdBrowse36.Enabled = True
+        
+            cmdBrowse16Alt.Enabled = True
+            cmdBrowse20Alt.Enabled = True
+            cmdBrowse24Alt.Enabled = True
+            cmdBrowse30Alt.Enabled = True
+            cmdBrowse36Alt.Enabled = True
+        Else
+            cmdBrowse16.Enabled = False
+            cmdBrowse20.Enabled = False
+            cmdBrowse24.Enabled = False
+            cmdBrowse30.Enabled = False
+            cmdBrowse36.Enabled = False
+        
+            cmdBrowse16Alt.Enabled = False
+            cmdBrowse20Alt.Enabled = False
+            cmdBrowse24Alt.Enabled = False
+            cmdBrowse30Alt.Enabled = False
+            cmdBrowse36Alt.Enabled = False
+        End If
+        
+        For c = 0 To 2
+            lbl(c).Enabled = True
+        Next c
+        lbl(5).Enabled = True
+        
+        lbl(3).Enabled = (iButton.Style <> vxTBPlaceholder) And (iButton.Style <> vxTBSeparator)
+        lbl(4).Enabled = (iButton.Style = vxTBPlaceholder)
+        txtPlaceHolderWidth.Enabled = (iButton.Style = vxTBPlaceholder)
+        txtOrderToHide.Enabled = True
+        
+        chkChecked.Enabled = (iButton.Style = vxTBCheck) Or (iButton.Style = vxTBButtonGroup)
+        
+        cmdDeleteButton.Enabled = True
+        cmdMovePrevious.Enabled = mCurrentButtonIndex > 1
+        cmdMoveNext.Enabled = mCurrentButtonIndex < mButtons.Count
+        
+        hsbIndex.Enabled = (mButtons.Count > 1)
+        hsbIndex.Max = mButtons.Count
+        hsbIndex.Value = mCurrentButtonIndex
+        
+        If Not iActiveControl Is Nothing Then
+            If TypeName(iActiveControl) = "TextBox" Then
+                iActiveControl.SelStart = 0
+                iActiveControl.SelLength = Len(iActiveControl.Text)
+            End If
+        End If
+        
+        mLoading = False
+    Else
+        txtIndex.Text = ""
+        
+        For c = 0 To 5
+            lbl(c).Enabled = False
+        Next c
+        
+        cboStyle.Enabled = False
+        txtIndex.Enabled = False
+        txtKey.Enabled = False
+        txtTag.Enabled = False
+        txtToolTipText.Enabled = False
+        txtPlaceHolderWidth.Enabled = False
+        txtOrderToHide.Enabled = False
+        chkEnabled.Enabled = False
+        chkVisible.Enabled = False
+        chkChecked.Enabled = False
+        chkUseAltPic.Enabled = False
+        
+        Frame16.Enabled = False
+        cmdBrowse16.Enabled = False
+        cmdDeletePic16.Enabled = False
+        Frame20.Enabled = False
+        cmdBrowse20.Enabled = False
+        cmdDeletePic20.Enabled = False
+        Frame24.Enabled = False
+        cmdBrowse24.Enabled = False
+        cmdDeletePic24.Enabled = False
+        Frame30.Enabled = False
+        cmdBrowse30.Enabled = False
+        cmdDeletePic30.Enabled = False
+        Frame36.Enabled = False
+        cmdBrowse36.Enabled = False
+        cmdDeletePic36.Enabled = False
+        
+        Frame16Alt.Enabled = False
+        cmdBrowse16Alt.Enabled = False
+        cmdDeletePic16Alt.Enabled = False
+        Frame20Alt.Enabled = False
+        cmdBrowse20Alt.Enabled = False
+        cmdDeletePic20Alt.Enabled = False
+        Frame24Alt.Enabled = False
+        cmdBrowse24Alt.Enabled = False
+        cmdDeletePic24Alt.Enabled = False
+        Frame30Alt.Enabled = False
+        cmdBrowse30Alt.Enabled = False
+        cmdDeletePic30Alt.Enabled = False
+        Frame36Alt.Enabled = False
+        cmdBrowse36Alt.Enabled = False
+        cmdDeletePic36Alt.Enabled = False
+        
+        cmdDeleteButton.Enabled = False
+        cmdMovePrevious.Enabled = False
+        cmdMoveNext.Enabled = False
+        
+        hsbIndex.Enabled = False
+    End If
+    cmdCopy16.Enabled = cmdDeletePic16.Enabled
+    cmdCopy20.Enabled = cmdDeletePic20.Enabled
+    cmdCopy24.Enabled = cmdDeletePic24.Enabled
+    cmdCopy30.Enabled = cmdDeletePic30.Enabled
+    cmdCopy36.Enabled = cmdDeletePic36.Enabled
+    cmdCopy16Alt.Enabled = cmdDeletePic16Alt.Enabled
+    cmdCopy20Alt.Enabled = cmdDeletePic20Alt.Enabled
+    cmdCopy24Alt.Enabled = cmdDeletePic24Alt.Enabled
+    cmdCopy30Alt.Enabled = cmdDeletePic30Alt.Enabled
+    cmdCopy36Alt.Enabled = cmdDeletePic36Alt.Enabled
+End Sub
+
+Private Sub txtKey_Change()
+    If Not mLoading Then
+        Changed = True
+        UpdateData
+    End If
+End Sub
+
+Private Sub txtKey_GotFocus()
+    If txtKey.SelStart = 0 Then txtKey.SelStart = Len(txtKey.Text)
+End Sub
+
+Private Sub txtOrderToHide_GotFocus()
+    If txtOrderToHide.SelStart = 0 Then txtOrderToHide.SelStart = Len(txtOrderToHide.Text)
+End Sub
+
+Private Sub txtPlaceHolderWidth_GotFocus()
+    If txtPlaceHolderWidth.SelStart = 0 Then txtPlaceHolderWidth.SelStart = Len(txtPlaceHolderWidth.Text)
+End Sub
+
+Private Sub txtTag_Change()
+    If Not mLoading Then
+        Changed = True
+        UpdateData
+    End If
+End Sub
+
+Private Sub txtOrderToHide_Change()
+    If Not mLoading Then
+        Changed = True
+        UpdateData
+    End If
+End Sub
+
+Private Sub txtPlaceHolderWidth_Change()
+    If Not mLoading Then
+        Changed = True
+        UpdateData
+    End If
+End Sub
+
+Private Sub txtTag_GotFocus()
+    If txtTag.SelStart = 0 Then txtTag.SelStart = Len(txtTag.Text)
+End Sub
+
+Private Sub txtToolTipText_Change()
+    If Not mLoading Then
+        Changed = True
+        UpdateData
+    End If
+End Sub
+
+Private Sub UpdateData()
+    Dim iButton As ToolBarDAButton
+    
+    Set iButton = GetCurrentButton
+    
+    iButton.Checked = (chkChecked.Value = 1)
+    iButton.Enabled = (chkEnabled.Value = 1)
+    iButton.Key = txtKey.Text
+    iButton.Tag = txtTag.Text
+    
+    If Not picImg16.Picture Is Nothing Then
+        If picImg16.Picture.Handle <> 0 Then
+            Set iButton.Pic16 = picImg16.Picture
+        Else
+            Set iButton.Pic16 = Nothing
+        End If
+    Else
+        Set iButton.Pic16 = Nothing
+    End If
+    If Not picImg20.Picture Is Nothing Then
+        If picImg20.Picture.Handle <> 0 Then
+            Set iButton.Pic20 = picImg20.Picture
+        Else
+            Set iButton.Pic20 = Nothing
+        End If
+    Else
+        Set iButton.Pic20 = Nothing
+    End If
+    If Not picImg24.Picture Is Nothing Then
+        If picImg24.Picture.Handle <> 0 Then
+            Set iButton.Pic24 = picImg24.Picture
+        Else
+            Set iButton.Pic24 = Nothing
+        End If
+    Else
+        Set iButton.Pic24 = Nothing
+    End If
+    If Not picImg30.Picture Is Nothing Then
+        If picImg30.Picture.Handle <> 0 Then
+            Set iButton.Pic30 = picImg30.Picture
+        Else
+            Set iButton.Pic30 = Nothing
+        End If
+    Else
+        Set iButton.Pic30 = Nothing
+    End If
+    If Not picImg36.Picture Is Nothing Then
+        If picImg36.Picture.Handle <> 0 Then
+            Set iButton.Pic36 = picImg36.Picture
+        Else
+            Set iButton.Pic36 = Nothing
+        End If
+    Else
+        Set iButton.Pic36 = Nothing
+    End If
+    If Not picImg16Alt.Picture Is Nothing Then
+        If picImg16Alt.Picture.Handle <> 0 Then
+            Set iButton.Pic16Alt = picImg16Alt.Picture
+        Else
+            Set iButton.Pic16Alt = Nothing
+        End If
+    Else
+        Set iButton.Pic16Alt = Nothing
+    End If
+    If Not picImg20Alt.Picture Is Nothing Then
+        If picImg20Alt.Picture.Handle <> 0 Then
+            Set iButton.Pic20Alt = picImg20Alt.Picture
+        Else
+            Set iButton.Pic20Alt = Nothing
+        End If
+    Else
+        Set iButton.Pic20Alt = Nothing
+    End If
+    If Not picImg24Alt.Picture Is Nothing Then
+        If picImg24Alt.Picture.Handle <> 0 Then
+            Set iButton.Pic24Alt = picImg24Alt.Picture
+        Else
+            Set iButton.Pic24Alt = Nothing
+        End If
+    Else
+        Set iButton.Pic24Alt = Nothing
+    End If
+    If Not picImg30Alt.Picture Is Nothing Then
+        If picImg30Alt.Picture.Handle <> 0 Then
+            Set iButton.Pic30Alt = picImg30Alt.Picture
+        Else
+            Set iButton.Pic30Alt = Nothing
+        End If
+    Else
+        Set iButton.Pic30Alt = Nothing
+    End If
+    If Not picImg36Alt.Picture Is Nothing Then
+        If picImg36Alt.Picture.Handle <> 0 Then
+            Set iButton.Pic36Alt = picImg36Alt.Picture
+        Else
+            Set iButton.Pic36Alt = Nothing
+        End If
+    Else
+        Set iButton.Pic36Alt = Nothing
+    End If
+    
+    iButton.UseAltPic = (chkUseAltPic.Value = 1)
+    iButton.Width = Val(txtPlaceHolderWidth.Text)
+    iButton.OrderToHide = Val(txtOrderToHide.Text)
+    iButton.Style = cboStyle.ListIndex
+    iButton.ToolTipText = txtToolTipText.Text
+    iButton.Visible = (chkVisible.Value = 1)
+
+    cmdDeletePic16.Enabled = Not iButton.Pic16 Is Nothing
+    cmdDeletePic20.Enabled = Not iButton.Pic20 Is Nothing
+    cmdDeletePic24.Enabled = Not iButton.Pic24 Is Nothing
+    cmdDeletePic30.Enabled = Not iButton.Pic30 Is Nothing
+    cmdDeletePic36.Enabled = Not iButton.Pic36 Is Nothing
+    cmdDeletePic16Alt.Enabled = Not iButton.Pic16Alt Is Nothing
+    cmdDeletePic20Alt.Enabled = Not iButton.Pic20Alt Is Nothing
+    cmdDeletePic24Alt.Enabled = Not iButton.Pic24Alt Is Nothing
+    cmdDeletePic30Alt.Enabled = Not iButton.Pic30Alt Is Nothing
+    cmdDeletePic36Alt.Enabled = Not iButton.Pic36Alt Is Nothing
+    cmdCopy16.Enabled = cmdDeletePic16.Enabled
+    cmdCopy20.Enabled = cmdDeletePic20.Enabled
+    cmdCopy24.Enabled = cmdDeletePic24.Enabled
+    cmdCopy30.Enabled = cmdDeletePic30.Enabled
+    cmdCopy36.Enabled = cmdDeletePic36.Enabled
+    cmdCopy16Alt.Enabled = cmdDeletePic16Alt.Enabled
+    cmdCopy20Alt.Enabled = cmdDeletePic20Alt.Enabled
+    cmdCopy24Alt.Enabled = cmdDeletePic24Alt.Enabled
+    cmdCopy30Alt.Enabled = cmdDeletePic30Alt.Enabled
+    cmdCopy36Alt.Enabled = cmdDeletePic36Alt.Enabled
+
+End Sub
+
+Private Function GetCurrentButton() As ToolBarDAButton
+    Set GetCurrentButton = GetButtonWithIndex(mCurrentButtonIndex)
+End Function
+
+Private Function GetButtonWithIndex(nIndex As Long) As ToolBarDAButton
+    Dim c As Long
+    
+    For c = 1 To mButtons.Count
+        If mButtons(c).Index = nIndex Then
+            Set GetButtonWithIndex = mButtons(c)
+            Exit For
+        End If
+    Next c
+    
+End Function
+    
+Private Sub FixOrderToHide()
+    Dim c As Long
+    
+    For c = 1 To mButtons.Count
+        If mButtons(c).OrderToHide > mButtons.Count Then
+            DoFixOrderToHide
+            Exit Sub
+        End If
+    Next c
+End Sub
+
+Private Sub DoFixOrderToHide()
+    Dim c As Long
+    Dim iGreatest As Long
+    Dim c2 As Long
+    Dim iOTH_Prev() As Long
+    Dim iOTH_New() As Long
+    Dim iNewOrder As Long
+    
+    iGreatest = mButtons(1).OrderToHide
+    For c = 2 To mButtons.Count
+        If mButtons(c).OrderToHide > iGreatest Then
+            iGreatest = mButtons(c).OrderToHide
+        End If
+    Next c
+    
+    ReDim iOTH_Prev(0)
+    For c = iGreatest To 1 Step -1
+        For c2 = 1 To mButtons.Count
+            If mButtons(c2).OrderToHide = c Then
+                ReDim Preserve iOTH_Prev(UBound(iOTH_Prev) + 1)
+                iOTH_Prev(UBound(iOTH_Prev)) = c
+                Exit For
+            End If
+        Next c2
+    Next c
+    
+    If UBound(iOTH_Prev) > 0 Then
+        ReDim iOTH_New(UBound(iOTH_Prev))
+        iNewOrder = mButtons.Count
+        iOTH_New(1) = iNewOrder
+        For c = 2 To UBound(iOTH_Prev)
+            If iOTH_Prev(c) >= iNewOrder Then
+                iNewOrder = iNewOrder - 1
+                iOTH_New(c) = iNewOrder
+            Else
+                iOTH_New(c) = iOTH_Prev(c)
+            End If
+        Next c
+        
+        For c = 1 To UBound(iOTH_Prev)
+            For c2 = 1 To mButtons.Count
+                If mButtons(c2).OrderToHide = iOTH_Prev(c) Then
+                   mButtons(c2).OrderToHide = iOTH_New(c)
+                End If
+            Next c2
+        Next c
+    End If
+End Sub
+
+Private Sub CheckImageSizes()
+    Dim c As Long
+    Dim iStrImgSize As String
+    Dim iStrImgSize_Button As Long
+    Dim iStr As String
+    
+    mStrImagesDifferences = ""
+    
+    iStrImgSize = ""
+    For c = 1 To mButtons.Count
+        If Not mButtons(c).Pic16 Is Nothing Then
+            iStr = Round(PropertyPage.ScaleX(mButtons(c).Pic16.Width, vbHimetric, vbPixels)) & "x" & Round(PropertyPage.ScaleY(mButtons(c).Pic16.Height, vbHimetric, vbPixels))
+            If iStrImgSize = "" Then
+                iStrImgSize = iStr
+                iStrImgSize_Button = c
+            ElseIf iStr <> iStrImgSize Then
+                mStrImagesDifferences = mStrImagesDifferences & "The Image size of the property 'Pic16' in Button " & CStr(iStrImgSize_Button) & " is " & iStrImgSize & " and in Button " & CStr(c) & " it is " & iStr & "." & vbCrLf
+                Exit For
+            End If
+        End If
+    Next c
+    
+    iStrImgSize = ""
+    For c = 1 To mButtons.Count
+        If Not mButtons(c).Pic20 Is Nothing Then
+            iStr = Round(PropertyPage.ScaleX(mButtons(c).Pic20.Width, vbHimetric, vbPixels)) & "x" & Round(PropertyPage.ScaleY(mButtons(c).Pic20.Height, vbHimetric, vbPixels))
+            If iStrImgSize = "" Then
+                iStrImgSize = iStr
+                iStrImgSize_Button = c
+            ElseIf iStr <> iStrImgSize Then
+                mStrImagesDifferences = mStrImagesDifferences & "The Image size of the property 'Pic20' in Button " & CStr(iStrImgSize_Button) & " is " & iStrImgSize & " and in Button " & CStr(c) & " it is " & iStr & "." & vbCrLf
+                Exit For
+            End If
+        End If
+    Next c
+    
+    iStrImgSize = ""
+    For c = 1 To mButtons.Count
+        If Not mButtons(c).Pic24 Is Nothing Then
+            iStr = Round(PropertyPage.ScaleX(mButtons(c).Pic24.Width, vbHimetric, vbPixels)) & "x" & Round(PropertyPage.ScaleY(mButtons(c).Pic24.Height, vbHimetric, vbPixels))
+            If iStrImgSize = "" Then
+                iStrImgSize = iStr
+                iStrImgSize_Button = c
+            ElseIf iStr <> iStrImgSize Then
+                mStrImagesDifferences = mStrImagesDifferences & "The Image size of the property 'Pic24' in Button " & CStr(iStrImgSize_Button) & " is " & iStrImgSize & " and in Button " & CStr(c) & " it is " & iStr & "." & vbCrLf
+                Exit For
+            End If
+        End If
+    Next c
+    
+    iStrImgSize = ""
+    For c = 1 To mButtons.Count
+        If Not mButtons(c).Pic30 Is Nothing Then
+            iStr = Round(PropertyPage.ScaleX(mButtons(c).Pic30.Width, vbHimetric, vbPixels)) & "x" & Round(PropertyPage.ScaleY(mButtons(c).Pic30.Height, vbHimetric, vbPixels))
+            If iStrImgSize = "" Then
+                iStrImgSize = iStr
+                iStrImgSize_Button = c
+            ElseIf iStr <> iStrImgSize Then
+                mStrImagesDifferences = mStrImagesDifferences & "The Image size of the property 'Pic30' in Button " & CStr(iStrImgSize_Button) & " is " & iStrImgSize & " and in Button " & CStr(c) & " it is " & iStr & "." & vbCrLf
+                Exit For
+            End If
+        End If
+    Next c
+    
+    iStrImgSize = ""
+    For c = 1 To mButtons.Count
+        If Not mButtons(c).Pic36 Is Nothing Then
+            iStr = Round(PropertyPage.ScaleX(mButtons(c).Pic36.Width, vbHimetric, vbPixels)) & "x" & Round(PropertyPage.ScaleY(mButtons(c).Pic36.Height, vbHimetric, vbPixels))
+            If iStrImgSize = "" Then
+                iStrImgSize = iStr
+                iStrImgSize_Button = c
+            ElseIf iStr <> iStrImgSize Then
+                mStrImagesDifferences = mStrImagesDifferences & "The Image size of the property 'Pic36' in Button " & CStr(iStrImgSize_Button) & " is " & iStrImgSize & " and in Button " & CStr(c) & " it is " & iStr & "." & vbCrLf
+                Exit For
+            End If
+        End If
+    Next c
+    
+    ' Alt
+    iStrImgSize = ""
+    For c = 1 To mButtons.Count
+        If Not mButtons(c).Pic16Alt Is Nothing Then
+            iStr = Round(PropertyPage.ScaleX(mButtons(c).Pic16Alt.Width, vbHimetric, vbPixels)) & "x" & Round(PropertyPage.ScaleY(mButtons(c).Pic16Alt.Height, vbHimetric, vbPixels))
+            If iStrImgSize = "" Then
+                iStrImgSize = iStr
+                iStrImgSize_Button = c
+            ElseIf iStr <> iStrImgSize Then
+                mStrImagesDifferences = mStrImagesDifferences & "The Image size of the property 'Pic16Alt' in Button " & CStr(iStrImgSize_Button) & " is " & iStrImgSize & " and in Button " & CStr(c) & " it is " & iStr & "." & vbCrLf
+                Exit For
+            End If
+        End If
+    Next c
+    
+    iStrImgSize = ""
+    For c = 1 To mButtons.Count
+        If Not mButtons(c).Pic20Alt Is Nothing Then
+            iStr = Round(PropertyPage.ScaleX(mButtons(c).Pic20Alt.Width, vbHimetric, vbPixels)) & "x" & Round(PropertyPage.ScaleY(mButtons(c).Pic20Alt.Height, vbHimetric, vbPixels))
+            If iStrImgSize = "" Then
+                iStrImgSize = iStr
+                iStrImgSize_Button = c
+            ElseIf iStr <> iStrImgSize Then
+                mStrImagesDifferences = mStrImagesDifferences & "The Image size of the property 'Pic20Alt' in Button " & CStr(iStrImgSize_Button) & " is " & iStrImgSize & " and in Button " & CStr(c) & " it is " & iStr & "." & vbCrLf
+                Exit For
+            End If
+        End If
+    Next c
+    
+    iStrImgSize = ""
+    For c = 1 To mButtons.Count
+        If Not mButtons(c).Pic24Alt Is Nothing Then
+            iStr = Round(PropertyPage.ScaleX(mButtons(c).Pic24Alt.Width, vbHimetric, vbPixels)) & "x" & Round(PropertyPage.ScaleY(mButtons(c).Pic24Alt.Height, vbHimetric, vbPixels))
+            If iStrImgSize = "" Then
+                iStrImgSize = iStr
+                iStrImgSize_Button = c
+            ElseIf iStr <> iStrImgSize Then
+                mStrImagesDifferences = mStrImagesDifferences & "The Image size of the property 'Pic24Alt' in Button " & CStr(iStrImgSize_Button) & " is " & iStrImgSize & " and in Button " & CStr(c) & " it is " & iStr & "." & vbCrLf
+                Exit For
+            End If
+        End If
+    Next c
+    
+    iStrImgSize = ""
+    For c = 1 To mButtons.Count
+        If Not mButtons(c).Pic30Alt Is Nothing Then
+            iStr = Round(PropertyPage.ScaleX(mButtons(c).Pic30Alt.Width, vbHimetric, vbPixels)) & "x" & Round(PropertyPage.ScaleY(mButtons(c).Pic30Alt.Height, vbHimetric, vbPixels))
+            If iStrImgSize = "" Then
+                iStrImgSize = iStr
+                iStrImgSize_Button = c
+            ElseIf iStr <> iStrImgSize Then
+                mStrImagesDifferences = mStrImagesDifferences & "The Image size of the property 'Pic30Alt' in Button " & CStr(iStrImgSize_Button) & " is " & iStrImgSize & " and in Button " & CStr(c) & " it is " & iStr & "." & vbCrLf
+                Exit For
+            End If
+        End If
+    Next c
+    
+    iStrImgSize = ""
+    For c = 1 To mButtons.Count
+        If Not mButtons(c).Pic36Alt Is Nothing Then
+            iStr = Round(PropertyPage.ScaleX(mButtons(c).Pic36Alt.Width, vbHimetric, vbPixels)) & "x" & Round(PropertyPage.ScaleY(mButtons(c).Pic36Alt.Height, vbHimetric, vbPixels))
+            If iStrImgSize = "" Then
+                iStrImgSize = iStr
+                iStrImgSize_Button = c
+            ElseIf iStr <> iStrImgSize Then
+                mStrImagesDifferences = mStrImagesDifferences & "The Image size of the property 'Pic36Alt' in Button " & CStr(iStrImgSize_Button) & " is " & iStrImgSize & " and in Button " & CStr(c) & " it is " & iStr & "." & vbCrLf
+                Exit For
+            End If
+        End If
+    Next c
+    
+    
+    If mStrImagesDifferences <> "" Then
+        mStrImagesDifferences = mStrImagesDifferences & vbCrLf & "(There might be other images that have different sizes besides these ones)."
+        lblWarningImgSizes.Visible = True
+    Else
+        lblWarningImgSizes.Visible = False
+    End If
+    
+End Sub
+
+Private Sub txtToolTipText_GotFocus()
+    If txtToolTipText.SelStart = 0 Then txtToolTipText.SelStart = Len(txtToolTipText.Text)
+End Sub

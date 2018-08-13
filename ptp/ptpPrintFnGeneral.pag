@@ -1,0 +1,144 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpPrintFnGeneral 
+   Caption         =   "General"
+   ClientHeight    =   4248
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   7668
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   4248
+   ScaleWidth      =   7668
+   Begin VB.TextBox txtDocumentName 
+      Height          =   300
+      Left            =   2244
+      TabIndex        =   4
+      Top             =   864
+      Width           =   3432
+   End
+   Begin VB.TextBox txtProcedureName 
+      Height          =   300
+      Left            =   2244
+      TabIndex        =   1
+      Top             =   504
+      Width           =   3432
+   End
+   Begin vbExtra.ButtonEx cmdHelpProcedureName 
+      Height          =   228
+      Left            =   5880
+      TabIndex        =   2
+      Top             =   576
+      Width           =   228
+      _ExtentX        =   402
+      _ExtentY        =   402
+      ButtonStyle     =   18
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   7.8
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      BackColor       =   16354918
+      Caption         =   "?"
+      ForeColor       =   16777215
+      PictureAlign    =   4
+   End
+   Begin vbExtra.ButtonEx cmdHelpDocumentName 
+      Height          =   228
+      Left            =   5880
+      TabIndex        =   5
+      Top             =   900
+      Width           =   228
+      _ExtentX        =   402
+      _ExtentY        =   402
+      ButtonStyle     =   18
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   7.8
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      BackColor       =   16354918
+      Caption         =   "?"
+      ForeColor       =   16777215
+      PictureAlign    =   4
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "DocumentName:"
+      Height          =   228
+      Left            =   372
+      TabIndex        =   3
+      Top             =   900
+      Width           =   1812
+   End
+   Begin VB.Label Label1 
+      Alignment       =   1  'Right Justify
+      Caption         =   "ProcedureName:"
+      Height          =   228
+      Left            =   372
+      TabIndex        =   0
+      Top             =   540
+      Width           =   1812
+   End
+End
+Attribute VB_Name = "ptpPrintFnGeneral"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private mLoading As Boolean
+
+Private Sub cmdHelpDocumentName_Click()
+    MsgBox "This name will appear in the printer spooler along with the program name (your program) as the 'document to print' name." & vbCrLf & "If left blank only the program name will appear. You can change it at run time.", vbInformation
+End Sub
+
+Private Sub cmdHelpProcedureName_Click()
+    MsgBox "If you have your printing routine in the PrepareDoc event of the control (or call it from there), leave this property blank." & vbCrLf _
+    & "But if you instead prefer your existing routine to be called automatically, then make it a Public Sub on the form (and to have no parameters). In that case, this property is the name of that Public Sub on the form that will be called (as the printing procedure).", vbInformation
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    SelectedControls(0).ProcedureName = txtProcedureName.Text
+    SelectedControls(0).DocumentName = txtDocumentName.Text
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    mLoading = True
+    txtProcedureName.Text = SelectedControls(0).ProcedureName
+    txtDocumentName.Text = SelectedControls(0).DocumentName
+    mLoading = False
+End Sub
+
+Private Sub txtDocumentName_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtDocumentName_GotFocus()
+    If txtDocumentName.SelStart = 0 Then txtDocumentName.SelStart = Len(txtDocumentName.Text)
+End Sub
+
+Private Sub txtProcedureName_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtProcedureName_GotFocus()
+    If txtProcedureName.SelStart = 0 Then txtProcedureName.SelStart = Len(txtProcedureName.Text)
+End Sub

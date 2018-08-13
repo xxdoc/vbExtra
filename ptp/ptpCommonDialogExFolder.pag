@@ -1,0 +1,210 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpCommonDialogExFolder 
+   Caption         =   "Folder"
+   ClientHeight    =   3636
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   6084
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   3636
+   ScaleWidth      =   6084
+   Begin VB.TextBox txtFolderDialogHeader 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   3
+      Top             =   540
+      Width           =   3000
+   End
+   Begin VB.CheckBox chkCancelError 
+      Caption         =   "CancelError"
+      Height          =   264
+      Left            =   1560
+      TabIndex        =   12
+      Top             =   2412
+      Width           =   1500
+   End
+   Begin VB.TextBox txtFlags 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   11
+      Top             =   1980
+      Width           =   1500
+   End
+   Begin VB.TextBox txtInitDir 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   7
+      Top             =   1260
+      Width           =   3000
+   End
+   Begin VB.TextBox txtRootFolder 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   9
+      Top             =   1620
+      Width           =   3000
+   End
+   Begin VB.TextBox txtDialogTitle 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   1
+      Top             =   180
+      Width           =   3000
+   End
+   Begin VB.TextBox txtFolderName 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   5
+      Top             =   900
+      Width           =   3000
+   End
+   Begin VB.Label Label5 
+      Alignment       =   1  'Right Justify
+      Caption         =   "FolderDialogHeader:"
+      Height          =   300
+      Left            =   0
+      TabIndex        =   2
+      Top             =   576
+      Width           =   1478
+   End
+   Begin VB.Label Label7 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Flags:"
+      Height          =   228
+      Left            =   576
+      TabIndex        =   10
+      Top             =   2016
+      Width           =   900
+   End
+   Begin VB.Label Label4 
+      Alignment       =   1  'Right Justify
+      Caption         =   "InitDir:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   6
+      Top             =   1296
+      Width           =   1020
+   End
+   Begin VB.Label Label3 
+      Alignment       =   1  'Right Justify
+      Caption         =   "RootFolder:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   8
+      Top             =   1656
+      Width           =   1020
+   End
+   Begin VB.Label Label1 
+      Alignment       =   1  'Right Justify
+      Caption         =   "DialogTitle:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   0
+      Top             =   216
+      Width           =   1020
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "FolderName:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   4
+      Top             =   936
+      Width           =   1020
+   End
+End
+Attribute VB_Name = "ptpCommonDialogExFolder"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private mLoading As Boolean
+
+Private Sub chkCancelError_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    On Error Resume Next
+    SelectedControls(0).DialogTitle = txtDialogTitle.Text
+    SelectedControls(0).FolderDialogHeader = txtFolderDialogHeader.Text
+    SelectedControls(0).FolderName = txtFolderName.Text
+    SelectedControls(0).InitDir = txtInitDir.Text
+    SelectedControls(0).RootFolder = txtRootFolder.Text
+    SelectedControls(0).Flags = Val(txtFlags.Text)
+    SelectedControls(0).CancelError = CBool(chkCancelError.Value)
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    SetTextBoxNumeric txtFlags
+    
+    mLoading = True
+    txtDialogTitle.Text = SelectedControls(0).DialogTitle
+    txtFolderDialogHeader.Text = SelectedControls(0).FolderDialogHeader
+    txtFolderName.Text = SelectedControls(0).FolderName
+    txtInitDir.Text = SelectedControls(0).InitDir
+    txtRootFolder.Text = SelectedControls(0).RootFolder
+    txtFlags.Text = SelectedControls(0).Flags
+    chkCancelError.Value = Abs(CLng(SelectedControls(0).CancelError))
+    mLoading = False
+End Sub
+
+Private Sub txtDialogTitle_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtDialogTitle_GotFocus()
+    SelectTxtOnGotFocus txtDialogTitle
+End Sub
+
+Private Sub txtFlags_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtFlags_GotFocus()
+    SelectTxtOnGotFocus txtFlags
+End Sub
+
+Private Sub txtFolderDialogHeader_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtFolderDialogHeader_GotFocus()
+    SelectTxtOnGotFocus txtFolderDialogHeader
+End Sub
+
+Private Sub txtFolderName_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtFolderName_GotFocus()
+    SelectTxtOnGotFocus txtFolderName
+End Sub
+
+Private Sub txtInitDir_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtInitDir_GotFocus()
+    SelectTxtOnGotFocus txtInitDir
+End Sub
+
+Private Sub txtRootFolder_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtRootFolder_GotFocus()
+    SelectTxtOnGotFocus txtRootFolder
+End Sub

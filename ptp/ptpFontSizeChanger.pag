@@ -1,0 +1,283 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpFontSizeChanger 
+   Caption         =   "General"
+   ClientHeight    =   3636
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   6084
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   3636
+   ScaleWidth      =   6084
+   Begin VB.ComboBox cboBoundControlName 
+      Height          =   288
+      Left            =   1548
+      TabIndex        =   9
+      Text            =   "[No]"
+      Top             =   180
+      Width           =   2745
+   End
+   Begin VB.TextBox txtStep 
+      Height          =   300
+      Left            =   1548
+      TabIndex        =   8
+      Top             =   1764
+      Width           =   588
+   End
+   Begin VB.TextBox txtMaxFontSize 
+      Height          =   300
+      Left            =   1548
+      TabIndex        =   6
+      Top             =   1368
+      Width           =   588
+   End
+   Begin VB.TextBox txtMinFontSize 
+      Height          =   300
+      Left            =   1548
+      TabIndex        =   4
+      Top             =   972
+      Width           =   588
+   End
+   Begin VB.TextBox txtFontSize 
+      Height          =   300
+      Left            =   1548
+      TabIndex        =   2
+      Top             =   576
+      Width           =   588
+   End
+   Begin VB.Label Label10 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Step:"
+      Height          =   264
+      Left            =   0
+      TabIndex        =   7
+      Top             =   1800
+      Width           =   1488
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label9 
+      Alignment       =   1  'Right Justify
+      Caption         =   "MaxFontSize:"
+      Height          =   264
+      Left            =   0
+      TabIndex        =   5
+      Top             =   1404
+      Width           =   1488
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label7 
+      Alignment       =   1  'Right Justify
+      Caption         =   "MinFontSize:"
+      Height          =   264
+      Left            =   0
+      TabIndex        =   3
+      Top             =   1008
+      Width           =   1488
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label8 
+      Alignment       =   1  'Right Justify
+      Caption         =   "FontSize:"
+      Height          =   264
+      Left            =   0
+      TabIndex        =   1
+      Top             =   612
+      Width           =   1488
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "BoundControlName:"
+      Height          =   228
+      Left            =   36
+      TabIndex        =   0
+      Top             =   216
+      Width           =   1452
+   End
+End
+Attribute VB_Name = "ptpFontSizeChanger"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private mLoading As Boolean
+
+Private Sub cboBoundControlName_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cboBoundControlName_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    Dim iSng As Single
+    Dim iStr As String
+    
+    If cboBoundControlName.Text = "[No]" Then
+        SelectedControls(0).BoundControlName = ""
+    Else
+        SelectedControls(0).BoundControlName = cboBoundControlName.Text
+    End If
+    
+    On Error Resume Next
+    iSng = -1
+    iStr = Trim(txtFontSize.Text)
+    If iStr = "" Then iStr = "0"
+    iSng = CSng(iStr)
+    If iSng <> -1 Then
+        SelectedControls(0).FontSize = iSng
+    End If
+
+    iSng = -1
+    iStr = Trim(txtMinFontSize.Text)
+    If iStr = "" Then iStr = "0"
+    iSng = CSng(iStr)
+    If iSng <> -1 Then
+        SelectedControls(0).MinFontSize = iSng
+    End If
+
+    iSng = -1
+    iStr = Trim(txtMaxFontSize.Text)
+    If iStr = "" Then iStr = "0"
+    iSng = CSng(iStr)
+    If iSng <> -1 Then
+        SelectedControls(0).MaxFontSize = iSng
+    End If
+
+    iSng = -1
+    iStr = Trim(txtStep.Text)
+    If iStr = "" Then iStr = "0"
+    iSng = CSng(iStr)
+    If iSng <> -1 Then
+        SelectedControls(0).Step = iSng
+    End If
+
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    Dim iParent As Object
+    Dim iCtl As Control
+    Dim iFont As Object
+    
+    mLoading = True
+    
+    On Error Resume Next
+    Set iParent = SelectedControls(0).Parent
+    On Error GoTo 0
+    
+    cboBoundControlName.Clear
+    cboBoundControlName.AddItem "[No]"
+    If Not iParent Is Nothing Then
+        For Each iCtl In iParent.Controls
+            On Error Resume Next
+            Set iFont = Nothing
+            Set iFont = iCtl.Font
+            On Error GoTo 0
+            If Not iFont Is Nothing Then
+                If Not IsControlArray(iCtl) Then
+                    cboBoundControlName.AddItem iCtl.Name
+                End If
+            End If
+        Next
+    End If
+    If SelectedControls(0).BoundControlName = "" Then
+        cboBoundControlName.Text = "[No]"
+    Else
+        cboBoundControlName.Text = SelectedControls(0).BoundControlName
+    End If
+    
+    txtFontSize.Text = SelectedControls(0).FontSize
+    txtMinFontSize.Text = SelectedControls(0).MinFontSize
+    txtMaxFontSize.Text = SelectedControls(0).MaxFontSize
+    txtStep.Text = SelectedControls(0).Step
+ 
+    mLoading = False
+End Sub
+
+Private Sub txtFontSize_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtFontSize_GotFocus()
+    SelectTxtOnGotFocus txtFontSize
+End Sub
+
+Private Sub txtFontSize_KeyPress(KeyAscii As Integer)
+    Select Case True
+        Case IsNumeric(Chr(KeyAscii))
+        Case KeyAscii = DecimalSignAsc
+            If InStr(txtFontSize.Text, Chr(DecimalSignAsc)) > 0 Then KeyAscii = 0
+        Case KeyAscii = vbKeyTab, KeyAscii = vbKeyBack
+        Case Else
+            KeyAscii = 0
+    End Select
+End Sub
+
+Private Sub txtMaxFontSize_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtMaxFontSize_GotFocus()
+    SelectTxtOnGotFocus txtMaxFontSize
+End Sub
+
+Private Sub txtMaxFontSize_KeyPress(KeyAscii As Integer)
+    Select Case True
+        Case IsNumeric(Chr(KeyAscii))
+        Case KeyAscii = DecimalSignAsc
+            If InStr(txtMaxFontSize.Text, Chr(DecimalSignAsc)) > 0 Then KeyAscii = 0
+        Case KeyAscii = vbKeyTab, KeyAscii = vbKeyBack
+        Case Else
+            KeyAscii = 0
+    End Select
+End Sub
+
+Private Sub txtMinFontSize_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtMinFontSize_GotFocus()
+    SelectTxtOnGotFocus txtMinFontSize
+End Sub
+
+Private Sub txtMinFontSize_KeyPress(KeyAscii As Integer)
+    Select Case True
+        Case IsNumeric(Chr(KeyAscii))
+        Case KeyAscii = DecimalSignAsc
+            If InStr(txtMinFontSize.Text, Chr(DecimalSignAsc)) > 0 Then KeyAscii = 0
+        Case KeyAscii = vbKeyTab, KeyAscii = vbKeyBack
+        Case Else
+            KeyAscii = 0
+    End Select
+End Sub
+
+Private Sub txtStep_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtStep_GotFocus()
+    SelectTxtOnGotFocus txtStep
+End Sub
+
+Private Sub txtStep_KeyPress(KeyAscii As Integer)
+    Select Case True
+        Case IsNumeric(Chr(KeyAscii))
+        Case KeyAscii = DecimalSignAsc
+            If InStr(txtStep.Text, Chr(DecimalSignAsc)) > 0 Then KeyAscii = 0
+        Case KeyAscii = vbKeyTab, KeyAscii = vbKeyBack
+        Case Else
+            KeyAscii = 0
+    End Select
+End Sub

@@ -1,0 +1,439 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpFlexFnButtons 
+   Caption         =   "Buttons"
+   ClientHeight    =   5220
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   9336
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   5220
+   ScaleWidth      =   9336
+   Begin VB.TextBox txtConfigColumnsButtonColsHiddenToolTipText 
+      Height          =   300
+      Left            =   5364
+      TabIndex        =   28
+      Top             =   4212
+      Width           =   3792
+   End
+   Begin VB.TextBox txtGroupDataButtonPressedToolTipText 
+      Height          =   300
+      Left            =   5364
+      TabIndex        =   22
+      Top             =   3528
+      Width           =   3792
+   End
+   Begin VB.TextBox txtConfigColumnsButtonToolTipText 
+      Height          =   300
+      Left            =   5364
+      TabIndex        =   25
+      Top             =   3888
+      Width           =   3792
+   End
+   Begin VB.CheckBox chkConfigColumnsButtonEnabled 
+      Caption         =   "ConfigColumnsButtonEnabled"
+      Height          =   300
+      Left            =   144
+      TabIndex        =   26
+      Top             =   4176
+      Width           =   2712
+   End
+   Begin VB.CheckBox chkConfigColumnsButtonVisible 
+      Caption         =   "ConfigColumnsButtonVisible"
+      Height          =   300
+      Left            =   144
+      TabIndex        =   23
+      Top             =   3888
+      Width           =   2712
+   End
+   Begin VB.TextBox txtGroupDataButtonToolTipText 
+      Height          =   300
+      Left            =   5364
+      TabIndex        =   19
+      Top             =   3204
+      Width           =   3792
+   End
+   Begin VB.CheckBox chkGroupDataButtonEnabled 
+      Caption         =   "GroupDataButtonEnabled"
+      Height          =   300
+      Left            =   144
+      TabIndex        =   20
+      Top             =   3456
+      Width           =   2712
+   End
+   Begin VB.CheckBox chkGroupDataButtonVisible 
+      Caption         =   "GroupDataButtonVisible"
+      Height          =   300
+      Left            =   144
+      TabIndex        =   17
+      Top             =   3204
+      Width           =   2712
+   End
+   Begin VB.TextBox txtSaveButtonToolTipText 
+      Height          =   300
+      Left            =   5364
+      TabIndex        =   15
+      Top             =   2484
+      Width           =   3792
+   End
+   Begin VB.CheckBox chkSaveButtonEnabled 
+      Caption         =   "SaveButtonEnabled"
+      Height          =   300
+      Left            =   144
+      TabIndex        =   16
+      Top             =   2772
+      Width           =   2712
+   End
+   Begin VB.CheckBox chkSaveButtonVisible 
+      Caption         =   "SaveButtonVisible"
+      Height          =   300
+      Left            =   144
+      TabIndex        =   13
+      Top             =   2484
+      Width           =   2712
+   End
+   Begin VB.TextBox txtCopyButtonToolTipText 
+      Height          =   300
+      Left            =   5364
+      TabIndex        =   11
+      Top             =   1764
+      Width           =   3792
+   End
+   Begin VB.CheckBox chkCopyButtonEnabled 
+      Caption         =   "CopyButtonEnabled"
+      Height          =   300
+      Left            =   144
+      TabIndex        =   12
+      Top             =   2052
+      Width           =   2712
+   End
+   Begin VB.CheckBox chkCopyButtonVisible 
+      Caption         =   "CopyButtonVisible"
+      Height          =   300
+      Left            =   144
+      TabIndex        =   9
+      Top             =   1800
+      Width           =   2712
+   End
+   Begin VB.TextBox txtFindButtonToolTipText 
+      Height          =   300
+      Left            =   5364
+      TabIndex        =   7
+      Top             =   1080
+      Width           =   3792
+   End
+   Begin VB.CheckBox chkFindButtonEnabled 
+      Caption         =   "FindButtonEnabled"
+      Height          =   300
+      Left            =   144
+      TabIndex        =   8
+      Top             =   1368
+      Width           =   2712
+   End
+   Begin VB.CheckBox chkFindButtonVisible 
+      Caption         =   "FindButtonVisible"
+      Height          =   300
+      Left            =   144
+      TabIndex        =   5
+      Top             =   1080
+      Width           =   2712
+   End
+   Begin VB.CheckBox chkPrintButtonActionPrintPreview 
+      Caption         =   "PrintButtonActionPrintPreview"
+      Height          =   300
+      Left            =   144
+      TabIndex        =   4
+      Top             =   648
+      Width           =   2712
+   End
+   Begin VB.TextBox txtPrintButtonToolTipText 
+      Height          =   300
+      Left            =   5364
+      TabIndex        =   2
+      Top             =   108
+      Width           =   3792
+   End
+   Begin VB.CheckBox chkPrintButtonEnabled 
+      Caption         =   "PrintButtonEnabled"
+      Height          =   300
+      Left            =   144
+      TabIndex        =   3
+      Top             =   390
+      Width           =   2712
+   End
+   Begin VB.CheckBox chkPrintButtonVisible 
+      Caption         =   "PrintButtonVisible"
+      Height          =   300
+      Left            =   144
+      TabIndex        =   0
+      Top             =   108
+      Width           =   2712
+   End
+   Begin VB.Label Label1 
+      Alignment       =   1  'Right Justify
+      Caption         =   "When there are hidden columns:"
+      Height          =   228
+      Left            =   2916
+      TabIndex        =   27
+      Top             =   4284
+      Width           =   2424
+   End
+   Begin VB.Label lblGroupDataButtonPressedToolTipText 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Pressed:"
+      Height          =   228
+      Left            =   3060
+      TabIndex        =   21
+      Top             =   3600
+      Width           =   2280
+   End
+   Begin VB.Label lblConfigColumnsButtonToolTipText 
+      Alignment       =   1  'Right Justify
+      Caption         =   "ConfigColumnsButtonToolTipText:"
+      Height          =   228
+      Left            =   2844
+      TabIndex        =   24
+      Top             =   3924
+      Width           =   2496
+   End
+   Begin VB.Label lblGroupDataButtonToolTipText 
+      Alignment       =   1  'Right Justify
+      Caption         =   "GroupDataButtonToolTipText:"
+      Height          =   228
+      Left            =   3060
+      TabIndex        =   18
+      Top             =   3276
+      Width           =   2280
+   End
+   Begin VB.Label lblSaveButtonToolTipText 
+      Alignment       =   1  'Right Justify
+      Caption         =   "SaveButtonToolTipText:"
+      Height          =   228
+      Left            =   3060
+      TabIndex        =   14
+      Top             =   2520
+      Width           =   2280
+   End
+   Begin VB.Label lblCopyButtonToolTipText 
+      Alignment       =   1  'Right Justify
+      Caption         =   "CopyButtonToolTipText:"
+      Height          =   228
+      Left            =   3060
+      TabIndex        =   10
+      Top             =   1836
+      Width           =   2280
+   End
+   Begin VB.Label lblFindButtonToolTipText 
+      Alignment       =   1  'Right Justify
+      Caption         =   "FindButtonToolTipText:"
+      Height          =   228
+      Left            =   3060
+      TabIndex        =   6
+      Top             =   1116
+      Width           =   2280
+   End
+   Begin VB.Label lblPrintButtonToolTipText 
+      Alignment       =   1  'Right Justify
+      Caption         =   "PrintButtonToolTipText:"
+      Height          =   228
+      Left            =   3636
+      TabIndex        =   1
+      Top             =   144
+      Width           =   1704
+   End
+End
+Attribute VB_Name = "ptpFlexFnButtons"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private mLoading As Boolean
+
+Private Sub chkConfigColumnsButtonEnabled_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkConfigColumnsButtonVisible_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkCopyButtonEnabled_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkCopyButtonVisible_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkPrintButtonActionPrintPreview_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkSaveButtonEnabled_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkSaveButtonVisible_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkFindButtonEnabled_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkFindButtonVisible_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkGroupDataButtonEnabled_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkGroupDataButtonVisible_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkPrintButtonEnabled_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkPrintButtonVisible_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    
+    mLoading = True
+    
+    chkPrintButtonVisible.Value = Abs(CLng(SelectedControls(0).PrintButtonVisible))
+    chkFindButtonVisible.Value = Abs(CLng(SelectedControls(0).FindButtonVisible))
+    chkCopyButtonVisible.Value = Abs(CLng(SelectedControls(0).CopyButtonVisible))
+    chkSaveButtonVisible.Value = Abs(CLng(SelectedControls(0).SaveButtonVisible))
+    chkGroupDataButtonVisible.Value = Abs(CLng(SelectedControls(0).GroupDataButtonVisible))
+    chkConfigColumnsButtonVisible.Value = Abs(CLng(SelectedControls(0).ConfigColumnsButtonVisible))
+                                                                                     
+    chkPrintButtonEnabled.Value = Abs(CLng(SelectedControls(0).PrintButtonEnabled))
+    chkFindButtonEnabled.Value = Abs(CLng(SelectedControls(0).FindButtonEnabled))
+    chkCopyButtonEnabled.Value = Abs(CLng(SelectedControls(0).CopyButtonEnabled))
+    chkSaveButtonEnabled.Value = Abs(CLng(SelectedControls(0).SaveButtonEnabled))
+    chkGroupDataButtonEnabled.Value = Abs(CLng(SelectedControls(0).GroupDataButtonEnabled))
+    chkConfigColumnsButtonEnabled.Value = Abs(CLng(SelectedControls(0).ConfigColumnsButtonEnabled))
+                                                                                     
+    chkPrintButtonActionPrintPreview.Value = Abs(CLng(SelectedControls(0).PrintButtonActionPrintPreview))
+                                                                                    
+    txtPrintButtonToolTipText.Text = SelectedControls(0).PrintButton_ToolTipText
+    txtFindButtonToolTipText.Text = SelectedControls(0).FindButton_ToolTipText
+    txtCopyButtonToolTipText.Text = SelectedControls(0).CopyButton_ToolTipText
+    txtSaveButtonToolTipText.Text = SelectedControls(0).SaveButton_ToolTipText
+    txtGroupDataButtonToolTipText.Text = SelectedControls(0).GroupDataButton_ToolTipText
+    txtGroupDataButtonPressedToolTipText.Text = SelectedControls(0).GroupDataButtonPressed_ToolTipText
+    txtConfigColumnsButtonToolTipText.Text = SelectedControls(0).ConfigColumnsButton_ToolTipText
+    txtConfigColumnsButtonColsHiddenToolTipText.Text = SelectedControls(0).ConfigColumnsButtonColsHidden_ToolTipText
+    
+    mLoading = False
+    
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    
+    SelectedControls(0).PrintButtonVisible = CBool(chkPrintButtonVisible.Value)
+    SelectedControls(0).FindButtonVisible = CBool(chkFindButtonVisible.Value)
+    SelectedControls(0).CopyButtonVisible = CBool(chkCopyButtonVisible.Value)
+    SelectedControls(0).SaveButtonVisible = CBool(chkSaveButtonVisible.Value)
+    SelectedControls(0).GroupDataButtonVisible = CBool(chkGroupDataButtonVisible.Value)
+    SelectedControls(0).ConfigColumnsButtonVisible = CBool(chkConfigColumnsButtonVisible.Value)
+    
+    SelectedControls(0).PrintButtonEnabled = CBool(chkPrintButtonEnabled.Value)
+    SelectedControls(0).FindButtonEnabled = CBool(chkFindButtonEnabled.Value)
+    SelectedControls(0).CopyButtonEnabled = CBool(chkCopyButtonEnabled.Value)
+    SelectedControls(0).SaveButtonEnabled = CBool(chkSaveButtonEnabled.Value)
+    SelectedControls(0).GroupDataButtonEnabled = CBool(chkGroupDataButtonEnabled.Value)
+    SelectedControls(0).ConfigColumnsButtonEnabled = CBool(chkConfigColumnsButtonEnabled.Value)
+    
+    SelectedControls(0).PrintButtonActionPrintPreview = CBool(chkPrintButtonActionPrintPreview.Value)
+    
+    SelectedControls(0).PrintButton_ToolTipText = txtPrintButtonToolTipText.Text
+    SelectedControls(0).FindButton_ToolTipText = txtFindButtonToolTipText.Text
+    SelectedControls(0).CopyButton_ToolTipText = txtCopyButtonToolTipText.Text
+    SelectedControls(0).SaveButton_ToolTipText = txtSaveButtonToolTipText.Text
+    SelectedControls(0).GroupDataButton_ToolTipText = txtGroupDataButtonToolTipText.Text
+    SelectedControls(0).GroupDataButtonPressed_ToolTipText = txtGroupDataButtonPressedToolTipText.Text
+    SelectedControls(0).ConfigColumnsButton_ToolTipText = txtConfigColumnsButtonToolTipText.Text
+    SelectedControls(0).ConfigColumnsButtonColsHidden_ToolTipText = txtConfigColumnsButtonColsHiddenToolTipText.Text
+    
+End Sub
+
+Private Sub txtConfigColumnsButtonColsHiddenToolTipText_GotFocus()
+    If txtConfigColumnsButtonColsHiddenToolTipText.SelStart = 0 Then txtConfigColumnsButtonColsHiddenToolTipText.SelStart = Len(txtConfigColumnsButtonColsHiddenToolTipText.Text)
+End Sub
+
+Private Sub txtConfigColumnsButtonToolTipText_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtConfigColumnsButtonColsHiddenToolTipText_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtConfigColumnsButtonToolTipText_GotFocus()
+    If txtConfigColumnsButtonToolTipText.SelStart = 0 Then txtConfigColumnsButtonToolTipText.SelStart = Len(txtConfigColumnsButtonToolTipText.Text)
+End Sub
+
+Private Sub txtCopyButtonToolTipText_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtCopyButtonToolTipText_GotFocus()
+    If txtCopyButtonToolTipText.SelStart = 0 Then txtCopyButtonToolTipText.SelStart = Len(txtCopyButtonToolTipText.Text)
+End Sub
+
+Private Sub txtFindButtonToolTipText_GotFocus()
+    If txtFindButtonToolTipText.SelStart = 0 Then txtFindButtonToolTipText.SelStart = Len(txtFindButtonToolTipText.Text)
+End Sub
+
+Private Sub txtGroupDataButtonPressedToolTipText_GotFocus()
+    If txtGroupDataButtonPressedToolTipText.SelStart = 0 Then txtGroupDataButtonPressedToolTipText.SelStart = Len(txtGroupDataButtonPressedToolTipText.Text)
+End Sub
+
+Private Sub txtGroupDataButtonToolTipText_GotFocus()
+    If txtGroupDataButtonToolTipText.SelStart = 0 Then txtGroupDataButtonToolTipText.SelStart = Len(txtGroupDataButtonToolTipText.Text)
+End Sub
+
+Private Sub txtPrintButtonToolTipText_GotFocus()
+    If txtPrintButtonToolTipText.SelStart = 0 Then txtPrintButtonToolTipText.SelStart = Len(txtPrintButtonToolTipText.Text)
+End Sub
+
+Private Sub txtSaveButtonToolTipText_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtFindButtonToolTipText_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtGroupDataButtonPressedToolTipText_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtGroupDataButtonToolTipText_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtPrintButtonToolTipText_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtSaveButtonToolTipText_GotFocus()
+    If txtSaveButtonToolTipText.SelStart = 0 Then txtSaveButtonToolTipText.SelStart = Len(txtSaveButtonToolTipText.Text)
+End Sub

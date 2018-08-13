@@ -1,0 +1,613 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpPrintFnPrintSettings 
+   Caption         =   "Print Settings"
+   ClientHeight    =   4248
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   7668
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   4248
+   ScaleWidth      =   7668
+   Begin VB.TextBox txtCopies 
+      Height          =   300
+      Left            =   6516
+      MaxLength       =   3
+      TabIndex        =   13
+      Top             =   1800
+      Width           =   588
+   End
+   Begin VB.CheckBox chkAllowUserChangeScale 
+      Caption         =   "AllowUserChangeScale"
+      Height          =   228
+      Left            =   2244
+      TabIndex        =   23
+      Top             =   3924
+      Width           =   2676
+   End
+   Begin VB.TextBox txtScalePercent 
+      Height          =   300
+      Left            =   2244
+      MaxLength       =   3
+      TabIndex        =   20
+      Top             =   3492
+      Width           =   588
+   End
+   Begin VB.TextBox txtMinScalePercent 
+      Height          =   300
+      Left            =   6516
+      MaxLength       =   3
+      TabIndex        =   22
+      Top             =   3492
+      Width           =   588
+   End
+   Begin VB.TextBox txtMaxScalePercent 
+      Height          =   300
+      Left            =   6516
+      MaxLength       =   3
+      TabIndex        =   25
+      Top             =   3852
+      Width           =   588
+   End
+   Begin VB.ComboBox cboPageNumbersFormat 
+      Height          =   288
+      ItemData        =   "ptpPrintFnPrintSettings.pgx":0000
+      Left            =   2244
+      List            =   "ptpPrintFnPrintSettings.pgx":0002
+      TabIndex        =   18
+      Text            =   "cboPageNumbersFormat"
+      Top             =   2952
+      Width           =   3432
+   End
+   Begin VB.ComboBox cboPageNumbersPosition 
+      Height          =   288
+      ItemData        =   "ptpPrintFnPrintSettings.pgx":0004
+      Left            =   2244
+      List            =   "ptpPrintFnPrintSettings.pgx":0006
+      Style           =   2  'Dropdown List
+      TabIndex        =   16
+      Top             =   2628
+      Width           =   3432
+   End
+   Begin VB.CheckBox chkPrintPageNumbers 
+      Caption         =   "PrintPageNumbers"
+      Height          =   228
+      Left            =   2244
+      TabIndex        =   14
+      Top             =   2340
+      Width           =   2676
+   End
+   Begin VB.ComboBox cboDuplex 
+      Height          =   288
+      ItemData        =   "ptpPrintFnPrintSettings.pgx":0008
+      Left            =   2244
+      List            =   "ptpPrintFnPrintSettings.pgx":000A
+      Style           =   2  'Dropdown List
+      TabIndex        =   9
+      Top             =   1476
+      Width           =   3432
+   End
+   Begin VB.ComboBox cboPrintQuality 
+      Height          =   288
+      ItemData        =   "ptpPrintFnPrintSettings.pgx":000C
+      Left            =   2244
+      List            =   "ptpPrintFnPrintSettings.pgx":000E
+      Style           =   2  'Dropdown List
+      TabIndex        =   5
+      Top             =   828
+      Width           =   3432
+   End
+   Begin VB.ComboBox cboPaperBin 
+      Height          =   288
+      ItemData        =   "ptpPrintFnPrintSettings.pgx":0010
+      Left            =   2244
+      List            =   "ptpPrintFnPrintSettings.pgx":0012
+      Style           =   2  'Dropdown List
+      TabIndex        =   3
+      Top             =   504
+      Width           =   3432
+   End
+   Begin VB.ComboBox cboPaperSize 
+      Height          =   288
+      ItemData        =   "ptpPrintFnPrintSettings.pgx":0014
+      Left            =   2244
+      List            =   "ptpPrintFnPrintSettings.pgx":0016
+      Style           =   2  'Dropdown List
+      TabIndex        =   1
+      Top             =   180
+      Width           =   3432
+   End
+   Begin VB.ComboBox cboOrientation 
+      Height          =   288
+      ItemData        =   "ptpPrintFnPrintSettings.pgx":0018
+      Left            =   2244
+      List            =   "ptpPrintFnPrintSettings.pgx":001A
+      Style           =   2  'Dropdown List
+      TabIndex        =   11
+      Top             =   1800
+      Width           =   3432
+   End
+   Begin VB.ComboBox cboColorMode 
+      Height          =   288
+      ItemData        =   "ptpPrintFnPrintSettings.pgx":001C
+      Left            =   2244
+      List            =   "ptpPrintFnPrintSettings.pgx":001E
+      Style           =   2  'Dropdown List
+      TabIndex        =   7
+      Top             =   1152
+      Width           =   3432
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Copies:"
+      Height          =   264
+      Left            =   5724
+      TabIndex        =   12
+      Top             =   1872
+      Width           =   732
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label13 
+      AutoSize        =   -1  'True
+      Caption         =   " Scale "
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   7.8
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FF0000&
+      Height          =   192
+      Left            =   180
+      TabIndex        =   27
+      Top             =   3288
+      Width           =   504
+   End
+   Begin VB.Label Label12 
+      AutoSize        =   -1  'True
+      Caption         =   " Page numbers "
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   7.8
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FF0000&
+      Height          =   192
+      Left            =   180
+      TabIndex        =   26
+      Top             =   2160
+      Width           =   1200
+   End
+   Begin VB.Line Line1 
+      BorderColor     =   &H00C0C0C0&
+      X1              =   120
+      X2              =   7200
+      Y1              =   3396
+      Y2              =   3396
+   End
+   Begin VB.Line Line2 
+      BorderColor     =   &H00C0C0C0&
+      X1              =   120
+      X2              =   7200
+      Y1              =   2280
+      Y2              =   2280
+   End
+   Begin VB.Label Label11 
+      Alignment       =   1  'Right Justify
+      Caption         =   "ScalePercent:"
+      Height          =   264
+      Left            =   300
+      TabIndex        =   19
+      Top             =   3528
+      Width           =   1884
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label10 
+      Alignment       =   1  'Right Justify
+      Caption         =   "MinScalePercent:"
+      Height          =   264
+      Left            =   4932
+      TabIndex        =   21
+      Top             =   3528
+      Width           =   1524
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label9 
+      Alignment       =   1  'Right Justify
+      Caption         =   "MaxScalePercent:"
+      Height          =   264
+      Left            =   4932
+      TabIndex        =   24
+      Top             =   3888
+      Width           =   1524
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label8 
+      Alignment       =   1  'Right Justify
+      Caption         =   "PageNumbersFormat:"
+      Height          =   336
+      Left            =   480
+      TabIndex        =   17
+      Top             =   2988
+      Width           =   1704
+   End
+   Begin VB.Label Label7 
+      Alignment       =   1  'Right Justify
+      Caption         =   "PageNumbersPosition:"
+      Height          =   336
+      Left            =   480
+      TabIndex        =   15
+      Top             =   2664
+      Width           =   1704
+   End
+   Begin VB.Label Label5 
+      Alignment       =   1  'Right Justify
+      Caption         =   "PrintQuality:"
+      Height          =   336
+      Left            =   696
+      TabIndex        =   4
+      Top             =   864
+      Width           =   1488
+   End
+   Begin VB.Label Label4 
+      Alignment       =   1  'Right Justify
+      Caption         =   "PaperBin:"
+      Height          =   336
+      Left            =   696
+      TabIndex        =   2
+      Top             =   540
+      Width           =   1488
+   End
+   Begin VB.Label Label3 
+      Alignment       =   1  'Right Justify
+      Caption         =   "PaperSize:"
+      Height          =   336
+      Left            =   696
+      TabIndex        =   0
+      Top             =   216
+      Width           =   1488
+   End
+   Begin VB.Label lblOrientation 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Orientation:"
+      Height          =   336
+      Left            =   672
+      TabIndex        =   10
+      Top             =   1836
+      Width           =   1512
+   End
+   Begin VB.Label Label1 
+      Alignment       =   1  'Right Justify
+      Caption         =   "ColorMode:"
+      Height          =   336
+      Left            =   696
+      TabIndex        =   6
+      Top             =   1188
+      Width           =   1488
+   End
+   Begin VB.Label Label6 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Duplex:"
+      Height          =   336
+      Left            =   696
+      TabIndex        =   8
+      Top             =   1512
+      Width           =   1488
+   End
+End
+Attribute VB_Name = "ptpPrintFnPrintSettings"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private mLoading As Boolean
+Private mCtrlTypeIsFlexFn As Boolean
+
+Private Sub LoadSettingsInCombos()
+    Dim iLi As Long
+    
+    ' PaperSize
+    iLi = cboPaperSize.ListIndex
+    cboPaperSize.Clear
+    cboPaperSize.AddItem vbPRPSPrinterDefault & " - vbPRPSPrinterDefault": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSPrinterDefault
+    cboPaperSize.AddItem vbPRPSLetter & " - vbPRPSLetter": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSLetter
+    cboPaperSize.AddItem vbPRPSLetterSmall & " - vbPRPSLetterSmall": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSLetterSmall
+    cboPaperSize.AddItem vbPRPSTabloid & " - vbPRPSTabloid": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSTabloid
+    cboPaperSize.AddItem vbPRPSLedger & " - vbPRPSLedger": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSLedger
+    cboPaperSize.AddItem vbPRPSLegal & " - vbPRPSLegal": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSLegal
+    cboPaperSize.AddItem vbPRPSStatement & " - vbPRPSStatement": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSStatement
+    cboPaperSize.AddItem vbPRPSExecutive & " - vbPRPSExecutive": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSExecutive
+    cboPaperSize.AddItem vbPRPSA3 & " - vbPRPSA3": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSA3
+    cboPaperSize.AddItem vbPRPSA4 & " - vbPRPSA4": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSA4
+    cboPaperSize.AddItem vbPRPSA4Small & " - vbPRPSA4Small": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSA4Small
+    cboPaperSize.AddItem vbPRPSA5 & " - vbPRPSA5": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSA5
+    cboPaperSize.AddItem vbPRPSB4 & " - vbPRPSB4": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSB4
+    cboPaperSize.AddItem vbPRPSB5 & " - vbPRPSB5": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSB5
+    cboPaperSize.AddItem vbPRPSFolio & " - vbPRPSFolio": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSFolio
+    cboPaperSize.AddItem vbPRPSQuarto & " - vbPRPSQuarto": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSQuarto
+    cboPaperSize.AddItem vbPRPS10x14 & " - vbPRPS10x14": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPS10x14
+    cboPaperSize.AddItem vbPRPS11x17 & " - vbPRPS11x17": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPS11x17
+    cboPaperSize.AddItem vbPRPSNote & " - vbPRPSNote": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSNote
+    cboPaperSize.AddItem vbPRPSEnv9 & " - vbPRPSEnv9": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSEnv9
+    cboPaperSize.AddItem vbPRPSEnv10 & " - vbPRPSEnv10": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSEnv10
+    cboPaperSize.AddItem vbPRPSEnv11 & " - vbPRPSEnv11": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSEnv11
+    cboPaperSize.AddItem vbPRPSEnv12 & " - vbPRPSEnv12": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSEnv12
+    cboPaperSize.AddItem vbPRPSEnv14 & " - vbPRPSEnv14": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSEnv14
+    cboPaperSize.AddItem vbPRPSCSheet & " - vbPRPSCSheet": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSCSheet
+    cboPaperSize.AddItem vbPRPSDSheet & " - vbPRPSDSheet": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSDSheet
+    cboPaperSize.AddItem vbPRPSESheet & " - vbPRPSESheet": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSESheet
+    cboPaperSize.AddItem vbPRPSEnvDL & " - vbPRPSEnvDL": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSEnvDL
+    cboPaperSize.AddItem vbPRPSEnvC3 & " - vbPRPSEnvC3": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSEnvC3
+    cboPaperSize.AddItem vbPRPSEnvC4 & " - vbPRPSEnvC4": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSEnvC4
+    cboPaperSize.AddItem vbPRPSEnvC5 & " - vbPRPSEnvC5": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSEnvC5
+    cboPaperSize.AddItem vbPRPSEnvC6 & " - vbPRPSEnvC6": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSEnvC6
+    cboPaperSize.AddItem vbPRPSEnvC65 & " - vbPRPSEnvC65": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSEnvC65
+    cboPaperSize.AddItem vbPRPSEnvB4 & " - vbPRPSEnvB4": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSEnvB4
+    cboPaperSize.AddItem vbPRPSEnvB5 & " - vbPRPSEnvB5": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSEnvB5
+    cboPaperSize.AddItem vbPRPSEnvB6 & " - vbPRPSEnvB6": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSEnvB6
+    cboPaperSize.AddItem vbPRPSEnvItaly & " - vbPRPSEnvItaly": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSEnvItaly
+    cboPaperSize.AddItem vbPRPSEnvMonarch & " - vbPRPSEnvMonarch": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSEnvMonarch
+    cboPaperSize.AddItem vbPRPSEnvPersonal & " - vbPRPSEnvPersonal": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSEnvPersonal
+    cboPaperSize.AddItem vbPRPSFanfoldUS & " - vbPRPSFanfoldUS": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSFanfoldUS
+    cboPaperSize.AddItem vbPRPSFanfoldStdGerman & " - vbPRPSFanfoldStdGerman": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSFanfoldStdGerman
+    cboPaperSize.AddItem vbPRPSFanfoldLglGerman & " - vbPRPSFanfoldLglGerman": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSFanfoldLglGerman
+    cboPaperSize.AddItem vbPRPSUser & " - vbPRPSUser": cboPaperSize.ItemData(cboPaperSize.NewIndex) = vbPRPSUser
+    If iLi > -1 Then
+        cboPaperSize.ListIndex = iLi
+    End If
+    
+    'PaperBin
+    iLi = cboPaperBin.ListIndex
+    cboPaperBin.Clear
+    cboPaperBin.AddItem vbPRBNPrinterDefault & " - vbPRBNPrinterDefault": cboPaperBin.ItemData(cboPaperBin.NewIndex) = vbPRBNPrinterDefault
+    cboPaperBin.AddItem vbPRBNUpper & " - vbPRBNUpper": cboPaperBin.ItemData(cboPaperBin.NewIndex) = vbPRBNUpper
+    cboPaperBin.AddItem vbPRBNLower & " - vbPRBNLower": cboPaperBin.ItemData(cboPaperBin.NewIndex) = vbPRBNLower
+    cboPaperBin.AddItem vbPRBNMiddle & " - vbPRBNMiddle": cboPaperBin.ItemData(cboPaperBin.NewIndex) = vbPRBNMiddle
+    cboPaperBin.AddItem vbPRBNManual & " - vbPRBNManual": cboPaperBin.ItemData(cboPaperBin.NewIndex) = vbPRBNManual
+    cboPaperBin.AddItem vbPRBNEnvelope & " - vbPRBNEnvelope": cboPaperBin.ItemData(cboPaperBin.NewIndex) = vbPRBNEnvelope
+    cboPaperBin.AddItem vbPRBNEnvManual & " - vbPRBNEnvManual": cboPaperBin.ItemData(cboPaperBin.NewIndex) = vbPRBNEnvManual
+    cboPaperBin.AddItem vbPRBNAuto & " - vbPRBNAuto": cboPaperBin.ItemData(cboPaperBin.NewIndex) = vbPRBNAuto
+    cboPaperBin.AddItem vbPRBNTractor & " - vbPRBNTractor": cboPaperBin.ItemData(cboPaperBin.NewIndex) = vbPRBNTractor
+    cboPaperBin.AddItem vbPRBNSmallFmt & " - vbPRBNSmallFmt": cboPaperBin.ItemData(cboPaperBin.NewIndex) = vbPRBNSmallFmt
+    cboPaperBin.AddItem vbPRBNLargeFmt & " - vbPRBNLargeFmt": cboPaperBin.ItemData(cboPaperBin.NewIndex) = vbPRBNLargeFmt
+    cboPaperBin.AddItem vbPRBNLargeCapacity & " - vbPRBNLargeCapacity": cboPaperBin.ItemData(cboPaperBin.NewIndex) = vbPRBNLargeCapacity
+    cboPaperBin.AddItem vbPRBNCassette & " - vbPRBNCassette": cboPaperBin.ItemData(cboPaperBin.NewIndex) = vbPRBNCassette
+    If iLi > -1 Then
+        cboPaperBin.ListIndex = iLi
+    End If
+    
+    'PrintQuality
+    iLi = cboPrintQuality.ListIndex
+    cboPrintQuality.Clear
+    cboPrintQuality.AddItem vbPRPQPrinterDefault & " - vbPRPQPrinterDefault": cboPrintQuality.ItemData(cboPrintQuality.NewIndex) = vbPRPQPrinterDefault
+    cboPrintQuality.AddItem vbPRPQDraft & " - vbPRPQDraft": cboPrintQuality.ItemData(cboPrintQuality.NewIndex) = vbPRPQDraft
+    cboPrintQuality.AddItem vbPRPQLow & " - vbPRPQLow": cboPrintQuality.ItemData(cboPrintQuality.NewIndex) = vbPRPQLow
+    cboPrintQuality.AddItem vbPRPQMedium & " - vbPRPQMedium": cboPrintQuality.ItemData(cboPrintQuality.NewIndex) = vbPRPQMedium
+    cboPrintQuality.AddItem vbPRPQHigh & " - vbPRPQHigh": cboPrintQuality.ItemData(cboPrintQuality.NewIndex) = vbPRPQHigh
+    If iLi > -1 Then
+        cboPrintQuality.ListIndex = iLi
+    End If
+    
+    ' ColorMode
+    iLi = cboColorMode.ListIndex
+    cboColorMode.Clear
+    cboColorMode.AddItem vbPRCMPrinterDefault & " - vbPRCMPrinterDefault": cboColorMode.ItemData(cboColorMode.NewIndex) = vbPRCMPrinterDefault
+    cboColorMode.AddItem vbPRCMMonochrome & " - vbPRCMMonochrome": cboColorMode.ItemData(cboColorMode.NewIndex) = vbPRCMMonochrome
+    cboColorMode.AddItem vbPRCMColor & " - vbPRCMColor": cboColorMode.ItemData(cboColorMode.NewIndex) = vbPRCMColor
+    If iLi > -1 Then
+        cboColorMode.ListIndex = iLi
+    End If
+    
+    'Duplex
+    iLi = cboDuplex.ListIndex
+    cboDuplex.Clear
+    cboDuplex.AddItem vbPRDPPrinterDefault & " - vbPRDPPrinterDefault": cboDuplex.ItemData(cboDuplex.NewIndex) = vbPRDPPrinterDefault
+    cboDuplex.AddItem vbPRDPSimplex & " - vbPRDPSimplex": cboDuplex.ItemData(cboDuplex.NewIndex) = vbPRDPSimplex
+    cboDuplex.AddItem vbPRDPHorizontal & " - vbPRDPHorizontal": cboDuplex.ItemData(cboDuplex.NewIndex) = vbPRDPHorizontal
+    cboDuplex.AddItem vbPRDPVertical & " - vbPRDPVertical": cboDuplex.ItemData(cboDuplex.NewIndex) = vbPRDPVertical
+    If iLi > -1 Then
+        cboDuplex.ListIndex = iLi
+    End If
+    
+    'Orientation
+    iLi = cboOrientation.ListIndex
+    cboOrientation.Clear
+    If mCtrlTypeIsFlexFn Then
+        cboOrientation.AddItem gfnPrinterDefault & " - gfnPrinterDefault": cboOrientation.ItemData(cboOrientation.NewIndex) = gfnPrinterDefault
+        cboOrientation.AddItem gfnPortrait & " - gfnPortrait": cboOrientation.ItemData(cboOrientation.NewIndex) = gfnPortrait
+        cboOrientation.AddItem gfnLandscape & " - gfnLandscape": cboOrientation.ItemData(cboOrientation.NewIndex) = gfnLandscape
+        cboOrientation.AddItem gfnDecideOnReportWidth & " - gfnDecideOnReportWidth": cboOrientation.ItemData(cboOrientation.NewIndex) = gfnDecideOnReportWidth
+    Else
+        cboOrientation.AddItem vbPRORPrinterDefault & " - vbPRORPrinterDefault": cboOrientation.ItemData(cboOrientation.NewIndex) = vbPRORPrinterDefault
+        cboOrientation.AddItem vbPRORPortrait & " - vbPRORPortrait": cboOrientation.ItemData(cboOrientation.NewIndex) = vbPRORPortrait
+        cboOrientation.AddItem vbPRORLandscape & " - vbPRORLandscape": cboOrientation.ItemData(cboOrientation.NewIndex) = vbPRORLandscape
+    End If
+    If iLi > -1 Then
+        cboOrientation.ListIndex = iLi
+    End If
+    
+    ' PageNumbersPosition
+    iLi = cboPageNumbersPosition.ListIndex
+    cboPageNumbersPosition.Clear
+    cboPageNumbersPosition.AddItem vxPositionBottomRight & " - vxPositionBottomRight": cboPageNumbersPosition.ItemData(cboPageNumbersPosition.NewIndex) = vxPositionBottomRight
+    cboPageNumbersPosition.AddItem vxPositionBottomLeft & " - vxPositionBottomLeft": cboPageNumbersPosition.ItemData(cboPageNumbersPosition.NewIndex) = vxPositionBottomLeft
+    cboPageNumbersPosition.AddItem vxPositionBottomCenter & " - vxPositionBottomCenter": cboPageNumbersPosition.ItemData(cboPageNumbersPosition.NewIndex) = vxPositionBottomCenter
+    cboPageNumbersPosition.AddItem vxPositionTopRight & " - vxPositionTopRight": cboPageNumbersPosition.ItemData(cboPageNumbersPosition.NewIndex) = vxPositionTopRight
+    cboPageNumbersPosition.AddItem vxPositionTopLeft & " - vxPositionTopLeft": cboPageNumbersPosition.ItemData(cboPageNumbersPosition.NewIndex) = vxPositionTopLeft
+    cboPageNumbersPosition.AddItem vxPositionTopCenter & " - vxPositionTopCenter": cboPageNumbersPosition.ItemData(cboPageNumbersPosition.NewIndex) = vxPositionTopCenter
+    If iLi > -1 Then
+        cboPageNumbersPosition.ListIndex = iLi
+    End If
+    
+End Sub
+
+Private Sub cboPageNumbersFormat_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cboPageNumbersPosition_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cboPaperSize_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cboPaperBin_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cboPrintQuality_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cboColorMode_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cboDuplex_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cboOrientation_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkAllowUserChangeScale_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkPrintPageNumbers_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+
+    If cboPaperSize.ListIndex > -1 Then
+        SelectedControls(0).PaperSize = cboPaperSize.ItemData(cboPaperSize.ListIndex)
+    End If
+    If cboPaperBin.ListIndex > -1 Then
+        SelectedControls(0).PaperBin = cboPaperBin.ItemData(cboPaperBin.ListIndex)
+    End If
+    If cboPrintQuality.ListIndex > -1 Then
+        SelectedControls(0).PrintQuality = cboPrintQuality.ItemData(cboPrintQuality.ListIndex)
+    End If
+    If cboColorMode.ListIndex > -1 Then
+        SelectedControls(0).ColorMode = cboColorMode.ItemData(cboColorMode.ListIndex)
+    End If
+    If cboDuplex.ListIndex > -1 Then
+        SelectedControls(0).Duplex = cboDuplex.ItemData(cboDuplex.ListIndex)
+    End If
+    If cboOrientation.ListIndex > -1 Then
+        SelectedControls(0).Orientation = cboOrientation.ItemData(cboOrientation.ListIndex)
+    End If
+    
+    If Not mCtrlTypeIsFlexFn Then
+        SelectedControls(0).Copies = Val(txtCopies.Text)
+    End If
+    
+    SelectedControls(0).PrintPageNumbers = CBool(chkPrintPageNumbers.Value)
+
+    If cboPageNumbersPosition.ListIndex > -1 Then
+        SelectedControls(0).PageNumbersPosition = cboPageNumbersPosition.ItemData(cboPageNumbersPosition.ListIndex)
+    End If
+    
+    SelectedControls(0).PageNumbersFormat = Trim(cboPageNumbersFormat.Text)
+
+    SelectedControls(0).ScalePercent = txtScalePercent.Text
+    SelectedControls(0).AllowUserChangeScale = CBool(chkAllowUserChangeScale.Value)
+    SelectedControls(0).MinScalePercent = Val(txtMinScalePercent.Text)
+    SelectedControls(0).MaxScalePercent = Val(txtMaxScalePercent.Text)
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    mLoading = True
+    mCtrlTypeIsFlexFn = TypeName(SelectedControls(0)) = "FlexFn"
+    SetTextBoxNumeric txtCopies
+    SetTextBoxNumeric txtScalePercent
+    SetTextBoxNumeric txtMinScalePercent
+    SetTextBoxNumeric txtMaxScalePercent
+    LoadSettingsInCombos
+    LoadPageNumbersFormatStrings
+    cboPageNumbersFormat.Text = SelectedControls(0).PageNumbersFormat
+    SelectInComboByItemData cboPaperSize, SelectedControls(0).PaperSize
+    SelectInComboByItemData cboPaperBin, SelectedControls(0).PaperBin
+    SelectInComboByItemData cboPrintQuality, SelectedControls(0).PrintQuality
+    SelectInComboByItemData cboColorMode, SelectedControls(0).ColorMode
+    SelectInComboByItemData cboDuplex, SelectedControls(0).Duplex
+    SelectInComboByItemData cboOrientation, SelectedControls(0).Orientation
+    If Not mCtrlTypeIsFlexFn Then
+        txtCopies.Text = SelectedControls(0).Copies
+    End If
+    chkPrintPageNumbers.Value = CLng(SelectedControls(0).PrintPageNumbers) * -1
+    SelectInComboByItemData cboPageNumbersPosition, SelectedControls(0).PageNumbersPosition
+    txtScalePercent.Text = SelectedControls(0).ScalePercent
+    chkAllowUserChangeScale.Value = Abs(CLng(SelectedControls(0).AllowUserChangeScale))
+    txtMinScalePercent.Text = SelectedControls(0).MinScalePercent
+    txtMaxScalePercent.Text = SelectedControls(0).MaxScalePercent
+    mLoading = False
+End Sub
+
+Private Sub cboPageNumbersFormat_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub LoadPageNumbersFormatStrings()
+    Dim c As Long
+    
+    cboPageNumbersFormat.Clear
+    For c = 0 To SelectedControls(0).GetPredefinedPageNumbersFormatStringsCount - 1
+        cboPageNumbersFormat.AddItem SelectedControls(0).GetPredefinedPageNumbersFormatString(c)
+    Next c
+    
+End Sub
+
+Private Sub txtCopies_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtCopies_GotFocus()
+    If txtCopies.SelStart = 0 Then txtCopies.SelStart = Len(txtCopies.Text)
+End Sub
+
+Private Sub txtMaxScalePercent_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtMaxScalePercent_GotFocus()
+    If txtMaxScalePercent.SelStart = 0 Then txtMaxScalePercent.SelStart = Len(txtMaxScalePercent.Text)
+End Sub
+
+Private Sub txtMinScalePercent_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtMinScalePercent_GotFocus()
+    If txtMinScalePercent.SelStart = 0 Then txtMinScalePercent.SelStart = Len(txtMinScalePercent.Text)
+End Sub
+
+Private Sub txtScalePercent_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtScalePercent_GotFocus()
+    If txtScalePercent.SelStart = 0 Then txtScalePercent.SelStart = Len(txtScalePercent.Text)
+End Sub

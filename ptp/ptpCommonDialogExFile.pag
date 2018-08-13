@@ -1,0 +1,264 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpCommonDialogExFile 
+   Caption         =   "Open / Save as"
+   ClientHeight    =   3636
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   6084
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   3636
+   ScaleWidth      =   6084
+   Begin VB.CheckBox chkCancelError 
+      Caption         =   "CancelError"
+      Height          =   264
+      Left            =   1560
+      TabIndex        =   16
+      Top             =   3132
+      Width           =   1500
+   End
+   Begin VB.TextBox txtDefaultExt 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   11
+      Top             =   1980
+      Width           =   1500
+   End
+   Begin VB.TextBox txtFlags 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   9
+      Top             =   1620
+      Width           =   1500
+   End
+   Begin VB.TextBox txtFilterIndex 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   15
+      Top             =   2700
+      Width           =   1500
+   End
+   Begin VB.TextBox txtMaxFileSize 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   13
+      Top             =   2340
+      Width           =   1500
+   End
+   Begin VB.TextBox txtInitDir 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   5
+      Top             =   900
+      Width           =   3000
+   End
+   Begin VB.TextBox txtFilter 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   7
+      Top             =   1260
+      Width           =   3000
+   End
+   Begin VB.TextBox txtDialogTitle 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   1
+      Top             =   180
+      Width           =   3000
+   End
+   Begin VB.TextBox txtFileName 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   3
+      Top             =   540
+      Width           =   3000
+   End
+   Begin VB.Label Label8 
+      Alignment       =   1  'Right Justify
+      Caption         =   "DefaultExt:"
+      Height          =   228
+      Left            =   576
+      TabIndex        =   10
+      Top             =   2016
+      Width           =   900
+   End
+   Begin VB.Label Label7 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Flags:"
+      Height          =   228
+      Left            =   576
+      TabIndex        =   8
+      Top             =   1656
+      Width           =   900
+   End
+   Begin VB.Label Label6 
+      Alignment       =   1  'Right Justify
+      Caption         =   "FilterIndex:"
+      Height          =   228
+      Left            =   576
+      TabIndex        =   14
+      Top             =   2736
+      Width           =   900
+   End
+   Begin VB.Label Label5 
+      Alignment       =   1  'Right Justify
+      Caption         =   "MaxFileSize:"
+      Height          =   228
+      Left            =   576
+      TabIndex        =   12
+      Top             =   2376
+      Width           =   900
+   End
+   Begin VB.Label Label4 
+      Alignment       =   1  'Right Justify
+      Caption         =   "InitDir:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   4
+      Top             =   936
+      Width           =   1020
+   End
+   Begin VB.Label Label3 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Filter:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   6
+      Top             =   1296
+      Width           =   1020
+   End
+   Begin VB.Label Label1 
+      Alignment       =   1  'Right Justify
+      Caption         =   "DialogTitle:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   0
+      Top             =   216
+      Width           =   1020
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "FileName:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   2
+      Top             =   576
+      Width           =   1020
+   End
+End
+Attribute VB_Name = "ptpCommonDialogExFile"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private mLoading As Boolean
+
+Private Sub chkCancelError_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    On Error Resume Next
+    SelectedControls(0).DialogTitle = txtDialogTitle.Text
+    SelectedControls(0).FileName = txtFileName.Text
+    SelectedControls(0).InitDir = txtInitDir.Text
+    SelectedControls(0).Filter = txtFilter.Text
+    SelectedControls(0).Flags = Val(txtFlags.Text)
+    SelectedControls(0).DefaultExt = txtDefaultExt.Text
+    SelectedControls(0).MaxFileSize = Val(txtMaxFileSize.Text)
+    SelectedControls(0).FilterIndex = Val(txtFilterIndex.Text)
+    SelectedControls(0).CancelError = CBool(chkCancelError.Value)
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    SetTextBoxNumeric txtFlags
+    SetTextBoxNumeric txtMaxFileSize
+    SetTextBoxNumeric txtFilterIndex
+    
+    mLoading = True
+    txtDialogTitle.Text = SelectedControls(0).DialogTitle
+    txtFileName.Text = SelectedControls(0).FileName
+    txtInitDir.Text = SelectedControls(0).InitDir
+    txtFilter.Text = SelectedControls(0).Filter
+    txtFlags.Text = SelectedControls(0).Flags
+    txtDefaultExt.Text = SelectedControls(0).DefaultExt
+    txtMaxFileSize.Text = SelectedControls(0).MaxFileSize
+    txtFilterIndex.Text = SelectedControls(0).FilterIndex
+    chkCancelError.Value = Abs(CLng(SelectedControls(0).CancelError))
+    mLoading = False
+End Sub
+
+Private Sub txtDefaultExt_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtDefaultExt_GotFocus()
+    SelectTxtOnGotFocus txtDefaultExt
+End Sub
+
+Private Sub txtDialogTitle_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtDialogTitle_GotFocus()
+    SelectTxtOnGotFocus txtDialogTitle
+End Sub
+
+Private Sub txtFileName_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtFileName_GotFocus()
+    SelectTxtOnGotFocus txtFileName
+End Sub
+
+Private Sub txtFilter_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtFilter_GotFocus()
+    SelectTxtOnGotFocus txtFilter
+End Sub
+
+Private Sub txtFilterIndex_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtFilterIndex_GotFocus()
+    SelectTxtOnGotFocus txtFilterIndex
+End Sub
+
+Private Sub txtFlags_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtFlags_GotFocus()
+    SelectTxtOnGotFocus txtFlags
+End Sub
+
+Private Sub txtInitDir_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtInitDir_GotFocus()
+    SelectTxtOnGotFocus txtInitDir
+End Sub
+
+Private Sub txtMaxFileSize_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtMaxFileSize_GotFocus()
+    SelectTxtOnGotFocus txtMaxFileSize
+End Sub

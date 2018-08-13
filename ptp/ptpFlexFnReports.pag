@@ -1,0 +1,432 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpFlexFnReports 
+   Caption         =   "Reports"
+   ClientHeight    =   5220
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   9336
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   5220
+   ScaleWidth      =   9336
+   Begin VB.CheckBox chkPrintPrevUseAltScaleIcons 
+      Caption         =   "PrintPrevUseAltScaleIcons"
+      Height          =   250
+      Left            =   2412
+      TabIndex        =   14
+      Top             =   2628
+      Width           =   2748
+   End
+   Begin VB.CheckBox chkAutoSelect125PercentScaleOnSmallGrids 
+      Caption         =   "AutoSelect125PercentScaleOnSmallGrids"
+      Height          =   250
+      Left            =   3132
+      TabIndex        =   12
+      Top             =   2088
+      Width           =   3360
+   End
+   Begin VB.TextBox txtCopyConfirmationMessage 
+      Height          =   300
+      Left            =   2412
+      MultiLine       =   -1  'True
+      TabIndex        =   26
+      Top             =   4752
+      Width           =   3792
+   End
+   Begin VB.CheckBox chkShowCopyConfirmationMessage 
+      Caption         =   "ShowCopyConfirmationMessage"
+      Height          =   250
+      Left            =   2412
+      TabIndex        =   24
+      Top             =   4500
+      Width           =   2748
+   End
+   Begin VB.TextBox txtFinalText 
+      Height          =   300
+      Left            =   2412
+      MultiLine       =   -1  'True
+      TabIndex        =   9
+      Top             =   1692
+      Width           =   3792
+   End
+   Begin VB.TextBox txtMiddleText 
+      Height          =   300
+      Left            =   2412
+      MultiLine       =   -1  'True
+      TabIndex        =   7
+      Top             =   1368
+      Width           =   3792
+   End
+   Begin VB.PictureBox picAux 
+      Height          =   372
+      Left            =   7596
+      ScaleHeight     =   324
+      ScaleWidth      =   972
+      TabIndex        =   27
+      TabStop         =   0   'False
+      Top             =   4572
+      Visible         =   0   'False
+      Width           =   1020
+   End
+   Begin VB.CheckBox chkMergeCellsExcel 
+      Caption         =   "MergeCellsExcel"
+      Height          =   250
+      Left            =   2412
+      TabIndex        =   17
+      Top             =   3240
+      Width           =   2748
+   End
+   Begin VB.ComboBox cboAfterSaveAction 
+      Height          =   288
+      Left            =   2412
+      Style           =   2  'Dropdown List
+      TabIndex        =   19
+      Top             =   3492
+      Width           =   3792
+   End
+   Begin VB.CheckBox chkIgnoreEmptyRowsAtTheEnd 
+      Caption         =   "IgnoreEmptyRowsAtTheEnd"
+      Height          =   250
+      Left            =   2412
+      TabIndex        =   13
+      Top             =   2376
+      Width           =   2748
+   End
+   Begin VB.TextBox txtSpecialSeparatorCharacters 
+      Height          =   300
+      Left            =   2412
+      TabIndex        =   23
+      Top             =   4140
+      Width           =   588
+   End
+   Begin VB.TextBox txtFileName 
+      Height          =   300
+      Left            =   2412
+      TabIndex        =   16
+      Top             =   2880
+      Width           =   3792
+   End
+   Begin VB.TextBox txtScalePercent 
+      Height          =   300
+      Left            =   2412
+      MaxLength       =   3
+      TabIndex        =   11
+      Top             =   2052
+      Width           =   588
+   End
+   Begin VB.TextBox txtSubheading 
+      Height          =   300
+      Left            =   2412
+      MultiLine       =   -1  'True
+      TabIndex        =   5
+      Top             =   1044
+      Width           =   3792
+   End
+   Begin VB.TextBox txtHeading 
+      Height          =   300
+      Left            =   2412
+      MultiLine       =   -1  'True
+      TabIndex        =   3
+      Top             =   720
+      Width           =   3792
+   End
+   Begin VB.TextBox txtReportID 
+      Height          =   300
+      Left            =   2412
+      TabIndex        =   1
+      Top             =   396
+      Width           =   3792
+   End
+   Begin VB.ComboBox cboCopyToClipboardMode 
+      Height          =   288
+      Left            =   2412
+      Style           =   2  'Dropdown List
+      TabIndex        =   21
+      Top             =   3816
+      Width           =   3792
+   End
+   Begin VB.Label Label6 
+      Alignment       =   1  'Right Justify
+      Caption         =   "CopyConfirmationMessage:"
+      Height          =   336
+      Left            =   180
+      TabIndex        =   25
+      Top             =   4788
+      Width           =   2208
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "FinalText:"
+      Height          =   336
+      Left            =   1152
+      TabIndex        =   8
+      Top             =   1728
+      Width           =   1236
+   End
+   Begin VB.Label Label1 
+      Alignment       =   1  'Right Justify
+      Caption         =   "MiddleText:"
+      Height          =   336
+      Left            =   1152
+      TabIndex        =   6
+      Top             =   1404
+      Width           =   1236
+   End
+   Begin VB.Label Label5 
+      Alignment       =   1  'Right Justify
+      Caption         =   "AfterSaveAction:"
+      Height          =   336
+      Left            =   972
+      TabIndex        =   18
+      Top             =   3528
+      Width           =   1416
+   End
+   Begin VB.Label Label8 
+      Alignment       =   1  'Right Justify
+      Caption         =   "ScalePercent:"
+      Height          =   264
+      Left            =   468
+      TabIndex        =   10
+      Top             =   2088
+      Width           =   1884
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label lblSpecialSeparatorCharacters 
+      Alignment       =   1  'Right Justify
+      Caption         =   "SpecialSeparatorCharacters:"
+      Height          =   372
+      Left            =   108
+      TabIndex        =   22
+      Top             =   4176
+      Width           =   2244
+   End
+   Begin VB.Label lblFileName 
+      Alignment       =   1  'Right Justify
+      Caption         =   "FileName:"
+      Height          =   336
+      Left            =   1116
+      TabIndex        =   15
+      Top             =   2916
+      Width           =   1272
+   End
+   Begin VB.Label lblSubheading 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Subheading:"
+      Height          =   336
+      Left            =   1152
+      TabIndex        =   4
+      Top             =   1080
+      Width           =   1236
+   End
+   Begin VB.Label lblHeading 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Heading:"
+      Height          =   336
+      Left            =   1188
+      TabIndex        =   2
+      Top             =   756
+      Width           =   1164
+   End
+   Begin VB.Label lblReportID 
+      Alignment       =   1  'Right Justify
+      Caption         =   "ReportID:"
+      Height          =   336
+      Left            =   1368
+      TabIndex        =   0
+      Top             =   432
+      Width           =   1020
+   End
+   Begin VB.Label lblCopyToClipboardMode 
+      Alignment       =   1  'Right Justify
+      Caption         =   "CopyToClipboardMode:"
+      Height          =   372
+      Left            =   144
+      TabIndex        =   20
+      Top             =   3852
+      Width           =   2208
+   End
+End
+Attribute VB_Name = "ptpFlexFnReports"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private mLoading As Boolean
+
+Private Sub cboCopyToClipboardMode_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkAutoSelect125PercentScaleOnSmallGrids_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkIgnoreEmptyRowsAtTheEnd_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkPrintPrevUseAltScaleIcons_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkShowCopyConfirmationMessage_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    SelectedControls(0).CopyToClipboardMode = cboCopyToClipboardMode.ListIndex
+    SelectedControls(0).ShowCopyConfirmationMessage = CBool(chkShowCopyConfirmationMessage.Value)
+    SelectedControls(0).CopyConfirmationMessage = txtCopyConfirmationMessage.Text
+    SelectedControls(0).SpecialSeparatorCharacters = txtSpecialSeparatorCharacters.Text
+    SelectedControls(0).ReportID = txtReportID.Text
+    SelectedControls(0).Heading = txtHeading.Text
+    SelectedControls(0).Subheading = txtSubheading.Text
+    SelectedControls(0).MiddleText = txtMiddleText.Text
+    SelectedControls(0).FinalText = txtFinalText.Text
+    SelectedControls(0).ScalePercent = txtScalePercent.Text
+    SelectedControls(0).AutoSelect125PercentScaleOnSmallGrids = CBool(chkAutoSelect125PercentScaleOnSmallGrids.Value)
+    SelectedControls(0).FileName = txtFileName.Text
+    SelectedControls(0).IgnoreEmptyRowsAtTheEnd = CBool(chkIgnoreEmptyRowsAtTheEnd.Value)
+    SelectedControls(0).PrintPrevUseAltScaleIcons = CBool(chkPrintPrevUseAltScaleIcons.Value)
+    SelectedControls(0).AfterSaveAction = cboAfterSaveAction.ListIndex
+    SelectedControls(0).MergeCellsExcel = CBool(chkMergeCellsExcel.Value)
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    mLoading = True
+    
+    SetTextBoxNumeric txtScalePercent
+    
+    LoadSettingsInCombos
+    
+    cboCopyToClipboardMode.ListIndex = SelectedControls(0).CopyToClipboardMode
+    chkShowCopyConfirmationMessage.Value = Abs(CLng(SelectedControls(0).ShowCopyConfirmationMessage))
+    txtCopyConfirmationMessage.Text = SelectedControls(0).CopyConfirmationMessage
+    txtSpecialSeparatorCharacters.Text = SelectedControls(0).SpecialSeparatorCharacters
+    txtReportID.Text = SelectedControls(0).ReportID
+    txtHeading.Text = SelectedControls(0).Heading
+    txtSubheading.Text = SelectedControls(0).Subheading
+    txtMiddleText.Text = SelectedControls(0).MiddleText
+    txtFinalText.Text = SelectedControls(0).FinalText
+    txtScalePercent.Text = SelectedControls(0).ScalePercent
+    chkAutoSelect125PercentScaleOnSmallGrids.Value = Abs(CLng(SelectedControls(0).AutoSelect125PercentScaleOnSmallGrids))
+    txtFileName.Text = SelectedControls(0).FileName
+    chkIgnoreEmptyRowsAtTheEnd.Value = Abs(CLng(SelectedControls(0).IgnoreEmptyRowsAtTheEnd))
+    chkPrintPrevUseAltScaleIcons.Value = Abs(CLng(SelectedControls(0).PrintPrevUseAltScaleIcons))
+    cboAfterSaveAction.ListIndex = SelectedControls(0).AfterSaveAction
+    chkMergeCellsExcel.Value = Abs(CLng(SelectedControls(0).MergeCellsExcel))
+    
+    AutoSizeDropDownWidth cboCopyToClipboardMode, picAux
+    
+    mLoading = False
+End Sub
+
+Private Sub LoadSettingsInCombos()
+    Dim iLi As Long
+    
+    ' CopyToClipboardMode
+    iLi = cboCopyToClipboardMode.ListIndex
+    cboCopyToClipboardMode.Clear
+    cboCopyToClipboardMode.AddItem "0 - gfnLetUserToSelect"
+    cboCopyToClipboardMode.AddItem "1 - gfnSeparateWithTabs"
+    cboCopyToClipboardMode.AddItem "2 - gfnSeparateWithSpacesForFixedFont"
+    cboCopyToClipboardMode.AddItem "3 - gfnSeparateWithSpacesForVariableFont"
+    cboCopyToClipboardMode.AddItem "4 - gfnSeparateWithSpecialCharacters"
+    If iLi > -1 Then
+        cboCopyToClipboardMode.ListIndex = iLi
+    End If
+    
+    ' AfterSaveAction
+    iLi = cboAfterSaveAction.ListIndex
+    cboAfterSaveAction.Clear
+    cboAfterSaveAction.AddItem "0 - gfnDoNothing"
+    cboAfterSaveAction.AddItem "1 - gfnShowConfirmationMessage"
+    cboAfterSaveAction.AddItem "2 - gfnOfferToOpen"
+    If iLi > -1 Then
+        cboAfterSaveAction.ListIndex = iLi
+    End If
+    
+End Sub
+
+Private Sub txtCopyConfirmationMessage_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtCopyConfirmationMessage_GotFocus()
+    If txtCopyConfirmationMessage.SelStart = 0 Then txtCopyConfirmationMessage.SelStart = Len(txtCopyConfirmationMessage.Text)
+End Sub
+
+Private Sub txtFileName_GotFocus()
+    If txtFileName.SelStart = 0 Then txtFileName.SelStart = Len(txtFileName.Text)
+End Sub
+
+Private Sub txtFinalText_GotFocus()
+    If txtFinalText.SelStart = 0 Then txtFinalText.SelStart = Len(txtFinalText.Text)
+End Sub
+
+Private Sub txtHeading_GotFocus()
+    If txtHeading.SelStart = 0 Then txtHeading.SelStart = Len(txtHeading.Text)
+End Sub
+
+Private Sub txtMiddleText_GotFocus()
+    If txtMiddleText.SelStart = 0 Then txtMiddleText.SelStart = Len(txtMiddleText.Text)
+End Sub
+
+Private Sub txtReportID_GotFocus()
+    If txtReportID.SelStart = 0 Then txtReportID.SelStart = Len(txtReportID.Text)
+End Sub
+
+Private Sub txtScalePercent_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtFileName_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtHeading_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtReportID_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtScalePercent_GotFocus()
+    If txtScalePercent.SelStart = 0 Then txtScalePercent.SelStart = Len(txtScalePercent.Text)
+End Sub
+
+Private Sub txtSpecialSeparatorCharacters_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtSpecialSeparatorCharacters_GotFocus()
+    If txtSpecialSeparatorCharacters.SelStart = 0 Then txtSpecialSeparatorCharacters.SelStart = Len(txtSpecialSeparatorCharacters.Text)
+End Sub
+
+Private Sub txtSubheading_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtMiddleText_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtFinalText_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtSubheading_GotFocus()
+    If txtSubheading.SelStart = 0 Then txtSubheading.SelStart = Len(txtSubheading.Text)
+End Sub

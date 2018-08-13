@@ -1,0 +1,259 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpCommonDialogExPrint 
+   Caption         =   "Print"
+   ClientHeight    =   3636
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   6084
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   3636
+   ScaleWidth      =   6084
+   Begin VB.ComboBox cboOrientation 
+      Height          =   288
+      ItemData        =   "ptpCommonDialogExPrint.pgx":0000
+      Left            =   1560
+      List            =   "ptpCommonDialogExPrint.pgx":0002
+      Style           =   2  'Dropdown List
+      TabIndex        =   3
+      Top             =   540
+      Width           =   3000
+   End
+   Begin VB.TextBox txtFromPage 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   7
+      Top             =   1260
+      Width           =   588
+   End
+   Begin VB.TextBox txtToPage 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   9
+      Top             =   1620
+      Width           =   588
+   End
+   Begin VB.TextBox txtMax 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   13
+      Top             =   2340
+      Width           =   588
+   End
+   Begin VB.TextBox txtMin 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   11
+      Top             =   1980
+      Width           =   588
+   End
+   Begin VB.TextBox txtCopies 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   5
+      Top             =   900
+      Width           =   588
+   End
+   Begin VB.TextBox txtFlags 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   1
+      Top             =   180
+      Width           =   1500
+   End
+   Begin VB.CheckBox chkCancelError 
+      Caption         =   "CancelError"
+      Height          =   264
+      Left            =   1560
+      TabIndex        =   14
+      Top             =   2772
+      Width           =   2316
+   End
+   Begin VB.Label lblOrientation 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Orientation:"
+      Height          =   336
+      Left            =   348
+      TabIndex        =   2
+      Top             =   576
+      Width           =   1164
+   End
+   Begin VB.Label Label6 
+      Alignment       =   1  'Right Justify
+      Caption         =   "FromPage:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   6
+      Top             =   1296
+      Width           =   1020
+   End
+   Begin VB.Label Label1 
+      Alignment       =   1  'Right Justify
+      Caption         =   "ToPage:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   8
+      Top             =   1656
+      Width           =   1020
+   End
+   Begin VB.Label Label4 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Max:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   12
+      Top             =   2376
+      Width           =   1020
+   End
+   Begin VB.Label Label3 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Min:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   10
+      Top             =   2016
+      Width           =   1020
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Copies:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   4
+      Top             =   936
+      Width           =   1020
+   End
+   Begin VB.Label Label5 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Flags:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   0
+      Top             =   216
+      Width           =   1020
+   End
+End
+Attribute VB_Name = "ptpCommonDialogExPrint"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private mLoading As Boolean
+
+Private Sub cboOrientation_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    On Error Resume Next
+    SelectedControls(0).Flags = Val(txtFlags.Text)
+    
+    If cboOrientation.ListIndex > -1 Then
+        SelectedControls(0).Orientation = cboOrientation.ItemData(cboOrientation.ListIndex)
+    End If
+
+    SelectedControls(0).Copies = Val(txtCopies.Text)
+    SelectedControls(0).FromPage = Val(txtFromPage.Text)
+    SelectedControls(0).ToPage = Val(txtToPage.Text)
+    SelectedControls(0).Min = Val(txtMin.Text)
+    SelectedControls(0).Max = Val(txtMax.Text)
+    
+    SelectedControls(0).CancelError = CBool(chkCancelError.Value)
+
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    SetTextBoxNumeric txtFlags
+    SetTextBoxNumeric txtCopies
+    SetTextBoxNumeric txtFromPage
+    SetTextBoxNumeric txtToPage
+    SetTextBoxNumeric txtMin
+    SetTextBoxNumeric txtMax
+    
+    mLoading = True
+    LoadSettingsInCombo
+    SelectInComboByItemData cboOrientation, SelectedControls(0).Orientation
+    txtFlags.Text = SelectedControls(0).Flags
+    txtCopies.Text = SelectedControls(0).Copies
+    txtFromPage.Text = SelectedControls(0).FromPage
+    txtToPage.Text = SelectedControls(0).ToPage
+    txtMin.Text = SelectedControls(0).Min
+    txtMax.Text = SelectedControls(0).Max
+    chkCancelError.Value = Abs(CLng(SelectedControls(0).CancelError))
+    mLoading = False
+
+End Sub
+
+Private Sub LoadSettingsInCombo()
+    Dim iLi As Long
+    
+    ' Orientation
+    iLi = cboOrientation.ListIndex
+    cboOrientation.Clear
+    cboOrientation.AddItem vbPRORPrinterDefault & " - vbPRORPrinterDefault": cboOrientation.ItemData(cboOrientation.NewIndex) = vbPRORPrinterDefault
+    cboOrientation.AddItem vbPRORPortrait & " - vbPRORPortrait": cboOrientation.ItemData(cboOrientation.NewIndex) = vbPRORPortrait
+    cboOrientation.AddItem vbPRORLandscape & " - vbPRORLandscape": cboOrientation.ItemData(cboOrientation.NewIndex) = vbPRORLandscape
+    If iLi > -1 Then
+        cboOrientation.ListIndex = iLi
+    End If
+    
+End Sub
+
+Private Sub txtCopies_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtCopies_GotFocus()
+    SelectTxtOnGotFocus txtCopies
+End Sub
+
+Private Sub txtFlags_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtFlags_GotFocus()
+    SelectTxtOnGotFocus txtFlags
+End Sub
+
+Private Sub txtFromPage_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtFromPage_GotFocus()
+    SelectTxtOnGotFocus txtFromPage
+End Sub
+
+Private Sub txtMax_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtMax_GotFocus()
+    SelectTxtOnGotFocus txtMax
+End Sub
+
+Private Sub txtMin_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtMin_GotFocus()
+    SelectTxtOnGotFocus txtMin
+End Sub
+
+Private Sub txtToPage_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtToPage_GotFocus()
+    SelectTxtOnGotFocus txtToPage
+End Sub

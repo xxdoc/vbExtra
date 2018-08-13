@@ -1,0 +1,522 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpFlexFnOtherFunctions 
+   Caption         =   "Other functions"
+   ClientHeight    =   5220
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   9336
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   5220
+   ScaleWidth      =   9336
+   Begin VB.CheckBox chkTextEditionLocked 
+      Caption         =   "TextEditionLocked"
+      Height          =   255
+      Left            =   5460
+      TabIndex        =   23
+      Top             =   3570
+      Width           =   2735
+   End
+   Begin VB.CheckBox chkAllowTextEdition 
+      Caption         =   "AllowTextEdition"
+      Height          =   255
+      Left            =   5460
+      TabIndex        =   21
+      Top             =   3240
+      Width           =   2735
+   End
+   Begin VB.CheckBox chkShowToolTipsForOrderColumns 
+      Caption         =   "ShowToolTipsForOrderColumns"
+      Height          =   255
+      Left            =   4380
+      TabIndex        =   9
+      Top             =   1290
+      Width           =   2735
+   End
+   Begin VB.CheckBox chkDoNotRememberOrder 
+      Caption         =   "DoNotRememberOrder"
+      Height          =   255
+      Left            =   2220
+      TabIndex        =   8
+      Top             =   1290
+      Width           =   2735
+   End
+   Begin VB.CheckBox chkShowToolTipsOnLongerCellTexts 
+      Caption         =   "ShowToolTipsOnLongerCellTexts"
+      Height          =   255
+      Left            =   2220
+      TabIndex        =   24
+      Top             =   3900
+      Width           =   2735
+   End
+   Begin VB.TextBox txtBorderWidth 
+      Height          =   300
+      Left            =   3210
+      TabIndex        =   17
+      Top             =   2550
+      Width           =   570
+   End
+   Begin VB.TextBox txtBorderColor 
+      Height          =   300
+      Left            =   3210
+      TabIndex        =   13
+      Top             =   2190
+      Width           =   1260
+   End
+   Begin VB.CommandButton cmdPickBorderColor 
+      Caption         =   "- - -"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   3.6
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   315
+      Left            =   4950
+      TabIndex        =   14
+      Top             =   2190
+      Width           =   315
+   End
+   Begin VB.CheckBox chkSameDataGroupedInColumns 
+      Caption         =   "SameDataGroupedInColumns"
+      Height          =   255
+      Left            =   2220
+      TabIndex        =   22
+      Top             =   3570
+      Width           =   2735
+   End
+   Begin VB.CheckBox chkStretchColumnsWidthsToFill 
+      Caption         =   "StretchColumnsWidthsToFill"
+      Height          =   255
+      Left            =   2220
+      TabIndex        =   20
+      Top             =   3240
+      Width           =   2735
+   End
+   Begin VB.CheckBox chkInitialOrderDescending 
+      Caption         =   "InitialOrderDescending"
+      Height          =   255
+      Left            =   2220
+      TabIndex        =   7
+      Top             =   930
+      Width           =   2735
+   End
+   Begin VB.TextBox txtInitialOrderColumn 
+      Height          =   300
+      Left            =   3600
+      TabIndex        =   4
+      Top             =   540
+      Width           =   570
+   End
+   Begin VB.CheckBox chkEnableOrderByColumns 
+      Caption         =   "EnableOrderByColumns"
+      Height          =   255
+      Left            =   2220
+      TabIndex        =   1
+      Top             =   210
+      Width           =   2070
+   End
+   Begin VB.CheckBox chkGridsFlatAppearance 
+      Caption         =   "GridsFlatAppearance"
+      Height          =   255
+      Left            =   2220
+      TabIndex        =   11
+      Top             =   1860
+      Width           =   1920
+   End
+   Begin VB.Label Label12 
+      Caption         =   "(These two properties can be used to set the order even with EnableOrderByColumns disabled)"
+      Height          =   780
+      Left            =   5910
+      TabIndex        =   6
+      Top             =   570
+      Width           =   3135
+   End
+   Begin VB.Label Label11 
+      Caption         =   "(Enables the user to change order by clicking columns headers)"
+      Height          =   285
+      Left            =   4530
+      TabIndex        =   2
+      Top             =   210
+      Width           =   4665
+   End
+   Begin VB.Label Label10 
+      Caption         =   $"ptpFlexFnOtherFunctions.pgx":0000
+      Height          =   585
+      Left            =   870
+      TabIndex        =   26
+      Top             =   4530
+      Width           =   7875
+   End
+   Begin VB.Label Label9 
+      Caption         =   "Note:"
+      ForeColor       =   &H00FF0000&
+      Height          =   255
+      Left            =   270
+      TabIndex        =   25
+      Top             =   4530
+      Width           =   555
+   End
+   Begin VB.Line Line3 
+      BorderColor     =   &H00C0C0C0&
+      X1              =   180
+      X2              =   9140
+      Y1              =   4260
+      Y2              =   4260
+   End
+   Begin VB.Label Label8 
+      Caption         =   "Miscellaneous:"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   7.8
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   270
+      TabIndex        =   19
+      Top             =   3330
+      Width           =   1725
+   End
+   Begin VB.Label Label7 
+      Caption         =   "(-1 to use the GridLineWidth property of the grid)"
+      Height          =   225
+      Left            =   3900
+      TabIndex        =   18
+      Top             =   2610
+      Width           =   3405
+   End
+   Begin VB.Label Label6 
+      Caption         =   "BorderWidth:"
+      Height          =   225
+      Left            =   2220
+      TabIndex        =   16
+      Top             =   2610
+      Width           =   915
+   End
+   Begin VB.Label Label4 
+      Caption         =   "(-1 to use the GridColor property of the grid)"
+      Height          =   225
+      Left            =   5370
+      TabIndex        =   15
+      Top             =   2235
+      Width           =   3405
+   End
+   Begin VB.Label lblShowBorderColor 
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000005&
+      BorderStyle     =   1  'Fixed Single
+      ForeColor       =   &H80000008&
+      Height          =   315
+      Left            =   4500
+      TabIndex        =   27
+      Top             =   2190
+      Width           =   435
+   End
+   Begin VB.Label Label3 
+      Caption         =   "BorderColor:"
+      Height          =   225
+      Left            =   2220
+      TabIndex        =   12
+      Top             =   2235
+      Width           =   915
+   End
+   Begin VB.Line Line1 
+      BorderColor     =   &H00C0C0C0&
+      X1              =   180
+      X2              =   9140
+      Y1              =   3060
+      Y2              =   3060
+   End
+   Begin VB.Label Label2 
+      Caption         =   "Flat Appearance:"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   7.8
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   270
+      TabIndex        =   10
+      Top             =   1860
+      Width           =   1725
+   End
+   Begin VB.Line Line2 
+      BorderColor     =   &H00C0C0C0&
+      X1              =   180
+      X2              =   9140
+      Y1              =   1650
+      Y2              =   1650
+   End
+   Begin VB.Label Label5 
+      Caption         =   "Order by Columns:"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   7.8
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   315
+      Left            =   270
+      TabIndex        =   0
+      Top             =   210
+      Width           =   1575
+   End
+   Begin VB.Label Label1 
+      Caption         =   "(-1 for not to order)"
+      Height          =   225
+      Left            =   4320
+      TabIndex        =   5
+      Top             =   570
+      Width           =   2595
+   End
+   Begin VB.Label lblInitialOrderColumn 
+      Caption         =   "InitialOrderColumn:"
+      Height          =   225
+      Left            =   2220
+      TabIndex        =   3
+      Top             =   570
+      Width           =   1905
+   End
+End
+Attribute VB_Name = "ptpFlexFnOtherFunctions"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private mLoading As Boolean
+
+Private Sub chkInitialOrderDescending_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkEnableOrderByColumns_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkShowToolTipsForOrderColumns_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkShowToolTipsOnLongerCellTexts_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkAllowTextEdition_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkTextEditionLocked_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkDoNotRememberOrder_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkGridsFlatAppearance_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+
+Private Sub chkSameDataGroupedInColumns_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkStretchColumnsWidthsToFill_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cmdPickBorderColor_Click()
+    Dim iDlg As New CommonDialogExObject
+    
+    If txtBorderColor.Text <> "-1" Then
+        iDlg.Color = Val(txtBorderColor.Text)
+    Else
+        iDlg.Color = RGB(128, 128, 128)
+    End If
+    iDlg.ShowColor cdeCCFullOpen
+    If Not iDlg.Canceled Then
+        If iDlg.Color > 0 Then
+            txtBorderColor.Text = "&H00" & Format(Hex(iDlg.Color), "000000") & "&"
+        Else
+            txtBorderColor.Text = "&H" & Hex(iDlg.Color) & "&"
+        End If
+    End If
+End Sub
+
+Private Sub lblShowBorderColor_DblClick()
+    cmdPickBorderColor_Click
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    SelectedControls(0).EnableOrderByColumns = CBool(chkEnableOrderByColumns.Value)
+    SelectedControls(0).GridsFlatAppearance = CBool(chkGridsFlatAppearance.Value)
+    SelectedControls(0).InitialOrderColumn = Val(txtInitialOrderColumn.Text)
+    SelectedControls(0).InitialOrderDescending = CBool(chkInitialOrderDescending.Value)
+    SelectedControls(0).BorderColor = Val(txtBorderColor.Text)
+    SelectedControls(0).BorderWidth = Val(txtBorderWidth.Text)
+    SelectedControls(0).StretchColumnsWidthsToFill = CBool(chkStretchColumnsWidthsToFill.Value)
+    SelectedControls(0).SameDataGroupedInColumns = CBool(chkSameDataGroupedInColumns.Value)
+    SelectedControls(0).ShowToolTipsOnLongerCellTexts = CBool(chkShowToolTipsOnLongerCellTexts.Value)
+    SelectedControls(0).DoNotRememberOrder = CBool(chkDoNotRememberOrder.Value)
+    SelectedControls(0).ShowToolTipsForOrderColumns = CBool(chkShowToolTipsForOrderColumns.Value)
+    SelectedControls(0).AllowTextEdition = CBool(chkAllowTextEdition.Value)
+    SelectedControls(0).TextEditionLocked = CBool(chkTextEditionLocked.Value)
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    Dim iLng As Long
+    
+    mLoading = True
+    
+  '  SetTextBoxNumeric txtInitialOrderColumn
+  '  SetTextBoxNumeric txtBorderWidth
+    
+    chkEnableOrderByColumns.Value = Abs(CLng(SelectedControls(0).EnableOrderByColumns))
+    chkGridsFlatAppearance.Value = Abs(CLng(SelectedControls(0).GridsFlatAppearance))
+    txtInitialOrderColumn.Text = SelectedControls(0).InitialOrderColumn
+    chkInitialOrderDescending.Value = Abs(CLng(SelectedControls(0).InitialOrderDescending))
+    iLng = SelectedControls(0).BorderColor
+    If iLng > 0 Then
+        txtBorderColor.Text = "&H00" & Format(Hex(iLng), "000000") & "&"
+    Else
+        If iLng <> -1 Then
+            txtBorderColor.Text = "&H" & Hex(iLng) & "&"
+        Else
+            txtBorderColor.Text = "-1"
+        End If
+    End If
+    
+    txtBorderWidth.Text = SelectedControls(0).BorderWidth
+    chkStretchColumnsWidthsToFill.Value = Abs(CLng(SelectedControls(0).StretchColumnsWidthsToFill))
+    chkSameDataGroupedInColumns.Value = Abs(CLng(SelectedControls(0).SameDataGroupedInColumns))
+    chkShowToolTipsOnLongerCellTexts.Value = Abs(CLng(SelectedControls(0).ShowToolTipsOnLongerCellTexts))
+    chkDoNotRememberOrder.Value = Abs(CLng(SelectedControls(0).DoNotRememberOrder))
+    chkShowToolTipsForOrderColumns.Value = Abs(CLng(SelectedControls(0).ShowToolTipsForOrderColumns))
+    chkAllowTextEdition.Value = Abs(CLng(SelectedControls(0).AllowTextEdition))
+    chkTextEditionLocked.Value = Abs(CLng(SelectedControls(0).TextEditionLocked))
+    
+    mLoading = False
+End Sub
+
+Private Sub txtBorderColor_Change()
+    Dim iLng As Long
+    
+    If Not mLoading Then Changed = True
+    
+    iLng = Val(txtBorderColor.Text)
+    
+    If iLng = -1 Then
+        lblShowBorderColor.Visible = False
+    Else
+        If TranslateColor(iLng, 0, 0) = 0 Then
+            lblShowBorderColor.BackColor = iLng
+            lblShowBorderColor.Visible = True
+        Else
+            lblShowBorderColor.Visible = False
+        End If
+    End If
+End Sub
+
+Private Sub txtBorderColor_Validate(Cancel As Boolean)
+    Dim iLng As Long
+    Dim iInvalid As Boolean
+    Dim iStr As String
+    
+    If IsNumeric(txtBorderColor.Text) Then
+        iLng = Val(txtBorderColor.Text)
+    Else
+        If Len(txtBorderColor.Text) > 2 Then
+            If UCase$(Left$(txtBorderColor.Text, 2)) <> "&H" Then
+                MsgBox "Invalid property value", vbCritical
+                iInvalid = True
+            Else
+                iLng = Val(txtBorderColor.Text)
+            End If
+        Else
+            MsgBox "Invalid property value", vbCritical
+            iInvalid = True
+        End If
+    End If
+    If iLng <> -1 Then
+        If TranslateColor(iLng, 0, 0) <> 0 Then
+            MsgBox "Invalid property value", vbCritical
+            iInvalid = True
+        End If
+    End If
+    If iInvalid Then
+        iLng = SelectedControls(0).BorderColor
+    End If
+    If iLng > 0 Then
+        iStr = Hex(iLng)
+        If Len(iStr) < 6 Then
+            iStr = String$(6 - Len(iStr), "0") & iStr
+        End If
+        txtBorderColor.Text = "&H00" & iStr & "&"
+    Else
+        If iLng = -1 Then
+            txtBorderColor.Text = "-1"
+        Else
+            txtBorderColor.Text = "&H" & Hex(iLng) & "&"
+        End If
+    End If
+End Sub
+
+Private Sub txtBorderWidth_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtBorderWidth_GotFocus()
+    If txtBorderWidth.SelStart = 0 Then txtBorderWidth.SelStart = Len(txtBorderWidth.Text)
+End Sub
+
+Private Sub txtBorderWidth_KeyPress(KeyAscii As Integer)
+    If (Not IsNumeric(Chr(KeyAscii))) And (Not Chr(KeyAscii) = "-") Then KeyAscii = 0
+End Sub
+
+Private Sub txtBorderWidth_Validate(Cancel As Boolean)
+    Dim iLng As Long
+    
+    iLng = Val(txtBorderWidth.Text)
+    If (iLng < 1) Or (iLng > 10) Then
+        MsgBox "Value of BorderWidth must be between 1 and 10", vbExclamation
+        txtBorderWidth.Text = SelectedControls(0).BorderWidth
+    End If
+End Sub
+
+Private Sub txtInitialOrderColumn_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtInitialOrderColumn_GotFocus()
+    If txtInitialOrderColumn.SelStart = 0 Then txtInitialOrderColumn.SelStart = Len(txtInitialOrderColumn.Text)
+End Sub
+
+Private Sub txtInitialOrderColumn_KeyPress(KeyAscii As Integer)
+    If (Not IsNumeric(Chr(KeyAscii))) And (Not Chr(KeyAscii) = "-") Then KeyAscii = 0
+End Sub

@@ -1,0 +1,122 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpAuxGenerateComponentHelp 
+   Caption         =   "Load files"
+   ClientHeight    =   2880
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   4860
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   2880
+   ScaleWidth      =   4860
+   Begin VB.CommandButton Command1 
+      Caption         =   "Load texts from folder"
+      Height          =   420
+      Left            =   1296
+      TabIndex        =   0
+      Top             =   1056
+      Width           =   2172
+   End
+End
+Attribute VB_Name = "ptpAuxGenerateComponentHelp"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private mForm As Form
+Private mSSTabEx As Control
+
+Private Sub Command1_Click()
+    Dim iDlg As New CommonDialogExObject
+    Dim iHf
+    Dim c As Long
+    Dim iTextBox As Control
+    Dim iStr As String
+    
+    If mSSTabEx Is Nothing Then
+        MsgBox "Error getting SSTabEx names sst1 in parent form.", vbCritical
+        Exit Sub
+    End If
+    
+    iDlg.FolderName = GetSetting(App.Title, "Design", "Help texts repository", App.Path & "\docs")
+    iDlg.ShowFolder
+    If Not iDlg.Canceled Then
+        iHf = GetHelpFiles(iDlg.FolderName)
+        If UBound(iHf) > 0 Then
+            SaveSetting App.Title, "Design", "Help texts repository", iDlg.FolderName
+        End If
+        If UBound(iHf) > mSSTabEx.Tabs Then
+            MsgBox "Not enough tabs in the SSTabEx control, add more tabs and their textboxes inside each tab.", vbExclamation
+            Exit Sub
+        End If
+        
+        For c = 1 To mSSTabEx.Tabs
+            mSSTabEx.TabCaption(c - 1) = "Tab " & c - 1
+            Set iTextBox = GetTextBoxOfTab(c - 1)
+            If Not iTextBox Is Nothing Then
+                iTextBox.Text = ""
+                iTextBox.Font.Name = "Tahoma"
+                iTextBox.Font.Size = 11
+                iTextBox.ScrollBars = 2
+                iTextBox.HideSelection = False
+                iTextBox.Locked = True
+            End If
+        Next c
+        
+        For c = 1 To UBound(iHf)
+            iStr = Mid(iHf(c), 5)
+            mSSTabEx.TabCaption(c - 1) = (Left(iStr, Len(iStr) - 4))
+            Set iTextBox = GetTextBoxOfTab(c - 1)
+            If iTextBox Is Nothing Then
+                MsgBox "Textbox inside tab " & c - 1 & " could not be found.", vbExclamation
+                Exit Sub
+            End If
+            iTextBox.MultiLine = True
+            iTextBox.Text = LoadTextFile(iDlg.FolderName & "\" & iHf(c))
+        Next c
+    End If
+End Sub
+
+Private Function GetTextBoxOfTab(nTab As Integer) As Control
+    Dim iCtl As Control
+    
+    For Each iCtl In mSSTabEx.TabControls(nTab)
+        If TypeName(iCtl) = "TextBox" Then
+            Set GetTextBoxOfTab = iCtl
+            Exit Function
+        End If
+    Next
+End Function
+
+Private Function GetHelpFiles(nPath As String)
+    Dim iHf() As String
+    Dim iStr As String
+    
+    ReDim iHf(0)
+    iStr = Dir(nPath & "\*.txt")
+    Do Until iStr = ""
+        If Left(LCase(iStr), 5) = "help " Then
+            ReDim Preserve iHf(UBound(iHf) + 1)
+            iHf(UBound(iHf)) = iStr
+        End If
+        iStr = Dir
+    Loop
+    
+    GetHelpFiles = iHf
+End Function
+
+Private Sub PropertyPage_SelectionChanged()
+    On Error Resume Next
+    Set mForm = SelectedControls(0).GetParent
+    Set mSSTabEx = mForm.Controls("sst1")
+End Sub

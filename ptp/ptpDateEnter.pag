@@ -1,0 +1,403 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpDateEnter 
+   Caption         =   "General"
+   ClientHeight    =   3636
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   6084
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   3636
+   ScaleWidth      =   6084
+   Begin VB.ComboBox cboDateFormat 
+      Height          =   288
+      ItemData        =   "ptpDateEnter.pgx":0000
+      Left            =   1548
+      List            =   "ptpDateEnter.pgx":0002
+      Style           =   2  'Dropdown List
+      TabIndex        =   11
+      Top             =   1620
+      Width           =   3000
+   End
+   Begin VB.CommandButton cmdSetDefaultMinDate 
+      Caption         =   "Set to default value"
+      Height          =   315
+      Left            =   3744
+      TabIndex        =   4
+      Top             =   540
+      Width           =   1884
+   End
+   Begin VB.CommandButton cmdSetDefaultMaxDate 
+      Caption         =   "Set to default value"
+      Height          =   315
+      Left            =   3744
+      TabIndex        =   7
+      Top             =   936
+      Width           =   1884
+   End
+   Begin VB.ComboBox cboAppearance 
+      Height          =   288
+      ItemData        =   "ptpDateEnter.pgx":0004
+      Left            =   1548
+      List            =   "ptpDateEnter.pgx":0006
+      Style           =   2  'Dropdown List
+      TabIndex        =   15
+      Top             =   2340
+      Width           =   3000
+   End
+   Begin VB.CheckBox chkEnabled 
+      Caption         =   "Enabled"
+      Height          =   264
+      Left            =   1548
+      TabIndex        =   16
+      Top             =   2736
+      Width           =   2028
+   End
+   Begin VB.ComboBox cboMousePointer 
+      Height          =   288
+      ItemData        =   "ptpDateEnter.pgx":0008
+      Left            =   1548
+      List            =   "ptpDateEnter.pgx":000A
+      Style           =   2  'Dropdown List
+      TabIndex        =   13
+      Top             =   1980
+      Width           =   3000
+   End
+   Begin VB.ComboBox cboDateSeparator 
+      Height          =   288
+      ItemData        =   "ptpDateEnter.pgx":000C
+      Left            =   1548
+      List            =   "ptpDateEnter.pgx":000E
+      Style           =   2  'Dropdown List
+      TabIndex        =   9
+      Top             =   1260
+      Width           =   2028
+   End
+   Begin vbExtra.DateEnter detValue 
+      Height          =   300
+      Left            =   1548
+      TabIndex        =   1
+      Top             =   180
+      Width           =   2028
+      _ExtentX        =   3577
+      _ExtentY        =   508
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   7.8
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Text            =   "__/__/____"
+   End
+   Begin vbExtra.DTPickerEx dtpMinDate 
+      Height          =   300
+      Left            =   1548
+      TabIndex        =   3
+      Top             =   540
+      Width           =   2028
+      _ExtentX        =   3577
+      _ExtentY        =   529
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   7.8
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+   End
+   Begin vbExtra.DTPickerEx dtpMaxDate 
+      Height          =   300
+      Left            =   1548
+      TabIndex        =   6
+      Top             =   900
+      Width           =   2028
+      _ExtentX        =   3577
+      _ExtentY        =   529
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   7.8
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+   End
+   Begin VB.Label Label7 
+      Alignment       =   1  'Right Justify
+      Caption         =   "DateFormat:"
+      Height          =   336
+      Left            =   324
+      TabIndex        =   10
+      Top             =   1656
+      Width           =   1164
+   End
+   Begin VB.Label Label1 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Appearance:"
+      Height          =   336
+      Left            =   324
+      TabIndex        =   14
+      Top             =   2376
+      Width           =   1164
+   End
+   Begin VB.Label Label6 
+      Alignment       =   1  'Right Justify
+      Caption         =   "MousePointer:"
+      Height          =   336
+      Left            =   324
+      TabIndex        =   12
+      Top             =   2016
+      Width           =   1164
+   End
+   Begin VB.Label Label5 
+      Alignment       =   1  'Right Justify
+      Caption         =   "DateSeparator:"
+      Height          =   336
+      Left            =   324
+      TabIndex        =   8
+      Top             =   1296
+      Width           =   1164
+   End
+   Begin VB.Label Label4 
+      Alignment       =   1  'Right Justify
+      Caption         =   "MaxDate:"
+      Height          =   228
+      Left            =   216
+      TabIndex        =   5
+      Top             =   936
+      Width           =   1272
+   End
+   Begin VB.Label Label3 
+      Alignment       =   1  'Right Justify
+      Caption         =   "MinDate:"
+      Height          =   228
+      Left            =   216
+      TabIndex        =   2
+      Top             =   576
+      Width           =   1272
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Value:"
+      Height          =   228
+      Left            =   216
+      TabIndex        =   0
+      Top             =   216
+      Width           =   1272
+   End
+End
+Attribute VB_Name = "ptpDateEnter"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private Const cDTPickerMinDate                    As Date = "01/01/1601"
+Private Const cDTPickerMaxDate                    As Date = "31/12/9999"
+
+Private mLoading As Boolean
+
+Private Sub cboAppearance_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cboDateSeparator_Click()
+    If Not mLoading Then Changed = True
+    detValue.DateSeparator = cboDateSeparator.ItemData(cboDateSeparator.ListIndex)
+    LoadDateFormatComboSettings
+End Sub
+
+Private Sub cboDateFormat_Click()
+    If Not mLoading Then Changed = True
+    detValue.DateFormat = cboDateFormat.ItemData(cboDateFormat.ListIndex)
+End Sub
+
+Private Sub cboMousePointer_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkEnabled_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cmdSetDefaultMaxDate_Click()
+    dtpMaxDate.Value = cDTPickerMaxDate
+End Sub
+
+Private Sub cmdSetDefaultMinDate_Click()
+    dtpMinDate.Value = cDTPickerMinDate
+End Sub
+
+Private Sub dtpMaxDate_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub dtpMinDate_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub detValue_Change()
+    If Not mLoading Then
+        Changed = True
+    End If
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    On Error Resume Next
+    If cboDateSeparator.ListIndex > -1 Then
+        SelectedControls(0).DateSeparator = cboDateSeparator.ItemData(cboDateSeparator.ListIndex)
+    End If
+    If cboDateFormat.ListIndex > -1 Then
+        SelectedControls(0).DateFormat = cboDateFormat.ItemData(cboDateFormat.ListIndex)
+    End If
+    SelectedControls(0).Value = detValue.Value
+    SelectedControls(0).MinDate = dtpMinDate.Value
+    SelectedControls(0).MaxDate = dtpMaxDate.Value
+    If cboMousePointer.ListIndex > -1 Then
+        SelectedControls(0).MousePointer = cboMousePointer.ItemData(cboMousePointer.ListIndex)
+    End If
+    If cboAppearance.ListIndex > -1 Then
+        SelectedControls(0).Appearance = cboAppearance.ItemData(cboAppearance.ListIndex)
+    End If
+    SelectedControls(0).Enabled = CBool(chkEnabled.Value)
+End Sub
+
+Private Sub PropertyPage_Paint()
+    Static sFirst As Boolean
+    'Call SetWindowPos(detValue.hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOZORDER Or SWP_NOSIZE Or SWP_NOMOVE Or SWP_NOACTIVATE Or SWP_FRAMECHANGED)
+    If Not sFirst Then
+        detValue.Refresh
+        sFirst = True
+    End If
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    mLoading = True
+    LoadSettingsInCombos
+    SelectInComboByItemData cboDateSeparator, SelectedControls(0).DateSeparator
+    SelectInComboByItemData cboDateFormat, SelectedControls(0).DateFormat
+    detValue.Value = SelectedControls(0).Value
+    dtpMinDate.Value = SelectedControls(0).MinDate
+    dtpMaxDate.Value = SelectedControls(0).MaxDate
+    SelectInComboByItemData cboMousePointer, SelectedControls(0).MousePointer
+    SelectInComboByItemData cboAppearance, SelectedControls(0).Appearance
+    chkEnabled.Value = Abs(CLng(SelectedControls(0).Enabled))
+    mLoading = False
+End Sub
+
+Private Sub LoadSettingsInCombos()
+    Dim iLi As Long
+    
+    ' DateSeparator
+    iLi = cboDateSeparator.ListIndex
+    cboDateSeparator.Clear
+    cboDateSeparator.AddItem [Use from system] & " - [Use from system]": cboDateSeparator.ItemData(cboDateSeparator.NewIndex) = [Use from system]
+    cboDateSeparator.AddItem ["/"] & " - [""/""]": cboDateSeparator.ItemData(cboDateSeparator.NewIndex) = ["/"]
+    cboDateSeparator.AddItem ["-"] & " - [""-""]": cboDateSeparator.ItemData(cboDateSeparator.NewIndex) = ["-"]
+    cboDateSeparator.AddItem ["."] & " - ["".""]": cboDateSeparator.ItemData(cboDateSeparator.NewIndex) = ["."]
+    cboDateSeparator.AddItem [" " (space)] & " - ["" "" (space)]": cboDateSeparator.ItemData(cboDateSeparator.NewIndex) = [" " (space)]
+    If iLi > -1 Then
+        cboDateSeparator.ListIndex = iLi
+    End If
+    
+    ' MousePointer
+    iLi = cboMousePointer.ListIndex
+    cboMousePointer.Clear
+    cboMousePointer.AddItem cc2Default & " - cc2Default": cboMousePointer.ItemData(cboMousePointer.NewIndex) = cc2Default
+    cboMousePointer.AddItem cc2Arrow & " - cc2Arrow": cboMousePointer.ItemData(cboMousePointer.NewIndex) = cc2Arrow
+    cboMousePointer.AddItem cc2Cross & " - cc2Cross": cboMousePointer.ItemData(cboMousePointer.NewIndex) = cc2Cross
+    cboMousePointer.AddItem cc2IBeam & " - cc2IBeam": cboMousePointer.ItemData(cboMousePointer.NewIndex) = cc2IBeam
+    cboMousePointer.AddItem cc2Icon & " - cc2Icon": cboMousePointer.ItemData(cboMousePointer.NewIndex) = cc2Icon
+    cboMousePointer.AddItem cc2Size & " - cc2Size": cboMousePointer.ItemData(cboMousePointer.NewIndex) = cc2Size
+    cboMousePointer.AddItem cc2SizeNESW & " - cc2SizeNESW": cboMousePointer.ItemData(cboMousePointer.NewIndex) = cc2SizeNESW
+    cboMousePointer.AddItem cc2SizeNS & " - cc2SizeNS": cboMousePointer.ItemData(cboMousePointer.NewIndex) = cc2SizeNS
+    cboMousePointer.AddItem cc2SizeNWSE & " - cc2SizeNWSE": cboMousePointer.ItemData(cboMousePointer.NewIndex) = cc2SizeNWSE
+    cboMousePointer.AddItem cc2SizeEW & " - cc2SizeEW": cboMousePointer.ItemData(cboMousePointer.NewIndex) = cc2SizeEW
+    cboMousePointer.AddItem cc2UpArrow & " - cc2UpArrow": cboMousePointer.ItemData(cboMousePointer.NewIndex) = cc2UpArrow
+    cboMousePointer.AddItem cc2Hourglass & " - cc2Hourglass": cboMousePointer.ItemData(cboMousePointer.NewIndex) = cc2Hourglass
+    cboMousePointer.AddItem cc2NoDrop & " - cc2NoDrop": cboMousePointer.ItemData(cboMousePointer.NewIndex) = cc2NoDrop
+    cboMousePointer.AddItem cc2ArrowHourglass & " - cc2ArrowHourglass": cboMousePointer.ItemData(cboMousePointer.NewIndex) = cc2ArrowHourglass
+    cboMousePointer.AddItem cc2ArrowQuestion & " - cc2ArrowQuestion": cboMousePointer.ItemData(cboMousePointer.NewIndex) = cc2ArrowQuestion
+    cboMousePointer.AddItem cc2SizeAll & " - cc2SizeAll": cboMousePointer.ItemData(cboMousePointer.NewIndex) = cc2SizeAll
+    cboMousePointer.AddItem cc2Custom & " - cc2Custom": cboMousePointer.ItemData(cboMousePointer.NewIndex) = cc2Custom
+    If iLi > -1 Then
+        cboMousePointer.ListIndex = iLi
+    End If
+    
+    ' Appearance
+    iLi = cboAppearance.ListIndex
+    cboAppearance.Clear
+    cboAppearance.AddItem ccFlat & " - ccFlat": cboAppearance.ItemData(cboAppearance.NewIndex) = ccFlat
+    cboAppearance.AddItem cc3d & " - cc3d": cboAppearance.ItemData(cboAppearance.NewIndex) = cc3d
+    If iLi > -1 Then
+        cboAppearance.ListIndex = iLi
+    End If
+    
+    LoadDateFormatComboSettings
+    
+ End Sub
+
+Private Sub LoadDateFormatComboSettings()
+    Dim iLi As Long
+    Dim iDateSeparatorChar As String
+    Dim iFormatsStr(8)  As String
+    Dim c As Long
+    Dim iDateSeparator As Long
+    
+    iLi = cboDateFormat.ListIndex
+    If cboDateSeparator.ListIndex > -1 Then
+        iDateSeparator = cboDateSeparator.ItemData(cboDateSeparator.ListIndex)
+    End If
+    If iDateSeparator = ["-"] Then
+        iDateSeparatorChar = "-"
+    ElseIf iDateSeparator = [" " (space)] Then
+        iDateSeparatorChar = " "
+    ElseIf iDateSeparator = ["."] Then
+        iDateSeparatorChar = "."
+    Else
+        iDateSeparatorChar = "/"
+    End If
+    
+    iFormatsStr([dd/MM/yyyy]) = "dd/MM/yyyy"   ' 3
+    iFormatsStr([dd/MM/yy]) = "dd/MM/yy"          ' 4
+    iFormatsStr([MM/dd/yyyy]) = "MM/dd/yyyy"   '5
+    iFormatsStr([MM/dd/yy]) = "MM/dd/yy"          ' 6
+    iFormatsStr([yyyy/MM/dd]) = "yyyy/MM/dd"  ' 7
+    iFormatsStr([yy/MM/dd]) = "yy/MM/dd"     ' 8
+    
+    For c = 3 To 8
+        iFormatsStr(c) = Replace(iFormatsStr(c), "/", iDateSeparatorChar)
+    Next c
+    
+    ' DateFormat
+    cboDateFormat.Clear
+    cboDateFormat.AddItem [System date format] & " - [System date format]": cboDateFormat.ItemData(cboDateFormat.NewIndex) = [System date format]
+    cboDateFormat.AddItem [System but 4 digits year] & " - [System but 4 digits year]": cboDateFormat.ItemData(cboDateFormat.NewIndex) = [System but 4 digits year]
+    cboDateFormat.AddItem [System but 2 digits year] & " - [System but 2 digits year]": cboDateFormat.ItemData(cboDateFormat.NewIndex) = [System but 2 digits year]
+    cboDateFormat.AddItem [dd/MM/yyyy] & " - " & iFormatsStr([dd/MM/yyyy]): cboDateFormat.ItemData(cboDateFormat.NewIndex) = [dd/MM/yyyy]
+    cboDateFormat.AddItem [dd/MM/yy] & " - " & iFormatsStr([dd/MM/yy]): cboDateFormat.ItemData(cboDateFormat.NewIndex) = [dd/MM/yy]
+    cboDateFormat.AddItem [MM/dd/yyyy] & " - " & iFormatsStr([MM/dd/yyyy]): cboDateFormat.ItemData(cboDateFormat.NewIndex) = [MM/dd/yyyy]
+    cboDateFormat.AddItem [MM/dd/yy] & " - " & iFormatsStr([MM/dd/yy]): cboDateFormat.ItemData(cboDateFormat.NewIndex) = [MM/dd/yy]
+    cboDateFormat.AddItem [yyyy/MM/dd] & " - " & iFormatsStr([yyyy/MM/dd]): cboDateFormat.ItemData(cboDateFormat.NewIndex) = [yyyy/MM/dd]
+    cboDateFormat.AddItem [yy/MM/dd] & " - " & iFormatsStr([yy/MM/dd]): cboDateFormat.ItemData(cboDateFormat.NewIndex) = [yy/MM/dd]
+    
+    If iLi > -1 Then
+        cboDateFormat.ListIndex = iLi
+    End If
+End Sub

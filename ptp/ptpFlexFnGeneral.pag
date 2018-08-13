@@ -1,0 +1,283 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpFlexFnGeneral 
+   Caption         =   "General"
+   ClientHeight    =   4788
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   9336
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   4788
+   ScaleWidth      =   9336
+   Begin VB.TextBox txtDocumentName 
+      Height          =   300
+      Left            =   3132
+      TabIndex        =   10
+      Top             =   3060
+      Width           =   3432
+   End
+   Begin VB.ComboBox cboScrollWithMouseWheel 
+      Height          =   288
+      Left            =   3132
+      Style           =   2  'Dropdown List
+      TabIndex        =   8
+      Top             =   2664
+      Width           =   3432
+   End
+   Begin VB.CheckBox chkAutoHandleEnabledButtons 
+      Caption         =   "AutoHandleEnabledButtons"
+      Height          =   264
+      Left            =   3132
+      TabIndex        =   5
+      Top             =   1944
+      Width           =   2748
+   End
+   Begin VB.CheckBox chkAutoDisplayContextMenu 
+      Caption         =   "AutoDisplayContextMenu"
+      Height          =   264
+      Left            =   3132
+      TabIndex        =   6
+      Top             =   2304
+      Width           =   2748
+   End
+   Begin VB.ComboBox cboGridName 
+      Height          =   288
+      ItemData        =   "ptpFlexFnGeneral.pgx":0000
+      Left            =   3132
+      List            =   "ptpFlexFnGeneral.pgx":0002
+      TabIndex        =   3
+      Text            =   "[Auto]"
+      Top             =   864
+      Width           =   3432
+   End
+   Begin VB.ComboBox cboStyle 
+      Height          =   288
+      Left            =   3132
+      Style           =   2  'Dropdown List
+      TabIndex        =   1
+      Top             =   468
+      Width           =   3432
+   End
+   Begin vbExtra.ButtonEx cmdHelpDocumentName 
+      Height          =   228
+      Left            =   6696
+      TabIndex        =   11
+      Top             =   3096
+      Width           =   228
+      _ExtentX        =   402
+      _ExtentY        =   402
+      ButtonStyle     =   18
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   7.8
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      BackColor       =   16354918
+      Caption         =   "?"
+      ForeColor       =   16777215
+      PictureAlign    =   4
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "DocumentName:"
+      Height          =   228
+      Left            =   1248
+      TabIndex        =   9
+      Top             =   3096
+      Width           =   1812
+   End
+   Begin VB.Line Line1 
+      BorderColor     =   &H00C0C0C0&
+      X1              =   672
+      X2              =   8142
+      Y1              =   1800
+      Y2              =   1800
+   End
+   Begin VB.Label Label5 
+      Alignment       =   1  'Right Justify
+      Caption         =   "ScrollWithMouseWheel:"
+      Height          =   336
+      Left            =   1260
+      TabIndex        =   7
+      Top             =   2700
+      Width           =   1812
+   End
+   Begin VB.Label Label4 
+      Caption         =   "(If left empty, the functions will be applied to all the grids in the form)"
+      Height          =   264
+      Left            =   3168
+      TabIndex        =   4
+      Top             =   1332
+      Width           =   5052
+   End
+   Begin VB.Line Line2 
+      BorderColor     =   &H00C0C0C0&
+      X1              =   756
+      X2              =   8226
+      Y1              =   1764
+      Y2              =   1764
+   End
+   Begin VB.Label lblStyle 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Style:"
+      Height          =   336
+      Left            =   1368
+      TabIndex        =   0
+      Top             =   504
+      Width           =   1704
+   End
+   Begin VB.Label lblGridName 
+      Alignment       =   1  'Right Justify
+      Caption         =   "GridName:"
+      Height          =   336
+      Left            =   1368
+      TabIndex        =   2
+      Top             =   900
+      Width           =   1704
+   End
+End
+Attribute VB_Name = "ptpFlexFnGeneral"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private mLoading As Boolean
+
+Private Sub cboGridName_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cboGridName_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cboGridName_GotFocus()
+    Dim iLoading As Boolean
+    
+    If cboGridName.Text = "[Auto]" Then
+        iLoading = mLoading
+        mLoading = True
+        cboGridName.Text = ""
+        mLoading = iLoading
+    End If
+End Sub
+
+Private Sub cboGridName_LostFocus()
+    Dim iLoading As Boolean
+    
+    cboGridName.Text = Trim$(cboGridName.Text)
+    If cboGridName.Text = "" Then
+        iLoading = mLoading
+        mLoading = True
+        cboGridName.Text = "[Auto]"
+        mLoading = iLoading
+    End If
+End Sub
+
+Private Sub cboStyle_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+
+Private Sub cmdHelpDocumentName_Click()
+        MsgBox "This name will appear in the printer spooler along with the program name (your program) as the 'document to print' name." & vbCrLf & "If left blank only the program name will appear. You can change it at run time.", vbInformation
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    If cboGridName.Text <> "[Auto]" Then
+        SelectedControls(0).GridName = Trim$(cboGridName.Text)
+    Else
+        SelectedControls(0).GridName = ""
+    End If
+    SelectedControls(0).Style = cboStyle.ListIndex
+    SelectedControls(0).AutoHandleEnabledButtons = CBool(chkAutoHandleEnabledButtons.Value)
+    SelectedControls(0).AutoDisplayContextMenu = CBool(chkAutoDisplayContextMenu.Value)
+    SelectedControls(0).ScrollWithMouseWheel = cboScrollWithMouseWheel.ListIndex
+    SelectedControls(0).DocumentName = txtDocumentName.Text
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    Dim iParent As Object
+    Dim iCtl As Control
+    
+    mLoading = True
+    
+    On Error Resume Next
+    Set iParent = SelectedControls(0).Parent
+    On Error GoTo 0
+    
+    cboGridName.Clear
+    cboGridName.AddItem "[Auto]"
+    cboGridName.AddItem "[No]"
+    If Not iParent Is Nothing Then
+        If TypeOf iParent Is Form Then
+            For Each iCtl In iParent.Controls
+                If IsTypeSupported(iCtl) Then
+                    If Not IsControlArray(iCtl) Then
+                        cboGridName.AddItem iCtl.Name
+                    End If
+                End If
+            Next
+        End If
+    End If
+    
+    cboStyle.Clear
+    cboStyle.AddItem "0 - gfnShowToolbar"
+    cboStyle.AddItem "1 - gfnNoToolbar"
+    
+    cboScrollWithMouseWheel.Clear
+    cboScrollWithMouseWheel.AddItem "0 - gfnScrollDisabled"
+    cboScrollWithMouseWheel.AddItem "1 - gfnScrollEnabled"
+    cboScrollWithMouseWheel.AddItem "2 - gfnScrollOnlyOnFocus"
+    
+    cboGridName.Text = SelectedControls(0).GridName
+    cboGridName_LostFocus
+    cboStyle.ListIndex = SelectedControls(0).Style
+    
+    chkAutoHandleEnabledButtons.Value = Abs(CLng(SelectedControls(0).AutoHandleEnabledButtons))
+    chkAutoDisplayContextMenu.Value = Abs(CLng(SelectedControls(0).AutoDisplayContextMenu))
+    cboScrollWithMouseWheel.ListIndex = SelectedControls(0).ScrollWithMouseWheel
+    
+    txtDocumentName.Text = SelectedControls(0).DocumentName
+    mLoading = False
+    
+End Sub
+
+Private Function IsTypeSupported(nControl As Object) As Boolean
+    Dim iTn As String
+    
+    iTn = LCase$(TypeName(nControl))
+    'IsTypeSupported = (iTn = "msflexgrid") Or (iTn = "mshflexgrid")
+    IsTypeSupported = InStr(iTn, "flexgrid") > 0
+End Function
+
+Private Sub chkAutoHandleEnabledButtons_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkAutoDisplayContextMenu_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cboScrollWithMouseWheel_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtDocumentName_Change()
+    If Not mLoading Then Changed = True
+End Sub

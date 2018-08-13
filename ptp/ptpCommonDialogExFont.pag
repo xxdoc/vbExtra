@@ -1,0 +1,231 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpCommonDialogExFont 
+   Caption         =   "Font"
+   ClientHeight    =   3636
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   6084
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   3636
+   ScaleWidth      =   6084
+   Begin VB.Frame fraStyle 
+      Caption         =   "Style"
+      Height          =   1020
+      Left            =   1392
+      TabIndex        =   11
+      Top             =   2400
+      Width           =   3396
+      Begin VB.CheckBox chkFontStrikethru 
+         Caption         =   "Strikethru"
+         Height          =   264
+         Left            =   1488
+         TabIndex        =   15
+         Top             =   576
+         Width           =   1212
+      End
+      Begin VB.CheckBox chkFontUnderline 
+         Caption         =   "Underline"
+         Height          =   264
+         Left            =   1488
+         TabIndex        =   13
+         Top             =   288
+         Width           =   1212
+      End
+      Begin VB.CheckBox chkFontItalic 
+         Caption         =   "Italic"
+         Height          =   264
+         Left            =   168
+         TabIndex        =   14
+         Top             =   576
+         Width           =   1212
+      End
+      Begin VB.CheckBox chkFontBold 
+         Caption         =   "Bold"
+         Height          =   336
+         Left            =   168
+         TabIndex        =   12
+         Top             =   288
+         Width           =   1212
+      End
+   End
+   Begin VB.TextBox txtMax 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   9
+      Top             =   1620
+      Width           =   588
+   End
+   Begin VB.TextBox txtMin 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   7
+      Top             =   1260
+      Width           =   588
+   End
+   Begin VB.TextBox txtFontSize 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   5
+      Top             =   900
+      Width           =   588
+   End
+   Begin VB.TextBox txtFlags 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   3
+      Top             =   540
+      Width           =   1500
+   End
+   Begin VB.CheckBox chkCancelError 
+      Caption         =   "CancelError"
+      Height          =   264
+      Left            =   1560
+      TabIndex        =   10
+      Top             =   2052
+      Width           =   1500
+   End
+   Begin VB.TextBox txtFontName 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   1
+      Top             =   180
+      Width           =   3000
+   End
+   Begin VB.Label Label4 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Max:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   8
+      Top             =   1656
+      Width           =   1020
+   End
+   Begin VB.Label Label3 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Min:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   6
+      Top             =   1296
+      Width           =   1020
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "FontSize:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   4
+      Top             =   936
+      Width           =   1020
+   End
+   Begin VB.Label Label5 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Flags:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   2
+      Top             =   576
+      Width           =   1020
+   End
+   Begin VB.Label Label1 
+      Alignment       =   1  'Right Justify
+      Caption         =   "FontName:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   0
+      Top             =   216
+      Width           =   1020
+   End
+End
+Attribute VB_Name = "ptpCommonDialogExFont"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private mLoading As Boolean
+
+Private Sub chkCancelError_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkFontBold_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkFontItalic_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkFontStrikethru_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkFontUnderline_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+'    On Error Resume Next
+    SelectedControls(0).FontName = txtFontName.Text
+    SelectedControls(0).Flags = Val(txtFlags.Text)
+    SelectedControls(0).FontSize = CSng(txtFontSize.Text)
+    SelectedControls(0).Min = Val(txtMin.Text)
+    SelectedControls(0).Max = Val(txtMax.Text)
+    SelectedControls(0).CancelError = CBool(chkCancelError.Value)
+    SelectedControls(0).FontBold = CBool(chkFontBold.Value)
+    SelectedControls(0).FontItalic = CBool(chkFontItalic.Value)
+    SelectedControls(0).FontUnderLine = CBool(chkFontUnderline.Value)
+    SelectedControls(0).FontStrikeThru = CBool(chkFontStrikethru.Value)
+
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    SetTextBoxNumeric txtFlags
+    SetTextBoxNumeric txtMin
+    SetTextBoxNumeric txtMax
+    
+    mLoading = True
+    txtFontName.Text = SelectedControls(0).FontName
+    txtFlags.Text = SelectedControls(0).Flags
+    txtFontSize.Text = SelectedControls(0).FontSize
+    txtMin.Text = SelectedControls(0).Min
+    txtMax.Text = SelectedControls(0).Max
+    chkCancelError.Value = Abs(CLng(SelectedControls(0).CancelError))
+    chkFontBold.Value = Abs(CLng(SelectedControls(0).FontBold))
+    chkFontItalic.Value = Abs(CLng(SelectedControls(0).FontItalic))
+    chkFontUnderline.Value = Abs(CLng(SelectedControls(0).FontUnderLine))
+    chkFontStrikethru.Value = Abs(CLng(SelectedControls(0).FontStrikeThru))
+    mLoading = False
+End Sub
+
+Private Sub txtFlags_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtFontName_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtFontSize_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtMax_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtMin_Change()
+    If Not mLoading Then Changed = True
+End Sub

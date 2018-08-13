@@ -1,0 +1,254 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpHistoryGeneral 
+   Caption         =   "General"
+   ClientHeight    =   3636
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   6084
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   3636
+   ScaleWidth      =   6084
+   Begin VB.CheckBox chkEnabled 
+      Caption         =   "Enabled"
+      Height          =   264
+      Left            =   2232
+      TabIndex        =   12
+      Top             =   3276
+      Width           =   2028
+   End
+   Begin VB.CheckBox chkAutoAddItemEnabled 
+      Caption         =   "AutoAddItemEnabled"
+      Height          =   264
+      Left            =   2232
+      TabIndex        =   11
+      Top             =   2880
+      Width           =   2028
+   End
+   Begin VB.CheckBox chkShowHistoryMenu 
+      Caption         =   "ShowHistoryMenu"
+      Height          =   264
+      Left            =   2232
+      TabIndex        =   10
+      Top             =   2484
+      Width           =   2028
+   End
+   Begin VB.CheckBox chkEnableToConfigure 
+      Caption         =   "EnableToConfigure"
+      Height          =   264
+      Left            =   2232
+      TabIndex        =   9
+      Top             =   2088
+      Width           =   2028
+   End
+   Begin VB.CheckBox chkAutoShowConfig 
+      Caption         =   "AutoShowConfig"
+      Height          =   264
+      Left            =   2232
+      TabIndex        =   8
+      Top             =   1692
+      Width           =   2028
+   End
+   Begin VB.ComboBox cboBoundControlName 
+      Height          =   288
+      Left            =   2232
+      TabIndex        =   1
+      Text            =   "[No]"
+      Top             =   180
+      Width           =   3000
+   End
+   Begin VB.TextBox txtContext 
+      Height          =   300
+      Left            =   2232
+      TabIndex        =   7
+      Top             =   1224
+      Width           =   3000
+   End
+   Begin VB.TextBox txtBoundControlTag 
+      Height          =   300
+      Left            =   2232
+      TabIndex        =   5
+      Top             =   864
+      Width           =   3000
+   End
+   Begin VB.TextBox txtBoundProperty 
+      Height          =   300
+      Left            =   2232
+      TabIndex        =   3
+      Top             =   504
+      Width           =   3000
+   End
+   Begin VB.Label Label9 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Context:"
+      Height          =   264
+      Left            =   684
+      TabIndex        =   6
+      Top             =   1260
+      Width           =   1488
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label7 
+      Alignment       =   1  'Right Justify
+      Caption         =   "BoundControlTag:"
+      Height          =   264
+      Left            =   684
+      TabIndex        =   4
+      Top             =   900
+      Width           =   1488
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label8 
+      Alignment       =   1  'Right Justify
+      Caption         =   "BoundProperty:"
+      Height          =   264
+      Left            =   684
+      TabIndex        =   2
+      Top             =   540
+      Width           =   1488
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "BoundControlName:"
+      Height          =   228
+      Left            =   720
+      TabIndex        =   0
+      Top             =   216
+      Width           =   1452
+   End
+End
+Attribute VB_Name = "ptpHistoryGeneral"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private mLoading As Boolean
+
+Private Sub cboBoundControlName_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cboBoundControlName_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cboBoundControlName_DropDown()
+    Dim iParent As Object
+    Dim iCtl As Control
+    Dim iStr As String
+    
+    iStr = cboBoundControlName.Text
+    On Error Resume Next
+    Set iParent = SelectedControls(0).Parent
+    On Error GoTo 0
+    
+    cboBoundControlName.Clear
+    cboBoundControlName.AddItem "[No]"
+    If Not iParent Is Nothing Then
+        For Each iCtl In iParent.Controls
+            If Not IsControlArray(iCtl) Then
+                If TypeName(iCtl) <> TypeName(SelectedControls(0)) Then
+                    cboBoundControlName.AddItem iCtl.Name
+                End If
+            End If
+        Next
+    End If
+    cboBoundControlName.Text = iStr
+
+End Sub
+
+Private Sub chkAutoAddItemEnabled_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkAutoShowConfig_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkEnabled_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkEnableToConfigure_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkShowHistoryMenu_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    If cboBoundControlName.Text = "[No]" Then
+        SelectedControls(0).BoundControlName = ""
+    Else
+        SelectedControls(0).BoundControlName = cboBoundControlName.Text
+    End If
+    SelectedControls(0).BoundProperty = txtBoundProperty.Text
+    SelectedControls(0).BoundControlTag = txtBoundControlTag.Text
+    SelectedControls(0).Context = txtContext.Text
+    
+    SelectedControls(0).AutoShowConfig = CBool(chkAutoShowConfig.Value)
+    SelectedControls(0).EnableToConfigure = CBool(chkEnableToConfigure.Value)
+    SelectedControls(0).ShowHistoryMenu = CBool(chkShowHistoryMenu.Value)
+    SelectedControls(0).AutoAddItemEnabled = CBool(chkAutoAddItemEnabled.Value)
+    SelectedControls(0).Enabled = CBool(chkEnabled.Value)
+    
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    
+    mLoading = True
+    
+    If SelectedControls(0).BoundControlName = "" Then
+        cboBoundControlName.Text = "[No]"
+    Else
+        cboBoundControlName.Text = SelectedControls(0).BoundControlName
+    End If
+    txtBoundProperty.Text = SelectedControls(0).BoundProperty
+    txtBoundControlTag.Text = SelectedControls(0).BoundControlTag
+    txtContext.Text = SelectedControls(0).Context
+    
+    chkAutoShowConfig.Value = Abs(CLng(SelectedControls(0).AutoShowConfig))
+    chkEnableToConfigure.Value = Abs(CLng(SelectedControls(0).EnableToConfigure))
+    chkShowHistoryMenu.Value = Abs(CLng(SelectedControls(0).ShowHistoryMenu))
+    chkAutoAddItemEnabled.Value = Abs(CLng(SelectedControls(0).AutoAddItemEnabled))
+    chkEnabled.Value = Abs(CLng(SelectedControls(0).Enabled))
+    
+    mLoading = False
+End Sub
+
+Private Sub txtBoundControlTag_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtBoundControlTag_GotFocus()
+    SelectTxtOnGotFocus txtBoundControlTag
+End Sub
+
+Private Sub txtBoundProperty_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtBoundProperty_GotFocus()
+    SelectTxtOnGotFocus txtBoundProperty
+End Sub
+
+Private Sub txtContext_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtContext_GotFocus()
+    SelectTxtOnGotFocus txtContext
+End Sub

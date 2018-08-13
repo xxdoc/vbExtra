@@ -1,0 +1,654 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpCommonDialogExPageSetup 
+   Caption         =   "Page setup"
+   ClientHeight    =   3636
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   6084
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   3636
+   ScaleWidth      =   6084
+   Begin VB.TextBox txtMinLeftMargin 
+      Height          =   300
+      Left            =   3960
+      TabIndex        =   11
+      Top             =   1620
+      Width           =   588
+   End
+   Begin VB.TextBox txtMinRightMargin 
+      Height          =   300
+      Left            =   3960
+      TabIndex        =   16
+      Top             =   1980
+      Width           =   588
+   End
+   Begin VB.TextBox txtMinTopMargin 
+      Height          =   300
+      Left            =   3960
+      TabIndex        =   20
+      Top             =   2340
+      Width           =   588
+   End
+   Begin VB.TextBox txtMinBottomMargin 
+      Height          =   300
+      Left            =   3960
+      TabIndex        =   25
+      Top             =   2700
+      Width           =   588
+   End
+   Begin VB.TextBox txtBottomMargin 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   23
+      Top             =   2700
+      Width           =   588
+   End
+   Begin VB.TextBox txtTopMargin 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   28
+      Top             =   2340
+      Width           =   588
+   End
+   Begin VB.TextBox txtRightMargin 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   14
+      Top             =   1980
+      Width           =   588
+   End
+   Begin VB.TextBox txtLeftMargin 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   9
+      Top             =   1620
+      Width           =   588
+   End
+   Begin VB.ComboBox cboUnitsForUser 
+      Height          =   288
+      ItemData        =   "ptpCommonDialogExPageSetup.pgx":0000
+      Left            =   1560
+      List            =   "ptpCommonDialogExPageSetup.pgx":0002
+      Style           =   2  'Dropdown List
+      TabIndex        =   7
+      Top             =   1188
+      Width           =   3012
+   End
+   Begin VB.ComboBox cboUnits 
+      Height          =   288
+      ItemData        =   "ptpCommonDialogExPageSetup.pgx":0004
+      Left            =   1560
+      List            =   "ptpCommonDialogExPageSetup.pgx":0006
+      Style           =   2  'Dropdown List
+      TabIndex        =   5
+      Top             =   864
+      Width           =   3012
+   End
+   Begin VB.ComboBox cboOrientation 
+      Height          =   288
+      ItemData        =   "ptpCommonDialogExPageSetup.pgx":0008
+      Left            =   1560
+      List            =   "ptpCommonDialogExPageSetup.pgx":000A
+      Style           =   2  'Dropdown List
+      TabIndex        =   3
+      Top             =   540
+      Width           =   3000
+   End
+   Begin VB.TextBox txtFlags 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   1
+      Top             =   180
+      Width           =   1500
+   End
+   Begin VB.CheckBox chkCancelError 
+      Caption         =   "CancelError"
+      Height          =   264
+      Left            =   1560
+      TabIndex        =   27
+      Top             =   3096
+      Width           =   2316
+   End
+   Begin VB.Label lblUnits 
+      Caption         =   "Millimeters/Inches"
+      Height          =   264
+      Index           =   3
+      Left            =   4656
+      TabIndex        =   26
+      Top             =   2736
+      Width           =   1500
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label lblUnits 
+      Caption         =   "Millimeters/Inches"
+      Height          =   264
+      Index           =   2
+      Left            =   4656
+      TabIndex        =   21
+      Top             =   2376
+      Width           =   1500
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label lblUnits 
+      Caption         =   "Millimeters/Inches"
+      Height          =   264
+      Index           =   1
+      Left            =   4656
+      TabIndex        =   17
+      Top             =   2016
+      Width           =   1500
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label lblUnits 
+      Caption         =   "Millimeters/Inches"
+      Height          =   264
+      Index           =   0
+      Left            =   4656
+      TabIndex        =   12
+      Top             =   1656
+      Width           =   1500
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label14 
+      Alignment       =   1  'Right Justify
+      Caption         =   "MinLeftMargin:"
+      Height          =   264
+      Left            =   2400
+      TabIndex        =   10
+      Top             =   1656
+      Width           =   1500
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label13 
+      Alignment       =   1  'Right Justify
+      Caption         =   "MinRightMargin:"
+      Height          =   264
+      Left            =   2400
+      TabIndex        =   15
+      Top             =   2016
+      Width           =   1500
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label12 
+      Alignment       =   1  'Right Justify
+      Caption         =   "MinTopMargin:"
+      Height          =   264
+      Left            =   2400
+      TabIndex        =   19
+      Top             =   2376
+      Width           =   1500
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label11 
+      Alignment       =   1  'Right Justify
+      Caption         =   "MinBottomMargin:"
+      Height          =   264
+      Left            =   2400
+      TabIndex        =   24
+      Top             =   2736
+      Width           =   1500
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label10 
+      Alignment       =   1  'Right Justify
+      Caption         =   "BottomMargin:"
+      Height          =   264
+      Left            =   0
+      TabIndex        =   22
+      Top             =   2736
+      Width           =   1500
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label9 
+      Alignment       =   1  'Right Justify
+      Caption         =   "TopMargin:"
+      Height          =   264
+      Left            =   0
+      TabIndex        =   18
+      Top             =   2376
+      Width           =   1500
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label7 
+      Alignment       =   1  'Right Justify
+      Caption         =   "RightMargin:"
+      Height          =   264
+      Left            =   0
+      TabIndex        =   13
+      Top             =   2016
+      Width           =   1500
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label8 
+      Alignment       =   1  'Right Justify
+      Caption         =   "LeftMargin:"
+      Height          =   264
+      Left            =   0
+      TabIndex        =   8
+      Top             =   1656
+      Width           =   1500
+      WordWrap        =   -1  'True
+   End
+   Begin VB.Label Label16 
+      Alignment       =   1  'Right Justify
+      Caption         =   "UnitsForUser:"
+      Height          =   336
+      Left            =   24
+      TabIndex        =   6
+      Top             =   1224
+      Width           =   1500
+   End
+   Begin VB.Label Label15 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Units:"
+      Height          =   336
+      Left            =   24
+      TabIndex        =   4
+      Top             =   900
+      Width           =   1500
+   End
+   Begin VB.Label lblOrientation 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Orientation:"
+      Height          =   336
+      Left            =   348
+      TabIndex        =   2
+      Top             =   576
+      Width           =   1164
+   End
+   Begin VB.Label Label5 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Flags:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   0
+      Top             =   216
+      Width           =   1020
+   End
+End
+Attribute VB_Name = "ptpCommonDialogExPageSetup"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private Declare Function GetLocaleInfo Lib "Kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
+Private Const LOCALE_USER_DEFAULT = &H400
+Private Const LOCALE_SDECIMAL = &HE
+
+Private mLoading As Boolean
+Private mUnits As cdeUnits
+
+Private Sub cboOrientation_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cboUnits_Click()
+    Dim c As Long
+    
+    If Not mLoading Then
+        mUnits = cboUnits.ItemData(cboUnits.ListIndex)
+        ConvertMarginValues
+        Changed = True
+    End If
+    
+    For c = 0 To lblUnits.UBound
+        If mUnits = vbMillimeters Then
+            lblUnits(c).Caption = "millimeters"
+        Else
+            lblUnits(c).Caption = "inches"
+        End If
+    Next c
+End Sub
+
+Private Sub cboUnitsForUser_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkCancelError_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    Dim iSng As Single
+    Dim iStr As String
+        
+    On Error Resume Next
+    SelectedControls(0).Flags = Val(txtFlags.Text)
+    
+    If cboOrientation.ListIndex > -1 Then
+        SelectedControls(0).Orientation = cboOrientation.ItemData(cboOrientation.ListIndex)
+    End If
+    If cboUnits.ListIndex > -1 Then
+        SelectedControls(0).Units = cboUnits.ItemData(cboUnits.ListIndex)
+    End If
+    If cboUnitsForUser.ListIndex > -1 Then
+        SelectedControls(0).UnitsForUser = cboUnitsForUser.ItemData(cboUnitsForUser.ListIndex)
+    End If
+    
+    ' Margins
+    iSng = -1
+    iStr = Trim(txtLeftMargin.Text)
+    If iStr = "" Then iStr = "0"
+    iSng = CSng(iStr)
+    If iSng <> -1 Then
+        SelectedControls(0).LeftMargin = iSng
+    End If
+    iSng = -1
+    iStr = Trim(txtRightMargin.Text)
+    If iStr = "" Then iStr = "0"
+    iSng = CSng(iStr)
+    If iSng <> -1 Then
+        SelectedControls(0).RightMargin = iSng
+    End If
+    iSng = -1
+    iStr = Trim(txtTopMargin.Text)
+    If iStr = "" Then iStr = "0"
+    iSng = CSng(iStr)
+    If iSng <> -1 Then
+        SelectedControls(0).TopMargin = iSng
+    End If
+    iSng = -1
+    iStr = Trim(txtBottomMargin.Text)
+    If iStr = "" Then iStr = "0"
+    iSng = CSng(iStr)
+    If iSng <> -1 Then
+        SelectedControls(0).BottomMargin = iSng
+    End If
+    
+    ' Margin limits
+    iSng = -1
+    iStr = Trim(txtMinLeftMargin.Text)
+    If iStr = "" Then iStr = "0"
+    iSng = CSng(iStr)
+    If iSng <> -1 Then
+        SelectedControls(0).MinLeftMargin = iSng
+    End If
+    iSng = -1
+    iStr = Trim(txtMinRightMargin.Text)
+    If iStr = "" Then iStr = "0"
+    iSng = CSng(iStr)
+    If iSng <> -1 Then
+        SelectedControls(0).MinRightMargin = iSng
+    End If
+    iSng = -1
+    iStr = Trim(txtMinTopMargin.Text)
+    If iStr = "" Then iStr = "0"
+    iSng = CSng(iStr)
+    If iSng <> -1 Then
+        SelectedControls(0).MinTopMargin = iSng
+    End If
+    iSng = -1
+    iStr = Trim(txtMinBottomMargin.Text)
+    If iStr = "" Then iStr = "0"
+    iSng = CSng(iStr)
+    If iSng <> -1 Then
+        SelectedControls(0).MinBottomMargin = iSng
+    End If
+    
+    SelectedControls(0).CancelError = CBool(chkCancelError.Value)
+
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    SetTextBoxNumeric txtFlags
+    
+    mLoading = True
+    LoadSettingsInCombos
+    
+    txtFlags.Text = SelectedControls(0).Flags
+    SelectInComboByItemData cboOrientation, SelectedControls(0).Orientation
+    
+    mUnits = SelectedControls(0).Units
+    SelectInComboByItemData cboUnits, SelectedControls(0).Units
+    SelectInComboByItemData cboUnitsForUser, SelectedControls(0).UnitsForUser
+    ' Margins
+    txtLeftMargin.Text = SelectedControls(0).LeftMargin
+    txtRightMargin.Text = SelectedControls(0).RightMargin
+    txtTopMargin.Text = SelectedControls(0).TopMargin
+    txtBottomMargin.Text = SelectedControls(0).BottomMargin
+    ' Margin limits
+    If SelectedControls(0).MinLeftMargin <> 0 Then txtMinLeftMargin.Text = SelectedControls(0).MinLeftMargin
+    If SelectedControls(0).MinRightMargin <> 0 Then txtMinRightMargin.Text = SelectedControls(0).MinRightMargin
+    If SelectedControls(0).MinTopMargin <> 0 Then txtMinTopMargin.Text = SelectedControls(0).MinTopMargin
+    If SelectedControls(0).MinBottomMargin <> 0 Then txtMinBottomMargin.Text = SelectedControls(0).MinBottomMargin
+    
+    chkCancelError.Value = Abs(CLng(SelectedControls(0).CancelError))
+    mLoading = False
+End Sub
+
+Private Sub LoadSettingsInCombos()
+    Dim iLi As Long
+    
+    'Units
+    iLi = cboUnits.ListIndex
+    cboUnits.Clear
+    cboUnits.AddItem vbMillimeters & " - vbMillimeters": cboUnits.ItemData(cboUnits.NewIndex) = vbMillimeters
+    cboUnits.AddItem vbInches & " - vbInches": cboUnits.ItemData(cboUnits.NewIndex) = vbInches
+    If iLi > -1 Then
+        cboUnits.ListIndex = iLi
+    End If
+        
+    'UnitsForUser
+    iLi = cboUnitsForUser.ListIndex
+    cboUnitsForUser.Clear
+    cboUnitsForUser.AddItem cdeMUUserLocale & " - cdeMUUserLocale": cboUnitsForUser.ItemData(cboUnitsForUser.NewIndex) = cdeMUUserLocale
+    cboUnitsForUser.AddItem cdeMUMillimeters & " - cdeMUMillimeters": cboUnitsForUser.ItemData(cboUnitsForUser.NewIndex) = cdeMUMillimeters
+    cboUnitsForUser.AddItem cdeMUInches & " - cdeMUInches": cboUnitsForUser.ItemData(cboUnitsForUser.NewIndex) = cdeMUInches
+    If iLi > -1 Then
+        cboUnitsForUser.ListIndex = iLi
+    End If
+    
+    ' Orientation
+    iLi = cboOrientation.ListIndex
+    cboOrientation.Clear
+    cboOrientation.AddItem vbPRORPrinterDefault & " - vbPRORPrinterDefault": cboOrientation.ItemData(cboOrientation.NewIndex) = vbPRORPrinterDefault
+    cboOrientation.AddItem vbPRORPortrait & " - vbPRORPortrait": cboOrientation.ItemData(cboOrientation.NewIndex) = vbPRORPortrait
+    cboOrientation.AddItem vbPRORLandscape & " - vbPRORLandscape": cboOrientation.ItemData(cboOrientation.NewIndex) = vbPRORLandscape
+    If iLi > -1 Then
+        cboOrientation.ListIndex = iLi
+    End If
+    
+End Sub
+
+Private Sub txtBottomMargin_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtBottomMargin_GotFocus()
+    SelectTxtOnGotFocus txtBottomMargin
+End Sub
+
+Private Sub txtBottomMargin_KeyPress(KeyAscii As Integer)
+    Select Case True
+        Case IsNumeric(Chr(KeyAscii))
+        Case KeyAscii = DecimalSignAsc
+            If InStr(txtBottomMargin.Text, Chr(DecimalSignAsc)) > 0 Then KeyAscii = 0
+        Case KeyAscii = vbKeyTab, KeyAscii = vbKeyBack
+        Case Else
+            KeyAscii = 0
+    End Select
+End Sub
+
+Private Sub txtFlags_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtFlags_GotFocus()
+    SelectTxtOnGotFocus txtFlags
+End Sub
+
+Private Sub txtLeftMargin_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtLeftMargin_GotFocus()
+    SelectTxtOnGotFocus txtLeftMargin
+End Sub
+
+Private Sub txtLeftMargin_KeyPress(KeyAscii As Integer)
+    Select Case True
+        Case IsNumeric(Chr(KeyAscii))
+        Case KeyAscii = DecimalSignAsc
+            If InStr(txtLeftMargin.Text, Chr(DecimalSignAsc)) > 0 Then KeyAscii = 0
+        Case KeyAscii = vbKeyTab, KeyAscii = vbKeyBack
+        Case Else
+            KeyAscii = 0
+    End Select
+End Sub
+
+Private Sub txtMinBottomMargin_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtMinBottomMargin_GotFocus()
+    SelectTxtOnGotFocus txtMinBottomMargin
+End Sub
+
+Private Sub txtMinBottomMargin_KeyPress(KeyAscii As Integer)
+    Select Case True
+        Case IsNumeric(Chr(KeyAscii))
+        Case KeyAscii = DecimalSignAsc
+            If InStr(txtMinBottomMargin.Text, Chr(DecimalSignAsc)) > 0 Then KeyAscii = 0
+        Case KeyAscii = vbKeyTab, KeyAscii = vbKeyBack
+        Case Else
+            KeyAscii = 0
+    End Select
+End Sub
+
+Private Sub txtMinLeftMargin_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtMinLeftMargin_GotFocus()
+    SelectTxtOnGotFocus txtMinLeftMargin
+End Sub
+
+Private Sub txtMinLeftMargin_KeyPress(KeyAscii As Integer)
+    Select Case True
+        Case IsNumeric(Chr(KeyAscii))
+        Case KeyAscii = DecimalSignAsc
+            If InStr(txtMinLeftMargin.Text, Chr(DecimalSignAsc)) > 0 Then KeyAscii = 0
+        Case KeyAscii = vbKeyTab, KeyAscii = vbKeyBack
+        Case Else
+            KeyAscii = 0
+    End Select
+End Sub
+
+Private Sub txtMinRightMargin_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtMinRightMargin_GotFocus()
+    SelectTxtOnGotFocus txtMinRightMargin
+End Sub
+
+Private Sub txtMinRightMargin_KeyPress(KeyAscii As Integer)
+    Select Case True
+        Case IsNumeric(Chr(KeyAscii))
+        Case KeyAscii = DecimalSignAsc
+            If InStr(txtMinRightMargin.Text, Chr(DecimalSignAsc)) > 0 Then KeyAscii = 0
+        Case KeyAscii = vbKeyTab, KeyAscii = vbKeyBack
+        Case Else
+            KeyAscii = 0
+    End Select
+End Sub
+
+Private Sub txtMinTopMargin_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtMinTopMargin_GotFocus()
+    SelectTxtOnGotFocus txtMinTopMargin
+End Sub
+
+Private Sub txtMinTopMargin_KeyPress(KeyAscii As Integer)
+    Select Case True
+        Case IsNumeric(Chr(KeyAscii))
+        Case KeyAscii = DecimalSignAsc
+            If InStr(txtMinTopMargin.Text, Chr(DecimalSignAsc)) > 0 Then KeyAscii = 0
+        Case KeyAscii = vbKeyTab, KeyAscii = vbKeyBack
+        Case Else
+            KeyAscii = 0
+    End Select
+End Sub
+
+Private Sub txtRightMargin_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtRightMargin_GotFocus()
+    SelectTxtOnGotFocus txtRightMargin
+End Sub
+
+Private Sub txtRightMargin_KeyPress(KeyAscii As Integer)
+    Select Case True
+        Case IsNumeric(Chr(KeyAscii))
+        Case KeyAscii = DecimalSignAsc
+            If InStr(txtRightMargin.Text, Chr(DecimalSignAsc)) > 0 Then KeyAscii = 0
+        Case KeyAscii = vbKeyTab, KeyAscii = vbKeyBack
+        Case Else
+            KeyAscii = 0
+    End Select
+End Sub
+
+Private Sub txtTopMargin_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtTopMargin_GotFocus()
+    SelectTxtOnGotFocus txtTopMargin
+End Sub
+
+Private Sub ConvertMarginValues()
+    Dim iMultiplier As Single
+    Dim iCtl As Control
+    Dim iStr As String
+    Dim iSgn As Single
+    
+    If mUnits = vbMillimeters Then
+        iMultiplier = 25.4
+    Else
+        iMultiplier = 1 / 25.4
+    End If
+    
+    For Each iCtl In PropertyPage.Controls
+        If TypeName(iCtl) = "TextBox" Then
+            If InStr(iCtl.Name, "Margin") > 0 Then
+                iStr = Trim(iCtl.Text)
+                If iStr <> "" Then
+                    iSgn = -1
+                    On Error Resume Next
+                    iSgn = CSng(iStr)
+                    On Error GoTo 0
+                    If iSgn <> -1 Then
+                        iSgn = iSgn * iMultiplier
+                        iCtl.Text = iSgn
+                    End If
+                End If
+            End If
+        End If
+    Next
+End Sub
+
+Private Sub txtTopMargin_KeyPress(KeyAscii As Integer)
+    Select Case True
+        Case IsNumeric(Chr(KeyAscii))
+        Case KeyAscii = DecimalSignAsc
+            If InStr(txtTopMargin.Text, Chr(DecimalSignAsc)) > 0 Then KeyAscii = 0
+        Case KeyAscii = vbKeyTab, KeyAscii = vbKeyBack
+        Case Else
+            KeyAscii = 0
+    End Select
+End Sub

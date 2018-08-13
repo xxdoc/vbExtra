@@ -1,0 +1,159 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpComboFn 
+   Caption         =   "General"
+   ClientHeight    =   2616
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   7392
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   2616
+   ScaleWidth      =   7392
+   Begin VB.ComboBox cboComboBoxName 
+      Height          =   288
+      Left            =   1830
+      TabIndex        =   1
+      Text            =   "[Auto]"
+      Top             =   390
+      Width           =   2745
+   End
+   Begin VB.CheckBox chkShowFullTextOnMouseOver 
+      Caption         =   "ShowFullTextOnMouseOver"
+      Height          =   255
+      Left            =   1830
+      TabIndex        =   4
+      Top             =   2010
+      Width           =   2610
+   End
+   Begin VB.CheckBox chkAutoSizeList 
+      Caption         =   "AutoSizeList"
+      Height          =   255
+      Left            =   1830
+      TabIndex        =   3
+      Top             =   1590
+      Width           =   2735
+   End
+   Begin VB.Line Line2 
+      BorderColor     =   &H00C0C0C0&
+      X1              =   180
+      X2              =   7260
+      Y1              =   1320
+      Y2              =   1320
+   End
+   Begin VB.Label Label4 
+      Caption         =   "(If left empty, the properties will be applied to all the combos in the form)"
+      Height          =   260
+      Left            =   1860
+      TabIndex        =   2
+      Top             =   840
+      Width           =   5510
+   End
+   Begin VB.Label lblGridName 
+      Alignment       =   1  'Right Justify
+      Caption         =   "ComboBoxName:"
+      Height          =   315
+      Left            =   60
+      TabIndex        =   0
+      Top             =   420
+      Width           =   1695
+   End
+End
+Attribute VB_Name = "ptpComboFn"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private mLoading As Boolean
+
+Private Sub cboComboBoxName_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cboComboBoxName_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkAutoSizeList_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkShowFullTextOnMouseOver_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub cboComboBoxName_GotFocus()
+    Dim iLoading As Boolean
+    
+    If cboComboBoxName.Text = "[Auto]" Then
+        iLoading = mLoading
+        mLoading = True
+        cboComboBoxName.Text = ""
+        mLoading = iLoading
+    End If
+End Sub
+
+Private Sub cboComboBoxName_LostFocus()
+    Dim iLoading As Boolean
+    
+    cboComboBoxName.Text = Trim$(cboComboBoxName.Text)
+    If cboComboBoxName.Text = "" Then
+        iLoading = mLoading
+        mLoading = True
+        cboComboBoxName.Text = "[Auto]"
+        mLoading = iLoading
+    End If
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    If cboComboBoxName.Text <> "[Auto]" Then
+        SelectedControls(0).ComboBoxName = Trim$(cboComboBoxName.Text)
+    Else
+        SelectedControls(0).ComboBoxName = ""
+    End If
+    
+    SelectedControls(0).AutoSizeList = CBool(chkAutoSizeList.Value)
+    SelectedControls(0).ShowFullTextOnMouseOver = CBool(chkShowFullTextOnMouseOver.Value)
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    Dim iParent As Object
+    Dim iCtl As Control
+    
+    mLoading = True
+    
+    On Error Resume Next
+    Set iParent = SelectedControls(0).Parent
+    On Error GoTo 0
+    
+    cboComboBoxName.Clear
+    cboComboBoxName.AddItem "[Auto]"
+    cboComboBoxName.AddItem "[No]"
+    If Not iParent Is Nothing Then
+        For Each iCtl In iParent.Controls
+            If TypeName(iCtl) = "ComboBox" Then
+                If Not IsControlArray(iCtl) Then
+                    cboComboBoxName.AddItem iCtl.Name
+                End If
+            End If
+        Next
+    End If
+    cboComboBoxName.Text = SelectedControls(0).ComboBoxName
+    
+    cboComboBoxName_LostFocus
+    
+    chkAutoSizeList.Value = Abs(CLng(SelectedControls(0).AutoSizeList))
+    chkShowFullTextOnMouseOver.Value = Abs(CLng(SelectedControls(0).ShowFullTextOnMouseOver))
+    
+    mLoading = False
+End Sub

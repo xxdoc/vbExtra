@@ -1,0 +1,109 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpCommonDialogExColor 
+   Caption         =   "Color"
+   ClientHeight    =   3636
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   6084
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   3636
+   ScaleWidth      =   6084
+   Begin VB.CheckBox chkCancelError 
+      Caption         =   "CancelError"
+      Height          =   264
+      Left            =   1560
+      TabIndex        =   4
+      Top             =   1008
+      Width           =   1500
+   End
+   Begin VB.TextBox txtColor 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   1
+      Top             =   180
+      Width           =   1500
+   End
+   Begin VB.TextBox txtFlags 
+      Height          =   300
+      Left            =   1560
+      TabIndex        =   3
+      Top             =   540
+      Width           =   1500
+   End
+   Begin VB.Label Label1 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Color:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   0
+      Top             =   216
+      Width           =   1020
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Flags:"
+      Height          =   228
+      Left            =   456
+      TabIndex        =   2
+      Top             =   576
+      Width           =   1020
+   End
+End
+Attribute VB_Name = "ptpCommonDialogExColor"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private mLoading As Boolean
+
+Private Sub chkCancelError_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    On Error Resume Next
+    SelectedControls(0).Color = Val(txtColor.Text)
+    SelectedControls(0).Flags = Val(txtFlags.Text)
+    SelectedControls(0).CancelError = CBool(chkCancelError.Value)
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    SetTextBoxNumeric txtColor
+    SetTextBoxNumeric txtFlags
+    
+    mLoading = True
+    txtColor.Text = SelectedControls(0).Color
+    txtFlags.Text = SelectedControls(0).Flags
+    chkCancelError.Value = Abs(CLng(SelectedControls(0).CancelError))
+    mLoading = False
+End Sub
+
+Private Sub txtColor_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtColor_GotFocus()
+    SelectTxtOnGotFocus txtColor
+End Sub
+
+Private Sub txtFlags_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtFlags_GotFocus()
+    SelectTxtOnGotFocus txtFlags
+End Sub
+
+
