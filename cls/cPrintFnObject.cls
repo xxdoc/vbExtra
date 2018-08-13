@@ -678,6 +678,9 @@ End Property
 Public Property Let FormatButtonVisible(ByVal nValue As Boolean)
     If mFormatButtonVisible <> nValue Then
         mFormatButtonVisible = nValue
+        If Not mfrmPrintPreview Is Nothing Then
+            mfrmPrintPreview.FormatButtonVisible = mFormatButtonVisible
+        End If
     End If
 End Property
 
@@ -692,6 +695,9 @@ End Property
 Public Property Let FormatButtonToolTipText(ByVal nValue As String)
     If mFormatButtonToolTipText <> nValue Then
         mFormatButtonToolTipText = nValue
+        If Not mfrmPrintPreview Is Nothing Then
+            mfrmPrintPreview.FormatButtonToolTipText = mFormatButtonToolTipText
+        End If
     End If
 End Property
 
@@ -733,6 +739,9 @@ Public Property Set FormatButtonPicture(ByVal nSizeIdentifier As VBExToobarDABut
         Exit Property
     End If
     Set mFormatButtonPicture(nSizeIdentifier) = nPic
+    If Not mfrmPrintPreview Is Nothing Then
+        Set mfrmPrintPreview.FormatButtonPicture(nSizeIdentifier) = nPic
+    End If
 End Property
 
 
@@ -990,6 +999,9 @@ End Property
 Public Property Let PageSetupButtonVisible(ByVal nValue As Boolean)
     If nValue <> mPageSetupButtonVisible Then
         mPageSetupButtonVisible = nValue
+        If Not mfrmPrintPreview Is Nothing Then
+            mfrmPrintPreview.PageSetupButtonVisible = mPageSetupButtonVisible
+        End If
     End If
 End Property
 
