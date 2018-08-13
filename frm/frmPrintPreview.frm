@@ -687,6 +687,7 @@ Private mClickChangeIconsSize_X As Single
 Private mFormatButtonToolTipText As String
 Private mAddedToScaleForRounding As Long
 Public DoNotLoad As Boolean
+Private mControlsPositioned As Boolean
 
 Private Sub cboChangeIconsSize_Click()
     SetToolBarIconsSize cboChangeIconsSize.ListIndex
@@ -1020,7 +1021,7 @@ Private Sub Form_Resize()
         End If
     End If
     
-    MakeDPIAwareness
+    PositionControls
     'picPagesContainer.Move 0, tbrTop.Height, Me.ScaleWidth, Me.ScaleHeight - tbrTop.Height - tbrBottom.Height
 End Sub
 
@@ -2094,15 +2095,15 @@ End Sub
 
 Public Property Let FormatButtonVisible(nValue As Boolean)
     tbrTop.Buttons("Format").Visible = nValue
-    If Me.Visible Then
-        MakeDPIAwareness
+    If mControlsPositioned Then
+        PositionControls
     End If
 End Property
 
 Public Property Let PageSetupButtonVisible(nValue As Boolean)
     tbrTop.Buttons("PageSetup").Visible = nValue
-    If Me.Visible Then
-        MakeDPIAwareness
+    If mControlsPositioned Then
+        PositionControls
     End If
 End Property
 
@@ -2251,7 +2252,7 @@ Private Sub mMouseWheel_MouseWheelRotation(Direction As Long, Handled As Boolean
     End If
 End Sub
 
-Private Sub MakeDPIAwareness()
+Private Sub PositionControls()
     Dim iFontSize As Single
     Dim iScreenWidth As Long
     
@@ -2326,6 +2327,8 @@ Private Sub MakeDPIAwareness()
     cmdClose_2.Move cmdClose.Left, cmdClose.Top, cmdClose.Width, cmdClose.Height
     cmdClose.Font.Size = 10
     cmdClose_2.Font.Size = cmdClose.Font.Size
+    
+    mControlsPositioned = True
 End Sub
 
 Private Function SetIconsAutoSize() As Boolean
