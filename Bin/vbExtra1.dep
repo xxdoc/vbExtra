@@ -1,0 +1,16 @@
+[Version]
+Version=1.0.0.0
+
+[vbExtra1.ocx <000A>]
+Dest=$(AppPath)
+Date=01/01/2018
+Time=00:00
+Version=1.0.0.0
+CABFilename=
+Uses1=vbExSc1.dll
+
+[vbExSc1.dll <000A>]
+Dest=$(AppPath)
+Date=01/01/2018
+Time=00:00
+Version=1.0.0.0
