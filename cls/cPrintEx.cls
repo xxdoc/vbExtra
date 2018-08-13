@@ -3053,6 +3053,9 @@ End Property
 
 Private Property Let IPrinterEx_PrintPrevFormatButtonVisible(RHS As Boolean)
     mPrintPrevFormatButtonVisible = RHS
+    If Not mPrintFnObject Is Nothing Then
+        mPrintFnObject.FormatButtonVisible = mPrintPrevFormatButtonVisible
+    End If
 End Property
 
 Private Property Get IPrinterEx_PrintPrevFormatButtonVisible() As Boolean
@@ -3062,6 +3065,9 @@ End Property
 
 Private Property Let IPrinterEx_PrintPrevPageSetupButtonVisible(RHS As Boolean)
     mPrintPrevPageSetupButtonVisible = RHS
+    If Not mPrintFnObject Is Nothing Then
+        mPrintFnObject.PageSetupButtonVisible = mPrintPrevPageSetupButtonVisible
+    End If
 End Property
 
 Private Property Get IPrinterEx_PrintPrevPageSetupButtonVisible() As Boolean
@@ -3434,6 +3440,7 @@ Private Sub IPrinterEx_ShowPrintPreview(Optional nObject As Object, Optional nPr
     mDocKey = DocKey
     mPrintFnObject.PrintPrevToolBarIconsSize = mPrintPrevToolBarIconsSize
     mPrintFnObject.PrintPrevUseAltScaleIcons = mPrintPrevUseAltScaleIcons
+    mPrintFnObject.HandleMargins = mHandleMargins
     mPrintFnObject.ShowPrintPreview mDocKey
     gPrinterExDoNotMakeNewPrinterExObject = False
     mShowingPrintPreview = False
