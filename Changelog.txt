@@ -1,3 +1,4 @@
+08/14/2018 Added Chinese Simplified GUI language support.
 08/14/2018 in frmPrintPreview.frm, Sub ShowPages: fixed when showing 12 pages landscaped (they went outside the screen space)
 08/14/2018 in ctlPopupList.ctl: fixed that the button appeared as pressed after the list was clicked
 08/13/2018: First relese
