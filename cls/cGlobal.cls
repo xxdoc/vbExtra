@@ -27,6 +27,7 @@ Public Enum vbExGUILanguageConstants
     vxLangAUTO = 0
     vxLangENGLISH = &H9
     vxLangSPANISH = &HA
+    vxLangCHINESE_SIMPLIFIED = &H4
 
 '    vxLangAFRIKAANS = &H36
 '    vxLangALBANIAN = &H1C
@@ -45,8 +46,6 @@ Public Enum vbExGUILanguageConstants
 '    vxLangBOSNIAN_NEUTRAL = &H781A
 '    vxLangBULGARIAN = &H2
 '    vxLangCATALAN = &H3
-'    vxLangCHINESE = &H4
-'    vxLangCHINESE_SIMPLIFIED = &H4
 '    vxLangCHINESE_TRADITIONAL = &H7C04
 '    vxLangCORSICAN = &H83
 '    vxLangCROATIAN = &H1A
