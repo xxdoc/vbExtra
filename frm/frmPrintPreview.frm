@@ -1741,12 +1741,12 @@ Private Sub ShowPages()
                 Next c
                 
                 iProportion = (mAvailableScreenHeightSpace - 1200) / (iMaxRowHeight(0) + iMaxRowHeight(1) + iMaxRowHeight(2))
-                If (iTotalRowWidth(0) * iProportion >= iTotalRowWidth(1)) And (iTotalRowWidth(0) >= iTotalRowWidth(2)) Then
+                If (iTotalRowWidth(0) >= iTotalRowWidth(1)) And (iTotalRowWidth(0) >= iTotalRowWidth(2)) Then
                     If iTotalRowWidth(0) * iProportion > (Me.ScaleWidth - 1500) Then
                         iProportion = (Me.ScaleWidth - 1500) / iTotalRowWidth(0)
                     End If
                 Else
-                    If iTotalRowWidth(1) * iProportion >= iTotalRowWidth(2) Then
+                    If iTotalRowWidth(1) >= iTotalRowWidth(2) Then
                         If iTotalRowWidth(1) * iProportion > (Me.ScaleWidth - 1500) Then
                             iProportion = (Me.ScaleWidth - 1500) / iTotalRowWidth(1)
                         End If
