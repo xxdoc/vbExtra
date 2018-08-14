@@ -193,6 +193,413 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
     If nLang = vxLangAUTO Then nLang = mGUILanguage
     
     Select Case nLang
+        Case vxLangCHINESE_SIMPLIFIED ' Thanks ChenLin: http://www.vbforums.com/showthread.php?865299#post5309543
+            Select Case nID
+                ' General
+                Case efnGUIStr_General_CloseButton_Caption
+                    GetLocalizedString = "&C 关闭"
+                Case efnGUIStr_General_OKButton_Caption
+                    GetLocalizedString = "&O 确定"
+                Case efnGUIStr_General_CancelButton_Caption
+                    GetLocalizedString = "&C 取消"
+                Case efnGUIStr_General_PageNumbersFormatString_Default
+                    GetLocalizedString = "#"
+                ' frmClipboardCopiedMessage
+                Case efnGUIStr_frmClipboardCopiedMessage_lblMessage_Caption
+                    GetLocalizedString = "复制文字"
+                ' frmConfigHistory
+                Case efnGUIStr_frmConfigHistory_Caption
+                    GetLocalizedString = "历史配置"
+                Case efnGUIStr_frmConfigHistory_chkRememberHistory_Caption
+                    GetLocalizedString = "记住跨会话的历史"
+                Case efnGUIStr_frmConfigHistory_HelpMessageTitle
+                    GetLocalizedString = "历史"
+                Case efnGUIStr_frmConfigHistory_HelpMessage
+                    GetLocalizedString = "确定程序是否会记住它下一次被搜索或选择的内容，在关闭它之后，您可以通过单击其中一个按钮来删除当前历史。" & vbCrLf & vbCrLf & "您也可以通过单击右键来仅删除历史记录中的一个项目。 鼠标按钮（在列表中，在进入此配置屏幕之前）"
+                Case efnGUIStr_frmConfigHistory_cmdEraseContext_Caption
+                    GetLocalizedString = "删除此上下文的历史记录"
+                Case efnGUIStr_frmConfigHistory_cmdEraseAll_Caption
+                    GetLocalizedString = "删除全部"
+                ' frmCopyGridTextOptions
+                Case efnGUIStr_frmCopyGridTextOptions_Caption
+                    GetLocalizedString = "复制文字选项"
+                Case efnGUIStr_frmCopyGridTextOptions_lblColumnsSeparationMode_Caption
+                    GetLocalizedString = "列分隔符:"
+                Case efnGUIStr_frmCopyGridTextOptions_cboMode_List
+                    Select Case nIndex
+                        Case 0
+                            GetLocalizedString = "Tab 键（建议用于复制到 Excel 程序使用）"
+                        Case 1
+                            GetLocalizedString = "相同宽度空格（最好复制具有固定宽度字体的文本编辑器）"
+                        Case 2
+                            GetLocalizedString = "根据字体的间距（最好复制到带有可变宽度字体的文本编辑器）"
+                        Case 3
+                            GetLocalizedString = "使用自定义字符或文本作为分隔符"
+                    End Select
+                Case efnGUIStr_lblSelectComunsToInclude_Caption
+                    GetLocalizedString = "选择要包含的列："
+                Case efnGUIStr_EnterColumnSeparatorMessage
+                    GetLocalizedString = "请输入文本或字符作为列分隔符"
+                Case efnGUIStr_EnterColumnSeparatorMessageTitle
+                    GetLocalizedString = "输入分隔符"
+                Case efnGUIStr_SelectFontMessage
+                    GetLocalizedString = "请选择将要使用的目标程序使用哪种字体进行粘贴,列的对齐方式为近似值."
+                ' frmPrintGridFormatOptions
+                Case efnGUIStr_frmPrintGridFormatOptions_Caption
+                    GetLocalizedString = "打印格式"
+                Case efnGUIStr_frmPrintGridFormatOptions_sst1_TabCaption_0
+                    GetLocalizedString = "&O 选项"
+                Case efnGUIStr_frmPrintGridFormatOptions_sst1_TabCaption_1
+                    GetLocalizedString = "&S 样式"
+                Case efnGUIStr_frmPrintGridFormatOptions_sst1_TabCaption_2
+                    GetLocalizedString = "&M 更多"
+                Case efnGUIStr_frmPrintGridFormatOptions_chkEnableAutoOrientation_Caption
+                    GetLocalizedString = "如果报表比纸张宽，则自动将页面方向更改为水平。"
+                Case efnGUIStr_frmPrintGridFormatOptions_chkPrintHeadersSeparatorLine_Caption
+                    GetLocalizedString = "标题分隔符"
+                Case efnGUIStr_frmPrintGridFormatOptions_chkPrintColumnsHeadersLines_Caption
+                    GetLocalizedString = "列标题行"
+                Case efnGUIStr_frmPrintGridFormatOptions_chkPrintHeadersBorder_Caption
+                    GetLocalizedString = "标题边界色"
+                Case efnGUIStr_frmPrintGridFormatOptions_chkPrintFixedColsBackground_Caption
+                    GetLocalizedString = "固定列背景色"
+                Case efnGUIStr_frmPrintGridFormatOptions_chkPrintHeadersBackground_Caption
+                    GetLocalizedString = "标题背景色"
+                Case efnGUIStr_frmPrintGridFormatOptions_chkPrintOtherBackgrounds_Caption
+                    GetLocalizedString = "其他背景色"
+                Case efnGUIStr_frmPrintGridFormatOptions_chkPrintRowsLines_Caption
+                    GetLocalizedString = "行线"
+                Case efnGUIStr_frmPrintGridFormatOptions_chkPrintColumnsDataLines_Caption
+                    GetLocalizedString = "列线"
+                Case efnGUIStr_frmPrintGridFormatOptions_chkPrintOuterBorder_Caption
+                    GetLocalizedString = "外部边缘"
+                Case efnGUIStr_frmPrintGridFormatOptions_lblLineWidth_Caption
+                    GetLocalizedString = "线宽:"
+                Case efnGUIStr_frmPrintGridFormatOptions_lblStyle_Caption
+                    GetLocalizedString = "样式:"
+                Case efnGUIStr_frmPrintGridFormatOptions_lblOtherTextsFont_Caption
+                    GetLocalizedString = "其他文本字体:"
+                Case efnGUIStr_frmPrintGridFormatOptions_lblSubheadingFont_Caption
+                    GetLocalizedString = "小标题字体:"
+                Case efnGUIStr_frmPrintGridFormatOptions_lblHeadingFont_Caption
+                    GetLocalizedString = "标题或标题字体："
+                Case efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersFont_Caption
+                    GetLocalizedString = "页码字体:"
+                Case efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersFormat_Caption
+                    GetLocalizedString = "页码格式:"
+                Case efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersPosition_Caption
+                    GetLocalizedString = "页码位置:"
+                Case efnGUIStr_frmPrintGridFormatOptions_lblGridAlign_Caption
+                    GetLocalizedString = "网格对齐:"
+                Case efnGUIStr_frmPrintGridFormatOptions_lblColor_Caption
+                    GetLocalizedString = "颜色:"
+                Case efnGUIStr_frmPrintGridFormatOptions_lblScalePercent_Caption
+                    GetLocalizedString = "样式:"
+                Case efnGUIStr_frmPrintGridFormatOptions_cboColor_List
+                    Select Case nIndex
+                        Case 0
+                            GetLocalizedString = "打印机默认"
+                        Case 1
+                            GetLocalizedString = "灰度"
+                        Case 2
+                            GetLocalizedString = "彩色"
+                    End Select
+                Case efnGUIStr_frmPrintGridFormatOptions_cboPageNumbersPosition_List
+                    Select Case nIndex
+                        Case 0
+                            GetLocalizedString = "右下角"
+                        Case 1
+                            GetLocalizedString = "左下角"
+                        Case 2
+                            GetLocalizedString = "底部居中"
+                        Case 3
+                            GetLocalizedString = "右上角"
+                        Case 4
+                            GetLocalizedString = "左上角"
+                        Case 5
+                            GetLocalizedString = "顶部居中"
+                        Case 6
+                            GetLocalizedString = "不显示页码"
+                    End Select
+                Case efnGUIStr_frmPrintGridFormatOptions_cboGridAlign_List
+                    Select Case nIndex
+                        Case 0
+                            GetLocalizedString = "居中"
+                        Case 1
+                            GetLocalizedString = "居左"
+                        Case 2
+                            GetLocalizedString = "居右"
+                        Case 3
+                            GetLocalizedString = "拉伸"
+                    End Select
+                Case efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_Style
+                    GetLocalizedString = "样式"
+                Case efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_CustomStyle
+                    GetLocalizedString = "自定义样式"
+                Case efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_Customize
+                    GetLocalizedString = "定制"
+                Case efnGUIStr_frmPrintGridFormatOptions_lblSample_Caption
+                    GetLocalizedString = "事例:"
+                Case efnGUIStr_frmPrintGridFormatOptions_DrawSample_Column
+                    GetLocalizedString = "列"
+                Case efnGUIStr_frmPrintGridFormatOptions_DrawSample_Element
+                    GetLocalizedString = "元素"
+                Case efnGUIStr_frmPrintGridFormatOptions_DrawSample_Data
+                    GetLocalizedString = "数据"
+                Case efnGUIStr_frmPrintGridFormatOptions_cboGridAlign_ToolTipText
+                    GetLocalizedString = "仅在数据网格比页面更窄时才有效"
+                Case efnGUIStr_frmPrintGridFormatOptions_txtLineWidth_ToolTipText
+                    GetLocalizedString = "改变线条粗细（一般）"
+                Case efnGUIStr_frmPrintGridFormatOptions_cmdHeadersBackgroundColor_ToolTipText
+                    GetLocalizedString = "更改标题（或固定列）的背景颜色"
+                Case efnGUIStr_frmPrintGridFormatOptions_txtLineWidthHeadersSeparatorLine_ToolTipText
+                    GetLocalizedString = "页眉分隔线厚度"
+                Case efnGUIStr_frmPrintGridFormatOptions_VariousChangeColorCommandButtons_ToolTipText
+                    GetLocalizedString = "修改颜色"
+                Case efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidth_Message
+                    GetLocalizedString = "线条的宽度值必须在1到10之间"
+                Case efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidthHeadersSeparatorLine_Message
+                    GetLocalizedString = "线条的宽度值必须在1到20之间"
+                ' frmSelectColumns
+                Case efnGUIStr_frmSelectColumns_Caption
+                    GetLocalizedString = "配置可见列"
+                Case efnGUIStr_frmSelectColumns_lblTitle_Caption
+                    GetLocalizedString = "&S 选择要显示的列:"
+                Case efnGUIStr_frmSelectColumns_OneVisible_Message
+                    GetLocalizedString = "必须至少选择一列。"
+                ' frmSettingGridDataProgress
+                Case efnGUIStr_frmSettingGridDataProgress_lblMessage_Caption_Start
+                    GetLocalizedString = "生成预览"
+                Case efnGUIStr_frmSettingGridDataProgress_lblMessage_Caption_Progress
+                    GetLocalizedString = "生成预览，页"
+                ' frmPrintPreview
+                Case efnGUIStr_frmPrintPreview_Caption
+                    GetLocalizedString = "打印预览"
+                Case efnGUIStr_frmPrintPreview_mnuView2p_Caption
+                    GetLocalizedString = "显示两页"
+                Case efnGUIStr_frmPrintPreview_mnuView3p_Caption
+                    GetLocalizedString = "显示三页"
+                Case efnGUIStr_frmPrintPreview_mnuView6p_Caption
+                    GetLocalizedString = "显示六页"
+                Case efnGUIStr_frmPrintPreview_mnuView12p_Caption
+                    GetLocalizedString = "显示12页"
+                Case efnGUIStr_frmPrintPreview_mnuIconsAuto_Caption
+                    GetLocalizedString = "自动"
+                Case efnGUIStr_frmPrintPreview_mnuIconsSmall_Caption
+                    GetLocalizedString = "小图标"
+                Case efnGUIStr_frmPrintPreview_mnuIconsMedium_Caption
+                    GetLocalizedString = "中图标"
+                Case efnGUIStr_frmPrintPreview_mnuIconsBig_Caption
+                    GetLocalizedString = "等等图标"
+                Case efnGUIStr_frmPrintPreview_lblPageOrientation_Caption
+                    GetLocalizedString = "&P 显示方向:"
+                Case efnGUIStr_frmPrintPreview_lblView_Caption
+                    GetLocalizedString = "&V 显示:"
+                Case efnGUIStr_frmPrintPreview_lblScalePercent_Caption
+                    GetLocalizedString = "&S 缩放：" 'Scale:"The first character must be a letter. . .
+                Case efnGUIStr_frmPrintPreview_lblPage_Singular_Caption
+                    GetLocalizedString = "页:"
+                Case efnGUIStr_frmPrintPreview_lblPage_Plural_Caption
+                    GetLocalizedString = "总页数:"
+                Case efnGUIStr_frmPrintPreview_lblPageCount_Caption
+                    GetLocalizedString = "/"
+                Case efnGUIStr_frmPrintPreview_lblPreparingDoc_Caption
+                    GetLocalizedString = "正在生成打印预览..."
+                Case efnGUIStr_frmPrintPreview_cmdClose_Caption
+                    GetLocalizedString = "&C 关闭"
+                Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_Print
+                    GetLocalizedString = "开始打印"
+                Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_PageSetup
+                    GetLocalizedString = "页面设置"
+                Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_Format
+                    GetLocalizedString = "显示格式"
+                Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_OrientationPortrait
+                    GetLocalizedString = "纵向显示"
+                Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_OrientationLandscape
+                    GetLocalizedString = "横向显示"
+                Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_ViewNormalSize
+                    GetLocalizedString = "查看正常页面大小"
+                Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_ViewScreenWidth
+                    GetLocalizedString = "页面调整为屏幕宽度"
+                Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_ViewScreenHeight
+                    GetLocalizedString = "页面调整到屏幕高度"
+                Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_ViewSeveralPages
+                    GetLocalizedString = "显示多页"
+                Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_DecreaseScale
+                    GetLocalizedString = "减少字体和元素大小"
+                Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_IncreaseScale
+                    GetLocalizedString = "增加字体和元素大小"
+                Case efnGUIStr_frmPrintPreview_tbrBottom_Buttons_ToolTipText_FirstPage
+                    GetLocalizedString = "首页"
+                Case efnGUIStr_frmPrintPreview_tbrBottom_Buttons_ToolTipText_PreviousPage_Singular
+                    GetLocalizedString = "上一页"
+                Case efnGUIStr_frmPrintPreview_tbrBottom_Buttons_ToolTipText_PreviousPage_Plural
+                    GetLocalizedString = "Previous pages"
+                Case efnGUIStr_frmPrintPreview_tbrBottom_Buttons_ToolTipText_NextPage_Singular
+                    GetLocalizedString = "下一页"
+                Case efnGUIStr_frmPrintPreview_tbrBottom_Buttons_ToolTipText_NextPage_Plural
+                    GetLocalizedString = "Next pages"
+                Case efnGUIStr_frmPrintPreview_tbrBottom_Buttons_ToolTipText_LastPage
+                    GetLocalizedString = "最后页"
+                
+                ' UserControls
+                ' FontPicker
+                Case efnGUIStr_FontPicker_ButtonToolTipTextDefault
+                    GetLocalizedString = "选择字体"
+                Case efnGUIStr_FontPicker_DrawSample_Bold
+                    GetLocalizedString = "粗体"
+                Case efnGUIStr_FontPicker_DrawSample_Italic
+                    GetLocalizedString = "斜体"
+                ' FontSizeChanger
+                Case efnGUIStr_FontSizeChanger_Extender_ToolTipText
+                    GetLocalizedString = "单击加号或减号修改字体大小 ，当前字体大小："
+                Case efnGUIStr_FontSizeChanger_mnuDefaultFontSize_Caption
+                    GetLocalizedString = "设置默认值"
+                Case efnGUIStr_FontSizeChanger_btnMinus_ToolTipText
+                    GetLocalizedString = "减小字体大小"
+                Case efnGUIStr_FontSizeChanger_btnPlus_ToolTipText
+                    GetLocalizedString = "增加字体大小"
+                ' FlexFn
+                Case efnGUIStr_FlexFn_PrintButton_ToolTipText_Default
+                    GetLocalizedString = "打印"
+                Case efnGUIStr_FlexFn_PrintPreviewButton_ToolTipText_Default
+                    GetLocalizedString = "打印设置和打印预览"
+                Case efnGUIStr_FlexFn_FindButton_ToolTipText_Default
+                    GetLocalizedString = "查找"
+                Case efnGUIStr_FlexFn_CopyButton_ToolTipText_Default
+                    GetLocalizedString = "复制"
+                Case efnGUIStr_FlexFn_SaveButton_ToolTipText_Default
+                    GetLocalizedString = "保存到文件"
+                Case efnGUIStr_FlexFn_GroupDataButton_ToolTipText_Default
+                    GetLocalizedString = "合并相同列"
+                Case efnGUIStr_FlexFn_GroupDataButtonPressed_ToolTipText_Default
+                    GetLocalizedString = "不合并相同列"
+                Case efnGUIStr_FlexFn_ConfigColumnsButton_ToolTipText_Default
+                    GetLocalizedString = "配置要在此报表中显示的列"
+                Case efnGUIStr_FlexFn_ConfigColumnsButtonColsHidden_ToolTipText_Default
+                    GetLocalizedString = "配置列（隐藏列）"
+                Case efnGUIStr_FlexFn_CopyCellMenuCaption_Default
+                    GetLocalizedString = "单元格"
+                Case efnGUIStr_FlexFn_CopyRowMenuCaption_Default
+                    GetLocalizedString = "行"
+                Case efnGUIStr_FlexFn_CopyColumnMenuCaption_Default
+                    GetLocalizedString = "列"
+                Case efnGUIStr_FlexFn_CopyAllMenuCaption_Default
+                    GetLocalizedString = "全部"
+                Case efnGUIStr_FlexFn_mnuCopyParent_Caption
+                    GetLocalizedString = "复制..."
+                ' History
+                Case efnGUIStr_History_mnuDelete_Caption1
+                    GetLocalizedString = "删除"
+                Case efnGUIStr_History_mnuDelete_Caption2
+                    GetLocalizedString = "从历史纪录"
+                Case efnGUIStr_History_ToolTipTextStart_Default
+                    GetLocalizedString = "转到"
+                Case efnGUIStr_History_ToolTipTextSelect_Default
+                    GetLocalizedString = "(或者单击右键选择)"
+                Case efnGUIStr_History_BackButtonToolTipText_Default
+                    GetLocalizedString = "转到上一条(或者单击右键选择)"
+                Case efnGUIStr_History_ForwardButtonToolTipText_Default
+                    GetLocalizedString = "转到下一条(或者单击右键选择)"
+                ' DateEnter
+                Case efnGUIStr_DateEnter_ToolTipTextStart_Default
+                    GetLocalizedString = "按格式输入日期"
+                Case efnGUIStr_DateEnter_ToolTipTextEnd_Default
+                    GetLocalizedString = "或单击箭头选择"
+                Case efnGUIStr_DateEnter_Validate1_MsgBoxTitle
+                    GetLocalizedString = "日期输入错误"
+                Case efnGUIStr_DateEnter_Validate1_MsgBoxError1
+                    GetLocalizedString = "您没有在日期条目中输入日期。"
+                Case efnGUIStr_DateEnter_Validate1_MsgBoxError2
+                    GetLocalizedString = "天数不能为零。"
+                Case efnGUIStr_DateEnter_Validate1_MsgBoxError3
+                    GetLocalizedString = "不能超过31天"
+                Case efnGUIStr_DateEnter_Validate1_MsgBoxError4
+                    GetLocalizedString = "您没有在日期条目中输入月份。"
+                Case efnGUIStr_DateEnter_Validate1_MsgBoxError5
+                    GetLocalizedString = "月份的值必须在1到12之间。"
+                Case efnGUIStr_DateEnter_Validate1_MsgBoxError6
+                    GetLocalizedString = "您没有在日期条目中输入年份。"
+                Case efnGUIStr_DateEnter_Validate1_MsgBoxError7
+                    GetLocalizedString = "日期不能低于"
+                Case efnGUIStr_DateEnter_Validate1_MsgBoxError8
+                    GetLocalizedString = "日期不能大于"
+                
+                ' Class modules
+                ' cGridHandler
+                Case efnGUIStr_cGridHandler_ISubclass_Windowproc_OrderByColumnsString1
+                    GetLocalizedString = "按此列排序" 'Order by this column"
+                Case efnGUIStr_cGridHandler_ISubclass_Windowproc_OrderByColumnsString2
+                    GetLocalizedString = "Order by"
+                Case efnGUIStr_cGridHandler_ISubclass_Windowproc_OrderByColumnsString3
+                    GetLocalizedString = "正向排序" 'ascending"
+                Case efnGUIStr_cGridHandler_ISubclass_Windowproc_OrderByColumnsString4
+                    GetLocalizedString = "反向排序" 'descending"
+            
+                ' FlexFnObject
+                Case efnGUIStr_FlexFnObject_FindTextInGrid_InputBoxEnterTextMessageTitle
+                    GetLocalizedString = "查找文字"
+                Case efnGUIStr_FlexFnObject_FindTextInGrid_InputBoxEnterTextMessage
+                    GetLocalizedString = "请输入要查找的文字:"
+                Case efnGUIStr_FlexFnObject_FindTextInGrid_MsgboxTextNotFound
+                    GetLocalizedString = "没有找到要查找的文字."
+                Case efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox1a
+                    GetLocalizedString = "文件"
+                Case efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox1b
+                    GetLocalizedString = "已经存在，是否覆盖？"
+                Case efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox2a
+                    GetLocalizedString = "文件不能被替换，它可以用Excel打开。要用相同的名称保存它，必须先关闭它。"
+                Case efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox2b
+                    GetLocalizedString = "是否重试？（在关闭后按“是”，“否”选择另一个名称，或“取消”取消操作"
+                Case efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox3
+                    GetLocalizedString = "是否现在打开保存后的文件？"
+                Case efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox4
+                    GetLocalizedString = "文件保存在"
+                Case efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox5
+                    GetLocalizedString = "发生错误:"
+                Case efnGUIStr_FlexFnObject_PageNumbersFormatStrings_Count
+                    GetLocalizedString = "15"
+                Case efnGUIStr_FlexFnObject_PageNumbersFormatStrings
+                    Select Case nIndex
+                        Case 1 ' the index starts in 1, the 0 is retrieved from efnGUIStr_General_PageNumbersFormatString_Default
+                            GetLocalizedString = "页 #"
+                        Case 2
+                            GetLocalizedString = "页 #"
+                        Case 3
+                            GetLocalizedString = "页 # / N"
+                        Case 4
+                            GetLocalizedString = "页 # / N"
+                        Case 5
+                            GetLocalizedString = "页. #"
+                        Case 6
+                            GetLocalizedString = "# / N"
+                        Case 7
+                            GetLocalizedString = "页. # / N"
+                        Case 8
+                            GetLocalizedString = "#/N"
+                        Case 9
+                            GetLocalizedString = "页. #/N"
+                        Case 10
+                            GetLocalizedString = "页 #/N"
+                        Case 11
+                            GetLocalizedString = "页 #/N"
+                        Case 12
+                            GetLocalizedString = "# / N"
+                        Case 13
+                            GetLocalizedString = "页. # / N"
+                        Case 14
+                            GetLocalizedString = "页 # / N"
+                        Case 15
+                            GetLocalizedString = "页 # / N"
+                    End Select
+                ' cPrinterEx
+                Case efnGUIStr_cPrinterEx_PrintDocumentTooLongWarning_MsgBoxWarning
+                    GetLocalizedString = "文档太长，将无法完全打印。"
+                ' Bas modules
+                ' mGlobals
+                Case efnGUIStr_mGlobals_ValidFileName_DefaultFileName
+                    GetLocalizedString = "未命名"
+                End Select
         Case vxLangSPANISH
             Select Case nID
                 ' Forms
@@ -1038,7 +1445,7 @@ End Sub
 
 Private Function GUILaguageIsSupported(nLang As Long) As Boolean
         Select Case nLang
-            Case vxLangENGLISH, vxLangSPANISH
+            Case vxLangENGLISH, vxLangSPANISH, vxLangCHINESE_SIMPLIFIED
                 GUILaguageIsSupported = True
         End Select
 End Function

@@ -278,12 +278,12 @@ Option Explicit
 Implements ISubclass
 
 Private Declare Function CombineRgn Lib "gdi32" (ByVal hDestRgn As Long, ByVal hSrcRgn1 As Long, ByVal hSrcRgn2 As Long, ByVal nCombineMode As Long) As Long
-Private Declare Function GetPixel Lib "gdi32" (ByVal hDC As Long, ByVal X As Long, ByVal Y As Long) As Long
+Private Declare Function GetPixel Lib "gdi32" (ByVal hDC As Long, ByVal x As Long, ByVal y As Long) As Long
 Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hWnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 Private Const LWA_ALPHA = &H2&
 Private Const WS_EX_LAYERED = &H80000
 Private Const GWL_HWNDPARENT As Long = (-8)
-Private Declare Function OffsetRgn Lib "gdi32" (ByVal hRgn As Long, ByVal X As Long, ByVal Y As Long) As Long
+Private Declare Function OffsetRgn Lib "gdi32" (ByVal hRgn As Long, ByVal x As Long, ByVal y As Long) As Long
 Private Const WM_WINDOWPOSCHANGED = &H47&
 'Private Const RGN_COPY = 5&
 'Private Const RGN_AND = 1&
@@ -291,7 +291,7 @@ Private Const RGN_OR = 2&
 'Private Const RGN_XOR = 3&
 Private Const RGN_DIFF = 4&
 
-Private Declare Function MoveWindow Lib "user32" (ByVal hWnd As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal bRepaint As Long) As Long
+Private Declare Function MoveWindow Lib "user32" (ByVal hWnd As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal bRepaint As Long) As Long
 Private Declare Function IsIconic Lib "user32" (ByVal hWnd As Long) As Long
 
 Public Event DropDown()
@@ -320,10 +320,14 @@ Private mVScroll1Visible As Boolean
 
 Private Sub btnDropDown_Click()
     If btnDropDown.Value Then
-        RaiseEvent DropDown
-        ShowList
+        If Not mListDropped Then
+            RaiseEvent DropDown
+            ShowList
+        End If
     Else
-        HideList
+        If mListDropped Then
+            HideList
+        End If
     End If
 End Sub
 
@@ -332,11 +336,13 @@ Private Sub lblItem_Click(Index As Integer)
     ListIndex = Index
     BuildPopupList
     RaiseEvent ItemClick
+    btnDropDown.Value = False
 End Sub
 
 Private Sub lblSelectedItemItem_Click()
     RaiseEvent ItemClick
     RaiseEvent Click
+    btnDropDown.Value = False
 End Sub
 
 Private Sub lblText_Click()
@@ -347,6 +353,7 @@ Private Sub picItem_Click(Index As Integer)
     ListIndex = Index
     BuildPopupList
     RaiseEvent ItemClick
+    btnDropDown.Value = False
 End Sub
 
 Private Sub picPopupList_Resize()
@@ -360,6 +367,7 @@ End Sub
 Private Sub picSelectedItem_Click()
     RaiseEvent ItemClick
     RaiseEvent Click
+    btnDropDown.Value = False
 End Sub
 
 Private Sub picText_Click()
@@ -375,7 +383,7 @@ Private Sub tmrMouseOverCheck_Timer()
     
     GetCursorPos iM
     
-    iHwnd = WindowFromPoint(iM.X, iM.Y)
+    iHwnd = WindowFromPoint(iM.x, iM.y)
     
     Set iCtl = GetControlByHwnd(iHwnd)
     If Not iCtl Is Nothing Then
@@ -432,10 +440,10 @@ Private Sub tmrTransparency_Timer()
     
     GetWindowRect picPopupList.hWnd, iRect
     GetCursorPos iM
-    If (iM.X >= iRect.Left) Then
-        If (iM.X <= iRect.Right) Then
-            If (iM.Y >= iRect.Top) Then
-                If (iM.Y <= iRect.Bottom) Then
+    If (iM.x >= iRect.Left) Then
+        If (iM.x <= iRect.Right) Then
+            If (iM.y >= iRect.Top) Then
+                If (iM.y <= iRect.Bottom) Then
                     tmrTransparency.Interval = 5000
                     tmrTransparency.Enabled = False
                     tmrTransparency.Enabled = True
@@ -700,11 +708,13 @@ Public Sub HideList(Optional nRaiseEvent As Boolean = True)
         DetachMessage Me, UserControl.hWnd, WM_MOVE
         tmrMouseOverCheck.Enabled = False
         tmrTransparency.Enabled = False
+        mListDropped = False
         If nRaiseEvent Then
             RaiseEvent ListHided
         End If
     End If
     btnDropDown.Value = False
+    btnDropDown.Refresh
 End Sub
 
 Private Function ISubclass_MsgResponse(ByVal hWnd As Long, ByVal iMsg As Long) As EMsgResponse
