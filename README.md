@@ -9,8 +9,7 @@ https://github.com/EduardoVB/vbExtra
 vbForums:
 http://www.vbforums.com/showthread.php?865299
 
-To read a description of the component or to get help please go to vbForums URL.
-To download the latest version go to GitHub.
+To read a larger description of the component or to get help please go to vbForums URL.
 
 
 # You can see that there are two project files, "vbExtra (subclassing inside).vbp" and "vbExtra (subclassing outside).vbp", why?
