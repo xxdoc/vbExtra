@@ -17,6 +17,26 @@ Implements VB.Printer
 Implements IVBPrint
 Implements IPrinterEx
 
+'Private Const LF_FACESIZE = 32
+Private Type LOGFONTW
+    lfHeight As Long
+    lfWidth As Long
+    lfEscapement As Long
+    lfOrientation As Long
+    lfWeight As Long
+    lfItalic As Byte
+    lfUnderline As Byte
+    lfStrikeOut As Byte
+    lfCharSet As Byte
+    lfOutPrecision As Byte
+    lfClipPrecision As Byte
+    lfQuality As Byte
+    lfPitchAndFamily As Byte
+    lfFaceName(0 To ((LF_FACESIZE * 2) - 1)) As Byte
+End Type
+
+Private Declare Function CreateFontIndirectW Lib "gdi32" (ByRef lpLogFont As LOGFONTW) As Long
+
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
 
 Private Type Charrange
@@ -148,7 +168,7 @@ Private mPaperWidthInMillimeters As Single
 Private mPaperHeightInMillimeters As Single
 
 Private mHdcReference As Long
-Private mLogFont As LOGFONT
+Private mLogFont As LOGFONTW
 
 Private mDrawMode As Long
 Private mDrawStyle As Long
@@ -230,7 +250,7 @@ Private mFontWeight_Prev As Single
 Private mFontWidth_Prev As Long
 Private mFontCharset_Prev As Long
 
-Private mFontsUsed_LogFont() As LOGFONT
+Private mFontsUsed_LogFont() As LOGFONTW
 Private mhFontsUsed() As Long
 Private mFontsUsed_HeightInPixels() As Long
 Private mCurrentFontIndex As Long
@@ -1501,7 +1521,7 @@ Private Sub SelectFont()
         
         iFound = False
         For c = 1 To UBound(mFontsUsed_LogFont)
-            If StrConv(mLogFont.lfFaceName, vbUnicode) = StrConv(mFontsUsed_LogFont(c).lfFaceName, vbUnicode) Then
+            If CStr(mLogFont.lfFaceName) = CStr(mFontsUsed_LogFont(c).lfFaceName) Then
                 If mLogFont.lfHeight = mFontsUsed_LogFont(c).lfHeight Then
                     If mLogFont.lfItalic = mFontsUsed_LogFont(c).lfItalic Then
                         If mLogFont.lfStrikeOut = mFontsUsed_LogFont(c).lfStrikeOut Then
@@ -1529,7 +1549,7 @@ Private Sub SelectFont()
             ReDim Preserve mFontsUsed_HeightInPixels(mCurrentFontIndex)
             
             mFontsUsed_LogFont(mCurrentFontIndex) = mLogFont
-            mhFontsUsed(mCurrentFontIndex) = CreateFontIndirect(mLogFont)
+            mhFontsUsed(mCurrentFontIndex) = CreateFontIndirectW(mLogFont)
         End If
         
         mPages(mCurrentPage).SelectFont mhFontsUsed(mCurrentFontIndex)
@@ -1725,7 +1745,7 @@ Private Sub Class_Initialize()
     End If
     
     If Not IsEmpty(gPrinterExZoom) Then mZoom = gPrinterExZoom
-    If Not IsEmpty(gPrinterExHandleMargins) Then mHandleMargins = gPrinterExHandleMargins Else mHandleMargins = False
+    If Not IsEmpty(gPrinterExHandleMargins) Then mHandleMargins = gPrinterExHandleMargins Else mHandleMargins = True
     If Not IsEmpty(gPrinterExPrintPageNumbers) Then PrintPageNumbers = gPrinterExPrintPageNumbers Else PrintPageNumbers = False
     If Not IsEmpty(gPrinterExPageNumbersFont) Then
         Set PageNumbersFont = gPrinterExPageNumbersFont
@@ -4348,6 +4368,7 @@ Private Sub LoadPrinterFonts()
     For c = 0 To VB.Printer.FontCount - 1
         mFonts(c) = VB.Printer.Fonts(c)
     Next c
+    mFontCount = VB.Printer.FontCount
     
     If iDeviceNamePrev <> "" Then
         For Each iPrn In Printers
@@ -4408,10 +4429,11 @@ Public Sub KillLastPage()
     mCurrentYPixels = -mScaleTopPixels + PageTopMarginInPixels
 End Sub
 
-Private Function StdFontToLogFont_Printer(nFont As StdFont, Optional nFontName As String) As LOGFONT
+Private Function StdFontToLogFont_Printer(nFont As StdFont, Optional nFontName As String) As LOGFONTW
     Dim iFontName As String
     Dim iDPIY As Single
     Dim c As Long
+    Dim iBytes() As Byte
     
     If nFontName = "" Then
         iFontName = nFont.Name
@@ -4426,11 +4448,14 @@ Private Function StdFontToLogFont_Printer(nFont As StdFont, Optional nFontName A
         iDPIY = GetDeviceCaps(VB.Printer.hDC, LOGPIXELSY)
     End If
     
+    iBytes = iFontName
     For c = 0 To 31
         If c < Len(iFontName) Then
-            StdFontToLogFont_Printer.lfFaceName(c) = Asc(Mid$(iFontName, c + 1, 1))
+            StdFontToLogFont_Printer.lfFaceName(c * 2) = iBytes(c * 2) 'Asc(Mid$(iFontName, c + 1, 1))
+            StdFontToLogFont_Printer.lfFaceName(c * 2 + 1) = iBytes(c * 2 + 1)
         Else
-            StdFontToLogFont_Printer.lfFaceName(c) = 0
+            StdFontToLogFont_Printer.lfFaceName(c * 2) = 0
+            StdFontToLogFont_Printer.lfFaceName(c * 2 + 1) = 0
         End If
     Next
      
@@ -4452,7 +4477,7 @@ Private Function StdFontToLogFont_Printer(nFont As StdFont, Optional nFontName A
     
 End Function
 
-Private Function LogFontToStdFont(lF As LOGFONT) As iFont
+Private Function LogFontToStdFont(lF As LOGFONTW) As iFont
     Dim iFontName As String
     Dim iDPIY As Single
     
@@ -4467,7 +4492,7 @@ Private Function LogFontToStdFont(lF As LOGFONT) As iFont
     End If
     
     
-    iFontName = StrConv(lF.lfFaceName, vbUnicode)
+    iFontName = CStr(lF.lfFaceName)
     If InStr(iFontName, Chr(0)) > 0 Then
         iFontName = Left$(iFontName, InStr(iFontName, Chr(0)) - 1)
     End If
@@ -4492,7 +4517,7 @@ Private Function GetFontAttribute(nAttribute As String) As Variant
         Case "Italic"
             GetFontAttribute = CBool(mLogFont.lfItalic)
         Case "Name"
-            iFontName = StrConv(mLogFont.lfFaceName, vbUnicode)
+            iFontName = CStr(mLogFont.lfFaceName)
             If InStr(iFontName, Chr(0)) > 0 Then
                 iFontName = Left$(iFontName, InStr(iFontName, Chr(0)) - 1)
             End If
@@ -4549,12 +4574,18 @@ Private Sub SetFontAttribute(nAttribute As String, nValue As Variant)
             End If
             mFontItalic = nValue
         Case "Name"
+            Dim iBytes() As Byte
+            
+            If VarType(nValue) <> vbString Then Exit Sub
             iFontName = nValue
+            iBytes = iFontName
             For c = 0 To 31
                 If c < Len(iFontName) Then
-                    mLogFont.lfFaceName(c) = Asc(Mid$(iFontName, c + 1, 1))
+                    mLogFont.lfFaceName(c * 2) = iBytes(c * 2) 'Asc(Mid$(iFontName, c + 1, 1))
+                    mLogFont.lfFaceName(c * 2 + 1) = iBytes(c * 2 + 1)
                 Else
-                    mLogFont.lfFaceName(c) = 0
+                    mLogFont.lfFaceName(c * 2) = 0
+                    mLogFont.lfFaceName(c * 2 + 1) = 0
                 End If
             Next
             mFontName = nValue
