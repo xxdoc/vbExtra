@@ -1,3 +1,5 @@
+08/15/2018 Added Unicode suppport for font names in PrinterEx
+08/15/2018 Fixed FontCount property get in cPrinterEx
 08/14/2018 Added Chinese Simplified GUI language support.
 08/14/2018 in frmPrintPreview.frm, Sub ShowPages: fixed when showing 12 pages landscaped (they went outside the screen space)
 08/14/2018 in ctlPopupList.ctl: fixed that the button appeared as pressed after the list was clicked
