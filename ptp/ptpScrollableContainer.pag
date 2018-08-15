@@ -193,16 +193,8 @@ Private Sub cboBorderStyle_Click()
     If Not mLoading Then Changed = True
 End Sub
 
-Private Sub cboHScrollBar_Change()
-
-End Sub
-
 Private Sub cboHScrollBar_Click()
     If Not mLoading Then Changed = True
-End Sub
-
-Private Sub cboVScrollBar_Change()
-
 End Sub
 
 Private Sub cboVScrollBar_Click()
