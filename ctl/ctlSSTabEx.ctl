@@ -2634,10 +2634,10 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mShowFocusRect = PropBag.ReadProperty("ShowFocusRect", True)
     mWordWrap = PropBag.ReadProperty("WordWrap", True)
     mStyle = PropBag.ReadProperty("Style", ssStyleTabbedDialog)
-    mTabHeight = PropBag.ReadProperty("TabHeight", mDefaultTabHeight) ' in Himetric, for compatibility with the original SSTab
+    mTabHeight = PropBag.ReadProperty("TabHeight", mDefaultTabHeight)    ' in Himetric, for compatibility with the original SSTab
     If pScaleY(mTabHeight, vbHimetric, vbPixels) < 1 Then mTabHeight = pScaleY(1, vbPixels, vbHimetric)
-    mTabMaxWidth = PropBag.ReadProperty("TabMaxWidth", 0) ' in Himetric, for compatibility with the original SSTab
-    mTabMinWidth = PropBag.ReadProperty("TabMinWidth", 0) ' in Himetric
+    mTabMaxWidth = PropBag.ReadProperty("TabMaxWidth", 0)  ' in Himetric, for compatibility with the original SSTab
+    mTabMinWidth = PropBag.ReadProperty("TabMinWidth", 0)  ' in Himetric
     mMousePointer = PropBag.ReadProperty("MousePointer", ssDefault)
     Set mMouseIcon = PropBag.ReadProperty("MouseIcon", Nothing)
     mOLEDropMode = PropBag.ReadProperty("OLEDropMode", ssOLEDropNone)
@@ -2761,7 +2761,7 @@ Private Sub UserControl_Show()
     If mUserControlShown Then
         Exit Sub
     End If
-    If mSubclassed Then
+    If mAmbientUserMode And mSubclassed Then
         If (mFormHwnd = 0) Then
             mFormHwnd = GetAncestor(UserControl.ContainerHwnd, GA_ROOT)
             mFormIsActive = GetForegroundWindow = mFormHwnd
@@ -2913,15 +2913,15 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     PropBag.WriteProperty "ShowFocusRect", mShowFocusRect, True
     PropBag.WriteProperty "WordWrap", mWordWrap, True
     PropBag.WriteProperty "Style", mStyle, ssStyleTabbedDialog
-    PropBag.WriteProperty "TabHeight", mTabHeight, mDefaultTabHeight ' in Himetric, for compatibility with the original SSTab
-    PropBag.WriteProperty "TabMaxWidth", mTabMaxWidth, 0 ' in Himetric, for compatibility with the original SSTab
-    PropBag.WriteProperty "TabMinWidth", mTabMinWidth, 0 ' in Himetric
+    PropBag.WriteProperty "TabHeight", Round(mTabHeight), Round(mDefaultTabHeight)  ' in Himetric, for compatibility with the original SSTab
+    PropBag.WriteProperty "TabMaxWidth", Round(mTabMaxWidth), 0  ' in Himetric, for compatibility with the original SSTab
+    PropBag.WriteProperty "TabMinWidth", Round(mTabMinWidth), 0 ' in Himetric
     PropBag.WriteProperty "MousePointer", mMousePointer, ssDefault
     PropBag.WriteProperty "MouseIcon", mMouseIcon, Nothing
     PropBag.WriteProperty "OLEDropMode", mOLEDropMode, ssOLEDropNone
     PropBag.WriteProperty "MaskColor", mMaskColor, &HFF00FF
     PropBag.WriteProperty "UseMaskColor", mUseMaskColor, True
-    PropBag.WriteProperty "TabSelExtraHeight", mTabSelExtraHeight, 0
+    PropBag.WriteProperty "TabSelExtraHeight", Round(mTabSelExtraHeight), 0
     PropBag.WriteProperty "TabSelHighlight", mTabSelHighlight, False
     PropBag.WriteProperty "TabHoverHighlight", mTabHoverHighlight, True
     PropBag.WriteProperty "TabSelFontBold", mTabSelFontBold, ssYNAuto
@@ -6600,7 +6600,7 @@ Friend Sub MakeContainedControlsInSelTabVisible()
         Set iCtl = GetContainedControlByName(iCtlName)
         If Not iCtl Is Nothing Then
             iCtl.Left = iCtl.Left + 75000
-            If mSubclassed Then
+            If mAmbientUserMode And mSubclassed Then
                 iHwnd = 0
                 iHwnd = iCtl.hWnd
                 If iHwnd <> 0 Then
