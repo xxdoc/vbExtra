@@ -726,7 +726,7 @@ Begin VB.Form frmTest
       EndProperty
       TabsPerRow      =   4
       Tab             =   1
-      TabHeight       =   582,083
+      TabHeight       =   582
       Themed          =   -1  'True
       TabPic16(0)     =   "frmTest.frx":0166
       TabPic20(0)     =   "frmTest.frx":04B8
