@@ -4294,9 +4294,9 @@ Public Function DecimalSignAsc() As Long
     Dim iBuff As String * 100
     Dim iPos As Long
     Dim iRet As Long
-    Static sValue As String
+    Static sValue As Long
     
-    If sValue = "" Then
+    If sValue = 0 Then
         iRet = GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDECIMAL, iBuff, 99)
         iPos = InStr(iBuff, Chr$(0))
         sValue = Asc(Left$(iBuff, iPos - 1))

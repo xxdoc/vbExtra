@@ -2943,12 +2943,12 @@ Private Sub PutPaperSize()
     
     iPs = GetPaperSize(mPaperSize)
     
-    If iPs.X = 0 Then
+    If iPs.x = 0 Then
         mPaperWidth = mDefaultPaperWidth
         mPaperHeight = mDefaultPaperHeight
     Else
-        mPaperWidth = iPs.X
-        mPaperHeight = iPs.Y
+        mPaperWidth = iPs.x
+        mPaperHeight = iPs.y
     End If
     
 End Sub
@@ -2971,12 +2971,12 @@ Private Function GetPaperSize(nPaperSizeNumber As Long) As POINTAPI
     
     For c = 1 To UBound(iPaperSizesNumbers)
         If iPaperSizesNumbers(c) = nPaperSizeNumber Then
-            GetPaperSize.X = iPaperSizes(c).X
-            GetPaperSize.Y = iPaperSizes(c).Y
-            If GetPaperSize.X > GetPaperSize.Y Then
-                iLng = GetPaperSize.X
-                GetPaperSize.X = GetPaperSize.Y
-                GetPaperSize.Y = iLng
+            GetPaperSize.x = iPaperSizes(c).x
+            GetPaperSize.y = iPaperSizes(c).y
+            If GetPaperSize.x > GetPaperSize.y Then
+                iLng = GetPaperSize.x
+                GetPaperSize.x = GetPaperSize.y
+                GetPaperSize.y = iLng
             End If
             Exit Function
         End If
@@ -3017,8 +3017,8 @@ Private Function FindMostSimilarPaperSize(nPaperSize) As Long
     End If
     
     If (nPaperSize >= LBound(mStandardPaperSizesNumbers)) And (nPaperSize <= UBound(mStandardPaperSizesNumbers)) Then
-        iPaperWidth = mStandardPaperSizes(nPaperSize).X
-        iPaperHeight = mStandardPaperSizes(nPaperSize).Y
+        iPaperWidth = mStandardPaperSizes(nPaperSize).x
+        iPaperHeight = mStandardPaperSizes(nPaperSize).y
         
         Dim ret As Long
         Dim iPaperSizesNumbers() As Integer
@@ -3035,7 +3035,7 @@ Private Function FindMostSimilarPaperSize(nPaperSize) As Long
         Call DeviceCapabilities(mDeviceName, mPort, DC_PAPERSIZE, iPaperSizes(1), ByVal 0&)
         
         For c = 1 To UBound(iPaperSizesNumbers)
-            If (iPaperSizes(c).X = iPaperWidth) And (iPaperSizes(c).Y = iPaperHeight) Then
+            If (iPaperSizes(c).x = iPaperWidth) And (iPaperSizes(c).y = iPaperHeight) Then
                 FindMostSimilarPaperSize = iPaperSizesNumbers(c)
                 Exit For
             End If
@@ -3043,7 +3043,7 @@ Private Function FindMostSimilarPaperSize(nPaperSize) As Long
         
         If FindMostSimilarPaperSize = 0 Then
             For c = 1 To UBound(iPaperSizesNumbers)
-                If (Abs(iPaperSizes(c).X - iPaperWidth) < 2) And (Abs(iPaperSizes(c).Y - iPaperHeight) < 2) Then
+                If (Abs(iPaperSizes(c).x - iPaperWidth) < 2) And (Abs(iPaperSizes(c).y - iPaperHeight) < 2) Then
                     FindMostSimilarPaperSize = iPaperSizesNumbers(c)
                     Exit For
                 End If
@@ -3052,7 +3052,7 @@ Private Function FindMostSimilarPaperSize(nPaperSize) As Long
         
         If FindMostSimilarPaperSize = 0 Then
             For c = 1 To UBound(iPaperSizesNumbers)
-                If (Abs(iPaperSizes(c).X - iPaperWidth) < 3) And (Abs(iPaperSizes(c).Y - iPaperHeight) < 3) Then
+                If (Abs(iPaperSizes(c).x - iPaperWidth) < 3) And (Abs(iPaperSizes(c).y - iPaperHeight) < 3) Then
                     FindMostSimilarPaperSize = iPaperSizesNumbers(c)
                     Exit For
                 End If
@@ -3061,7 +3061,7 @@ Private Function FindMostSimilarPaperSize(nPaperSize) As Long
         
         If FindMostSimilarPaperSize = 0 Then
             For c = 1 To UBound(iPaperSizesNumbers)
-                If (Abs(iPaperSizes(c).X - iPaperWidth) < 4) And (Abs(iPaperSizes(c).Y - iPaperHeight) < 4) Then
+                If (Abs(iPaperSizes(c).x - iPaperWidth) < 4) And (Abs(iPaperSizes(c).y - iPaperHeight) < 4) Then
                     FindMostSimilarPaperSize = iPaperSizesNumbers(c)
                     Exit For
                 End If
@@ -3070,7 +3070,7 @@ Private Function FindMostSimilarPaperSize(nPaperSize) As Long
         
         If FindMostSimilarPaperSize = 0 Then
             For c = 1 To UBound(iPaperSizesNumbers)
-                If (Abs(iPaperSizes(c).X - iPaperWidth) < 12) And (Abs(iPaperSizes(c).Y - iPaperHeight) < 12) Then
+                If (Abs(iPaperSizes(c).x - iPaperWidth) < 12) And (Abs(iPaperSizes(c).y - iPaperHeight) < 12) Then
                     FindMostSimilarPaperSize = iPaperSizesNumbers(c)
                     Exit For
                 End If
@@ -3079,7 +3079,7 @@ Private Function FindMostSimilarPaperSize(nPaperSize) As Long
         
         If FindMostSimilarPaperSize = 0 Then
             For c = 1 To UBound(iPaperSizesNumbers)
-                If (Abs(iPaperSizes(c).X - iPaperWidth) < 30) And (Abs(iPaperSizes(c).Y - iPaperHeight) < 30) Then
+                If (Abs(iPaperSizes(c).x - iPaperWidth) < 30) And (Abs(iPaperSizes(c).y - iPaperHeight) < 30) Then
                     FindMostSimilarPaperSize = iPaperSizesNumbers(c)
                     Exit For
                 End If
@@ -3088,7 +3088,7 @@ Private Function FindMostSimilarPaperSize(nPaperSize) As Long
         
         If FindMostSimilarPaperSize = 0 Then
             For c = 1 To UBound(iPaperSizesNumbers)
-                If (Abs(iPaperSizes(c).X - iPaperWidth) < 100) And (Abs(iPaperSizes(c).Y - iPaperHeight) < 100) Then
+                If (Abs(iPaperSizes(c).x - iPaperWidth) < 100) And (Abs(iPaperSizes(c).y - iPaperHeight) < 100) Then
                     FindMostSimilarPaperSize = iPaperSizesNumbers(c)
                     Exit For
                 End If
@@ -3123,47 +3123,47 @@ Private Sub LoadStandadPaperSizes()
     ReDim mStandardPaperSizesNumbers(1 To 41)
     ReDim mStandardPaperSizes(1 To 41)
     
-    mStandardPaperSizesNumbers(1) = vbPRPSLetter: mStandardPaperSizes(1).X = 2159: mStandardPaperSizes(1).Y = 2794
-    mStandardPaperSizesNumbers(2) = vbPRPSLetterSmall: mStandardPaperSizes(2).X = 2159: mStandardPaperSizes(2).Y = 2794
-    mStandardPaperSizesNumbers(3) = vbPRPSTabloid: mStandardPaperSizes(3).X = 2794: mStandardPaperSizes(3).Y = 4318
-    mStandardPaperSizesNumbers(4) = vbPRPSLedger: mStandardPaperSizes(4).X = 4318: mStandardPaperSizes(4).Y = 2794
-    mStandardPaperSizesNumbers(5) = vbPRPSLegal: mStandardPaperSizes(5).X = 2159: mStandardPaperSizes(5).Y = 3556
-    mStandardPaperSizesNumbers(6) = vbPRPSStatement: mStandardPaperSizes(6).X = 1397: mStandardPaperSizes(6).Y = 2159
-    mStandardPaperSizesNumbers(7) = vbPRPSExecutive: mStandardPaperSizes(7).X = 1841: mStandardPaperSizes(7).Y = 2667
-    mStandardPaperSizesNumbers(8) = vbPRPSA3: mStandardPaperSizes(8).X = 2970: mStandardPaperSizes(8).Y = 4200
-    mStandardPaperSizesNumbers(9) = vbPRPSA4: mStandardPaperSizes(9).X = 2100: mStandardPaperSizes(9).Y = 2970
-    mStandardPaperSizesNumbers(10) = vbPRPSA4Small: mStandardPaperSizes(10).X = 2100: mStandardPaperSizes(10).Y = 2970
-    mStandardPaperSizesNumbers(11) = vbPRPSA5: mStandardPaperSizes(11).X = 1480: mStandardPaperSizes(11).Y = 2100
-    mStandardPaperSizesNumbers(12) = vbPRPSB4: mStandardPaperSizes(12).X = 2570: mStandardPaperSizes(12).Y = 3640
-    mStandardPaperSizesNumbers(13) = vbPRPSB5: mStandardPaperSizes(13).X = 1820: mStandardPaperSizes(13).Y = 2570
-    mStandardPaperSizesNumbers(14) = vbPRPSFolio: mStandardPaperSizes(14).X = 2159: mStandardPaperSizes(14).Y = 3302
-    mStandardPaperSizesNumbers(15) = vbPRPSQuarto: mStandardPaperSizes(15).X = 2150: mStandardPaperSizes(15).Y = 2750
-    mStandardPaperSizesNumbers(16) = vbPRPS10x14: mStandardPaperSizes(16).X = 2540: mStandardPaperSizes(16).Y = 3556
-    mStandardPaperSizesNumbers(17) = vbPRPS11x17: mStandardPaperSizes(17).X = 2794: mStandardPaperSizes(17).Y = 4318
-    mStandardPaperSizesNumbers(18) = vbPRPSNote: mStandardPaperSizes(18).X = 2159: mStandardPaperSizes(18).Y = 2794
-    mStandardPaperSizesNumbers(19) = vbPRPSEnv9: mStandardPaperSizes(19).X = 984: mStandardPaperSizes(19).Y = 2254
-    mStandardPaperSizesNumbers(20) = vbPRPSEnv10: mStandardPaperSizes(20).X = 1047: mStandardPaperSizes(20).Y = 2413
-    mStandardPaperSizesNumbers(21) = vbPRPSEnv11: mStandardPaperSizes(21).X = 1143: mStandardPaperSizes(21).Y = 2635
-    mStandardPaperSizesNumbers(22) = vbPRPSEnv12: mStandardPaperSizes(22).X = 1206: mStandardPaperSizes(22).Y = 2794
-    mStandardPaperSizesNumbers(23) = vbPRPSEnv14: mStandardPaperSizes(23).X = 1270: mStandardPaperSizes(23).Y = 2921
-    mStandardPaperSizesNumbers(24) = vbPRPSCSheet: mStandardPaperSizes(24).X = 4318: mStandardPaperSizes(24).Y = 5588
-    mStandardPaperSizesNumbers(25) = vbPRPSDSheet: mStandardPaperSizes(25).X = 5588: mStandardPaperSizes(25).Y = 8636
-    mStandardPaperSizesNumbers(26) = vbPRPSESheet: mStandardPaperSizes(26).X = 8636: mStandardPaperSizes(26).Y = 11176
-    mStandardPaperSizesNumbers(27) = vbPRPSEnvDL: mStandardPaperSizes(27).X = 1100: mStandardPaperSizes(27).Y = 2200
-    mStandardPaperSizesNumbers(28) = vbPRPSEnvC3: mStandardPaperSizes(28).X = 1620: mStandardPaperSizes(28).Y = 2290
-    mStandardPaperSizesNumbers(29) = vbPRPSEnvC4: mStandardPaperSizes(29).X = 3240: mStandardPaperSizes(29).Y = 4580
-    mStandardPaperSizesNumbers(30) = vbPRPSEnvC5: mStandardPaperSizes(30).X = 2290: mStandardPaperSizes(30).Y = 3240
-    mStandardPaperSizesNumbers(31) = vbPRPSEnvC6: mStandardPaperSizes(31).X = 1140: mStandardPaperSizes(31).Y = 1620
-    mStandardPaperSizesNumbers(32) = vbPRPSEnvC65: mStandardPaperSizes(32).X = 1140: mStandardPaperSizes(32).Y = 2290
-    mStandardPaperSizesNumbers(33) = vbPRPSEnvB4: mStandardPaperSizes(33).X = 2500: mStandardPaperSizes(33).Y = 3530
-    mStandardPaperSizesNumbers(34) = vbPRPSEnvB5: mStandardPaperSizes(34).X = 1760: mStandardPaperSizes(34).Y = 2500
-    mStandardPaperSizesNumbers(35) = vbPRPSEnvB6: mStandardPaperSizes(35).X = 1760: mStandardPaperSizes(35).Y = 1250
-    mStandardPaperSizesNumbers(36) = vbPRPSEnvItaly: mStandardPaperSizes(36).X = 1100: mStandardPaperSizes(36).Y = 2300
-    mStandardPaperSizesNumbers(37) = vbPRPSEnvMonarch: mStandardPaperSizes(37).X = 984: mStandardPaperSizes(37).Y = 1905
-    mStandardPaperSizesNumbers(38) = vbPRPSEnvPersonal: mStandardPaperSizes(38).X = 920: mStandardPaperSizes(38).Y = 1651
-    mStandardPaperSizesNumbers(39) = vbPRPSFanfoldUS: mStandardPaperSizes(39).X = 3778: mStandardPaperSizes(39).Y = 2794
-    mStandardPaperSizesNumbers(40) = vbPRPSFanfoldStdGerman: mStandardPaperSizes(40).X = 2159: mStandardPaperSizes(40).Y = 3048
-    mStandardPaperSizesNumbers(41) = vbPRPSFanfoldLglGerman: mStandardPaperSizes(41).X = 2159: mStandardPaperSizes(41).Y = 3302
+    mStandardPaperSizesNumbers(1) = vbPRPSLetter: mStandardPaperSizes(1).x = 2159: mStandardPaperSizes(1).y = 2794
+    mStandardPaperSizesNumbers(2) = vbPRPSLetterSmall: mStandardPaperSizes(2).x = 2159: mStandardPaperSizes(2).y = 2794
+    mStandardPaperSizesNumbers(3) = vbPRPSTabloid: mStandardPaperSizes(3).x = 2794: mStandardPaperSizes(3).y = 4318
+    mStandardPaperSizesNumbers(4) = vbPRPSLedger: mStandardPaperSizes(4).x = 4318: mStandardPaperSizes(4).y = 2794
+    mStandardPaperSizesNumbers(5) = vbPRPSLegal: mStandardPaperSizes(5).x = 2159: mStandardPaperSizes(5).y = 3556
+    mStandardPaperSizesNumbers(6) = vbPRPSStatement: mStandardPaperSizes(6).x = 1397: mStandardPaperSizes(6).y = 2159
+    mStandardPaperSizesNumbers(7) = vbPRPSExecutive: mStandardPaperSizes(7).x = 1841: mStandardPaperSizes(7).y = 2667
+    mStandardPaperSizesNumbers(8) = vbPRPSA3: mStandardPaperSizes(8).x = 2970: mStandardPaperSizes(8).y = 4200
+    mStandardPaperSizesNumbers(9) = vbPRPSA4: mStandardPaperSizes(9).x = 2100: mStandardPaperSizes(9).y = 2970
+    mStandardPaperSizesNumbers(10) = vbPRPSA4Small: mStandardPaperSizes(10).x = 2100: mStandardPaperSizes(10).y = 2970
+    mStandardPaperSizesNumbers(11) = vbPRPSA5: mStandardPaperSizes(11).x = 1480: mStandardPaperSizes(11).y = 2100
+    mStandardPaperSizesNumbers(12) = vbPRPSB4: mStandardPaperSizes(12).x = 2570: mStandardPaperSizes(12).y = 3640
+    mStandardPaperSizesNumbers(13) = vbPRPSB5: mStandardPaperSizes(13).x = 1820: mStandardPaperSizes(13).y = 2570
+    mStandardPaperSizesNumbers(14) = vbPRPSFolio: mStandardPaperSizes(14).x = 2159: mStandardPaperSizes(14).y = 3302
+    mStandardPaperSizesNumbers(15) = vbPRPSQuarto: mStandardPaperSizes(15).x = 2150: mStandardPaperSizes(15).y = 2750
+    mStandardPaperSizesNumbers(16) = vbPRPS10x14: mStandardPaperSizes(16).x = 2540: mStandardPaperSizes(16).y = 3556
+    mStandardPaperSizesNumbers(17) = vbPRPS11x17: mStandardPaperSizes(17).x = 2794: mStandardPaperSizes(17).y = 4318
+    mStandardPaperSizesNumbers(18) = vbPRPSNote: mStandardPaperSizes(18).x = 2159: mStandardPaperSizes(18).y = 2794
+    mStandardPaperSizesNumbers(19) = vbPRPSEnv9: mStandardPaperSizes(19).x = 984: mStandardPaperSizes(19).y = 2254
+    mStandardPaperSizesNumbers(20) = vbPRPSEnv10: mStandardPaperSizes(20).x = 1047: mStandardPaperSizes(20).y = 2413
+    mStandardPaperSizesNumbers(21) = vbPRPSEnv11: mStandardPaperSizes(21).x = 1143: mStandardPaperSizes(21).y = 2635
+    mStandardPaperSizesNumbers(22) = vbPRPSEnv12: mStandardPaperSizes(22).x = 1206: mStandardPaperSizes(22).y = 2794
+    mStandardPaperSizesNumbers(23) = vbPRPSEnv14: mStandardPaperSizes(23).x = 1270: mStandardPaperSizes(23).y = 2921
+    mStandardPaperSizesNumbers(24) = vbPRPSCSheet: mStandardPaperSizes(24).x = 4318: mStandardPaperSizes(24).y = 5588
+    mStandardPaperSizesNumbers(25) = vbPRPSDSheet: mStandardPaperSizes(25).x = 5588: mStandardPaperSizes(25).y = 8636
+    mStandardPaperSizesNumbers(26) = vbPRPSESheet: mStandardPaperSizes(26).x = 8636: mStandardPaperSizes(26).y = 11176
+    mStandardPaperSizesNumbers(27) = vbPRPSEnvDL: mStandardPaperSizes(27).x = 1100: mStandardPaperSizes(27).y = 2200
+    mStandardPaperSizesNumbers(28) = vbPRPSEnvC3: mStandardPaperSizes(28).x = 1620: mStandardPaperSizes(28).y = 2290
+    mStandardPaperSizesNumbers(29) = vbPRPSEnvC4: mStandardPaperSizes(29).x = 3240: mStandardPaperSizes(29).y = 4580
+    mStandardPaperSizesNumbers(30) = vbPRPSEnvC5: mStandardPaperSizes(30).x = 2290: mStandardPaperSizes(30).y = 3240
+    mStandardPaperSizesNumbers(31) = vbPRPSEnvC6: mStandardPaperSizes(31).x = 1140: mStandardPaperSizes(31).y = 1620
+    mStandardPaperSizesNumbers(32) = vbPRPSEnvC65: mStandardPaperSizes(32).x = 1140: mStandardPaperSizes(32).y = 2290
+    mStandardPaperSizesNumbers(33) = vbPRPSEnvB4: mStandardPaperSizes(33).x = 2500: mStandardPaperSizes(33).y = 3530
+    mStandardPaperSizesNumbers(34) = vbPRPSEnvB5: mStandardPaperSizes(34).x = 1760: mStandardPaperSizes(34).y = 2500
+    mStandardPaperSizesNumbers(35) = vbPRPSEnvB6: mStandardPaperSizes(35).x = 1760: mStandardPaperSizes(35).y = 1250
+    mStandardPaperSizesNumbers(36) = vbPRPSEnvItaly: mStandardPaperSizes(36).x = 1100: mStandardPaperSizes(36).y = 2300
+    mStandardPaperSizesNumbers(37) = vbPRPSEnvMonarch: mStandardPaperSizes(37).x = 984: mStandardPaperSizes(37).y = 1905
+    mStandardPaperSizesNumbers(38) = vbPRPSEnvPersonal: mStandardPaperSizes(38).x = 920: mStandardPaperSizes(38).y = 1651
+    mStandardPaperSizesNumbers(39) = vbPRPSFanfoldUS: mStandardPaperSizes(39).x = 3778: mStandardPaperSizes(39).y = 2794
+    mStandardPaperSizesNumbers(40) = vbPRPSFanfoldStdGerman: mStandardPaperSizes(40).x = 2159: mStandardPaperSizes(40).y = 3048
+    mStandardPaperSizesNumbers(41) = vbPRPSFanfoldLglGerman: mStandardPaperSizes(41).x = 2159: mStandardPaperSizes(41).y = 3302
     
     mStandardPaperSizesLoaded = True
 End Sub
