@@ -13,6 +13,8 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
 
+Private Declare Function lstrlen Lib "Kernel32" Alias "lstrlenW" (ByVal lpString As Long) As Long
+
 Private Type PRINTER_DEFAULTS
     pDatatype As Long
     pDevmode As Long
@@ -44,28 +46,6 @@ Private Declare Function DeviceCapabilities Lib "winspool.drv" Alias "DeviceCapa
 Private Declare Function OleTranslateColor Lib "olepro32.dll" (ByVal OLE_COLOR As Long, ByVal hPalette As Long, pccolorref As Long) As Long
 Private Const CLR_INVALID = -1
 
-'API function called by ChooseColor method
-Private Declare Function ChooseColor Lib "comdlg32.dll" Alias "ChooseColorA" (pChoosecolor As T_ChooseColor) As Long
-
-'API function called by ChooseFont method
-Private Declare Function CHOOSEFONT Lib "comdlg32.dll" Alias "ChooseFontA" (pChoosefont As T_CHOOSEFONT) As Long
-
-'API function inside ShowHelp method
-Private Declare Function WinHelp Lib "user32" Alias "WinHelpA" (ByVal hWnd As Long, ByVal lpHelpFile As String, ByVal wCommand As Long, ByVal dwData As Long) As Long
-
-'API function called by ShowOpen method
-Private Declare Function GetOpenFileName Lib "comdlg32.dll" Alias "GetOpenFileNameA" (pOpenfilename As T_OpenFilename) As Long
-
-'API function called by ShowSave method
-Private Declare Function GetSaveFileName Lib "comdlg32.dll" Alias "GetSaveFileNameA" (pOpenfilename As T_OpenFilename) As Long
-
-'API function called by ShowPrint method
-Private Declare Function PrintDlg Lib "comdlg32.dll" Alias "PrintDlgA" (pPrintdlg As T_PrintDlg) As Long
-
-
-'API function to retrieve extended error information
-Private Declare Function CommDlgExtendedError Lib "comdlg32.dll" () As Long
-
 Private Declare Function GetLocaleInfo Lib "Kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
 Private Const LOCALE_USER_DEFAULT As Long = &H400&
 Private Const LOCALE_IMEASURE As Long = &HD&
@@ -80,14 +60,14 @@ Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (hpvDest As 
 Private Declare Function lstrlenPtr Lib "Kernel32" Alias "lstrlenA" (ByVal lpString As Long) As Long
 
 Private Type BrowseInfo
-   hwndOwner As Long
-   pIDLRoot As Long
-   pszDisplayName As String
-   lpszTitle As String
-   ulFlags As Long
-   lpfnCallback As Long
-   lParam As Long
-   iImage As Long
+    hWndOwner As Long
+    pIDLRoot As Long
+    pszDisplayName As String
+    lpszTitle As String
+    ulFlags As Long
+    lpfnCallback As Long
+    lParam As Long
+    iImage As Long
 End Type
 
 Private Type SHITEMID
@@ -102,7 +82,7 @@ End Type
 Private Declare Function SHGetPathFromIDList Lib "shell32.dll" Alias "SHGetPathFromIDListA" (ByVal pidl As Long, ByVal pszPath As String) As Long
 Private Declare Function SHBrowseForFolder Lib "shell32.dll" Alias "SHBrowseForFolderA" (lpBrowseInfo As BrowseInfo) As Long
 Private Declare Sub CoTaskMemFree Lib "ole32.dll" (ByVal pv As Long)
-Private Declare Function SHGetFolderLocation Lib "shell32" (ByVal hwndOwner As Long, ByVal nFolder As Long, ByVal hToken As Long, ByVal dwReserved As Long, pidl As ITEMIDLIST) As Long
+Private Declare Function SHGetFolderLocation Lib "shell32" (ByVal hWndOwner As Long, ByVal nFolder As Long, ByVal hToken As Long, ByVal dwReserved As Long, pidl As ITEMIDLIST) As Long
 Private Declare Function PathIsDirectory Lib "shlwapi.dll" Alias "PathIsDirectoryA" (ByVal pszPath As String) As Long
 Private Declare Function SHParseDisplayName Lib "shell32.dll" (ByVal pszName As Long, ByVal pbc As Long, ByRef ppidl As Long, ByVal sfgaoIn As Long, ByRef psfgaoOut As Long) As Long
 
@@ -117,16 +97,16 @@ Private Const GMEM_ZEROINIT = &H40
 Private Const GHND = (GMEM_MOVEABLE Or GMEM_ZEROINIT)
 
 'data buffer for the ChooseColor function
-Private Type T_ChooseColor
-        lStructSize As Long
-        hwndOwner As Long
-        hInstance As Long
-        RGBResult As Long
-        lpCustColors As Long
-        Flags As Long
-        lCustData As Long
-        lpfnHook As Long
-        lpTemplateName As String
+Private Type T_CHOOSECOLOR
+    lStructSize As Long
+    hWndOwner As Long
+    hInstance As Long
+    RGBResult As Long
+    lpCustColors As Long
+    Flags As Long
+    lCustData As Long
+    lpfnHook As Long
+    lpTemplateName As String
 End Type
 
 'constants for LOGFONT
@@ -142,7 +122,6 @@ Private Const FW_NORMAL As Long = 400
 Private Const FW_BOLD As Long = 700
 'Private Const FW_EXTRABOLD As Long = 800
 'Private Const FW_HEAVY As Long = 900
-
 
 'data buffer for the ChooseFont function
 Private Type LOGFONT
@@ -164,27 +143,114 @@ End Type
 
 'data buffer for the ChooseFont function
 Private Type T_CHOOSEFONT
-        lStructSize As Long
-        hwndOwner As Long
-        hDC As Long
-        lpLogFont As Long
-        iPointSize As Long
-        Flags As Long
-        rgbColors As Long
-        lCustData As Long
-        lpfnHook As Long
-        lpTemplateName As String
-        hInstance As Long
-        lpszStyle As String
-        nFontType As Integer
-        MISSING_ALIGNMENT As Integer
-        nSizeMin As Long
-        nSizeMax As Long
+    lStructSize As Long
+    hWndOwner As Long
+    hDC As Long
+    lpLogFont As Long
+    iPointSize As Long
+    Flags As Long
+    rgbColors As Long
+    lCustData As Long
+    lpfnHook As Long
+    lpTemplateName As String
+    hInstance As Long
+    lpszStyle As String
+    nFontType As Integer
+    MISSING_ALIGNMENT As Integer
+    nSizeMin As Long
+    nSizeMax As Long
 End Type
+
+'data buffer for the GetOpenFileName and GetSaveFileName functions
+Private Type T_OPENFILENAME
+'    lStructSize As Long
+'    hWndOwner As Long
+'    hInstance As Long
+'    lpstrFilter As String
+'    lpstrCustomFilter As String
+'    nMaxCustFilter As Long
+'    mFilterIndex As Long
+'    lpstrFile As String
+'    nMaxFile As Long
+'    lpstrFileTitle As String
+'    nMaxFileTitle As Long
+'    lpstrInitialDir As String
+'    lpstrTitle As String
+'    Flags As Long
+'    nFileOffset As Integer
+'    nFileExtension As Integer
+'    lpstrDefExt As String
+'    lCustData As Long
+'    lpfnHook As Long
+'    lpTemplateName As String
+    lStructSize As Long
+    hWndOwner As Long
+    hInstance As Long
+    lpstrFilter As Long
+    lpstrCustomFilter As Long
+    nMaxCustFilter As Long
+    nFilterIndex As Long
+    lpstrFile As Long
+    nMaxFile As Long
+    lpstrFileTitle As Long
+    nMaxFileTitle As Long
+    lpstrInitialDir As Long
+    lpstrTitle As Long
+    Flags As Long
+    nFileOffset As Integer
+    nFileExtension As Integer
+    lpstrDefExt As Long
+    lCustData As Long
+    lpfnHook As Long
+    lpTemplateName As Long
+    pvReserved As Long
+    dwReserved As Long
+    FlagsEx As Long
+End Type
+
+
+'data buffer for the PrintDlg function
+Private Type T_PrintDlg
+    lStructSize As Long
+    hWndOwner As Long
+    hDevMode As Long
+    hDevNames As Long
+    hDC As Long
+    Flags As Long
+    nFromPage As Integer
+    nToPage As Integer
+    nMinPage As Integer
+    nMaxPage As Integer
+    nCopies As Integer
+    hInstance As Long
+    lCustData As Long
+    lpfnPrintHook As Long
+    lpfnSetupHook As Long
+    lpPrintTemplateName As String
+    lpSetupTemplateName As String
+    hPrintTemplate As Long
+    hSetupTemplate As Long
+End Type
+
+
+Private Declare Function ChooseColor Lib "comdlg32.dll" Alias "ChooseColorA" (pChoosecolor As T_CHOOSECOLOR) As Long
+'Private Declare Function ChooseFont Lib "comdlg32.dll" Alias "ChooseFontA" (pChoosefont As T_CHOOSEFONT) As Long
+Private Declare Function ChooseFont Lib "comdlg32" Alias "ChooseFontW" (ByRef pChooseFont As T_CHOOSEFONT) As Long
+'Private Declare Function WinHelp Lib "user32" Alias "WinHelpA" (ByVal hWnd As Long, ByVal lpHelpFile As String, ByVal wCommand As Long, ByVal dwData As Long) As Long
+Private Declare Function WinHelp Lib "user32" Alias "WinHelpW" (ByVal hWnd As Long, ByVal lpHelpFile As Long, ByVal wCommand As Long, ByVal dwData As Long) As Long
+'Private Declare Function GetOpenFileName Lib "comdlg32.dll" Alias "GetOpenFileNameA" (pOpenfilename As T_OPENFILENAME) As Long
+Private Declare Function GetOpenFileName Lib "comdlg32" Alias "GetOpenFileNameW" (pOpenfilename As T_OPENFILENAME) As Long
+'Private Declare Function GetSaveFileName Lib "comdlg32.dll" Alias "GetSaveFileNameA" (pOpenfilename As T_OPENFILENAME) As Long
+Private Declare Function GetSaveFileName Lib "comdlg32" Alias "GetSaveFileNameW" (pOpenfilename As T_OPENFILENAME) As Long
+Private Declare Function PrintDlg Lib "comdlg32.dll" Alias "PrintDlgA" (pPrintdlg As T_PrintDlg) As Long
+'Private Declare Function PrintDlg Lib "comdlg32.dll" Alias "PrintDlgW" (pPrintdlg As T_PrintDlg) As Long ' it seems to work fine, but not sure what the advantage is using it
+
+'API function to retrieve extended error information
+Private Declare Function CommDlgExtendedError Lib "comdlg32.dll" () As Long
 
 Private Type T_PAGESETUPDLG
     lStructSize                 As Long
-    hwndOwner                   As Long
+    hWndOwner                   As Long
     hDevMode                    As Long
     hDevNames                   As Long
     Flags                       As Long
@@ -199,7 +265,7 @@ Private Type T_PAGESETUPDLG
     hPageSetupTemplate          As Long
 End Type
 
-Private Declare Function PageSetupDlg Lib "COMDLG32" Alias "PageSetupDlgA" (lppage As T_PAGESETUPDLG) As Boolean
+Private Declare Function PageSetupDlg Lib "comdlg32" Alias "PageSetupDlgA" (lppage As T_PAGESETUPDLG) As Boolean
     
 Private Const CC_ENABLEHOOK = &H10&
 Private Const CC_ENABLETEMPLATE = &H20&
@@ -224,54 +290,6 @@ Private Const PSD_ENABLEPAGEPAINTHOOK As Long = &H40000
 Private Const PSD_ENABLEPAGESETUPHOOK As Long = &H2000&
 Private Const PSD_ENABLEPAGESETUPTEMPLATE As Long = &H8000&
 
-
-'data buffer for the GetOpenFileName and GetSaveFileName functions
-Private Type T_OpenFilename
-        lStructSize As Long
-        hwndOwner As Long
-        hInstance As Long
-        lpstrFilter As String
-        lpstrCustomFilter As String
-        nMaxCustFilter As Long
-        mFilterIndex As Long
-        lpstrFile As String
-        nMaxFile As Long
-        lpstrFileTitle As String
-        nMaxFileTitle As Long
-        lpstrInitialDir As String
-        lpstrTitle As String
-        Flags As Long
-        nFileOffset As Integer
-        nFileExtension As Integer
-        lpstrDefExt As String
-        lCustData As Long
-        lpfnHook As Long
-        lpTemplateName As String
-End Type
-
-
-'data buffer for the PrintDlg function
-Private Type T_PrintDlg
-        lStructSize As Long
-        hwndOwner As Long
-        hDevMode As Long
-        hDevNames As Long
-        hDC As Long
-        Flags As Long
-        nFromPage As Integer
-        nToPage As Integer
-        nMinPage As Integer
-        nMaxPage As Integer
-        nCopies As Integer
-        hInstance As Long
-        lCustData As Long
-        lpfnPrintHook As Long
-        lpfnSetupHook As Long
-        lpPrintTemplateName As String
-        lpSetupTemplateName As String
-        hPrintTemplate As Long
-        hSetupTemplate As Long
-End Type
 
 'constants for color dialog
 
@@ -746,7 +764,7 @@ Private mAmbientUserMode As Boolean
 Public Sub ShowColor(Optional ByVal nFlags As cdeCommonDialogExColorFlagsConstants = -1)
     'display the color dialog box
     
-    Dim tChooseColor As T_ChooseColor
+    Dim tChooseColor As T_CHOOSECOLOR
     Dim lCustomColorSize As Long
     Dim lCustomColorAddress As Long
     Dim lMemHandle As Long
@@ -772,7 +790,7 @@ Public Sub ShowColor(Optional ByVal nFlags As cdeCommonDialogExColorFlagsConstan
     
     tChooseColor.lStructSize = Len(tChooseColor)
     
-    tChooseColor.hwndOwner = iHwndOwner
+    tChooseColor.hWndOwner = iHwndOwner
     
     ' Get size of memory needed for custom colors
     lCustomColorSize = Len(mCustomColors(0)) * 16
@@ -841,14 +859,17 @@ End Sub
 Public Sub ShowFont(Optional ByVal nFlags As cdeCommonDialogExFontFlagsConstants = -1)
     'display the font dialog box
     
-    Dim tLogFont As LOGFONT
-    Dim tChooseFont As T_CHOOSEFONT
+    Dim tLogFont As LOGFONTW
+    Dim iCF As T_CHOOSEFONT
     Dim lLogFontSize As Long
     Dim lLogFontAddress As Long
     Dim lMemHandle As Long
     Dim i As Long
     Dim iHwndOwner As Long
     Dim iFlags As Long
+    Dim iBytes() As Byte
+    Dim iStr As String
+    Dim iLng As Long
     
     Dim iFontName_Prev As String
     Dim iFontSize_Prev As Single
@@ -882,8 +903,7 @@ Public Sub ShowFont(Optional ByVal nFlags As cdeCommonDialogExFontFlagsConstants
     mExtendedError = 0  'ExtendedError property
 
     
-    '***    prepare tChooseFont data
-        
+    '***    prepare T_CHOOSEFONT data
     
     tLogFont.lfHeight = mFont.Size * 20 / Screen.TwipsPerPixelY * -1 ' PointsPerTwip = 1440 / 72 = 20
     'tLogFont.lfWidth As Long
@@ -919,33 +939,35 @@ Public Sub ShowFont(Optional ByVal nFlags As cdeCommonDialogExFontFlagsConstants
     tLogFont.lfQuality = CLEARTYPE_QUALITY
     'tLogFont.lfPitchAndFamily As Byte
     
+    iBytes = mFont.Name
     For i = 0 To Len(mFont.Name) - 1
         If i > 31 Then Exit For
-        tLogFont.lfFaceName(i) = Asc(Mid$(mFont.Name, i + 1, 1))
+        tLogFont.lfFaceName(i * 2) = iBytes(i * 2) 'Asc(Mid$(mFont.Name, i + 1, 1))
+        tLogFont.lfFaceName(i * 2 + 1) = iBytes(i * 2 + 1)
     Next
     
     lLogFontSize = Len(tLogFont)
     
     
-    tChooseFont.lStructSize = Len(tChooseFont)
-    tChooseFont.hwndOwner = iHwndOwner
-    tChooseFont.rgbColors = mColor
-'    tChooseFont.lCustData = 0
-'    tChooseFont.lpfnHook = 0
-    tChooseFont.lpTemplateName = Space$(2048)
-    'tChooseFont.hInstance As Long
+    iCF.lStructSize = Len(iCF)
+    iCF.hWndOwner = iHwndOwner
+    iCF.rgbColors = mColor
+'    iCF.lCustData = 0
+'    iCF.lpfnHook = 0
+    iCF.lpTemplateName = Space$(2048)
+    'iCF.hInstance As Long
     
-    'tChooseFont.lpszStyle As String
+    'iCF.lpszStyle As String
     'sFont = Chr$(0) & Space$(20) & Chr$(0)
-    'tChooseFont.lpszStyle = sFont
+    'iCF.lpszStyle = sFont
     
- '   tChooseFont.nFontType = Screen.FontCount
-    'tChooseFont.MISSING_ALIGNMENT As Integer
-    tChooseFont.nSizeMin = mMin
-    tChooseFont.nSizeMax = mMax
+ '   iCF.nFontType = Screen.FontCount
+    'iCF.MISSING_ALIGNMENT As Integer
+    iCF.nSizeMin = mMin
+    iCF.nSizeMax = mMax
                     
     
-    'tChooseFont.lpLogFont As Long
+    'iCF.lpLogFont As Long
     
     ' Get a global memory block to hold a copy of tLogFont - exit on failure
     lMemHandle = GlobalAlloc(GHND, lLogFontSize)
@@ -962,35 +984,35 @@ Public Sub ShowFont(Optional ByVal nFlags As cdeCommonDialogExFontFlagsConstants
     ' Copy tLogFont to the global memory block
     Call CopyMemory(ByVal lLogFontAddress, tLogFont, lLogFontSize)
  
-    tChooseFont.lpLogFont = lLogFontAddress
+    iCF.lpLogFont = lLogFontAddress
     
-    'tChooseFont.iPointSize As Long - init from FontSize property
-    tChooseFont.iPointSize = mFont.Size * 10
+    'iCF.iPointSize As Long - init from FontSize property
+    iCF.iPointSize = mFont.Size * 10
     
     ' Flags can get reference variable or constant with bit Flags
-    tChooseFont.Flags = iFlags Or CF_INITTOLOGFONTSTRUCT And Not (CF_APPLY Or CF_ENABLEHOOK Or CF_ENABLETEMPLATE)
+    iCF.Flags = iFlags Or CF_INITTOLOGFONTSTRUCT And Not (CF_APPLY Or CF_ENABLEHOOK Or CF_ENABLETEMPLATE)
     
     If mhDc = 0 Then
         If Not Printer Is Nothing Then
-            If ((tChooseFont.Flags And CF_PRINTERFONTS) = CF_PRINTERFONTS) Then tChooseFont.hDC = Printer.hDC
+            If ((iCF.Flags And CF_PRINTERFONTS) = CF_PRINTERFONTS) Then iCF.hDC = Printer.hDC
         End If
     Else
-        tChooseFont.Flags = tChooseFont.Flags Or CF_PRINTERFONTS
-        tChooseFont.hDC = mhDc
+        iCF.Flags = iCF.Flags Or CF_PRINTERFONTS
+        iCF.hDC = mhDc
     End If
     ' Must have some fonts
-    If (tChooseFont.Flags And CF_PRINTERFONTS) = 0 Then tChooseFont.Flags = tChooseFont.Flags Or CF_SCREENFONTS
+    If (iCF.Flags And CF_PRINTERFONTS) = 0 Then iCF.Flags = iCF.Flags Or CF_SCREENFONTS
     ' Color can take initial color, receive chosen color
-    If mColor <> 0 Then tChooseFont.Flags = tChooseFont.Flags Or CF_EFFECTS
+    If mColor <> 0 Then iCF.Flags = iCF.Flags Or CF_EFFECTS
     ' MinSize can be minimum size accepted
-    If (mMin <> 0) Then tChooseFont.Flags = tChooseFont.Flags Or CF_LIMITSIZE
+    If (mMin <> 0) Then iCF.Flags = iCF.Flags Or CF_LIMITSIZE
     ' MaxSize can be maximum size accepted
-    If (mMax <> 0) Then tChooseFont.Flags = tChooseFont.Flags Or CF_LIMITSIZE
+    If (mMax <> 0) Then iCF.Flags = iCF.Flags Or CF_LIMITSIZE
     
-    'tChooseFont.Flags = tChooseFont.Flags And Not CF_LIMITSIZE
+    'iCF.Flags = iCF.Flags And Not CF_LIMITSIZE
     
     '***    call the CHOOSEFONT API function
-    mApiReturn = CHOOSEFONT(tChooseFont)    'store to APIReturn property
+    mApiReturn = ChooseFont(iCF)      'store to APIReturn property
     
     
     '***    handle return from CHOOSEFONT API function
@@ -1037,13 +1059,19 @@ Public Sub ShowFont(Optional ByVal nFlags As cdeCommonDialogExFontFlagsConstants
                 mFont.Strikethrough = False
             End If
             
-            mColor = tChooseFont.rgbColors
+            mColor = iCF.rgbColors
             
             'tLogFont.lfFaceName(LF_FACESIZE) As Byte - store to FontName property
-            FontName = sByteArrayToString(tLogFont.lfFaceName())
             
-            'tChooseFont.iPointSize As Long - store to FontSize property
-            mFont.Size = CLng(tChooseFont.iPointSize / 10)
+            iStr = CStr(tLogFont.lfFaceName)
+            iLng = InStr(iStr, Chr(0))
+            If iLng > 0 Then
+                iStr = Left$(iStr, iLng)
+            End If
+            FontName = iStr
+            
+            'iCF.iPointSize As Long - store to FontSize property
+            mFont.Size = CLng(iCF.iPointSize / 10)
         
             If mFont.Name <> iFontName_Prev Then mChanged = True
             If mFont.Size <> iFontSize_Prev Then mChanged = True
@@ -1091,7 +1119,7 @@ Public Sub ShowHelp()
     End Select
     
     '***    call the API function
-    mApiReturn = WinHelp(0&, mHelpFile, mHelpCommand, lData)     ' - Store to APIReturn property
+    mApiReturn = WinHelp(0&, StrPtr(mHelpFile), mHelpCommand, lData)      ' - Store to APIReturn property
     
     Select Case mApiReturn
         
@@ -1176,7 +1204,7 @@ Public Sub ShowPrinter(Optional ByVal nFlags As cdeCommonDialogExPrinterFlagsCon
     
     tPrintDlg.lStructSize = Len(tPrintDlg)
     
-    tPrintDlg.hwndOwner = iHwndOwner
+    tPrintDlg.hWndOwner = iHwndOwner
     
     If (iFlags And cdlPDReturnDefault) <> 0 Then
         tPrintDlg.hDevMode = 0
@@ -1754,47 +1782,19 @@ End Property
 '    ExtendedError = mExtendedError
 'End Property
 
-
-Private Function sByteArrayToString(abBytes() As Byte) As String
-    'return a string from a byte array
-    Dim lBytePoint As Long
-    Dim lByteVal As Long
-    Dim sOut As String
-    
-    'init array pointer
-    lBytePoint = LBound(abBytes)
-    
-    'fill sOut with characters in array
-    While lBytePoint <= UBound(abBytes)
-        
-        lByteVal = abBytes(lBytePoint)
-        
-        'return sOut and stop if Chr$(0) is encountered
-        If lByteVal = 0 Then
-            sByteArrayToString = sOut
-            Exit Function
-        Else
-            sOut = sOut & Chr$(lByteVal)
-        End If
-        
-        lBytePoint = lBytePoint + 1
-    
-    Wend
-    
-    'return sOut if Chr$(0) wasn't encountered
-    sByteArrayToString = sOut
-    
-End Function
 Private Sub ShowFileDialog(ByVal mAction As Integer, nFlags As Long, Optional ByVal nHwndOwner As Long)
     
     'display the file dialog for ShowOpen or ShowSave
     
-    Dim tOpenFile As T_OpenFilename
+    Dim tOpenFile As T_OPENFILENAME
     Dim lMaxSize As Long
     Dim sFileNameBuff As String
     Dim sFileTitleBuff As String
     Dim iPos As Long
     Dim iFileName_Prev As String
+    Dim iStr As String
+    Dim iBuffer As String
+    Dim iLen As Long
     
     On Error GoTo ShowFileDialogError
     
@@ -1810,19 +1810,12 @@ Private Sub ShowFileDialog(ByVal mAction As Integer, nFlags As Long, Optional By
     
     '***    prepare tOpenFile data
     
-    'tOpenFile.lStructSize As Long
     tOpenFile.lStructSize = Len(tOpenFile)
+    tOpenFile.hWndOwner = nHwndOwner
+    iStr = sAPIFilter(mFilter)
+    tOpenFile.lpstrFilter = StrPtr(iStr)
+    tOpenFile.nFilterIndex = mFilterIndex
     
-    'tOpenFile.hWndOwner As Long - init from hDc property
-    tOpenFile.hwndOwner = nHwndOwner
-    
-    'tOpenFile.lpstrFilter As String - init from Filter property
-    tOpenFile.lpstrFilter = sAPIFilter(mFilter)
-        
-    'tOpenFile.mFilterIndex As Long - init from FilterIndex property
-    tOpenFile.mFilterIndex = mFilterIndex
-    
-    'tOpenFile.lpstrFile As String
     'determine size of buffer from MaxFileSize property
     If mMaxFileSize > 0 Then
         lMaxSize = mMaxFileSize
@@ -1830,7 +1823,6 @@ Private Sub ShowFileDialog(ByVal mAction As Integer, nFlags As Long, Optional By
         lMaxSize = 255
     End If
     
-    'tOpenFile.lpstrFile As Long - init from FileName property
     'prepare sFileNameBuff
     sFileNameBuff = mFileName
     If InStr(sFileNameBuff, "//") > 0 Then
@@ -1880,8 +1872,8 @@ Private Sub ShowFileDialog(ByVal mAction As Integer, nFlags As Long, Optional By
     
     'pad with spaces
     If (nFlags And cdlOFNAllowMultiselect) <> 0 Then
-        sFileNameBuff = sFileNameBuff & Space$(100000 - Len(sFileNameBuff) - 1)
-        sFileNameBuff = Mid$(sFileNameBuff, 1, 99999)
+        sFileNameBuff = sFileNameBuff & String$(500 - Len(sFileNameBuff) - 1, Chr(0))
+        sFileNameBuff = Mid$(sFileNameBuff, 1, 499)
     Else
         While Len(sFileNameBuff) < lMaxSize - 1
             sFileNameBuff = sFileNameBuff & " "
@@ -1891,41 +1883,33 @@ Private Sub ShowFileDialog(ByVal mAction As Integer, nFlags As Long, Optional By
     End If
     'null terminate
     sFileNameBuff = sFileNameBuff & Chr$(0)
-    tOpenFile.lpstrFile = sFileNameBuff
+    tOpenFile.lpstrFile = StrPtr(sFileNameBuff)
     
     'nMaxFile As Long - init from MaxFileSize property
     'If mMaxFileSize <> 255 Then  'default is 255
     If (nFlags And cdlOFNAllowMultiselect) <> 0 Then
-        tOpenFile.nMaxFile = 100000
+        tOpenFile.nMaxFile = 499
     Else
         tOpenFile.nMaxFile = lMaxSize
     End If
     'End If
             
-    'lpstrFileTitle As String - init from FileTitle property
-        'prepare sFileTitleBuff
-        sFileTitleBuff = mFileTitle
-        'pad with spaces
-        While Len(sFileTitleBuff) < lMaxSize - 1
-            sFileTitleBuff = sFileTitleBuff & " "
-        Wend
-        'Trim$ to length of mMaxFileSize - 1
-        sFileTitleBuff = Mid$(sFileTitleBuff, 1, lMaxSize - 1)
-        'null terminate
-        sFileTitleBuff = sFileTitleBuff & Chr$(0)
-    tOpenFile.lpstrFileTitle = sFileTitleBuff
+    'prepare sFileTitleBuff
+    sFileTitleBuff = mFileTitle
+    'pad with spaces
+    While Len(sFileTitleBuff) < lMaxSize - 1
+        sFileTitleBuff = sFileTitleBuff & " "
+    Wend
+    'Trim$ to length of mMaxFileSize - 1
+    sFileTitleBuff = Mid$(sFileTitleBuff, 1, lMaxSize - 1)
+    'null terminate
+    sFileTitleBuff = sFileTitleBuff & Chr$(0)
+    tOpenFile.lpstrFileTitle = StrPtr(sFileTitleBuff)
         
-    'tOpenFile.lpstrInitialDir As String - init from InitDir property
-    tOpenFile.lpstrInitialDir = mInitDir
-    
-    'tOpenFile.lpstrTitle As String - init from DialogTitle property
-    tOpenFile.lpstrTitle = mDialogTitle
-    
-    'tOpenFile.Flags As Long - init from Flags property
+    tOpenFile.lpstrInitialDir = StrPtr(mInitDir)
+    tOpenFile.lpstrTitle = StrPtr(mDialogTitle)
     tOpenFile.Flags = nFlags Or cdlOFNNoChangeDir
-        
-    'tOpenFile.lpstrDefExt As String - init from DefaultExt property
-    tOpenFile.lpstrDefExt = mDefaultExt
+    tOpenFile.lpstrDefExt = StrPtr(mDefaultExt)
     
     
     '***    call the GetOpenFileName API function
@@ -1956,10 +1940,16 @@ Private Sub ShowFileDialog(ByVal mAction As Integer, nFlags As Long, Optional By
         
         Case 1  'user selected or entered a file
             'mFileName gets part of tOpenFile.lpstrFile to the Left of first Chr$(0)
+            
+            iBuffer = String(lMaxSize, vbNullChar)
+            iLen = lstrlen(tOpenFile.lpstrFile)
+            If iLen > lMaxSize Then iLen = lMaxSize
+            CopyMemory ByVal StrPtr(iBuffer), ByVal tOpenFile.lpstrFile, iLen * 2
+            
             If (tOpenFile.Flags And cdlOFNAllowMultiselect) <> 0 Then
-                mFileName = sLeftOfLastNull(tOpenFile.lpstrFile)
+                mFileName = sLeftOfLastNull(iBuffer)
             Else
-                mFileName = sLeftOfNull(tOpenFile.lpstrFile)
+                mFileName = sLeftOfNull(iBuffer)
             End If
             mFileTitle = sLeftOfNull(tOpenFile.lpstrFileTitle)
             mChanged = mFileName <> iFileName_Prev
@@ -2455,7 +2445,7 @@ Public Sub ShowPageSetup(Optional ByVal nFlags As cdeCommonDialogExPageSetupFlag
         iPsd.Flags = iPsd.Flags Or cdlPSMinMargins
     End If
     
-    iPsd.hwndOwner = iHwndOwner
+    iPsd.hWndOwner = iHwndOwner
     iPsd.rtMargin.Top = mTopMargin * iUnitsMultiplier
     iPsd.rtMargin.Left = mLeftMargin * iUnitsMultiplier
     iPsd.rtMargin.Bottom = mBottomMargin * iUnitsMultiplier
@@ -2752,7 +2742,7 @@ Public Sub ShowFolder(Optional nFlags As cdeCommonDialogExFolderFlagsConstants =
     gWindowTitle = mDialogTitle
     iHwndOwner = GetActiveWindowHwnd
     'Set the properties of the folder dialog
-    bInf.hwndOwner = iHwndOwner
+    bInf.hWndOwner = iHwndOwner
     bInf.pszDisplayName = String(260, 32)
     
     iRootFolder = Replace(LCase$(mRootFolder), " ", "")

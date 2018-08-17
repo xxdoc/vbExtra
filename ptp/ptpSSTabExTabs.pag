@@ -483,6 +483,12 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
 
+
+Private Enum vbExMouseButtonsConstants
+    vxMBLeft = 1
+    vxMBRight = 2
+End Enum
+
 Private Type POINTAPI
     x As Long
     y As Long
@@ -756,7 +762,7 @@ Private Sub cmdMoveControlToTab_Click()
         End If
     Next t
     
-    ShowModal iFrm
+    iFrm.Show 1
     If iFrm.SelectedControl <> "" Then
         For t = 0 To UBound(mTabData)
             If t <> mTabSel Then

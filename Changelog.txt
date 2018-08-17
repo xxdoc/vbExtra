@@ -1,4 +1,7 @@
-08/15/2018 Added Unicode suppport for font names in PrinterEx
+08/17/2018 GUI localized captions for Chinese language updated
+08/16/2018 Added more Unicode support for fonts names and CommonDialogEx
+08/16/2018 SSTabEx code updated. Due to a VB6 bug, Single type numbers are localized in the properties saved (commas intead of points), so I decided to round them to integers when they are saved to avoid the problem.
+08/15/2018 Added Unicode support for font names in PrinterEx
 08/15/2018 Fixed FontCount property get in cPrinterEx
 08/14/2018 Added Chinese Simplified GUI language support.
 08/14/2018 in frmPrintPreview.frm, Sub ShowPages: fixed when showing 12 pages landscaped (they went outside the screen space)

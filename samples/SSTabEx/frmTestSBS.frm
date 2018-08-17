@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "TABCTL32.OCX"
-Object = "{F22668DE-E08D-467B-8E41-13900013BD5F}#1.0#0"; "vbExtra1.ocx"
+Object = "{F22668DE-E08D-467B-8E41-13900013BD5F}#1.1#0"; "vbExtra1.ocx"
 Begin VB.Form frmTestSBS 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Test side by side with SSTab"
@@ -18,6 +18,7 @@ Begin VB.Form frmTestSBS
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form2"
+   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   7020
@@ -64,12 +65,12 @@ Begin VB.Form frmTestSBS
       TabCaption(3)   =   "Cmd"
       TabPicture(3)   =   "frmTestSBS.frx":3BA6
       Tab(3).ControlEnabled=   0   'False
-      Tab(3).Control(0)=   "Label10"
-      Tab(3).Control(1)=   "Option7"
-      Tab(3).Control(2)=   "Check4"
-      Tab(3).Control(3)=   "Option8"
-      Tab(3).Control(4)=   "Command3"
-      Tab(3).Control(5)=   "Command4"
+      Tab(3).Control(0)=   "Command4"
+      Tab(3).Control(1)=   "Command3"
+      Tab(3).Control(2)=   "Option8"
+      Tab(3).Control(3)=   "Check4"
+      Tab(3).Control(4)=   "Option7"
+      Tab(3).Control(5)=   "Label10"
       Tab(3).ControlCount=   6
       TabCaption(4)   =   "Label"
       TabPicture(4)   =   "frmTestSBS.frx":4F88
@@ -603,7 +604,7 @@ Begin VB.Form frmTestSBS
       EndProperty
       TabsPerRow      =   4
       Tab             =   1
-      TabHeight       =   582,083
+      TabHeight       =   582
       TabPicture(0)   =   "frmTestSBS.frx":5131
       TabCaption(0)   =   "Theme"
       Tab(0).ControlCount=   1
@@ -893,7 +894,7 @@ Begin VB.Form frmTestSBS
    Begin VB.Label lblFocus 
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8
+         Size            =   7.8
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
