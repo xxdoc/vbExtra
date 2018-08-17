@@ -211,11 +211,12 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                 Case efnGUIStr_frmConfigHistory_Caption
                     GetLocalizedString = "历史配置"
                 Case efnGUIStr_frmConfigHistory_chkRememberHistory_Caption
-                    GetLocalizedString = "记住跨会话的历史"
+                    GetLocalizedString = "记住历史记录"
                 Case efnGUIStr_frmConfigHistory_HelpMessageTitle
                     GetLocalizedString = "历史"
                 Case efnGUIStr_frmConfigHistory_HelpMessage
-                    GetLocalizedString = "确定程序是否会记住它下一次被搜索或选择的内容，在关闭它之后，您可以通过单击其中一个按钮来删除当前历史。" & vbCrLf & vbCrLf & "您也可以通过单击右键来仅删除历史记录中的一个项目。 鼠标按钮（在列表中，在进入此配置屏幕之前）"
+                    GetLocalizedString = "确定程序是否会记住它下一次被搜索或选择的内容，在关闭后您可以通过单击其中一个按钮来删除当前历史，" & _
+                                        vbCrLf & vbCrLf & "您也可以通过单击右键来删除历史记录中的一个项目。 鼠标单击（在列表中，在进入此配置屏幕之前）"
                 Case efnGUIStr_frmConfigHistory_cmdEraseContext_Caption
                     GetLocalizedString = "删除此上下文的历史记录"
                 Case efnGUIStr_frmConfigHistory_cmdEraseAll_Caption
@@ -230,9 +231,9 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                         Case 0
                             GetLocalizedString = "Tab 键（建议用于复制到 Excel 程序使用）"
                         Case 1
-                            GetLocalizedString = "相同宽度空格（最好复制具有固定宽度字体的文本编辑器）"
+                            GetLocalizedString = "相同宽度空格（复制具有固定宽度字体的文本编辑器）"
                         Case 2
-                            GetLocalizedString = "根据字体的间距（最好复制到带有可变宽度字体的文本编辑器）"
+                            GetLocalizedString = "根据字体的间距（复制到带有可变宽度字体的文本编辑器）"
                         Case 3
                             GetLocalizedString = "使用自定义字符或文本作为分隔符"
                     End Select
@@ -349,11 +350,11 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                 Case efnGUIStr_frmPrintGridFormatOptions_cboGridAlign_ToolTipText
                     GetLocalizedString = "仅在数据网格比页面更窄时才有效"
                 Case efnGUIStr_frmPrintGridFormatOptions_txtLineWidth_ToolTipText
-                    GetLocalizedString = "改变线条粗细（一般）"
+                    GetLocalizedString = "改变线条粗细"
                 Case efnGUIStr_frmPrintGridFormatOptions_cmdHeadersBackgroundColor_ToolTipText
                     GetLocalizedString = "更改标题（或固定列）的背景颜色"
                 Case efnGUIStr_frmPrintGridFormatOptions_txtLineWidthHeadersSeparatorLine_ToolTipText
-                    GetLocalizedString = "页眉分隔线厚度"
+                    GetLocalizedString = "页眉分隔线高度"
                 Case efnGUIStr_frmPrintGridFormatOptions_VariousChangeColorCommandButtons_ToolTipText
                     GetLocalizedString = "修改颜色"
                 Case efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidth_Message
@@ -371,7 +372,7 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                 Case efnGUIStr_frmSettingGridDataProgress_lblMessage_Caption_Start
                     GetLocalizedString = "生成预览"
                 Case efnGUIStr_frmSettingGridDataProgress_lblMessage_Caption_Progress
-                    GetLocalizedString = "生成预览，页"
+                    GetLocalizedString = "生成预览，总页数"
                 ' frmPrintPreview
                 Case efnGUIStr_frmPrintPreview_Caption
                     GetLocalizedString = "打印预览"
@@ -390,13 +391,13 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                 Case efnGUIStr_frmPrintPreview_mnuIconsMedium_Caption
                     GetLocalizedString = "中图标"
                 Case efnGUIStr_frmPrintPreview_mnuIconsBig_Caption
-                    GetLocalizedString = "等等图标"
+                    GetLocalizedString = "中等图标"
                 Case efnGUIStr_frmPrintPreview_lblPageOrientation_Caption
-                    GetLocalizedString = "&P 显示方向:"
+                    GetLocalizedString = "显示方向:"
                 Case efnGUIStr_frmPrintPreview_lblView_Caption
-                    GetLocalizedString = "&V 显示:"
+                    GetLocalizedString = "多页显示:"
                 Case efnGUIStr_frmPrintPreview_lblScalePercent_Caption
-                    GetLocalizedString = "&S 缩放：" 'Scale:"The first character must be a letter. . .
+                    GetLocalizedString = "&S 缩  放："
                 Case efnGUIStr_frmPrintPreview_lblPage_Singular_Caption
                     GetLocalizedString = "页:"
                 Case efnGUIStr_frmPrintPreview_lblPage_Plural_Caption
@@ -509,7 +510,7 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                 Case efnGUIStr_DateEnter_Validate1_MsgBoxTitle
                     GetLocalizedString = "日期输入错误"
                 Case efnGUIStr_DateEnter_Validate1_MsgBoxError1
-                    GetLocalizedString = "您没有在日期条目中输入日期。"
+                    GetLocalizedString = "您没有在日期条目中输入天数。"
                 Case efnGUIStr_DateEnter_Validate1_MsgBoxError2
                     GetLocalizedString = "天数不能为零。"
                 Case efnGUIStr_DateEnter_Validate1_MsgBoxError3
