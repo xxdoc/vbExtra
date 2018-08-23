@@ -1,6 +1,6 @@
 Type=Control
 Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#F:\WINDOWS\system32\stdole2.tlb#OLE Automation
-Reference=*\G{4EBFF089-1C52-4789-842F-B974169704FC}#1.0#0#Bin\vbExTyp.tlb#:) vbExtra Types
+Reference=*\G{4EBFF089-1C52-4789-842F-B974169704FC}#1.0#0#lib\vbExTyp.tlb#:) vbExtra Types
 Module=mGlobals; bas\mGlobals.bas
 Module=mPrinterEx; bas\mPrinterEx.bas
 Class=cExcelFile; cls\cExcelFile.cls
@@ -116,7 +116,7 @@ Startup="(None)"
 HelpFile=""
 Title="vbExtra"
 ExeName32="vbExtra1.ocx"
-Path32="Release"
+Path32="bin"
 Command32=""
 Name="vbExtra"
 HelpContextID="0"
