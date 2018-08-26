@@ -18,6 +18,20 @@ Begin VB.PropertyPage ptpPrintFnGeneral
    PaletteMode     =   0  'Halftone
    ScaleHeight     =   4248
    ScaleWidth      =   7668
+   Begin VB.TextBox txtPageSetupFlags 
+      Height          =   300
+      Left            =   2244
+      TabIndex        =   9
+      Top             =   1584
+      Width           =   1500
+   End
+   Begin VB.TextBox txtPrinterFlags 
+      Height          =   300
+      Left            =   2244
+      TabIndex        =   7
+      Top             =   1224
+      Width           =   1500
+   End
    Begin VB.TextBox txtDocumentName 
       Height          =   300
       Left            =   2244
@@ -38,22 +52,14 @@ Begin VB.PropertyPage ptpPrintFnGeneral
       TabIndex        =   2
       Top             =   576
       Width           =   228
-      _ExtentX        =   402
-      _ExtentY        =   402
-      ButtonStyle     =   18
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   7.8
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      BackColor       =   16354918
-      Caption         =   "?"
-      ForeColor       =   16777215
-      PictureAlign    =   4
+      _extentx        =   402
+      _extenty        =   402
+      buttonstyle     =   18
+      font            =   "ptpPrintFnGeneral.pgx":0000
+      backcolor       =   16354918
+      caption         =   "?"
+      picturealign    =   4
+      forecolor       =   16777215
    End
    Begin vbExtra.ButtonEx cmdHelpDocumentName 
       Height          =   228
@@ -61,22 +67,32 @@ Begin VB.PropertyPage ptpPrintFnGeneral
       TabIndex        =   5
       Top             =   900
       Width           =   228
-      _ExtentX        =   402
-      _ExtentY        =   402
-      ButtonStyle     =   18
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
-         Size            =   7.8
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      BackColor       =   16354918
-      Caption         =   "?"
-      ForeColor       =   16777215
-      PictureAlign    =   4
+      _extentx        =   402
+      _extenty        =   402
+      buttonstyle     =   18
+      font            =   "ptpPrintFnGeneral.pgx":0028
+      backcolor       =   16354918
+      caption         =   "?"
+      picturealign    =   4
+      forecolor       =   16777215
+   End
+   Begin VB.Label Label16 
+      Alignment       =   1  'Right Justify
+      Caption         =   "PageSetupFlags:"
+      Height          =   336
+      Left            =   684
+      TabIndex        =   8
+      Top             =   1584
+      Width           =   1488
+   End
+   Begin VB.Label Label15 
+      Alignment       =   1  'Right Justify
+      Caption         =   "PrinterFlags:"
+      Height          =   336
+      Left            =   684
+      TabIndex        =   6
+      Top             =   1260
+      Width           =   1488
    End
    Begin VB.Label Label2 
       Alignment       =   1  'Right Justify
@@ -118,12 +134,19 @@ End Sub
 Private Sub PropertyPage_ApplyChanges()
     SelectedControls(0).ProcedureName = txtProcedureName.Text
     SelectedControls(0).DocumentName = txtDocumentName.Text
+    SelectedControls(0).PrinterFlags = Val(txtPrinterFlags.Text)
+    SelectedControls(0).PageSetupFlags = Val(txtPageSetupFlags.Text)
 End Sub
 
 Private Sub PropertyPage_SelectionChanged()
+    SetTextBoxNumeric txtPrinterFlags
+    SetTextBoxNumeric txtPageSetupFlags
+    
     mLoading = True
     txtProcedureName.Text = SelectedControls(0).ProcedureName
     txtDocumentName.Text = SelectedControls(0).DocumentName
+    txtPrinterFlags.Text = SelectedControls(0).PrinterFlags
+    txtPageSetupFlags.Text = SelectedControls(0).PageSetupFlags
     mLoading = False
 End Sub
 
