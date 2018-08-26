@@ -52,14 +52,22 @@ Begin VB.PropertyPage ptpPrintFnGeneral
       TabIndex        =   2
       Top             =   576
       Width           =   228
-      _extentx        =   402
-      _extenty        =   402
-      buttonstyle     =   18
-      font            =   "ptpPrintFnGeneral.pgx":0000
-      backcolor       =   16354918
-      caption         =   "?"
-      picturealign    =   4
-      forecolor       =   16777215
+      _ExtentX        =   402
+      _ExtentY        =   402
+      ButtonStyle     =   18
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   7.8
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      BackColor       =   16354918
+      Caption         =   "?"
+      ForeColor       =   16777215
+      PictureAlign    =   4
    End
    Begin vbExtra.ButtonEx cmdHelpDocumentName 
       Height          =   228
@@ -67,14 +75,22 @@ Begin VB.PropertyPage ptpPrintFnGeneral
       TabIndex        =   5
       Top             =   900
       Width           =   228
-      _extentx        =   402
-      _extenty        =   402
-      buttonstyle     =   18
-      font            =   "ptpPrintFnGeneral.pgx":0028
-      backcolor       =   16354918
-      caption         =   "?"
-      picturealign    =   4
-      forecolor       =   16777215
+      _ExtentX        =   402
+      _ExtentY        =   402
+      ButtonStyle     =   18
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   7.8
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      BackColor       =   16354918
+      Caption         =   "?"
+      ForeColor       =   16777215
+      PictureAlign    =   4
    End
    Begin VB.Label Label16 
       Alignment       =   1  'Right Justify
@@ -156,6 +172,22 @@ End Sub
 
 Private Sub txtDocumentName_GotFocus()
     If txtDocumentName.SelStart = 0 Then txtDocumentName.SelStart = Len(txtDocumentName.Text)
+End Sub
+
+Private Sub txtPageSetupFlags_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtPageSetupFlags_GotFocus()
+    SelectTxtOnGotFocus txtPageSetupFlags
+End Sub
+
+Private Sub txtPrinterFlags_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtPrinterFlags_GotFocus()
+    SelectTxtOnGotFocus txtPrinterFlags
 End Sub
 
 Private Sub txtProcedureName_Change()
