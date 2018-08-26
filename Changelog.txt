@@ -1,3 +1,9 @@
+08/25/2018 PrintFnObject: fixed a bug in PrintText function when CurrentX is out of the page ScaleWidth
+08/25/2018 PrintFnObject: set Max(page) to the actual page count, and check that ToPage is not greater than the actual page count
+08/25/2018 cPrinterEx: FromPage and ToPage were not set up in IPrinterEx_ShowPrintPreview
+08/25/2018 CommonDialogExObject fixed a bug with cdlPDPageNums Flag
+08/25/2018 cPrinterEx and PrintFn CommonDialogFlags property replaced by PrinterFlags and PageSetupFlags
+08/25/2018 cPrinterEx: nFlags parameter in Sub IPrinterEx_ShowPrint and Sub IPrinterEx_ShowPageSetup wasn't taken into account.
 08/23/2018 Changed folder names in the project: Bin ==> lib; Release ==> bin
 08/17/2018 GUI localized captions for Chinese language updated
 08/16/2018 Added more Unicode support for fonts names and CommonDialogEx
