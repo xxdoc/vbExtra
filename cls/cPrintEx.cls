@@ -2210,21 +2210,12 @@ Public Function PrintText(nText As String, Optional ByVal nLeft, Optional ByVal 
     Else
         If Not IsMissing(nWidth) Then
             mCurrentXPixels = mCurrentXPixels + ScaleX(CSng(nWidth), mScaleMode, vbPixels)
-            If mCurrentXPixels > CurrentPageScaleWidthInPixels Then
-                mCurrentXPixels = CurrentPageScaleWidthInPixels
-            End If
         Else
             If nWordWrap Then
                 mCurrentXPixels = mCurrentXPixels + iRectCalc.Right - iRectCalc.Left
-                If mCurrentXPixels > CurrentPageScaleWidthInPixels Then
-                    mCurrentXPixels = CurrentPageScaleWidthInPixels
-                End If
             Else
                 GetTextExtentPoint32 iMetaDC, nText, Len(nText), iTextSize
                 mCurrentXPixels = mCurrentXPixels + iTextSize.x
-                If mCurrentXPixels > CurrentPageScaleWidthInPixels Then
-                    mCurrentXPixels = CurrentPageScaleWidthInPixels
-                End If
             End If
         End If
     End If
