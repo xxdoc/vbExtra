@@ -222,6 +222,7 @@ Public Enum vbExPrintExAlignConstants
     vxAlignRightCenter = 7
     vxAlignRightBottom = 8
 End Enum
+
 Public Sub PersistForm(nForm As Object, nForms As Object, Optional nInitialCentered As Boolean = True, Optional nInitialLeft, Optional nInitialTop, Optional nInitialWidth, Optional nInitialHeight, Optional nPersistLeft As Boolean = True, Optional nPersistTop As Boolean = True, Optional nPersistWidth As Boolean = True, Optional nPersistHeight As Boolean = True, Optional nMaxTop, Optional nPersistMinimizedState As Boolean, Optional nContext As String)
     mGlobals.PersistForm nForm, nForms, nInitialCentered, nInitialLeft, nInitialTop, nInitialWidth, nInitialHeight, nPersistLeft, nPersistTop, nPersistWidth, nPersistHeight, nMaxTop, nPersistMinimizedState, nContext
 End Sub

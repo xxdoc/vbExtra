@@ -240,6 +240,8 @@ Private mPrintPrevMinScalePercent As Long
 Private mPrintPrevMaxScalePercent As Long
 Private mPrintPrevToolBarIconsSize As vbExPrintPrevToolBarIconsSizeConstants
 Private mPrintPrevUseAltScaleIcons As Boolean
+Private mPrinterFlags As cdeCommonDialogExPrinterFlagsConstants
+Private mPageSetupFlags As cdeCommonDialogExPageSetupFlagsConstants
 
 Private mFontName_Prev As String
 Private mFontItalic_Prev As Boolean
@@ -288,6 +290,7 @@ Private mLastEndDoc_LastPageIndex As Long
 Private mDefaultColorMode As Long
 Private mDontCheckError396 As Boolean
 Private mShowingPrintPreview As Boolean
+Private mPrintingPageNumbers As Boolean
 
 Private Const cMaxPages As Long = 1500
 
@@ -1846,6 +1849,7 @@ Public Function PrintText(nText As String, Optional ByVal nLeft, Optional ByVal 
     Dim iStr As String
     Dim iConcat As SmartConcat
     
+'    If nText = "Some other text bigger..." Then Stop
 '    If (mDocumentCreated And (Not mNewPagePending)) <> mPageCreated Then
 '        Stop
 '    End If
@@ -1873,6 +1877,11 @@ Public Function PrintText(nText As String, Optional ByVal nLeft, Optional ByVal 
     
 '    If Not nCalcSize Then Stop
     If IsMissing(nLeft) Then
+        If mCurrentXPixels > CurrentPageScaleWidthInPixels Then
+            If Not nCalcSize Then
+                mCurrentXPixels = CurrentPageScaleWidthInPixels
+            End If
+        End If
         iX = mCurrentXPixels
     Else
         iX = ScaleX(CSng(nLeft), mScaleMode, vbPixels) - mScaleLeftPixels + PageLeftMarginInPixels
@@ -1886,7 +1895,7 @@ Public Function PrintText(nText As String, Optional ByVal nLeft, Optional ByVal 
         If Not IsMissing(nLeft) Then
             iW = CurrentPageScaleWidthInPixels - iX + PageLeftMarginInPixels - mScaleLeftPixels
         Else
-            iW = CurrentPageScaleWidthInPixels - mCurrentXPixels + PageLeftMarginInPixels - mScaleLeftPixels
+            iW = CurrentPageScaleWidthInPixels - mCurrentXPixels + PageLeftMarginInPixels - mScaleLeftPixels - iX
         End If
     Else
         iW = ScaleX(CSng(nWidth), mScaleMode, vbPixels)
@@ -1967,9 +1976,14 @@ Public Function PrintText(nText As String, Optional ByVal nLeft, Optional ByVal 
     iRectCalc.Left = iRect.Left
     iRectCalc.Top = iRect.Top
     iRectCalc.Right = iRect.Right
+    If iRectCalc.Bottom < iRectCalc.Top Then iRectCalc.Bottom = iRectCalc.Top
+    
     iAuxText = nText
     If Len(iAuxText) = 0 Then iAuxText = iAuxText & " "
     Call DrawTextEx(iMetaDC, StrPtr(iAuxText), Len(iAuxText), iRectCalc, iWWFlag Or DT_EXPANDTABS Or DT_TABSTOP Or iWBFlag Or iDTAlign Or DT_NOPREFIX Or DT_CALCRECT, iEP)
+    If iRectCalc.Bottom = iRectCalc.Top Then
+        iRectCalc.Bottom = iRectCalc.Bottom + FontHeightInternal
+    End If
     If Not nCalcSize And IsMissing(nWidth) Then
         If nWordWrap Then
             If iRectCalc.Right > CurrentPageScaleWidthInPixels + PageLeftMarginInPixels - mScaleLeftPixels Then
@@ -2196,12 +2210,21 @@ Public Function PrintText(nText As String, Optional ByVal nLeft, Optional ByVal 
     Else
         If Not IsMissing(nWidth) Then
             mCurrentXPixels = mCurrentXPixels + ScaleX(CSng(nWidth), mScaleMode, vbPixels)
+            If mCurrentXPixels > CurrentPageScaleWidthInPixels Then
+                mCurrentXPixels = CurrentPageScaleWidthInPixels
+            End If
         Else
             If nWordWrap Then
                 mCurrentXPixels = mCurrentXPixels + iRectCalc.Right - iRectCalc.Left
+                If mCurrentXPixels > CurrentPageScaleWidthInPixels Then
+                    mCurrentXPixels = CurrentPageScaleWidthInPixels
+                End If
             Else
                 GetTextExtentPoint32 iMetaDC, nText, Len(nText), iTextSize
                 mCurrentXPixels = mCurrentXPixels + iTextSize.x
+                If mCurrentXPixels > CurrentPageScaleWidthInPixels Then
+                    mCurrentXPixels = CurrentPageScaleWidthInPixels
+                End If
             End If
         End If
     End If
@@ -2973,12 +2996,13 @@ End Property
 
 ' IPrinterEx Interface
 
+' the CommonDialogFlags property interface is kept only to keep binary compatibility. It does nothing. It has been replaced by PrinterFlags and PageSetupFlags properties
 Private Property Let IPrinterEx_CommonDialogFlags(RHS As Long)
-    mDlg.Flags = RHS
+    'mDlg.Flags = RHS
 End Property
 
 Private Property Get IPrinterEx_CommonDialogFlags() As Long
-    IPrinterEx_CommonDialogFlags = mDlg.Flags
+    'IPrinterEx_CommonDialogFlags = mDlg.Flags
 End Property
 
 
@@ -3014,6 +3038,34 @@ End Property
 
 Private Property Get IPrinterEx_PageNonPrintableAreaTop() As Single
     IPrinterEx_PageNonPrintableAreaTop = PageNonPrintableAreaTop
+End Property
+
+
+Private Property Let IPrinterEx_PageSetupFlags(RHS As cdeCommonDialogExPageSetupFlagsConstants)
+    If RHS <> mPageSetupFlags Then
+        mPageSetupFlags = RHS
+        If Not mPrintFnObject Is Nothing Then
+            mPrintFnObject.PageSetupFlags = mPageSetupFlags
+        End If
+    End If
+End Property
+
+Private Property Get IPrinterEx_PageSetupFlags() As cdeCommonDialogExPageSetupFlagsConstants
+    IPrinterEx_PageSetupFlags = mPageSetupFlags
+End Property
+
+
+Private Property Let IPrinterEx_PrinterFlags(RHS As cdeCommonDialogExPrinterFlagsConstants)
+    If RHS <> mPrinterFlags Then
+        mPrinterFlags = RHS
+        If Not mPrintFnObject Is Nothing Then
+            mPrintFnObject.PrinterFlags = mPrinterFlags
+        End If
+    End If
+End Property
+
+Private Property Get IPrinterEx_PrinterFlags() As cdeCommonDialogExPrinterFlagsConstants
+    IPrinterEx_PrinterFlags = mPrinterFlags
 End Property
 
 
@@ -3271,6 +3323,7 @@ Private Sub IPrinterEx_ShowPageSetup(Optional ByVal nFlags As cdeCommonDialogExP
     Dim iPaperBin_Prev As Long
     Dim iPrintQuality_Prev As Long
     Dim iColorMode_Prev As Long
+    Dim iFlags_Prev As Long
     
     If gPrinterExFromPrintFn > 0 Then Exit Sub
     
@@ -3286,6 +3339,12 @@ Private Sub IPrinterEx_ShowPageSetup(Optional ByVal nFlags As cdeCommonDialogExP
     mDlg.PrintQuality = mPrintQuality
     mDlg.ColorMode = mColorMode
     mDlg.UpdateDevModeWithCurrentSettings
+    
+    iFlags_Prev = mDlg.Flags
+    mDlg.Flags = mPageSetupFlags
+    If nFlags <> -1 Then
+        mDlg.Flags = mDlg.Flags Or nFlags
+    End If
     
     If (LeftMargin > 0) Or (TopMargin > 0) Or (RightMargin > 0) Or (BottomMargin > 0) Then
         mDlg.LeftMargin = LeftMargin
@@ -3345,6 +3404,8 @@ Private Sub IPrinterEx_ShowPageSetup(Optional ByVal nFlags As cdeCommonDialogExP
         CheckMarginsLimits
         
     End If
+    mDlg.Flags = iFlags_Prev
+
 End Sub
 
 
@@ -3355,6 +3416,14 @@ Private Sub IPrinterEx_ShowPrint(Optional ByVal nFlags As cdeCommonDialogExPrint
     Dim iPrintQuality_Prev As Long
     Dim iColorMode_Prev As Long
     Dim iCollate_Prev As Boolean
+    Dim iFlags_Prev As Long
+    
+    If gPrinterExFromPrintFn > 0 Then Exit Sub
+    
+    If mShowingPrintPreview Then
+        RaiseError 1214, "PrinterEx", "Invalid operation when inside ShowPrintPreview"
+        Exit Sub
+    End If
     
     mDlg.PaperSize = mPaperSize
     mDlg.PaperBin = mPaperBin
@@ -3364,11 +3433,10 @@ Private Sub IPrinterEx_ShowPrint(Optional ByVal nFlags As cdeCommonDialogExPrint
     mDlg.ColorMode = mColorMode
     mDlg.UpdateDevModeWithCurrentSettings
     
-    If gPrinterExFromPrintFn > 0 Then Exit Sub
-    
-    If mShowingPrintPreview Then
-        RaiseError 1214, "PrinterEx", "Invalid operation when inside ShowPrintPreview"
-        Exit Sub
+    iFlags_Prev = mDlg.Flags
+    mDlg.Flags = mPrinterFlags
+    If nFlags <> -1 Then
+        mDlg.Flags = mDlg.Flags Or nFlags
     End If
     
     mDlg.Max = 9999 ' we still don't know how many pages will be printed.
@@ -3385,6 +3453,7 @@ Private Sub IPrinterEx_ShowPrint(Optional ByVal nFlags As cdeCommonDialogExPrint
     iPrintQuality_Prev = mDlg.PrintQuality
     iColorMode_Prev = mDlg.ColorMode
     iCollate_Prev = mDlg.Collate
+    
     
     If (mFromPage <> 0) And (mToPage <> 0) Then
         mDlg.ShowPrinter cdePDPageNums
@@ -3461,7 +3530,13 @@ Private Sub IPrinterEx_ShowPrintPreview(Optional nObject As Object, Optional nPr
     mPrintFnObject.PrintPrevToolBarIconsSize = mPrintPrevToolBarIconsSize
     mPrintFnObject.PrintPrevUseAltScaleIcons = mPrintPrevUseAltScaleIcons
     mPrintFnObject.HandleMargins = mHandleMargins
+    mPrintFnObject.PrinterFlags = mPrinterFlags
+    mPrintFnObject.PageSetupFlags = mPageSetupFlags
+    mPrintFnObject.FromPage = mFromPage
+    mPrintFnObject.ToPage = mToPage
+    
     mPrintFnObject.ShowPrintPreview mDocKey
+    
     gPrinterExDoNotMakeNewPrinterExObject = False
     mShowingPrintPreview = False
     mDocKey = ""
@@ -5514,10 +5589,12 @@ Public Property Get SomethingPrintedOnPage() As Boolean
 End Property
 
 Private Property Let SomethingPrintedOnPage(nValue As Boolean)
-    On Error Resume Next
-    mPages(mCurrentPage).SomethingPrintedOnPage = nValue
-    If Err.Number = 0 Then
-        mSomethingPrintedOnDoc = True
+    If Not mPrintingPageNumbers Then
+        On Error Resume Next
+        mPages(mCurrentPage).SomethingPrintedOnPage = nValue
+        If Err.Number = 0 Then
+            mSomethingPrintedOnDoc = True
+        End If
     End If
 End Property
     
@@ -5775,6 +5852,7 @@ Private Sub PrintPageNumbers1(nFirstPageIndex As Long, nLastPageIndex As Long)
     Dim iPageCount As Long
     Dim iCurrentPage As Long
     
+    mPrintingPageNumbers = True
     iPageCount = nLastPageIndex - nFirstPageIndex + 1
     i5Millimeters = 5 * 100 / mZoom
     iEndFreeSpace = 10 * 100 / mZoom
@@ -5930,6 +6008,7 @@ Private Sub PrintPageNumbers1(nFirstPageIndex As Long, nLastPageIndex As Long)
     Set Font = iAuxFont
     ScaleMode = iSM
     HandleMargins = iHandleMargins
+    mPrintingPageNumbers = False
     
 End Sub
 

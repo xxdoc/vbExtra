@@ -73,6 +73,9 @@ Private mProcedureName As String
 Private mPageSetupButtonVisible As Boolean
 Private mPrintPrevToolBarIconsSize As vbExPrintPrevToolBarIconsSizeConstants
 Private mPrintPrevUseAltScaleIcons As Boolean
+Private mPrinterFlags As cdeCommonDialogExPrinterFlagsConstants
+Private mPageSetupFlags As cdeCommonDialogExPageSetupFlagsConstants
+
 Private mDocPrepared As Boolean
 Private mParent As Object
 Private mPrinted As Boolean
@@ -83,10 +86,13 @@ Private mPredefinedPageNumbersFormatStrings()  As String
 Public Sub ShowPageSetup()
     Dim iCancelDisplay  As Boolean
     Dim iOrientationPrev As Long
+    Dim iFlags_Prev As Long
     
     mCanceled = False
     RaiseEvent BeforeShowingPageSetupDialog(iCancelDisplay)
     If Not iCancelDisplay Then
+        iFlags_Prev = mDlg.Flags
+        mDlg.Flags = mPageSetupFlags
         iOrientationPrev = mDlg.Orientation
         mDlg.ShowPageSetup
         mCanceled = mDlg.Canceled
@@ -98,6 +104,7 @@ Public Sub ShowPageSetup()
             End If
             RaiseEvent AfterShowingPageSetupDialog
         End If
+        mDlg.Flags = iFlags_Prev
     End If
 End Sub
 
@@ -125,6 +132,7 @@ Public Sub ShowPrint(Optional DocKey As String)
     Dim iAuxColorMode As Long
     Dim iAuxPaperBin As Long
     Dim iAuxPrintQuality As Long
+    Dim iFlags_Prev As Long
     
     mDocKey = DocKey
     mCanceled = False
@@ -145,6 +153,9 @@ Public Sub ShowPrint(Optional DocKey As String)
         iPrintQuality = mDlg.PrintQuality
         iColorMode = mDlg.ColorMode
         iDuplex = mDlg.Duplex
+        
+        iFlags_Prev = mDlg.Flags
+        mDlg.Flags = mPrinterFlags
         
         If mPrintWithDefaultSettings Then
             iPrinterNotSet = mDlg Is Nothing
@@ -170,6 +181,18 @@ Public Sub ShowPrint(Optional DocKey As String)
             End If
             mCanceled = False
         Else
+            If Not PrinterExCurrentDocument Is Nothing Then
+                If PrinterExCurrentDocument.PageCount > 0 Then
+                    mDlg.Max = PrinterExCurrentDocument.PageCount
+                End If
+                If (mDlg.Flags And cdlPDPageNums) <> 0 Then
+                    If PrinterExCurrentDocument.PageCount < 0 Then
+                        If mDlg.ToPage > PrinterExCurrentDocument.PageCount Then
+                            mDlg.ToPage = PrinterExCurrentDocument.PageCount
+                        End If
+                    End If
+                End If
+            End If
             mDlg.ShowPrinter cdlPDNoSelection
             mCanceled = mDlg.Canceled
         End If
@@ -182,7 +205,7 @@ Public Sub ShowPrint(Optional DocKey As String)
             RaiseEvent AfterShowingPrinterDialog
             If PrinterExCurrentDocument Is Nothing Then
                 RaiseEventPrepareDoc (iCancelPrint)
-                If iCancelPrint Then Exit Sub
+                If iCancelPrint Then GoTo TheExit
             Else
                 iChanged = False
                 
@@ -198,7 +221,7 @@ Public Sub ShowPrint(Optional DocKey As String)
                 If iChanged Or PrinterExCurrentDocument.PageCount = 0 Then
                     ResetPrinter2
                     RaiseEventPrepareDoc (iCancelPrint)
-                    If iCancelPrint Then Exit Sub
+                    If iCancelPrint Then GoTo TheExit
                 End If
             End If
             If Not PrinterExCurrentDocument Is Nothing Then
@@ -209,6 +232,9 @@ Public Sub ShowPrint(Optional DocKey As String)
                     If (mDlg.Flags And cdlPDPageNums) <> 0 Then
                         PrinterExCurrentDocument.FromPage = mDlg.FromPage
                         PrinterExCurrentDocument.ToPage = mDlg.ToPage
+                        If PrinterExCurrentDocument.ToPage > PrinterExCurrentDocument.PageCount Then
+                            PrinterExCurrentDocument.ToPage = PrinterExCurrentDocument.PageCount
+                        End If
                     Else
                         PrinterExCurrentDocument.FromPage = 0
                         PrinterExCurrentDocument.ToPage = 0
@@ -226,6 +252,8 @@ Public Sub ShowPrint(Optional DocKey As String)
         End If
     End If
     
+TheExit:
+    mDlg.Flags = iFlags_Prev
 End Sub
 
 Public Sub ShowPrintPreview(Optional DocKey As String)
@@ -1010,15 +1038,48 @@ Public Property Get PageSetupButtonVisible() As Boolean
 End Property
 
 
+' the CommonDialogFlags property interface is kept only to keep binary compatibility. It does nothing. It has been replaced by PrinterFlags and PageSetupFlags properties
 Public Property Let CommonDialogFlags(ByVal nValue As Long)
-    If mDlg.Flags <> nValue Then
-        mDlg.Flags = nValue
-    End If
+'    If mDlg.Flags <> nValue Then
+'        mDlg.Flags = nValue
+'    End If
 End Property
 
 Public Property Get CommonDialogFlags() As Long
-    CommonDialogFlags = mDlg.Flags
+Attribute CommonDialogFlags.VB_MemberFlags = "40"
+'    CommonDialogFlags = mDlg.Flags
 End Property
+
+
+Public Property Let PrinterFlags(nValue As cdeCommonDialogExPrinterFlagsConstants)
+    If nValue <> mPrinterFlags Then
+        mPrinterFlags = nValue
+    End If
+End Property
+
+Public Property Get PrinterFlags() As cdeCommonDialogExPrinterFlagsConstants
+    PrinterFlags = mPrinterFlags
+End Property
+
+
+Public Property Let PageSetupFlags(nValue As cdeCommonDialogExPageSetupFlagsConstants)
+    Dim iPrev As Long
+    
+    If nValue <> mPageSetupFlags Then
+        iPrev = mPageSetupFlags
+        mPageSetupFlags = nValue
+        If ((mPageSetupFlags And cdePSDisableOrientation) <> 0) <> ((iPrev And cdePSDisableOrientation) <> 0) Then
+            If Not mfrmPrintPreview Is Nothing Then
+                mfrmPrintPreview.Orientation = nValue
+            End If
+        End If
+    End If
+End Property
+
+Public Property Get PageSetupFlags() As cdeCommonDialogExPageSetupFlagsConstants
+    PageSetupFlags = mPageSetupFlags
+End Property
+
 
 Private Sub mPrinterExEvents_EndDoc(ByVal FirstPageIndex As Long, ByVal LastPageIndex As Long, ByVal DocKey As String)
     RaiseEvent EndDoc(FirstPageIndex, LastPageIndex, DocKey)

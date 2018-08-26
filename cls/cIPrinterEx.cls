@@ -382,12 +382,31 @@ Public Sub ShowPrintPreview(Optional nObject As Object, Optional nProcedureName 
     
 End Sub
 
-
+' the CommonDialogFlags property interface is kept only to keep binary compatibility. It does nothing. It has been replaced by PrinterFlags and PageSetupFlags properties
 Public Property Let CommonDialogFlags(nValue As Long)
     
 End Property
 
 Public Property Get CommonDialogFlags() As Long
+Attribute CommonDialogFlags.VB_MemberFlags = "40"
+    
+End Property
+
+
+Public Property Let PrinterFlags(nValue As cdeCommonDialogExPrinterFlagsConstants)
+    
+End Property
+
+Public Property Get PrinterFlags() As cdeCommonDialogExPrinterFlagsConstants
+    
+End Property
+
+
+Public Property Let PageSetupFlags(nValue As cdeCommonDialogExPageSetupFlagsConstants)
+    
+End Property
+
+Public Property Get PageSetupFlags() As cdeCommonDialogExPageSetupFlagsConstants
     
 End Property
 

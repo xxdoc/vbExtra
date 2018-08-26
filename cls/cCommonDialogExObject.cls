@@ -60,7 +60,7 @@ Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (hpvDest As 
 Private Declare Function lstrlenPtr Lib "Kernel32" Alias "lstrlenA" (ByVal lpString As Long) As Long
 
 Private Type BrowseInfo
-    hWndOwner As Long
+    hwndOwner As Long
     pIDLRoot As Long
     pszDisplayName As String
     lpszTitle As String
@@ -82,7 +82,7 @@ End Type
 Private Declare Function SHGetPathFromIDList Lib "shell32.dll" Alias "SHGetPathFromIDListA" (ByVal pidl As Long, ByVal pszPath As String) As Long
 Private Declare Function SHBrowseForFolder Lib "shell32.dll" Alias "SHBrowseForFolderA" (lpBrowseInfo As BrowseInfo) As Long
 Private Declare Sub CoTaskMemFree Lib "ole32.dll" (ByVal pv As Long)
-Private Declare Function SHGetFolderLocation Lib "shell32" (ByVal hWndOwner As Long, ByVal nFolder As Long, ByVal hToken As Long, ByVal dwReserved As Long, pidl As ITEMIDLIST) As Long
+Private Declare Function SHGetFolderLocation Lib "shell32" (ByVal hwndOwner As Long, ByVal nFolder As Long, ByVal hToken As Long, ByVal dwReserved As Long, pidl As ITEMIDLIST) As Long
 Private Declare Function PathIsDirectory Lib "shlwapi.dll" Alias "PathIsDirectoryA" (ByVal pszPath As String) As Long
 Private Declare Function SHParseDisplayName Lib "shell32.dll" (ByVal pszName As Long, ByVal pbc As Long, ByRef ppidl As Long, ByVal sfgaoIn As Long, ByRef psfgaoOut As Long) As Long
 
@@ -99,7 +99,7 @@ Private Const GHND = (GMEM_MOVEABLE Or GMEM_ZEROINIT)
 'data buffer for the ChooseColor function
 Private Type T_CHOOSECOLOR
     lStructSize As Long
-    hWndOwner As Long
+    hwndOwner As Long
     hInstance As Long
     RGBResult As Long
     lpCustColors As Long
@@ -144,7 +144,7 @@ End Type
 'data buffer for the ChooseFont function
 Private Type T_CHOOSEFONT
     lStructSize As Long
-    hWndOwner As Long
+    hwndOwner As Long
     hDC As Long
     lpLogFont As Long
     iPointSize As Long
@@ -184,7 +184,7 @@ Private Type T_OPENFILENAME
 '    lpfnHook As Long
 '    lpTemplateName As String
     lStructSize As Long
-    hWndOwner As Long
+    hwndOwner As Long
     hInstance As Long
     lpstrFilter As Long
     lpstrCustomFilter As Long
@@ -212,7 +212,7 @@ End Type
 'data buffer for the PrintDlg function
 Private Type T_PrintDlg
     lStructSize As Long
-    hWndOwner As Long
+    hwndOwner As Long
     hDevMode As Long
     hDevNames As Long
     hDC As Long
@@ -250,7 +250,7 @@ Private Declare Function CommDlgExtendedError Lib "comdlg32.dll" () As Long
 
 Private Type T_PAGESETUPDLG
     lStructSize                 As Long
-    hWndOwner                   As Long
+    hwndOwner                   As Long
     hDevMode                    As Long
     hDevNames                   As Long
     Flags                       As Long
@@ -790,7 +790,7 @@ Public Sub ShowColor(Optional ByVal nFlags As cdeCommonDialogExColorFlagsConstan
     
     tChooseColor.lStructSize = Len(tChooseColor)
     
-    tChooseColor.hWndOwner = iHwndOwner
+    tChooseColor.hwndOwner = iHwndOwner
     
     ' Get size of memory needed for custom colors
     lCustomColorSize = Len(mCustomColors(0)) * 16
@@ -950,7 +950,7 @@ Public Sub ShowFont(Optional ByVal nFlags As cdeCommonDialogExFontFlagsConstants
     
     
     iCF.lStructSize = Len(iCF)
-    iCF.hWndOwner = iHwndOwner
+    iCF.hwndOwner = iHwndOwner
     iCF.rgbColors = mColor
 '    iCF.lCustData = 0
 '    iCF.lpfnHook = 0
@@ -1167,6 +1167,7 @@ Public Sub ShowPrinter(Optional ByVal nFlags As cdeCommonDialogExPrinterFlagsCon
     Dim iDuplex_Prev As Long
     Dim iCopies_Prev As Long
     Dim iCollate_Prev As Long
+    Dim tPrintDlg As T_PrintDlg
     
     iDeviceName_Prev = mDeviceName
     iOrientation_Prev = mOrientation
@@ -1179,9 +1180,6 @@ Public Sub ShowPrinter(Optional ByVal nFlags As cdeCommonDialogExPrinterFlagsCon
     iCollate_Prev = mCollate
     
     mChanged = False
-    
-    'display the print dialog
-    Dim tPrintDlg As T_PrintDlg
     
     On Error GoTo ShowPrinterError
     
@@ -1196,15 +1194,12 @@ Public Sub ShowPrinter(Optional ByVal nFlags As cdeCommonDialogExPrinterFlagsCon
     iFlags = iFlags And Not PD_ENABLESETUPHOOK
     iFlags = iFlags And Not PD_ENABLESETUPTEMPLATE
     
-    
     mAction = 5  'Action property - ShowPrint
     mApiReturn = 0  'APIReturn property
     mExtendedError = 0  'ExtendedError property
-
     
     tPrintDlg.lStructSize = Len(tPrintDlg)
-    
-    tPrintDlg.hWndOwner = iHwndOwner
+    tPrintDlg.hwndOwner = iHwndOwner
     
     If (iFlags And cdlPDReturnDefault) <> 0 Then
         tPrintDlg.hDevMode = 0
@@ -1229,32 +1224,21 @@ Public Sub ShowPrinter(Optional ByVal nFlags As cdeCommonDialogExPrinterFlagsCon
         End If
     End If
     
-    'hDevMode As Long
-    
-    'hDevNames As Long
-    
-    'Flags As Long - init from Flags property
     tPrintDlg.Flags = iFlags Or cdlPDUseDevModeCopies Or cdlPDReturnDC ' it requires these two Flags to return the number of copies properly
-    
-    'nFromPage As Integer - init from FromPage property
     tPrintDlg.nFromPage = mFromPage
-    
-    'nToPage As Integer - init from ToPage property
     tPrintDlg.nToPage = mToPage
-    
-    'nMinPage As Integer - init from Min property
     tPrintDlg.nMinPage = mMin
-    
-    'nMaxPage As Integer - init from Max property
     tPrintDlg.nMaxPage = mMax
     
-    'nCopies As Integer - init from Copies property
+    If tPrintDlg.nMinPage < 1 Then tPrintDlg.nMinPage = 1
+    If tPrintDlg.nMaxPage < 1 Then tPrintDlg.nMaxPage = 10000
+    If (tPrintDlg.Flags And cdlPDPageNums) <> 0 Then
+        If tPrintDlg.nFromPage < tPrintDlg.nMinPage Then tPrintDlg.nFromPage = tPrintDlg.nMinPage
+        If (tPrintDlg.nToPage < tPrintDlg.nFromPage) Then tPrintDlg.nToPage = tPrintDlg.nFromPage
+        If (tPrintDlg.nToPage > tPrintDlg.nMaxPage) Then tPrintDlg.nToPage = tPrintDlg.nMaxPage
+    End If
+    
     tPrintDlg.nCopies = mCopies
-    
-    'hInstance As Long
-    
-    'lCustData As Long
-    
     
     '***    Call the PrintDlg API function
     mApiReturn = PrintDlg(tPrintDlg)
@@ -1282,22 +1266,14 @@ Public Sub ShowPrinter(Optional ByVal nFlags As cdeCommonDialogExPrinterFlagsCon
             End If
         
         Case 1  'user selected OK
-            'nFromPage As Integer - store to FromPage property
             
             mFlags = mFlags And Not (cdlPDSelection Or cdlPDPageNums)
             mFlags = mFlags Or (tPrintDlg.Flags And (cdlPDSelection Or cdlPDPageNums))
 
             mFromPage = tPrintDlg.nFromPage
-            
-            'nToPage As Integer - store to ToPage property
             mToPage = tPrintDlg.nToPage
-            
-            'nMinPage As Integer - store to Min property
             mMin = tPrintDlg.nMinPage
-            
-            'nMaxPage As Integer - store to Max property
             mMax = tPrintDlg.nMaxPage
-            
             mhDc = tPrintDlg.hDC
             
             If mDevModePtr = 0 Then
@@ -1811,7 +1787,7 @@ Private Sub ShowFileDialog(ByVal mAction As Integer, nFlags As Long, Optional By
     '***    prepare tOpenFile data
     
     tOpenFile.lStructSize = Len(tOpenFile)
-    tOpenFile.hWndOwner = nHwndOwner
+    tOpenFile.hwndOwner = nHwndOwner
     iStr = sAPIFilter(mFilter)
     tOpenFile.lpstrFilter = StrPtr(iStr)
     tOpenFile.nFilterIndex = mFilterIndex
@@ -2445,7 +2421,7 @@ Public Sub ShowPageSetup(Optional ByVal nFlags As cdeCommonDialogExPageSetupFlag
         iPsd.Flags = iPsd.Flags Or cdlPSMinMargins
     End If
     
-    iPsd.hWndOwner = iHwndOwner
+    iPsd.hwndOwner = iHwndOwner
     iPsd.rtMargin.Top = mTopMargin * iUnitsMultiplier
     iPsd.rtMargin.Left = mLeftMargin * iUnitsMultiplier
     iPsd.rtMargin.Bottom = mBottomMargin * iUnitsMultiplier
@@ -2742,7 +2718,7 @@ Public Sub ShowFolder(Optional nFlags As cdeCommonDialogExFolderFlagsConstants =
     gWindowTitle = mDialogTitle
     iHwndOwner = GetActiveWindowHwnd
     'Set the properties of the folder dialog
-    bInf.hWndOwner = iHwndOwner
+    bInf.hwndOwner = iHwndOwner
     bInf.pszDisplayName = String(260, 32)
     
     iRootFolder = Replace(LCase$(mRootFolder), " ", "")
