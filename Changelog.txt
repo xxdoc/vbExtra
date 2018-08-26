@@ -1,4 +1,4 @@
-08/25/2018 PrintFnObject: fixed a bug in PrintText function when CurrentX is out of the page ScaleWidth
+08/26/2018 cPrinterEx: fixed a bug in PrintText function when CurrentX is out of the page ScaleWidth
 08/25/2018 PrintFnObject: set Max(page) to the actual page count, and check that ToPage is not greater than the actual page count
 08/25/2018 cPrinterEx: FromPage and ToPage were not set up in IPrinterEx_ShowPrintPreview
 08/25/2018 CommonDialogExObject fixed a bug with cdlPDPageNums Flag
