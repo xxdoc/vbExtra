@@ -69,7 +69,7 @@ Private Declare Function Arc Lib "gdi32" (ByVal hDC As Long, ByVal nLeftRect As 
 Private Declare Function Ellipse Lib "gdi32" (ByVal hDC As Long, ByVal nLeftRect As Long, ByVal nTopRect As Long, ByVal nRightRect As Long, ByVal nBottomRect As Long) As Long
 
 'Private Declare Function MulDiv Lib "kernel32" (ByVal nNumber As Long, ByVal nNumerator As Long, ByVal nDenominator As Long) As Long
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (hpvDest As Any, hpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (hpvDest As Any, hpvSource As Any, ByVal cbCopy As Long)
 Private Declare Function ResetDC Lib "gdi32" Alias "ResetDCA" (ByVal hDC As Long, lpInitData As Any) As Long
 
 Private Const CCHDEVICENAME = 32
@@ -1849,7 +1849,6 @@ Public Function PrintText(nText As String, Optional ByVal nLeft, Optional ByVal 
     Dim iStr As String
     Dim iConcat As SmartConcat
     
-'    If nText = "Some other text bigger..." Then Stop
 '    If (mDocumentCreated And (Not mNewPagePending)) <> mPageCreated Then
 '        Stop
 '    End If
