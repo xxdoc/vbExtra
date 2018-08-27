@@ -130,7 +130,6 @@ RevisionVer=65
 AutoIncrementVer=1
 ServerSupportFiles=0
 VersionComments="vbExtra is a set of controls, objects and functions that  are commonly needed in VB6 programs."
-VersionCompanyName="Empresa"
 VersionLegalTrademarks="vbExtra"
 VersionProductName="vbExtra"
 CompilationType=0
