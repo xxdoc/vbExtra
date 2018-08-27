@@ -1,7 +1,7 @@
 Attribute VB_Name = "mVBFunctionsReplacement"
 Option Explicit
 
-'Private Declare Sub ZeroMemory Lib "kernel32.dll" Alias "RtlZeroMemory" (Destination As Any, ByVal Length As Long)
+Private Declare Sub ZeroMemory Lib "kernel32.dll" Alias "RtlZeroMemory" (Destination As Any, ByVal Length As Long)
 
 Private mInstrEx As New cInsStrEx
 Private mWordCount As New cWordCount
@@ -44,15 +44,21 @@ Private Function Replace09(ByRef Text As String, ByRef sOld As String, ByRef sNe
         Else
              iAuxLCaseText = LCase$(Text)
              Replace09Bin Replace09, Text, iAuxLCaseText, LCase$(sOld), sNew, Start, Count
-             CVrStr iAuxLCaseText
+             ZeroStr iAuxLCaseText
         End If
     Else 'Suchstring ist leer:
         Replace09 = Text
     End If
 End Function
 
+Private Sub ZeroStr(nString As String)
+    If Len(nString) > 0 Then
+        ZeroMemory ByVal StrPtr(nString), LenB(nString)
+    End If
+End Sub
+
 ' by Jost Schwider, jost@schwider.de, 20001218
-Private Static Sub Replace09Bin(ByRef result As String, ByRef Text As String, ByRef Search As String, ByRef sOld As String, ByRef sNew As String, ByVal Start As Long, ByVal Count As Long)
+Private Static Sub Replace09Bin(ByRef Result As String, ByRef Text As String, ByRef Search As String, ByRef sOld As String, ByRef sNew As String, ByVal Start As Long, ByVal Count As Long)
     Dim TextLen As Long
     Dim OldLen As Long
     Dim NewLen As Long
@@ -63,7 +69,7 @@ Private Static Sub Replace09Bin(ByRef result As String, ByRef Text As String, By
     Dim BufferLen As Long
     Dim BufferPosNew As Long
     Dim BufferPosNext As Long
-  
+    
     'Ersten Treffer bestimmen:
     If Start < 2 Then
         Start = InStrB(Search, sOld)
@@ -77,9 +83,9 @@ Private Static Sub Replace09Bin(ByRef result As String, ByRef Text As String, By
     Select Case NewLen
         Case OldLen 'einfaches Überschreiben:
         
-            result = Text
+            Result = Text
             For Count = 1 To Count
-                MidB$(result, Start) = sNew
+                MidB$(Result, Start) = sNew
                 Start = InStrB(Start + OldLen, Search, sOld)
                 If Start = 0 Then Exit Sub
             Next Count
@@ -134,10 +140,10 @@ Private Static Sub Replace09Bin(ByRef result As String, ByRef Text As String, By
           
             'Ergebnis zusammenbauen:
             If ReadPos > TextLen Then
-                result = LeftB$(Buffer, WritePos - 1)
+                Result = LeftB$(Buffer, WritePos - 1)
             Else
                 MidB$(Buffer, WritePos) = MidB$(Text, ReadPos)
-                result = LeftB$(Buffer, WritePos + LenB(Text) - ReadPos)
+                Result = LeftB$(Buffer, WritePos + LenB(Text) - ReadPos)
             End If
             Exit Sub
         
@@ -191,14 +197,14 @@ Private Static Sub Replace09Bin(ByRef result As String, ByRef Text As String, By
           
             'Ergebnis zusammenbauen:
             If ReadPos > TextLen Then
-                result = LeftB$(Buffer, WritePos - 1)
+                Result = LeftB$(Buffer, WritePos - 1)
             Else
                 BufferPosNext = WritePos + TextLen - ReadPos
                 If BufferPosNext < BufferLen Then
                     MidB$(Buffer, WritePos) = MidB$(Text, ReadPos)
-                    result = LeftB$(Buffer, BufferPosNext)
+                    Result = LeftB$(Buffer, BufferPosNext)
                 Else
-                    result = LeftB$(Buffer, WritePos - 1) & MidB$(Text, ReadPos)
+                    Result = LeftB$(Buffer, WritePos - 1) & MidB$(Text, ReadPos)
                 End If
             End If
             Exit Sub
@@ -206,9 +212,9 @@ Private Static Sub Replace09Bin(ByRef result As String, ByRef Text As String, By
     End Select
   
     Else 'Kein Treffer:
-        result = Text
+        Result = Text
     End If
     
-    CVrStr Buffer
+    ZeroStr Buffer
 End Sub
 

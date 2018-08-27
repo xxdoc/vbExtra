@@ -1,6 +1,27 @@
 Attribute VB_Name = "mGlobals"
 Option Explicit
 
+Public Const LF_FACESIZE = 32
+
+Public Type LOGFONTW
+    lfHeight As Long
+    lfWidth As Long
+    lfEscapement As Long
+    lfOrientation As Long
+    lfWeight As Long
+    lfItalic As Byte
+    lfUnderline As Byte
+    lfStrikeOut As Byte
+    lfCharSet As Byte
+    lfOutPrecision As Byte
+    lfClipPrecision As Byte
+    lfQuality As Byte
+    lfPitchAndFamily As Byte
+    lfFaceName(0 To ((LF_FACESIZE * 2) - 1)) As Byte
+End Type
+
+Public Declare Function CreateFontIndirectW Lib "gdi32" (ByRef lpLogFont As LOGFONTW) As Long
+
 Private Declare Function GetLocaleInfo Lib "Kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
 Private Const LOCALE_USER_DEFAULT = &H400
 Private Const LOCALE_SDECIMAL = &HE
@@ -53,7 +74,6 @@ Private Declare Function OpenFile Lib "Kernel32" (ByVal lpFileName As String, lp
 Private Declare Function GetFileTime Lib "Kernel32" (ByVal hFile As Long, lpCreationTime As FileTime, lpLastAccessTime As FileTime, lpLastWriteTime As FileTime) As Long
 Private Declare Function SetFileTime Lib "Kernel32" (ByVal hFile As Long, lpCreationTime As FileTime, lpLastAccessTime As FileTime, lpLastWriteTime As FileTime) As Long
 Private Declare Function SystemTimeToFileTime Lib "Kernel32" (lpSystemTime As SYSTEMTIME, lpFileTime As FileTime) As Long
-Private Declare Sub ZeroMemory Lib "kernel32.dll" Alias "RtlZeroMemory" (Destination As Any, ByVal Length As Long)
 Private Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
 
 Private Declare Function SetCurrentDirectory Lib "Kernel32" Alias "SetCurrentDirectoryA" (ByVal PathName As String) As Long
@@ -255,41 +275,39 @@ Public Declare Function IsWindow Lib "user32" (ByVal hWnd As Long) As Long
 
 Public Const GWL_EXSTYLE = (-20)
 
-Public Const LF_FACESIZE = 32
+'Public Type LOGFONT
+'    lfHeight As Long
+'    lfWidth As Long
+'    lfEscapement As Long
+'    lfOrientation As Long
+'    lfWeight As Long
+'    lfItalic As Byte
+'    lfUnderline As Byte
+'    lfStrikeOut As Byte
+'    lfCharSet As Byte
+'    lfOutPrecision As Byte
+'    lfClipPrecision As Byte
+'    lfQuality As Byte
+'    lfPitchAndFamily As Byte
+'    lfFaceName(0 To LF_FACESIZE - 1) As Byte
+'End Type
 
-Public Type LOGFONT
-    lfHeight As Long
-    lfWidth As Long
-    lfEscapement As Long
-    lfOrientation As Long
-    lfWeight As Long
-    lfItalic As Byte
-    lfUnderline As Byte
-    lfStrikeOut As Byte
-    lfCharSet As Byte
-    lfOutPrecision As Byte
-    lfClipPrecision As Byte
-    lfQuality As Byte
-    lfPitchAndFamily As Byte
-    lfFaceName(0 To LF_FACESIZE - 1) As Byte
-End Type
-
-Private Type NONCLIENTMETRICS
+Private Type NONCLIENTMETRICSW
     cbSize As Long
     iBorderWidth As Long
     iScrollWidth As Long
     iScrollHeight As Long
     iCaptionWidth As Long
     iCaptionHeight As Long
-    lfCaptionFont As LOGFONT
+    lfCaptionFont As LOGFONTW
     iSMCaptionWidth As Long
     iSMCaptionHeight As Long
-    lfSMCaptionFont As LOGFONT
+    lfSMCaptionFont As LOGFONTW
     iMenuWidth As Long
     iMenuHeight As Long
-    lfMenuFont As LOGFONT
-    lfStatusFont As LOGFONT
-    lfMessageFont As LOGFONT
+    lfMenuFont As LOGFONTW
+    lfStatusFont As LOGFONTW
+    lfMessageFont As LOGFONTW
 End Type
 
 Public Const CLEARTYPE_QUALITY As Byte = 6
@@ -314,7 +332,6 @@ Private Const SPI_GETICONTITLELOGFONT = 31
 Public Declare Function GetDC Lib "user32" (ByVal hWnd As Long) As Long
 Public Declare Function CreateCompatibleDC Lib "gdi32" (ByVal hDC As Long) As Long
 Public Declare Function DeleteDC Lib "gdi32" (ByVal hDC As Long) As Long
-Public Declare Function CreateFontIndirect Lib "gdi32" Alias "CreateFontIndirectA" (lpLogFont As LOGFONT) As Long
 Public Declare Function DeleteObject Lib "gdi32" (ByVal hObject As Long) As Long
 Public Declare Function GetTextExtentPoint32 Lib "gdi32" Alias "GetTextExtentPoint32A" (ByVal hDC As Long, ByVal lpsz As String, ByVal cbString As Long, lpSize As POINTAPI) As Long
 
@@ -559,6 +576,7 @@ Private Declare Function GetTempPath Lib "Kernel32" Alias "GetTempPathA" (ByVal 
 Private Declare Function GetTempFileName Lib "Kernel32" Alias "GetTempFileNameA" (ByVal lpszPath As String, ByVal lpPrefixString As String, ByVal wUnique As Long, ByVal lpTempFileName As String) As Long
 
 Private Declare Function SystemParametersInfo Lib "user32" Alias "SystemParametersInfoA" (ByVal uAction As Long, ByVal uParam As Long, lpvParam As Any, ByVal fuWinIni As Long) As Long
+Private Declare Function SystemParametersInfoW Lib "user32" (ByVal uAction As Long, ByVal uParam As Long, ByRef pvParam As Any, ByVal fWinIni As Long) As Long
 Private Const SPI_GETWORKAREA = 48
 
 Private Declare Function GetProp Lib "user32" Alias "GetPropA" (ByVal hWnd As Long, ByVal lpString As String) As Long
@@ -1688,7 +1706,7 @@ End Function
 Public Function ControlTextWidth(nControl As Control, Optional ByVal nText As String) As Long
     Dim iP As POINTAPI
     Dim iDC As Long
-    Dim iLOGFONT As LOGFONT
+    Dim iLOGFONT As LOGFONTW
     Dim iFontHandle As Long
     Dim iOldFont As Long
     
@@ -1700,7 +1718,7 @@ Public Function ControlTextWidth(nControl As Control, Optional ByVal nText As St
     If iDC = 0 Then Exit Function
     
     iLOGFONT = StdFontToLogFont_Screen(iDC, nControl.Font)
-    iFontHandle = CreateFontIndirect(iLOGFONT)
+    iFontHandle = CreateFontIndirectW(iLOGFONT)
     iOldFont = SelectObject(iDC, iFontHandle)
     
     GetTextExtentPoint32 iDC, nText, Len(nText), iP
@@ -1725,20 +1743,24 @@ Public Function ControlWidth(nControl As Control) As Long
     ControlWidth = iTextWidth
 End Function
 
-Public Function StdFontToLogFont_Screen(nHdc As Long, nFont As StdFont) As LOGFONT
+Public Function StdFontToLogFont_Screen(nHdc As Long, nFont As StdFont) As LOGFONTW
     Dim iFontName As String
     Dim iDPIY As Single
     Dim c As Long
+    Dim iBytes() As Byte
     
     iFontName = nFont.Name
     
     iDPIY = GetDeviceCaps(nHdc, LOGPIXELSY)
     
+    iBytes = iFontName
     For c = 0 To 31
         If c < Len(iFontName) Then
-            StdFontToLogFont_Screen.lfFaceName(c) = Asc(Mid$(iFontName, c + 1, 1))
+            StdFontToLogFont_Screen.lfFaceName(c * 2) = iBytes(c * 2) '                 .lfFaceName(c) = Asc(Mid$(iFontName, c + 1, 1))
+            StdFontToLogFont_Screen.lfFaceName(c * 2 + 1) = iBytes(c * 2 + 1)
         Else
-            StdFontToLogFont_Screen.lfFaceName(c) = 0
+            StdFontToLogFont_Screen.lfFaceName(c * 2) = 0
+            StdFontToLogFont_Screen.lfFaceName(c * 2 + 1) = 0
         End If
     Next
      
@@ -2233,20 +2255,22 @@ Public Function ColorsBlended(ByVal nColor1 As Long, ByVal nColor2 As Long, ByVa
 End Function
 
 Public Function GetSystemFont(nSystemFont As vbExSystemFontConstants) As StdFont
-    Dim iLF As LOGFONT
-    Dim iNcm As NONCLIENTMETRICS
-    Dim iILf As LOGFONT
+    Dim iLF As LOGFONTW
+    Dim iNcm As NONCLIENTMETRICSW
+    Dim iILf As LOGFONTW
     Dim iRet As Long
     
-    iNcm.cbSize = 340
-    iRet = SystemParametersInfo(SPI_GETNONCLIENTMETRICS, iNcm.cbSize, iNcm, 0)
+'    iNcm.cbSize = 340
+'    iNcm.cbSize = 500
+    iNcm.cbSize = LenB(iNcm)
+    iRet = SystemParametersInfoW(SPI_GETNONCLIENTMETRICS, iNcm.cbSize, iNcm, 0)
     If (iRet = 0) Then Exit Function
     
     Select Case nSystemFont
         Case vxCaptionFont
             CopyMemoryAny1 iLF, iNcm.lfCaptionFont, LenB(iNcm.lfCaptionFont)
         Case vxIconFont
-            iRet = SystemParametersInfo(SPI_GETICONTITLELOGFONT, 0, iILf, 0)
+            iRet = SystemParametersInfoW(SPI_GETICONTITLELOGFONT, LenB(iILf), iILf, 0)
             If (iRet <> 0) Then
                 CopyMemoryAny1 iLF, iILf, LenB(iILf)
             End If
@@ -2265,7 +2289,7 @@ Public Function GetSystemFont(nSystemFont As vbExSystemFontConstants) As StdFont
     Set GetSystemFont = LogFontToStdFont(iLF)
 End Function
 
-Private Function LogFontToStdFont(lF As LOGFONT, Optional nPrinterFont As Boolean) As iFont
+Private Function LogFontToStdFont(lF As LOGFONTW, Optional nPrinterFont As Boolean) As iFont
     Dim iFontName As String
     Dim iDPIY As Single
     Dim iDC As Long
@@ -2282,11 +2306,11 @@ Private Function LogFontToStdFont(lF As LOGFONT, Optional nPrinterFont As Boolea
         ReleaseDC 0, iDC
     End If
     
-    iFontName = StrConv(lF.lfFaceName, vbUnicode)
-    If InStr(iFontName, Chr(0)) > 0 Then
-        If (InStr(iFontName, Chr(0)) = 1) And Len(iFontName) > 1 Then
+    iFontName = lF.lfFaceName
+    If Len(iFontName) > 0 Then
+        If InStr(iFontName, Chr(0)) > 0 Then
+            iFontName = Left$(iFontName, InStr(iFontName, Chr(0)) - 1)
         End If
-        iFontName = Left$(iFontName, InStr(iFontName, Chr(0)) - 1)
     End If
     
     If iFontName <> "" Then
@@ -3352,21 +3376,6 @@ Public Function FontExists(FontName As String) As Boolean
     bAns = StrComp(FontName, oFont.Name, vbTextCompare) = 0
     FontExists = bAns
 End Function
-
-Public Sub CVrStr(nString As String)
-    If Len(nString) > 0 Then
-        ZeroMemory ByVal StrPtr(nString), LenB(nString)
-    End If
-End Sub
-
-Public Sub CVrBA(nBA() As Byte)
-    On Error GoTo TheExit
-    If UBound(nBA) > -1 Then
-        ZeroMemory nBA(0), UBound(nBA) + 1
-    End If
-    
-TheExit:
-End Sub
 
 Public Sub SaveTextFile(nPath As String, nText As String)
     Dim iFreeFile
