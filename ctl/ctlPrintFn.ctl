@@ -705,14 +705,14 @@ Public Property Get Copies() As Long
     Copies = mPrintFnObject.Copies
 End Property
 
-' the CommonDialogFlags property interface is kept only to keep binary compatibility. It does nothing. It has been replaced by PrinterFlags and PageSetupFlags properties
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Property Let CommonDialogFlags(nValue As Long)
-    'mPrintFnObject.CommonDialogFlags = nValue
+    
 End Property
 
 Public Property Get CommonDialogFlags() As Long
 Attribute CommonDialogFlags.VB_MemberFlags = "40"
-    'CommonDialogFlags = mPrintFnObject.CommonDialogFlags
+    
 End Property
 
 

@@ -156,6 +156,7 @@ Private mUpdating As Boolean
 
 Private Const cDefaultBorderColor As Long = vbWindowFrame
 Private Const cDefaultBorderStyle = vxEBSFlat1Pix
+Private Const cDefaultBottomFreeSpace As Long = 300 ' twips
 Private mScrollBarHeight As Long
 Private mScrollBarWidth As Long
 
@@ -441,7 +442,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mTempHScrollValue = PropBag.ReadProperty("SavedHScrollValue", 0)
     mTempHScrollMax = PropBag.ReadProperty("SavedHScrollMax", 0)
     mTempVirtualWidth = PropBag.ReadProperty("SavedVirtualWidth", 0)
-    mBottomFreeSpace = PropBag.ReadProperty("BottomFreeSpace", 0)
+    mBottomFreeSpace = PropBag.ReadProperty("BottomFreeSpace", cDefaultBottomFreeSpace)
     mRightFreeSpace = PropBag.ReadProperty("RightFreeSpace", 0)
     mVScrollBar = PropBag.ReadProperty("VScrollBar", vxScrollBarAuto)
     mHScrollBar = PropBag.ReadProperty("HScrollBar", vxScrollBarAuto)
@@ -483,7 +484,7 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     PropBag.WriteProperty "SavedHScrollValue", mScroll.Value(efnSBIHorizontal), 0
     PropBag.WriteProperty "SavedHScrollMax", mScroll.Max(efnSBIHorizontal), 0
     PropBag.WriteProperty "SavedVirtualWidth", mVirtualWidth, 0
-    PropBag.WriteProperty "BottomFreeSpace", mBottomFreeSpace, 0
+    PropBag.WriteProperty "BottomFreeSpace", mBottomFreeSpace, cDefaultBottomFreeSpace
     PropBag.WriteProperty "RightFreeSpace", mRightFreeSpace, 0
     PropBag.WriteProperty "VScrollBar", mVScrollBar, vxScrollBarAuto
     PropBag.WriteProperty "HScrollBar", mHScrollBar, vxScrollBarAuto
@@ -514,6 +515,11 @@ End Property
 Public Property Let BottomFreeSpace(nValue As Single)
     Dim iValue As Single
     
+    If nValue < 0 Then
+        RaiseError 380, TypeName(Me) ' invalid property value
+        Exit Property
+    End If
+    
     iValue = FromContainerSizeY(nValue, vbTwips)
     If iValue <> mBottomFreeSpace Then
         mBottomFreeSpace = iValue
@@ -530,6 +536,11 @@ End Property
 
 Public Property Let RightFreeSpace(nValue As Single)
     Dim iValue As Single
+    
+    If nValue < 0 Then
+        RaiseError 380, TypeName(Me) ' invalid property value
+        Exit Property
+    End If
     
     iValue = FromContainerSizeX(nValue, vbTwips)
     If iValue <> mRightFreeSpace Then
@@ -552,10 +563,10 @@ End Property
 
 Private Property Let pVScrollValue(nValue As Single)
     If mNoScroll Then Exit Property
-    If nValue < 0 Then
-        RaiseError 380, TypeName(Me) ' invalid property value
-        Exit Property
-    End If
+'    If nValue < 0 Then
+'        RaiseError 380, TypeName(Me) ' invalid property value
+'        Exit Property
+'    End If
     If nValue <> mVScrollValue Then
         If nValue > (mVirtualHeight - UserControl.ScaleHeight) Then
             If Ambient.UserMode Then
@@ -583,10 +594,10 @@ End Property
 
 Private Property Let pHScrollValue(nValue As Single)
     If mNoScroll Then Exit Property
-    If nValue < 0 Then
-        RaiseError 380, TypeName(Me) ' invalid property value
-        Exit Property
-    End If
+'    If nValue < 0 Then
+'        RaiseError 380, TypeName(Me) ' invalid property value
+'        Exit Property
+'    End If
     
     If nValue <> mHScrollValue Then
         If nValue > (mVirtualWidth - UserControl.ScaleWidth) Then
