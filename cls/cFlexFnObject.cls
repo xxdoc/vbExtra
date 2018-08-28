@@ -18,9 +18,9 @@ Implements ISubclass
 Private Declare Function CLSIDFromProgID Lib "ole32.dll" (ByVal lpszProgID As Long, pCLSID As Any) As Long
 Private Declare Function StringFromCLSID Lib "ole32.dll" (pCLSID As Any, lpszProgID As Long) As Long
 Private Declare Sub CoTaskMemFree Lib "ole32.dll" (ByVal pv As Long)
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
 
-Private Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
+Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 Private Const SW_SHOWMAXIMIZED = 3
 
@@ -1349,8 +1349,8 @@ Again:
             End Select
         End If
         On Error GoTo ErrorExit:
-        'SaveSetting AppNameForRegistry, "Preferences", "DocsFolder", GetFileFolderPath(iPath1)
-        SaveProgramDocumentsFolder GetFileFolderPath(iPath1)
+        'SaveSetting AppNameForRegistry, "Preferences", "DocsFolder", GetFolder(iPath1)
+        SaveProgramDocumentsFolder GetFolder(iPath1)
         
         iRedraw = mCurrentGrid.Redraw
         iPrevRow = mCurrentGrid.Row
@@ -3478,7 +3478,7 @@ Private Sub DrawGrid(nCanceled As Boolean)
     Set iDefAuxFont = Printer2.Font
     
     Dim iT1 As Double
-    iT1 = Timer
+    iT1 = timer
     
     iGridStatus_Row = iGrid.Row
     iGridStatus_RowSel = iGrid.RowSel

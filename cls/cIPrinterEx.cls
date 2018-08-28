@@ -382,7 +382,7 @@ Public Sub ShowPrintPreview(Optional nObject As Object, Optional nProcedureName 
     
 End Sub
 
-' the CommonDialogFlags property interface is kept only to keep binary compatibility. It does nothing. It has been replaced by PrinterFlags and PageSetupFlags properties
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Property Let CommonDialogFlags(nValue As Long)
     
 End Property

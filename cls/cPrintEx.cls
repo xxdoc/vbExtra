@@ -2986,13 +2986,13 @@ End Property
 
 ' IPrinterEx Interface
 
-' the CommonDialogFlags property interface is kept only to keep binary compatibility. It does nothing. It has been replaced by PrinterFlags and PageSetupFlags properties
+' Kept for keeping binary compatibility, it will be removed in the next version
 Private Property Let IPrinterEx_CommonDialogFlags(RHS As Long)
-    'mDlg.Flags = RHS
+    
 End Property
 
 Private Property Get IPrinterEx_CommonDialogFlags() As Long
-    'IPrinterEx_CommonDialogFlags = mDlg.Flags
+    
 End Property
 
 

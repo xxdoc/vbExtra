@@ -241,14 +241,13 @@ Public Sub SaveFormPersistance(nForm As Object)
     mGlobals.SaveFormPersistance nForm
 End Sub
 
-' GetFormPersistedWindowState and GetSavedFormWindowState are very similar
 Public Function GetFormPersistedWindowState(nForm As Object) As Long
     GetFormPersistedWindowState = mGlobals.GetFormPersistedWindowState(nForm)
 End Function
 
-' GetFormPersistedWindowState and GetSavedFormWindowState are very similar
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Function GetSavedFormWindowState(nForm As Object, Optional nContext As String, Optional nDefaultValue As Long = -1) As FormWindowStateConstants
-    GetSavedFormWindowState = mGlobals.GetSavedFormWindowState(nForm, nContext, nDefaultValue)
+    
 End Function
 
 Public Sub ShowModal(nForm As Object, Optional nWaitWithDoevents As Boolean = True, Optional nSetIcon As Boolean = True, Optional nFormsHwndToKeepEnabled As Variant, Optional nKeepEnabledTaskBarWindows As Boolean = True, Optional nNoOwner As Boolean)
@@ -275,7 +274,7 @@ Public Property Get PrinterEx() As IPrinterEx
     Set PrinterEx = mPrinterEx.PrinterEx
 End Property
 
-' hidden
+' This method is hidden
 Public Sub ResetPrinterEx()
 Attribute ResetPrinterEx.VB_MemberFlags = "40"
     ResetPrinter2
@@ -303,18 +302,15 @@ Public Function AppPrevInstance() As Boolean
     AppPrevInstance = iAP.PrevInstance
 End Function
 
-' IsAppRunning and IsProgramRunning are the same
 Public Function IsAppRunning(nAppPath As String) As Boolean
     Dim iAP As New cActivatePrevInstance
     
     IsAppRunning = iAP.IsAppRunning(nAppPath)
 End Function
 
-' IsAppRunning and IsProgramRunning are the same
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Function IsProgramRunning(nAppPath As String) As Boolean
-    Dim iAP As New cActivatePrevInstance
-    
-    IsProgramRunning = iAP.IsAppRunning(nAppPath)
+
 End Function
 
 Public Function MinimizeApp() As AppMinimizer
@@ -337,15 +333,19 @@ Public Function FileExists(ByVal nPathName As String) As Boolean
     FileExists = mGlobals.FileExists(nPathName)
 End Function
 
-' GetTempDir and TempFolder are the same
-Public Function GetTempDir() As String
-    GetTempDir = mGlobals.GetTempDir
+Public Function GetTempFolder() As String
+    GetTempFolder = mGlobals.GetTempFolder
 End Function
 
-' GetTempDir and TempFolder are the same
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Property Get TempFolder() As String
-    TempFolder = mGlobals.GetTempDir
+    
 End Property
+
+' Kept for keeping binary compatibility, it will be removed in the next version
+Public Function GetTempDir() As String
+    
+End Function
 
 Public Function GetTempFileFullPath() As String
     GetTempFileFullPath = mGlobals.GetTempFileFullPath
@@ -480,29 +480,27 @@ Public Function MakeLong(ByVal wLow As Long, ByVal wHi As Long) As Long
 
 End Function
 
-' GetFolder, FolderName and GetFileFolderPath are the same
 Public Function GetFolder(nFilePath As String) As String
     GetFolder = mGlobals.GetFolder(nFilePath)
 End Function
 
-' GetFolder, FolderName and GetFileFolderPath are the same
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Function FolderName(nFilePath As String) As String
-    FolderName = mGlobals.GetFolder(nFilePath)
+    
 End Function
 
-' GetFolder, FolderName and GetFileFolderPath are the same
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Function GetFileFolderPath(nFileFullPath As String) As String
-    GetFileFolderPath = mGlobals.GetFileFolderPath(nFileFullPath)
+    
 End Function
 
-' DirExists and FolderExists are the same
+Public Function FolderExists(nFolderPath As String) As Boolean
+    FolderExists = mGlobals.FolderExists(nFolderPath)
+End Function
+
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Function DirExists(strDirName As String) As Boolean
-    DirExists = mGlobals.DirExists(strDirName)
-End Function
-
-' DirExists and FolderExists are the same
-Public Function FolderExists(strDirName As String) As Boolean
-    FolderExists = mGlobals.DirExists(strDirName)
+    
 End Function
 
 Public Sub EnsureFocusRect(nForm As Object)
@@ -540,14 +538,18 @@ Public Sub SaveProgramDocumentsFolder(nPath As String)
     mGlobals.SaveProgramDocumentsFolder nPath
 End Sub
 
-' CheckDiskSpace and CheckDiskFreeSpace are the same
-Public Function CheckDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes As Double) As Boolean
-    CheckDiskSpace = mGlobals.CheckDiskSpace(nPathToTest, nRequiredFreeSpaceInBytes)
+Public Function CheckFreeDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes As Double) As Boolean
+    CheckFreeDiskSpace = mGlobals.CheckFreeDiskSpace(nPathToTest, nRequiredFreeSpaceInBytes)
 End Function
 
-' CheckDiskSpace and CheckDiskFreeSpace are the same
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Function CheckDiskFreeSpace(nPathToTest As String, nRequiredFreeSpaceInBytes As Double) As Boolean
-    CheckDiskFreeSpace = mGlobals.CheckDiskSpace(nPathToTest, nRequiredFreeSpaceInBytes)
+    
+End Function
+
+' Kept for keeping binary compatibility, it will be removed in the next version
+Public Function CheckDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes As Double) As Boolean
+    
 End Function
 
 Public Function GMTDateTime(nLocalDateTime As Date) As Date
@@ -618,14 +620,18 @@ Public Function LoadTextFile(nFilePath As String, Optional nDataType As vbExData
     LoadTextFile = mGlobals.LoadTextFile(nFilePath, nDataType)
 End Function
 
-' BaseName and GetFileNameFromFullPath are the same
-Public Function BaseName(nFullFilePath As String) As String
-    BaseName = mGlobals.BaseName(nFullFilePath)
+Public Function GetFileName(nFileFullPath As String) As String
+    GetFileName = mGlobals.GetFileName(nFileFullPath)
 End Function
 
-' BaseName and GetFileNameFromFullPath are the same
+' Kept for keeping binary compatibility, it will be removed in the next version
+Public Function BaseName(nFullFilePath As String) As String
+    
+End Function
+
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Function GetFileNameFromFullPath(nFileFullPath As String) As String
-    GetFileNameFromFullPath = mGlobals.GetFileNameFromFullPath(nFileFullPath)
+    
 End Function
 
 Public Function FileInUse(ByVal nFilePath As String) As Boolean
@@ -737,13 +743,13 @@ Public Sub DateTimeToUnsigned(ByVal nDateTime As Date, nLow As Long, nHigh As Lo
     mGlobals.DateTimeToUnsigned nDateTime, nLow, nHigh
 End Sub
 
-' kept only for keeping binary compatibility
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Sub CVrStr(nString As String)
 Attribute CVrStr.VB_MemberFlags = "40"
     
 End Sub
 
-' kept only for keeping binary compatibility
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Sub CVrBA(nBA() As Byte)
 Attribute CVrBA.VB_MemberFlags = "40"
     

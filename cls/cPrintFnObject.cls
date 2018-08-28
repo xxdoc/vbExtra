@@ -1038,16 +1038,14 @@ Public Property Get PageSetupButtonVisible() As Boolean
 End Property
 
 
-' the CommonDialogFlags property interface is kept only to keep binary compatibility. It does nothing. It has been replaced by PrinterFlags and PageSetupFlags properties
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Property Let CommonDialogFlags(ByVal nValue As Long)
-'    If mDlg.Flags <> nValue Then
-'        mDlg.Flags = nValue
-'    End If
+
 End Property
 
 Public Property Get CommonDialogFlags() As Long
 Attribute CommonDialogFlags.VB_MemberFlags = "40"
-'    CommonDialogFlags = mDlg.Flags
+
 End Property
 
 
