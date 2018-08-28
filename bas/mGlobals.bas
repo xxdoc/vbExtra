@@ -1028,13 +1028,13 @@ Public Function FileExists(ByVal strPathName As String) As Boolean
 '    End If
 End Function
 
-Public Function GetTempDir() As String
+Public Function GetTempFolder() As String
     Dim lChar As Long
     
-    GetTempDir = String$(255, 0)
-    lChar = GetTempPath(255, GetTempDir)
-    GetTempDir = Left$(GetTempDir, lChar)
-    AddDirSep GetTempDir
+    GetTempFolder = String$(255, 0)
+    lChar = GetTempPath(255, GetTempFolder)
+    GetTempFolder = Left$(GetTempFolder, lChar)
+    AddDirSep GetTempFolder
 End Function
 
 Public Sub AddDirSep(strPathName As String)
@@ -1051,7 +1051,7 @@ Public Function GetTempFileFullPath() As String
     
     iTemp = String(260, 0)
     'Get a temporary filename
-    GetTempFileName GetTempDir, "", 0, iTemp
+    GetTempFileName GetTempFolder, "", 0, iTemp
     'Remove all the unnecessary chr$(0)'s
     iTemp = Left$(iTemp, InStr(1, iTemp, Chr$(0)) - 1)
     GetTempFileFullPath = iTemp
@@ -1382,21 +1382,9 @@ Public Function GetProductNameFromExeFile(strFileName As String) As String
     End If
     iGetProductNameFromExeFile = Trim$(iGetProductNameFromExeFile)
     If iGetProductNameFromExeFile = "" Then
-        iGetProductNameFromExeFile = BaseName(strFileName)
+        iGetProductNameFromExeFile = GetFileName(strFileName)
     End If
     GetProductNameFromExeFile = iGetProductNameFromExeFile
-End Function
-
-Public Function BaseName(sPathAndFile As String) As String
-    '
-    ' Strip the path from the file name, and just return the FileName
-    ' Wraps the SeparatePathAndFileName from DWTools
-    '
-    Dim sFile As String
-
-    SeparatePathAndFileName sPathAndFile, , sFile
-
-    BaseName = sFile
 End Function
 
 Public Function GetFolder(nFileFullPath As String) As String
@@ -1945,16 +1933,6 @@ Public Function GetFormPersistedWindowState(nForm As Object) As Long
     End If
 End Function
 
-Public Function GetSavedFormWindowState(nForm As Object, Optional nContext As String, Optional nDefaultValue As Long = -1) As FormWindowStateConstants
-    Dim iName As String
-    Dim iNameAndContext As String
-    
-    iName = nForm.Name
-    iNameAndContext = Base64Encode(iName & nContext)
-    GetSavedFormWindowState = GetSetting(AppNameForRegistry, "WindowsPos", iNameAndContext & ".WS", nDefaultValue)
-    
-End Function
-
 Public Sub ShowModal(nForm As Object, Optional nWaitWithDoevents As Boolean = True, Optional nSetIcon As Boolean = True, Optional nFormsHwndToKeepEnabled As Variant, Optional nKeepEnabledTaskBarWindows As Boolean = True, Optional nNoOwner As Boolean)
     Dim iMF As New cFormModal
 
@@ -2396,10 +2374,10 @@ Public Function MakeLong(ByVal wLow As Long, ByVal wHi As Long) As Long
 
 End Function
 
-Public Function DirExists(ByVal strDirName As String) As Boolean
+Public Function FolderExists(ByVal nFolderPath As String) As Boolean
     On Error Resume Next
 
-    DirExists = (GetAttr(strDirName) And vbDirectory) = vbDirectory
+    FolderExists = (GetAttr(nFolderPath) And vbDirectory) = vbDirectory
 
     Err.Clear
 End Function
@@ -2542,7 +2520,7 @@ Public Function GetProgramDocumentsFolder() As String
     If iStr = "" Then
         iStr = GetSpecialfolder(sfidPERSONAL Or sfidFlagCreate)
     Else
-        If Not DirExists(iStr) Then
+        If Not FolderExists(iStr) Then
             iStr = GetSpecialfolder(sfidPERSONAL Or sfidFlagCreate)
         End If
     End If
@@ -2568,19 +2546,11 @@ Public Sub SaveProgramDocumentsFolder(ByVal nPath As String)
     SaveSetting AppNameForRegistry, "Preferences", "DocsFolder", nPath
 End Sub
 
-Public Function GetFileFolderPath(nFileFullPath As String) As String
-    Dim iFolderPath As String
-    
-    SeparatePathAndFileName nFileFullPath, iFolderPath
-    GetFileFolderPath = iFolderPath
-    AddDirSep GetFileFolderPath
-End Function
-
-Public Function GetFileNameFromFullPath(nFileFullPath As String) As String
+Public Function GetFileName(nFileFullPath As String) As String
     Dim iFileName As String
     
     SeparatePathAndFileName nFileFullPath, , iFileName
-    GetFileNameFromFullPath = iFileName
+    GetFileName = iFileName
 End Function
 
 Private Sub DoubleTo2Longs(ByVal dbl As Double, nLongLOW As Long, nLongHigh As Long)
@@ -2624,7 +2594,7 @@ Private Sub DoubleTo2Longs(ByVal dbl As Double, nLongLOW As Long, nLongHigh As L
 
 End Sub
 
-Public Function CheckDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes As Double) As Boolean
+Public Function CheckFreeDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes As Double) As Boolean
     Dim iFileHandle As Long
     Dim iFilePath As String
     Dim iFileSizeBytes As Double
@@ -2632,7 +2602,7 @@ Public Function CheckDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes 
     Dim iFileSizeHigh As Long
     
     If nRequiredFreeSpaceInBytes < 1 Then
-        CheckDiskSpace = True
+        CheckFreeDiskSpace = True
         Exit Function
     End If
     
@@ -2646,7 +2616,7 @@ Public Function CheckDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes 
             On Error GoTo 0
         End If
         If Dir(iFilePath) <> "" Then
-'            CheckDiskSpace = True
+'            CheckFreeDiskSpace = True
             Exit Function
         End If
     Else
@@ -2660,7 +2630,7 @@ Public Function CheckDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes 
         Call DoubleTo2Longs(ByVal iFileSizeBytes, iFileSizeLow, iFileSizeHigh)
         If SetFilePointer(iFileHandle, iFileSizeLow, iFileSizeHigh, FILE_BEGIN) <> 0 Then
             If SetEndOfFile(iFileHandle) = 1 Then
-                CheckDiskSpace = True
+                CheckFreeDiskSpace = True
             End If 'SetEndOfFile
         End If 'SetFilePointer
     End If 'iFileHandle
