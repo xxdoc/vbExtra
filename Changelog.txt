@@ -1,3 +1,4 @@
+08/29/2018 cGridHandler, FlexFn and FlexFnObject updated
 08/28/2018 FlexFn: ptpFlexFnOtherFunctions was not configured
 08/28/2018 cGridHandler: fixed a bug in Sub UpdateGridColumnsWidthsStretched
 08/28/2018 Some minor fixes in ScrollableConatiner and changes in cGlobal.cls (and related files)
