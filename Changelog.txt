@@ -1,3 +1,5 @@
+08/28/2018 FlexFn: ptpFlexFnOtherFunctions was not configured
+08/28/2018 cGridHandler: fixed a bug in Sub UpdateGridColumnsWidthsStretched
 08/28/2018 Some minor fixes in ScrollableConatiner and changes in cGlobal.cls (and related files)
 08/27/2018 Added custom message to ctlTrayIcon.ctl and cActivatePrevInstance.cls
 08/26/2018 cPrinterEx: fixed a bug in PrintText function when CurrentX is out of the page ScaleWidth
