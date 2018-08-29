@@ -1173,7 +1173,7 @@ Private Sub StoreGridValuesFromClient()
     
     mColumnsRightPosSet = False
     
-    If Not mDoNotRememberOrder Then
+    If (Not mDoNotRememberOrder) And mEnableOrderByColumns Then
         If Not mLastOrderColumnRetrived Then
             iStr = Base64Decode(GetSetting(AppNameForRegistry, "Preferences", Keyname & "_OrderByCol", ""))
             If iStr = "" Then
@@ -3127,3 +3127,13 @@ End Property
 Public Property Get LastTextToFind() As String
     LastTextToFind = mLastTextToFind
 End Property
+
+Public Sub DeleteOrderByColumnSaved()
+    On Error Resume Next
+    DeleteSetting AppNameForRegistry, "Preferences", Keyname & "_OrderByCol"
+    mLastOrderColumnRetrived = False
+    mLastColumnClicked = mInitialOrderColumn
+    mLastOrderDescending = 0
+    mGridWasOrderedByUser = False
+    mLastOrderColumnHeader = ""
+End Sub

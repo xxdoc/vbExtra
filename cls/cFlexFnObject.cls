@@ -18,9 +18,9 @@ Implements ISubclass
 Private Declare Function CLSIDFromProgID Lib "ole32.dll" (ByVal lpszProgID As Long, pCLSID As Any) As Long
 Private Declare Function StringFromCLSID Lib "ole32.dll" (pCLSID As Any, lpszProgID As Long) As Long
 Private Declare Sub CoTaskMemFree Lib "ole32.dll" (ByVal pv As Long)
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
+Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
 
-Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+Private Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
 
 Private Const SW_SHOWMAXIMIZED = 3
 
@@ -328,6 +328,14 @@ Private Sub Class_Initialize()
     
     Set mPrintFnObject = New PrintFnObject
     Set mPrintGridFormatSettings = New PrintGridFormatSettings
+    
+    mRememberUserPrintingPreferences = gfnRememberByReportIDIfAvailable
+    mSameDataGroupedInColumns = False
+    mShowToolTipsOnLongerCellTexts = False
+    mDoNotRememberOrder = False
+    mShowToolTipsForOrderColumns = True
+    mAllowTextEdition = False
+    mTextEditionLocked = True
     
     
     mMinScalePercent = cPrintPreviewDefaultMinScale
@@ -3324,6 +3332,21 @@ Public Sub HideCol(nCol As Long, Optional nGrid As Object)
     End If
 End Sub
 
+Public Sub DeleteOrderByColumnSaved(Optional nGrid As Object)
+    Dim iGH As cGridHandler
+    
+    If nGrid Is Nothing Then
+        For Each iGH In mGridHandlersCollection
+            iGH.DeleteOrderByColumnSaved
+        Next
+    Else
+        Set iGH = GetGridHandler(nGrid)
+        If Not iGH Is Nothing Then
+            iGH.DeleteOrderByColumnSaved
+        End If
+    End If
+End Sub
+
 Private Property Get FileName2() As String
     FileName2 = FileName
     If FileName2 = "" Then
@@ -3478,7 +3501,7 @@ Private Sub DrawGrid(nCanceled As Boolean)
     Set iDefAuxFont = Printer2.Font
     
     Dim iT1 As Double
-    iT1 = timer
+    iT1 = Timer
     
     iGridStatus_Row = iGrid.Row
     iGridStatus_RowSel = iGrid.RowSel
