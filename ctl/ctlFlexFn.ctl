@@ -1082,7 +1082,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mFlexFnObject.MiddleText = PropBag.ReadProperty("FinalText", "")
     mFlexFnObject.FinalText = PropBag.ReadProperty("FinalText", "")
     mFlexFnObject.DefaultFolderPath = PropBag.ReadProperty("DefaultFolderPath", "")
-        
+    
     mAutoHandleEnabledButtons = PropBag.ReadProperty("AutoHandleEnabledButtons", True)
     mFlexFnObject.GridsFlatAppearance = PropBag.ReadProperty("GridsFlatAppearance", False)
     mFlexFnObject.EnableOrderByColumns = PropBag.ReadProperty("EnableOrderByColumns", False)
@@ -1095,10 +1095,10 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mFlexFnObject.ShowToolTipsOnLongerCellTexts = PropBag.ReadProperty("ShowToolTipsOnLongerCellTexts", False)
     mFlexFnObject.DoNotRememberOrder = PropBag.ReadProperty("DoNotRememberOrder", False)
     mFlexFnObject.ShowToolTipsForOrderColumns = PropBag.ReadProperty("ShowToolTipsForOrderColumns", True)
-    mFlexFnObject.AllowTextEdition = PropBag.ReadProperty("AllowTextEdition", True)
+    mFlexFnObject.AllowTextEdition = PropBag.ReadProperty("AllowTextEdition", False)
     mFlexFnObject.TextEditionLocked = PropBag.ReadProperty("TextEditionLocked", True)
     mFlexFnObject.PrintPrevUseAltScaleIcons = PropBag.ReadProperty("PrintPrevUseAltScaleIcons", True)
-
+    
     tbrButtons.IconsSize = mIconsSize
     LoadButtons
     
@@ -1321,7 +1321,7 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     Call PropBag.WriteProperty("ShowToolTipsOnLongerCellTexts", mFlexFnObject.ShowToolTipsOnLongerCellTexts, False)
     Call PropBag.WriteProperty("DoNotRememberOrder", mFlexFnObject.DoNotRememberOrder, False)
     Call PropBag.WriteProperty("ShowToolTipsForOrderColumns", mFlexFnObject.ShowToolTipsForOrderColumns, True)
-    Call PropBag.WriteProperty("AllowTextEdition", mFlexFnObject.AllowTextEdition, True)
+    Call PropBag.WriteProperty("AllowTextEdition", mFlexFnObject.AllowTextEdition, False)
     Call PropBag.WriteProperty("TextEditionLocked", mFlexFnObject.TextEditionLocked, True)
     Call PropBag.WriteProperty("PrintPrevUseAltScaleIcons", mFlexFnObject.PrintPrevUseAltScaleIcons, True)
     
@@ -2494,6 +2494,12 @@ End Sub
 
 Public Sub HideCol(nCol As Long, Optional nGrid As Object)
     mFlexFnObject.HideCol nCol, nGrid
+End Sub
+
+
+Public Sub DeleteOrderByColumnSaved(Optional nGrid As Object)
+    'mFlexFnObject.DeleteOrderByColumnSaved (nGrid)
+    mFlexFnObject.DeleteOrderByColumnSaved
 End Sub
 
 
