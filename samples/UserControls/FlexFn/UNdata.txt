@@ -196,11 +196,11 @@ Guernsey	2017	Total	Both Sexes	Estimate - de jure	Final figure, complete	2018	62
 Guernsey	2017	Total	Male	Estimate - de jure	Final figure, complete	2018	30799
 Guernsey	2017	Total	Female	Estimate - de jure	Final figure, complete	2018	31394
 Guinea	2017	Total	Both Sexes	Estimate - de jure	Provisional figure with questionable reliability	2017	11702694
-Guinea	2017	Total	Male	Estimate - de jure	Provisional figure with questionable reliability	2017	5647583.93541739
-Guinea	2017	Total	Female	Estimate - de jure	Provisional figure with questionable reliability	2017	6055110.69721214
+Guinea	2017	Total	Male	Estimate - de jure	Provisional figure with questionable reliability	2017	5647583
+Guinea	2017	Total	Female	Estimate - de jure	Provisional figure with questionable reliability	2017	6055110
 Guinea	2017	Urban	Both Sexes	Estimate - de jure	Provisional figure with questionable reliability	2017	4068395
-Guinea	2017	Urban	Male	Estimate - de jure	Provisional figure with questionable reliability	2017	2023685.01407085
-Guinea	2017	Urban	Female	Estimate - de jure	Provisional figure with questionable reliability	2017	2044710.15663954
+Guinea	2017	Urban	Male	Estimate - de jure	Provisional figure with questionable reliability	2017	2023685
+Guinea	2017	Urban	Female	Estimate - de jure	Provisional figure with questionable reliability	2017	2044710
 Guinea	2017	Rural	Both Sexes	Estimate - de jure	Provisional figure with questionable reliability	2017	763429
 Guinea	2017	Rural	Male	Estimate - de jure	Provisional figure with questionable reliability	2017	3623898
 Guinea	2017	Rural	Female	Estimate - de jure	Provisional figure with questionable reliability	2017	4010400
@@ -229,11 +229,11 @@ Luxembourg	2017	Total	Both Sexes	Estimate - de jure	Final figure, complete	2017	
 Luxembourg	2017	Total	Male	Estimate - de jure	Final figure, complete	2017	296641
 Luxembourg	2017	Total	Female	Estimate - de jure	Final figure, complete	2017	294026
 Maldives	2017	Total	Both Sexes	Estimate - de facto	Final figure, complete	2017	356686
-Maldives	2017	Total	Male	Estimate - de facto	Final figure, complete	2017	181224.107420089
-Maldives	2017	Total	Female	Estimate - de facto	Final figure, complete	2017	175462.75953337
+Maldives	2017	Total	Male	Estimate - de facto	Final figure, complete	2017	181224
+Maldives	2017	Total	Female	Estimate - de facto	Final figure, complete	2017	175462
 Maldives	2017	Urban	Both Sexes	Estimate - de facto	Final figure, complete	2017	142908
-Maldives	2017	Urban	Male	Estimate - de facto	Final figure, complete	2017	71326.4787800819
-Maldives	2017	Urban	Female	Estimate - de facto	Final figure, complete	2017	71582.2611625657
+Maldives	2017	Urban	Male	Estimate - de facto	Final figure, complete	2017	71326
+Maldives	2017	Urban	Female	Estimate - de facto	Final figure, complete	2017	71582
 Maldives	2017	Rural	Both Sexes	Estimate - de facto	Final figure, complete	2017	213762
 Maldives	2017	Rural	Male	Estimate - de facto	Final figure, complete	2017	109889
 Maldives	2017	Rural	Female	Estimate - de facto	Final figure, complete	2017	103873
@@ -340,9 +340,9 @@ Solomon Islands	2017	Total	Female	Estimate - de facto	Final figure, incomplete/q
 South Africa	2017	Total	Both Sexes	Estimate - de facto	Final figure, incomplete/questionable reliability	2017	56521948
 South Africa	2017	Total	Male	Estimate - de facto	Final figure, incomplete/questionable reliability	2017	27620642
 South Africa	2017	Total	Female	Estimate - de facto	Final figure, incomplete/questionable reliability	2017	28901306
-Spain	2017	Total	Both Sexes	Estimate - de jure	Final figure, complete	2017	46549044.639388
-Spain	2017	Total	Male	Estimate - de jure	Final figure, complete	2017	22838035.421624
-Spain	2017	Total	Female	Estimate - de jure	Final figure, complete	2017	23711009.217764
+Spain	2017	Total	Both Sexes	Estimate - de jure	Final figure, complete	2017	46549044
+Spain	2017	Total	Male	Estimate - de jure	Final figure, complete	2017	22838035
+Spain	2017	Total	Female	Estimate - de jure	Final figure, complete	2017	23711009
 State of Palestine	2017	Total	Both Sexes	Estimate - de facto	Final figure, incomplete/questionable reliability	2017	4952168
 State of Palestine	2017	Total	Male	Estimate - de facto	Final figure, incomplete/questionable reliability	2017	2516852
 State of Palestine	2017	Total	Female	Estimate - de facto	Final figure, incomplete/questionable reliability	2017	2435316
