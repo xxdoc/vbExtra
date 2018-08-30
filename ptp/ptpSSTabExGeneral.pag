@@ -612,7 +612,7 @@ Private Sub PropertyPage_ApplyChanges()
                 Case "Font.Name"
                     SelectedControls(0).Font.Name = mLoadedPropertyValues(c)
                 Case "Font.Size"
-                    SelectedControls(0).Font.Size = CSng(mLoadedPropertyValues(c))
+                    SelectedControls(0).Font.Size = Val(mLoadedPropertyValues(c))
                 Case "Font.Bold"
                     SelectedControls(0).Font.Bold = CBool(CLng(mLoadedPropertyValues(c)))
                 Case "Font.Italic"
@@ -970,7 +970,7 @@ Private Sub SavePreset()
     iStr = iStr & "|#'" & "MaskColor" & ":$\*" & CStr(SelectedControls(0).MaskColor)
     iStr = iStr & "|#'" & "TabBackColor" & ":$\*" & CStr(SelectedControls(0).TabBackColor)
     iStr = iStr & "|#'" & "Font.Name" & ":$\*" & CStr(SelectedControls(0).Font.Name)
-    iStr = iStr & "|#'" & "Font.Size" & ":$\*" & CStr(SelectedControls(0).Font.Size)
+    iStr = iStr & "|#'" & "Font.Size" & ":$\*" & Str$(SelectedControls(0).Font.Size)
     iStr = iStr & "|#'" & "Font.Bold" & ":$\*" & CStr(CLng(SelectedControls(0).Font.Bold))
     iStr = iStr & "|#'" & "Font.Italic" & ":$\*" & CStr(CLng(SelectedControls(0).Font.Italic))
     iStr = iStr & "|#'" & "Font.Underline" & ":$\*" & CStr(CLng(SelectedControls(0).Font.Underline))

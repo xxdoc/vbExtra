@@ -14,7 +14,7 @@ To read a larger description of the component or to get help please go to vbForu
 
 # You can see that there are two project files, "vbExtra (subclassing inside).vbp" and "vbExtra (subclassing outside).vbp", why?
 
-The ocx in the Release folder is compiled from "vbExtra (subclassing inside).vbp".
+The ocx in the "bin" folder is compiled from "vbExtra (subclassing inside).vbp".
 That ocx has no other dependency (it doesn't need any other file to work, beside of course the normal files that are already on Windows and the VB6 runtime).
 
 The project "vbExtra (subclassing outside).vbp" is provided for development purposes, because while working on the component it is difficult when having the subclassing code inside the same project that we are working or debugging.

@@ -329,6 +329,14 @@ Private Sub Class_Initialize()
     Set mPrintFnObject = New PrintFnObject
     Set mPrintGridFormatSettings = New PrintGridFormatSettings
     
+    mRememberUserPrintingPreferences = gfnRememberByReportIDIfAvailable
+    mSameDataGroupedInColumns = False
+    mShowToolTipsOnLongerCellTexts = False
+    mDoNotRememberOrder = False
+    mShowToolTipsForOrderColumns = True
+    mAllowTextEdition = False
+    mTextEditionLocked = True
+    
     
     mMinScalePercent = cPrintPreviewDefaultMinScale
     mMaxScalePercent = cPrintPreviewDefaultMaxScale
@@ -1349,8 +1357,8 @@ Again:
             End Select
         End If
         On Error GoTo ErrorExit:
-        'SaveSetting AppNameForRegistry, "Preferences", "DocsFolder", GetFileFolderPath(iPath1)
-        SaveProgramDocumentsFolder GetFileFolderPath(iPath1)
+        'SaveSetting AppNameForRegistry, "Preferences", "DocsFolder", GetFolder(iPath1)
+        SaveProgramDocumentsFolder GetFolder(iPath1)
         
         iRedraw = mCurrentGrid.Redraw
         iPrevRow = mCurrentGrid.Row
@@ -3321,6 +3329,21 @@ Public Sub HideCol(nCol As Long, Optional nGrid As Object)
             AddGridHandler nGrid
         End If
         iGH.HideCol nCol
+    End If
+End Sub
+
+Public Sub DeleteOrderByColumnSaved(Optional nGrid As Object)
+    Dim iGH As cGridHandler
+    
+    If nGrid Is Nothing Then
+        For Each iGH In mGridHandlersCollection
+            iGH.DeleteOrderByColumnSaved
+        Next
+    Else
+        Set iGH = GetGridHandler(nGrid)
+        If Not iGH Is Nothing Then
+            iGH.DeleteOrderByColumnSaved
+        End If
     End If
 End Sub
 

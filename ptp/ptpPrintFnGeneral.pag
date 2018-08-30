@@ -18,6 +18,20 @@ Begin VB.PropertyPage ptpPrintFnGeneral
    PaletteMode     =   0  'Halftone
    ScaleHeight     =   4248
    ScaleWidth      =   7668
+   Begin VB.TextBox txtPageSetupFlags 
+      Height          =   300
+      Left            =   2244
+      TabIndex        =   9
+      Top             =   1584
+      Width           =   1500
+   End
+   Begin VB.TextBox txtPrinterFlags 
+      Height          =   300
+      Left            =   2244
+      TabIndex        =   7
+      Top             =   1224
+      Width           =   1500
+   End
    Begin VB.TextBox txtDocumentName 
       Height          =   300
       Left            =   2244
@@ -78,6 +92,24 @@ Begin VB.PropertyPage ptpPrintFnGeneral
       ForeColor       =   16777215
       PictureAlign    =   4
    End
+   Begin VB.Label Label16 
+      Alignment       =   1  'Right Justify
+      Caption         =   "PageSetupFlags:"
+      Height          =   336
+      Left            =   684
+      TabIndex        =   8
+      Top             =   1584
+      Width           =   1488
+   End
+   Begin VB.Label Label15 
+      Alignment       =   1  'Right Justify
+      Caption         =   "PrinterFlags:"
+      Height          =   336
+      Left            =   684
+      TabIndex        =   6
+      Top             =   1260
+      Width           =   1488
+   End
    Begin VB.Label Label2 
       Alignment       =   1  'Right Justify
       Caption         =   "DocumentName:"
@@ -118,12 +150,19 @@ End Sub
 Private Sub PropertyPage_ApplyChanges()
     SelectedControls(0).ProcedureName = txtProcedureName.Text
     SelectedControls(0).DocumentName = txtDocumentName.Text
+    SelectedControls(0).PrinterFlags = Val(txtPrinterFlags.Text)
+    SelectedControls(0).PageSetupFlags = Val(txtPageSetupFlags.Text)
 End Sub
 
 Private Sub PropertyPage_SelectionChanged()
+    SetTextBoxNumeric txtPrinterFlags
+    SetTextBoxNumeric txtPageSetupFlags
+    
     mLoading = True
     txtProcedureName.Text = SelectedControls(0).ProcedureName
     txtDocumentName.Text = SelectedControls(0).DocumentName
+    txtPrinterFlags.Text = SelectedControls(0).PrinterFlags
+    txtPageSetupFlags.Text = SelectedControls(0).PageSetupFlags
     mLoading = False
 End Sub
 
@@ -133,6 +172,22 @@ End Sub
 
 Private Sub txtDocumentName_GotFocus()
     If txtDocumentName.SelStart = 0 Then txtDocumentName.SelStart = Len(txtDocumentName.Text)
+End Sub
+
+Private Sub txtPageSetupFlags_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtPageSetupFlags_GotFocus()
+    SelectTxtOnGotFocus txtPageSetupFlags
+End Sub
+
+Private Sub txtPrinterFlags_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub txtPrinterFlags_GotFocus()
+    SelectTxtOnGotFocus txtPrinterFlags
 End Sub
 
 Private Sub txtProcedureName_Change()

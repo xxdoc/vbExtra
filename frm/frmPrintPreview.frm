@@ -666,6 +666,7 @@ Attribute mMouseWheel.VB_VarHelpID = -1
 Private mPrintFnObject As PrintFnObject
 Private mCurrentPageNumber As Long
 Private mAllowUserChangeScale As Boolean
+Private mAllowUserChangeOrientation As Boolean
 Private mScalePercent As Long
 Private mMinScalePercent As Long
 Private mMaxScalePercent As Long
@@ -919,6 +920,10 @@ Private Sub Form_Load()
     End If
     
     If mPrintFnObject Is Nothing Then Set mPrintFnObject = New PrintFnObject
+    
+    If (mPrintFnObject.PageSetupFlags And cdePSDisableOrientation) <> 0 Then
+        AllowUserChangeOrientation = False
+    End If
     
     picPageNumber.Visible = False
     
@@ -2137,6 +2142,17 @@ Public Property Let AllowUserChangeScale(nValue As Boolean)
     picScalePercent.Visible = mAllowUserChangeScale
     tbrTop.Buttons("DecreaseScale").Visible = mAllowUserChangeScale
     tbrTop.Buttons("IncreaseScale").Visible = mAllowUserChangeScale
+End Property
+
+Public Property Get AllowUserChangeOrientation() As Boolean
+    AllowUserChangeOrientation = mAllowUserChangeOrientation
+End Property
+
+Public Property Let AllowUserChangeOrientation(nValue As Boolean)
+    mAllowUserChangeOrientation = nValue
+    tbrTop.Buttons("OrientationLabelSpace").Visible = mAllowUserChangeOrientation
+    tbrTop.Buttons("OrientationPortrait").Visible = mAllowUserChangeOrientation
+    tbrTop.Buttons("OrientationLandscape").Visible = mAllowUserChangeOrientation
 End Property
 
 

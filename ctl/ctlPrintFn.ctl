@@ -170,6 +170,8 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
         Set mPrintFnObject.PageNumbersFont = iFont
     End If
     mPrintFnObject.PageNumbersForeColor = PropBag.ReadProperty("PageNumbersForeColor", vbWindowText)
+    mPrintFnObject.PrinterFlags = PropBag.ReadProperty("PrinterFlags", 0&)
+    mPrintFnObject.PageSetupFlags = PropBag.ReadProperty("PageSetupFlags", 0&)
 End Sub
 
 Private Sub UserControl_Terminate()
@@ -618,6 +620,8 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     PropBag.WriteProperty "Copies", mPrintFnObject.Copies, 1
     PropBag.WriteProperty "PageNumbersFont", mPrintFnObject.PageNumbersFont, Nothing
     PropBag.WriteProperty "PageNumbersForeColor", mPrintFnObject.PageNumbersForeColor, vbWindowText
+    PropBag.WriteProperty "PrinterFlags", mPrintFnObject.PrinterFlags, 0&
+    PropBag.WriteProperty "PageSetupFlags", mPrintFnObject.PageSetupFlags, 0&
 End Sub
 
 Public Property Let PrintPrevToolBarIconsSize(nValue As vbExPrintPrevToolBarIconsSizeConstants)
@@ -701,13 +705,38 @@ Public Property Get Copies() As Long
     Copies = mPrintFnObject.Copies
 End Property
 
-
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Property Let CommonDialogFlags(nValue As Long)
-    mPrintFnObject.CommonDialogFlags = nValue
+    
 End Property
 
 Public Property Get CommonDialogFlags() As Long
-    CommonDialogFlags = mPrintFnObject.CommonDialogFlags
+Attribute CommonDialogFlags.VB_MemberFlags = "40"
+    
+End Property
+
+
+Public Property Let PrinterFlags(nValue As cdeCommonDialogExPrinterFlagsConstants)
+    If nValue <> mPrintFnObject.PrinterFlags Then
+        mPrintFnObject.PrinterFlags = nValue
+        PropertyChanged "PrinterFlags"
+    End If
+End Property
+
+Public Property Get PrinterFlags() As cdeCommonDialogExPrinterFlagsConstants
+    PrinterFlags = mPrintFnObject.PrinterFlags
+End Property
+
+
+Public Property Let PageSetupFlags(nValue As cdeCommonDialogExPageSetupFlagsConstants)
+    If nValue <> mPrintFnObject.PageSetupFlags Then
+        mPrintFnObject.PageSetupFlags = nValue
+        PropertyChanged "PageSetupFlags"
+    End If
+End Property
+
+Public Property Get PageSetupFlags() As cdeCommonDialogExPageSetupFlagsConstants
+    PageSetupFlags = mPrintFnObject.PageSetupFlags
 End Property
 
 

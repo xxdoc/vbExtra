@@ -222,6 +222,13 @@ Public Enum vbExPrintExAlignConstants
     vxAlignRightCenter = 7
     vxAlignRightBottom = 8
 End Enum
+
+
+Private Sub Class_Initialize()
+    InitGlobal
+End Sub
+
+
 Public Sub PersistForm(nForm As Object, nForms As Object, Optional nInitialCentered As Boolean = True, Optional nInitialLeft, Optional nInitialTop, Optional nInitialWidth, Optional nInitialHeight, Optional nPersistLeft As Boolean = True, Optional nPersistTop As Boolean = True, Optional nPersistWidth As Boolean = True, Optional nPersistHeight As Boolean = True, Optional nMaxTop, Optional nPersistMinimizedState As Boolean, Optional nContext As String)
     mGlobals.PersistForm nForm, nForms, nInitialCentered, nInitialLeft, nInitialTop, nInitialWidth, nInitialHeight, nPersistLeft, nPersistTop, nPersistWidth, nPersistHeight, nMaxTop, nPersistMinimizedState, nContext
 End Sub
@@ -236,6 +243,11 @@ End Sub
 
 Public Function GetFormPersistedWindowState(nForm As Object) As Long
     GetFormPersistedWindowState = mGlobals.GetFormPersistedWindowState(nForm)
+End Function
+
+' Kept for keeping binary compatibility, it will be removed in the next version
+Public Function GetSavedFormWindowState(nForm As Object, Optional nContext As String, Optional nDefaultValue As Long = -1) As FormWindowStateConstants
+    
 End Function
 
 Public Sub ShowModal(nForm As Object, Optional nWaitWithDoevents As Boolean = True, Optional nSetIcon As Boolean = True, Optional nFormsHwndToKeepEnabled As Variant, Optional nKeepEnabledTaskBarWindows As Boolean = True, Optional nNoOwner As Boolean)
@@ -262,7 +274,7 @@ Public Property Get PrinterEx() As IPrinterEx
     Set PrinterEx = mPrinterEx.PrinterEx
 End Property
 
-' ocultar en el componente
+' This method is hidden
 Public Sub ResetPrinterEx()
 Attribute ResetPrinterEx.VB_MemberFlags = "40"
     ResetPrinter2
@@ -272,19 +284,6 @@ Public Property Get ScreenActiveForm(nForms As Object, Optional nNotOwned As Boo
     Set ScreenActiveForm = mGlobals.ScreenActiveForm(nForms, nNotOwned)
 End Property
     
-
-'Public Function GetWindowOwnerClassName(nHwndForm As Long) As String
-'    Dim l As Long
-'    Dim sClass As String
-'    Dim lSize As Long
-'
-'    l = GetWindowLong(nHwndForm, GWL_HWNDPARENT)
-'    sClass = Space(64)
-'    lSize = GetClassName(l, sClass, Len(sClass))
-'    GetWindowOwnerClassName = Left$(sClass, lSize)
-'
-'End Function
-
 Public Function ActivatePrevInstance(Optional nTimeoutCheckHangedSeconds As Long = 25, Optional nTerminateHanged As Boolean = True, Optional nWaitForHavingWindowsTimeoutSeconds As Long = 25, Optional nTerminateWindowless As Boolean = True) As Boolean
     Dim iAP As New cActivatePrevInstance
     
@@ -309,10 +308,9 @@ Public Function IsAppRunning(nAppPath As String) As Boolean
     IsAppRunning = iAP.IsAppRunning(nAppPath)
 End Function
 
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Function IsProgramRunning(nAppPath As String) As Boolean
-    Dim iAP As New cActivatePrevInstance
-    
-    IsProgramRunning = iAP.IsAppRunning(nAppPath)
+
 End Function
 
 Public Function MinimizeApp() As AppMinimizer
@@ -335,33 +333,32 @@ Public Function FileExists(ByVal nPathName As String) As Boolean
     FileExists = mGlobals.FileExists(nPathName)
 End Function
 
+Public Function GetTempFolder() As String
+    GetTempFolder = mGlobals.GetTempFolder
+End Function
+
+' Kept for keeping binary compatibility, it will be removed in the next version
+Public Property Get TempFolder() As String
+    
+End Property
+
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Function GetTempDir() As String
-    GetTempDir = mGlobals.GetTempDir
+    
 End Function
 
 Public Function GetTempFileFullPath() As String
     GetTempFileFullPath = mGlobals.GetTempFileFullPath
 End Function
 
-Public Property Get TempFolder() As String
-    TempFolder = mGlobals.GetTempDir
-End Property
-
 Public Function ControlNameWithParent(nControl As Object) As String
     ControlNameWithParent = mGlobals.ControlNameWithParent(nControl)
 End Function
 
+' adds an String to the Clipboard keeping the text that it already has
 Public Sub ToClipboard(nText As String)
     mGlobals.ToClipboard nText
 End Sub
-
-'Public Sub ShowLittleHelp(nText As String)
-'    If nText <> "" Then
-'        frmShowLittleHelp.ShowIt nText
-'    Else
-'        Unload frmShowLittleHelp
-'    End If
-'End Sub
 
 Public Function IsWindowVisibleOnScreen(nHwnd As Long, Optional AtLeastPartially As Boolean) As Boolean
     IsWindowVisibleOnScreen = mGlobals.IsWindowVisibleOnScreen(nHwnd, AtLeastPartially)
@@ -377,6 +374,10 @@ End Function
     
 Public Function IsWindowsThemed() As Boolean
     IsWindowsThemed = mGlobals.IsWindowsThemed
+End Function
+
+Public Function CommonControlsVersionLoaded() As Long
+    CommonControlsVersionLoaded = mGlobals.CommonControlsVersionLoaded
 End Function
 
 Public Function IsWindowsNT() As Boolean
@@ -483,16 +484,23 @@ Public Function GetFolder(nFilePath As String) As String
     GetFolder = mGlobals.GetFolder(nFilePath)
 End Function
 
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Function FolderName(nFilePath As String) As String
-    FolderName = mGlobals.GetFolder(nFilePath)
-End Function
     
-Public Function DirExists(strDirName As String) As Boolean
-    DirExists = mGlobals.DirExists(strDirName)
 End Function
 
-Public Function FolderExists(strDirName As String) As Boolean
-    FolderExists = mGlobals.DirExists(strDirName)
+' Kept for keeping binary compatibility, it will be removed in the next version
+Public Function GetFileFolderPath(nFileFullPath As String) As String
+    
+End Function
+
+Public Function FolderExists(nFolderPath As String) As Boolean
+    FolderExists = mGlobals.FolderExists(nFolderPath)
+End Function
+
+' Kept for keeping binary compatibility, it will be removed in the next version
+Public Function DirExists(strDirName As String) As Boolean
+    
 End Function
 
 Public Sub EnsureFocusRect(nForm As Object)
@@ -530,24 +538,18 @@ Public Sub SaveProgramDocumentsFolder(nPath As String)
     mGlobals.SaveProgramDocumentsFolder nPath
 End Sub
 
-Public Function GetFileFolderPath(nFileFullPath As String) As String
-    GetFileFolderPath = mGlobals.GetFileFolderPath(nFileFullPath)
+Public Function CheckFreeDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes As Double) As Boolean
+    CheckFreeDiskSpace = mGlobals.CheckFreeDiskSpace(nPathToTest, nRequiredFreeSpaceInBytes)
 End Function
 
-Public Function GetFileNameFromFullPath(nFileFullPath As String) As String
-    GetFileNameFromFullPath = mGlobals.GetFileNameFromFullPath(nFileFullPath)
-End Function
-
-Public Function CheckDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes As Double) As Boolean
-    CheckDiskSpace = mGlobals.CheckDiskSpace(nPathToTest, nRequiredFreeSpaceInBytes)
-End Function
-
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Function CheckDiskFreeSpace(nPathToTest As String, nRequiredFreeSpaceInBytes As Double) As Boolean
-    CheckDiskFreeSpace = mGlobals.CheckDiskSpace(nPathToTest, nRequiredFreeSpaceInBytes)
+    
 End Function
 
-Public Function CommonControlsVersionLoaded() As Long
-    CommonControlsVersionLoaded = mGlobals.CommonControlsVersionLoaded
+' Kept for keeping binary compatibility, it will be removed in the next version
+Public Function CheckDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes As Double) As Boolean
+    
 End Function
 
 Public Function GMTDateTime(nLocalDateTime As Date) As Date
@@ -618,16 +620,22 @@ Public Function LoadTextFile(nFilePath As String, Optional nDataType As vbExData
     LoadTextFile = mGlobals.LoadTextFile(nFilePath, nDataType)
 End Function
 
+Public Function GetFileName(nFileFullPath As String) As String
+    GetFileName = mGlobals.GetFileName(nFileFullPath)
+End Function
+
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Function BaseName(nFullFilePath As String) As String
-    BaseName = mGlobals.BaseName(nFullFilePath)
+    
+End Function
+
+' Kept for keeping binary compatibility, it will be removed in the next version
+Public Function GetFileNameFromFullPath(nFileFullPath As String) As String
+    
 End Function
 
 Public Function FileInUse(ByVal nFilePath As String) As Boolean
     FileInUse = mGlobals.FileInUse(nFilePath)
-End Function
-
-Public Function GetSavedFormWindowState(nForm As Object, Optional nContext As String, Optional nDefaultValue As Long = -1) As FormWindowStateConstants
-    GetSavedFormWindowState = mGlobals.GetSavedFormWindowState(nForm, nContext, nDefaultValue)
 End Function
 
 Public Sub SendKeysAPI(ByVal sKeys As String, Optional ByVal Wait As Boolean)
@@ -646,13 +654,11 @@ Public Function GetSystemColorDepth() As Long
     GetSystemColorDepth = mGlobals.GetSystemColorDepth
 End Function
 
+' it is for the MS' original SSTab, not the SSTabEx that already has a TabBackColor property
 Public Sub SetSSTabBackColor(nSSTab As Object)
     mGlobals.SetSSTabBackColor nSSTab
 End Sub
 
-Private Sub Class_Initialize()
-    InitGlobal
-End Sub
 
 Public Property Let ButtonsStyle(nValue As vbExButtonStyleConstants)
     gButtonsStyle = nValue
@@ -737,12 +743,16 @@ Public Sub DateTimeToUnsigned(ByVal nDateTime As Date, nLow As Long, nHigh As Lo
     mGlobals.DateTimeToUnsigned nDateTime, nLow, nHigh
 End Sub
 
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Sub CVrStr(nString As String)
-    mGlobals.CVrStr nString
+Attribute CVrStr.VB_MemberFlags = "40"
+    
 End Sub
 
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Sub CVrBA(nBA() As Byte)
-    mGlobals.CVrBA nBA
+Attribute CVrBA.VB_MemberFlags = "40"
+    
 End Sub
 
 Public Sub SaveTextFile(nPath As String, nText As String)

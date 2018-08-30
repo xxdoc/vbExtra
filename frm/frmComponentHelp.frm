@@ -34,7 +34,7 @@ Begin VB.Form frmComponentHelp
       Tabs            =   4
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
-         Size            =   8
+         Size            =   7.8
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -43,8 +43,8 @@ Begin VB.Form frmComponentHelp
       EndProperty
       ShowFocusRect   =   0   'False
       Style           =   1
-      TabHeight       =   520,347
-      TabSelExtraHeight=   70,556
+      TabHeight       =   520
+      TabSelExtraHeight=   71
       TabSelHighlight =   -1  'True
       TabSelFontBold  =   0
       TabBackColor    =   15987699
@@ -220,7 +220,17 @@ Begin VB.Form frmComponentHelp
       FormatButtonPicture_2=   "frmComponentHelp.frx":17938
       FormatButtonPicture_3=   "frmComponentHelp.frx":18452
       FormatButtonPicture_4=   "frmComponentHelp.frx":193D4
-      PageNumbersFormat=   "Página # de N"
+      PageNumbersFormat=   ""
+      PageNumbersFormatIndex=   3
+      BeginProperty PageNumbersFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
    End
 End
 Attribute VB_Name = "frmComponentHelp"
@@ -254,7 +264,7 @@ Private Sub Form_Load()
     SetMinMax Me, 3500, 3500
     Me.Caption = App.Title & " help"
     
-    FontSize1 = GetSetting(App.Title, "Design", "HelpFontSize", cDefaultFontSize)
+    FontSize1 = Val(GetSetting(App.Title, "Design", "HelpFontSize", Str$(cDefaultFontSize)))
     
     For c = 0 To sst1.Tabs - 1
         If Left(sst1.TabCaption(c), 4) = "Tab " Then
@@ -461,6 +471,6 @@ Private Sub ChangeFontSize()
     tbrActions.Buttons("DecreaseFont").ToolTipText = "Decrease the font size (current size is " & FontSize1 & ")"
     tbrActions.Buttons("IncreaseFont").ToolTipText = "Increase the font size (current size is " & FontSize1 & ")"
     
-    SaveSetting App.Title, "Design", "HelpFontSize", CStr(FontSize1)
+    SaveSetting App.Title, "Design", "HelpFontSize", Str$(FontSize1)
 
 End Sub

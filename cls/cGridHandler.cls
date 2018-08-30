@@ -1173,7 +1173,7 @@ Private Sub StoreGridValuesFromClient()
     
     mColumnsRightPosSet = False
     
-    If Not mDoNotRememberOrder Then
+    If (Not mDoNotRememberOrder) And mEnableOrderByColumns Then
         If Not mLastOrderColumnRetrived Then
             iStr = Base64Decode(GetSetting(AppNameForRegistry, "Preferences", Keyname & "_OrderByCol", ""))
             If iStr = "" Then
@@ -1617,6 +1617,8 @@ Public Sub UpdateGridColumnsWidthsStretched()
     Dim iRedraw_Prev As Boolean
     Dim iThereAreHiddenColumns As Boolean
     Dim iUpdated As Boolean
+    Const cHorizontalSB = 1
+    Dim iHasHowSB As Boolean
     
     If Not mIsTypeSupported Then Exit Sub
 '    If Not mStretchColumnsWidthsToFill Then Exit Sub
@@ -1627,7 +1629,7 @@ Public Sub UpdateGridColumnsWidthsStretched()
     
     iAvailableWidth = mGrid.Parent.ScaleX(mGrid.Width, mGrid.Parent.ScaleMode, vbTwips)
     If mGrid.BorderStyle <> 0 Then
-        iAvailableWidth = iAvailableWidth - 3 * Screen.TwipsPerPixelX
+        iAvailableWidth = iAvailableWidth - 4 * Screen.TwipsPerPixelX
     End If
     If GridShowsVerticalScrollBar Then
         iAvailableWidth = iAvailableWidth - (GetSystemMetrics(SM_CXVSCROLL)) * Screen.TwipsPerPixelX
@@ -1649,15 +1651,15 @@ Public Sub UpdateGridColumnsWidthsStretched()
 '    End If
     
     If iAvailableWidth > iTotalWidth Then
-        If (mScrollBars And 1) = 1 Then
-            mGrid.ScrollBars = mGrid.ScrollBars And Not 1
+        If (mScrollBars And cHorizontalSB) <> 0 Then
+            mGrid.ScrollBars = mGrid.ScrollBars And Not cHorizontalSB
         End If
     Else
         mGrid.ScrollBars = mScrollBars
     End If
     
     If iTotalWidth <> 0 Then
-        iFactor = iAvailableWidth / iTotalWidth
+        iFactor = Round(iAvailableWidth - Screen.TwipsPerPixelX / 2) / iTotalWidth
         For c = 0 To mGrid.Cols - 1
             If Not mColumnsHiddenByClientProgram(c) Then
                 If Not mColumnsHiddenByComponent(c) Then
@@ -1687,9 +1689,14 @@ Public Sub UpdateGridColumnsWidthsStretched()
 
 TheExit:
     
-    mGrid.ScrollBars = mGrid.ScrollBars Or 1
+    iHasHowSB = CBool(mGrid.ScrollBars And cHorizontalSB)
+    If Not iHasHowSB Then
+        mGrid.ScrollBars = mGrid.ScrollBars Or cHorizontalSB
+    End If
     mGrid.LeftCol = mGrid.FixedCols
-    mGrid.ScrollBars = mGrid.ScrollBars And Not 1
+    If Not iHasHowSB Then
+        mGrid.ScrollBars = mGrid.ScrollBars And Not cHorizontalSB
+    End If
     
     mGrid.Redraw = iRedraw_Prev Or mGrid.Redraw
     ParentFlexFnObject.EventRaise "AfterSettingColumnsWidths", mGrid.Name, CLng(iUpdated), 0
@@ -2571,7 +2578,7 @@ Private Sub TestWhetherToShowToolTip()
     Dim iRectCell As RECT
     Dim iRectCalc As RECT
     Dim iDC As Long
-    Dim iLOGFONT As LOGFONT
+    Dim iLOGFONT As LOGFONTW
     Dim iFontHandle As Long
     Dim iOldFont As Long
     Dim iText As String
@@ -2621,7 +2628,7 @@ Private Sub TestWhetherToShowToolTip()
     If iDC = 0 Then Exit Sub
     
     iLOGFONT = StdFontToLogFont_Screen(iDC, iFont)
-    iFontHandle = CreateFontIndirect(iLOGFONT)
+    iFontHandle = CreateFontIndirectW(iLOGFONT)
     iOldFont = SelectObject(iDC, iFontHandle)
     
     iRectCalc.Right = iRectCell.Right
@@ -3120,3 +3127,13 @@ End Property
 Public Property Get LastTextToFind() As String
     LastTextToFind = mLastTextToFind
 End Property
+
+Public Sub DeleteOrderByColumnSaved()
+    On Error Resume Next
+    DeleteSetting AppNameForRegistry, "Preferences", Keyname & "_OrderByCol"
+    mLastOrderColumnRetrived = False
+    mLastColumnClicked = mInitialOrderColumn
+    mLastOrderDescending = 0
+    mGridWasOrderedByUser = False
+    mLastOrderColumnHeader = ""
+End Sub

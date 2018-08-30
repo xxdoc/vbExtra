@@ -14,6 +14,12 @@ Begin VB.UserControl TrayIcon
    ScaleHeight     =   1224
    ScaleWidth      =   1164
    ToolboxBitmap   =   "ctlTrayIcon.ctx":0E28
+   Begin VB.Timer tmrRestoreWindow 
+      Enabled         =   0   'False
+      Interval        =   1
+      Left            =   72
+      Top             =   540
+   End
    Begin VB.Frame hWndHolder 
       BorderStyle     =   0  'None
       Height          =   15
@@ -30,6 +36,10 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
+
+Implements ISubclass
+
+Private Declare Function RegisterWindowMessage Lib "user32" Alias "RegisterWindowMessageA" (ByVal lpString As String) As Long
 
 Private Const WM_MOUSEMOVE = &H200
 Private Const WM_LBUTTONDOWN = &H201
@@ -107,10 +117,13 @@ End Enum
 
 Public Event TrayClick(Button As vbExTrayIconMouseEventConstants)
 Public Event BalloonClick(ClickType As vbExTrayIconClickTypeConstants)
+Public Event Restored(ByRef RemoveTrayIcon As Boolean)
 
 Private mActive As Boolean
 Private m_TrayIcon As StdPicture
 Private m_IconData As NOTIFYICONDATA
+Private mWM_RESTORE_FROM_SYSTEM_TRAY As Long
+Private mParentHwnd As Long
 
 Private Sub hWndHolder_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     Dim msg As Long
@@ -120,6 +133,30 @@ Private Sub hWndHolder_MouseMove(Button As Integer, Shift As Integer, x As Singl
     ElseIf msg >= WM_BALLOONXCLK And msg <= WM_BALLOONLCLK Then
         RaiseEvent BalloonClick(msg)
     End If
+End Sub
+
+Private Function ISubclass_MsgResponse(ByVal hWnd As Long, ByVal iMsg As Long) As EMsgResponse
+    ISubclass_MsgResponse = emrPostProcess
+End Function
+
+Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, wParam As Long, lParam As Long, bConsume As Boolean) As Long
+    If iMsg = mWM_RESTORE_FROM_SYSTEM_TRAY Then
+        tmrRestoreWindow.Enabled = True
+    End If
+End Function
+
+Private Sub tmrRestoreWindow_Timer()
+    Dim iBool As Boolean
+    
+    tmrRestoreWindow.Enabled = False
+    ShowWindow mParentHwnd, SW_SHOW
+    iBool = True
+    RaiseEvent Restored(iBool)
+    If iBool Then Remove
+End Sub
+
+Private Sub UserControl_Initialize()
+    mWM_RESTORE_FROM_SYSTEM_TRAY = RegisterWindowMessage("WM_RESTORE_FROM_SYSTEM_TRAY")
 End Sub
 
 Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
@@ -146,6 +183,7 @@ Public Property Get ToolTip() As String
 End Property
 
 Public Sub Create(nToolTipText, Optional nIcon As StdPicture)
+    If mActive Then Remove
     If Not nIcon Is Nothing Then Set m_TrayIcon = nIcon
     With m_IconData
         .cbSize = Len(m_IconData)
@@ -163,11 +201,23 @@ Public Sub Create(nToolTipText, Optional nIcon As StdPicture)
     End With
     Shell_NotifyIcon NIM_ADD, m_IconData
     mActive = True
+    
+    mParentHwnd = 0
+    On Error Resume Next
+    mParentHwnd = Parent.hWnd
+    
+    If mParentHwnd <> 0 Then
+        AttachMessage Me, Parent.hWnd, mWM_RESTORE_FROM_SYSTEM_TRAY
+    End If
 End Sub
 
 Public Sub Remove()
     Shell_NotifyIcon NIM_DELETE, m_IconData
     mActive = False
+    If mParentHwnd <> 0 Then
+        DetachMessage Me, Parent.hWnd, mWM_RESTORE_FROM_SYSTEM_TRAY
+        mParentHwnd = 0
+    End If
 End Sub
 
 Public Sub BalloonTip(Prompt As String, Optional Style As vbExTrayIconBalloonTipStyleConstants = vxBTSNoIcon, Optional Title As String, Optional Timeout As Long = 2000)

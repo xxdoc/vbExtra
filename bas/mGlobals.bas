@@ -1,6 +1,27 @@
 Attribute VB_Name = "mGlobals"
 Option Explicit
 
+Public Const LF_FACESIZE = 32
+
+Public Type LOGFONTW
+    lfHeight As Long
+    lfWidth As Long
+    lfEscapement As Long
+    lfOrientation As Long
+    lfWeight As Long
+    lfItalic As Byte
+    lfUnderline As Byte
+    lfStrikeOut As Byte
+    lfCharSet As Byte
+    lfOutPrecision As Byte
+    lfClipPrecision As Byte
+    lfQuality As Byte
+    lfPitchAndFamily As Byte
+    lfFaceName(0 To ((LF_FACESIZE * 2) - 1)) As Byte
+End Type
+
+Public Declare Function CreateFontIndirectW Lib "gdi32" (ByRef lpLogFont As LOGFONTW) As Long
+
 Private Declare Function GetLocaleInfo Lib "Kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
 Private Const LOCALE_USER_DEFAULT = &H400
 Private Const LOCALE_SDECIMAL = &HE
@@ -53,7 +74,6 @@ Private Declare Function OpenFile Lib "Kernel32" (ByVal lpFileName As String, lp
 Private Declare Function GetFileTime Lib "Kernel32" (ByVal hFile As Long, lpCreationTime As FileTime, lpLastAccessTime As FileTime, lpLastWriteTime As FileTime) As Long
 Private Declare Function SetFileTime Lib "Kernel32" (ByVal hFile As Long, lpCreationTime As FileTime, lpLastAccessTime As FileTime, lpLastWriteTime As FileTime) As Long
 Private Declare Function SystemTimeToFileTime Lib "Kernel32" (lpSystemTime As SYSTEMTIME, lpFileTime As FileTime) As Long
-Private Declare Sub ZeroMemory Lib "kernel32.dll" Alias "RtlZeroMemory" (Destination As Any, ByVal Length As Long)
 Private Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
 
 Private Declare Function SetCurrentDirectory Lib "Kernel32" Alias "SetCurrentDirectoryA" (ByVal PathName As String) As Long
@@ -255,41 +275,39 @@ Public Declare Function IsWindow Lib "user32" (ByVal hWnd As Long) As Long
 
 Public Const GWL_EXSTYLE = (-20)
 
-Public Const LF_FACESIZE = 32
+'Public Type LOGFONT
+'    lfHeight As Long
+'    lfWidth As Long
+'    lfEscapement As Long
+'    lfOrientation As Long
+'    lfWeight As Long
+'    lfItalic As Byte
+'    lfUnderline As Byte
+'    lfStrikeOut As Byte
+'    lfCharSet As Byte
+'    lfOutPrecision As Byte
+'    lfClipPrecision As Byte
+'    lfQuality As Byte
+'    lfPitchAndFamily As Byte
+'    lfFaceName(0 To LF_FACESIZE - 1) As Byte
+'End Type
 
-Public Type LOGFONT
-    lfHeight As Long
-    lfWidth As Long
-    lfEscapement As Long
-    lfOrientation As Long
-    lfWeight As Long
-    lfItalic As Byte
-    lfUnderline As Byte
-    lfStrikeOut As Byte
-    lfCharSet As Byte
-    lfOutPrecision As Byte
-    lfClipPrecision As Byte
-    lfQuality As Byte
-    lfPitchAndFamily As Byte
-    lfFaceName(0 To LF_FACESIZE - 1) As Byte
-End Type
-
-Private Type NONCLIENTMETRICS
+Private Type NONCLIENTMETRICSW
     cbSize As Long
     iBorderWidth As Long
     iScrollWidth As Long
     iScrollHeight As Long
     iCaptionWidth As Long
     iCaptionHeight As Long
-    lfCaptionFont As LOGFONT
+    lfCaptionFont As LOGFONTW
     iSMCaptionWidth As Long
     iSMCaptionHeight As Long
-    lfSMCaptionFont As LOGFONT
+    lfSMCaptionFont As LOGFONTW
     iMenuWidth As Long
     iMenuHeight As Long
-    lfMenuFont As LOGFONT
-    lfStatusFont As LOGFONT
-    lfMessageFont As LOGFONT
+    lfMenuFont As LOGFONTW
+    lfStatusFont As LOGFONTW
+    lfMessageFont As LOGFONTW
 End Type
 
 Public Const CLEARTYPE_QUALITY As Byte = 6
@@ -314,7 +332,6 @@ Private Const SPI_GETICONTITLELOGFONT = 31
 Public Declare Function GetDC Lib "user32" (ByVal hWnd As Long) As Long
 Public Declare Function CreateCompatibleDC Lib "gdi32" (ByVal hDC As Long) As Long
 Public Declare Function DeleteDC Lib "gdi32" (ByVal hDC As Long) As Long
-Public Declare Function CreateFontIndirect Lib "gdi32" Alias "CreateFontIndirectA" (lpLogFont As LOGFONT) As Long
 Public Declare Function DeleteObject Lib "gdi32" (ByVal hObject As Long) As Long
 Public Declare Function GetTextExtentPoint32 Lib "gdi32" Alias "GetTextExtentPoint32A" (ByVal hDC As Long, ByVal lpsz As String, ByVal cbString As Long, lpSize As POINTAPI) As Long
 
@@ -559,6 +576,7 @@ Private Declare Function GetTempPath Lib "Kernel32" Alias "GetTempPathA" (ByVal 
 Private Declare Function GetTempFileName Lib "Kernel32" Alias "GetTempFileNameA" (ByVal lpszPath As String, ByVal lpPrefixString As String, ByVal wUnique As Long, ByVal lpTempFileName As String) As Long
 
 Private Declare Function SystemParametersInfo Lib "user32" Alias "SystemParametersInfoA" (ByVal uAction As Long, ByVal uParam As Long, lpvParam As Any, ByVal fuWinIni As Long) As Long
+Private Declare Function SystemParametersInfoW Lib "user32" (ByVal uAction As Long, ByVal uParam As Long, ByRef pvParam As Any, ByVal fWinIni As Long) As Long
 Private Const SPI_GETWORKAREA = 48
 
 Private Declare Function GetProp Lib "user32" Alias "GetPropA" (ByVal hWnd As Long, ByVal lpString As String) As Long
@@ -1010,13 +1028,13 @@ Public Function FileExists(ByVal strPathName As String) As Boolean
 '    End If
 End Function
 
-Public Function GetTempDir() As String
+Public Function GetTempFolder() As String
     Dim lChar As Long
     
-    GetTempDir = String$(255, 0)
-    lChar = GetTempPath(255, GetTempDir)
-    GetTempDir = Left$(GetTempDir, lChar)
-    AddDirSep GetTempDir
+    GetTempFolder = String$(255, 0)
+    lChar = GetTempPath(255, GetTempFolder)
+    GetTempFolder = Left$(GetTempFolder, lChar)
+    AddDirSep GetTempFolder
 End Function
 
 Public Sub AddDirSep(strPathName As String)
@@ -1033,7 +1051,7 @@ Public Function GetTempFileFullPath() As String
     
     iTemp = String(260, 0)
     'Get a temporary filename
-    GetTempFileName GetTempDir, "", 0, iTemp
+    GetTempFileName GetTempFolder, "", 0, iTemp
     'Remove all the unnecessary chr$(0)'s
     iTemp = Left$(iTemp, InStr(1, iTemp, Chr$(0)) - 1)
     GetTempFileFullPath = iTemp
@@ -1364,21 +1382,9 @@ Public Function GetProductNameFromExeFile(strFileName As String) As String
     End If
     iGetProductNameFromExeFile = Trim$(iGetProductNameFromExeFile)
     If iGetProductNameFromExeFile = "" Then
-        iGetProductNameFromExeFile = BaseName(strFileName)
+        iGetProductNameFromExeFile = GetFileName(strFileName)
     End If
     GetProductNameFromExeFile = iGetProductNameFromExeFile
-End Function
-
-Public Function BaseName(sPathAndFile As String) As String
-    '
-    ' Strip the path from the file name, and just return the FileName
-    ' Wraps the SeparatePathAndFileName from DWTools
-    '
-    Dim sFile As String
-
-    SeparatePathAndFileName sPathAndFile, , sFile
-
-    BaseName = sFile
 End Function
 
 Public Function GetFolder(nFileFullPath As String) As String
@@ -1688,7 +1694,7 @@ End Function
 Public Function ControlTextWidth(nControl As Control, Optional ByVal nText As String) As Long
     Dim iP As POINTAPI
     Dim iDC As Long
-    Dim iLOGFONT As LOGFONT
+    Dim iLOGFONT As LOGFONTW
     Dim iFontHandle As Long
     Dim iOldFont As Long
     
@@ -1700,7 +1706,7 @@ Public Function ControlTextWidth(nControl As Control, Optional ByVal nText As St
     If iDC = 0 Then Exit Function
     
     iLOGFONT = StdFontToLogFont_Screen(iDC, nControl.Font)
-    iFontHandle = CreateFontIndirect(iLOGFONT)
+    iFontHandle = CreateFontIndirectW(iLOGFONT)
     iOldFont = SelectObject(iDC, iFontHandle)
     
     GetTextExtentPoint32 iDC, nText, Len(nText), iP
@@ -1725,20 +1731,24 @@ Public Function ControlWidth(nControl As Control) As Long
     ControlWidth = iTextWidth
 End Function
 
-Public Function StdFontToLogFont_Screen(nHdc As Long, nFont As StdFont) As LOGFONT
+Public Function StdFontToLogFont_Screen(nHdc As Long, nFont As StdFont) As LOGFONTW
     Dim iFontName As String
     Dim iDPIY As Single
     Dim c As Long
+    Dim iBytes() As Byte
     
     iFontName = nFont.Name
     
     iDPIY = GetDeviceCaps(nHdc, LOGPIXELSY)
     
+    iBytes = iFontName
     For c = 0 To 31
         If c < Len(iFontName) Then
-            StdFontToLogFont_Screen.lfFaceName(c) = Asc(Mid$(iFontName, c + 1, 1))
+            StdFontToLogFont_Screen.lfFaceName(c * 2) = iBytes(c * 2) '                 .lfFaceName(c) = Asc(Mid$(iFontName, c + 1, 1))
+            StdFontToLogFont_Screen.lfFaceName(c * 2 + 1) = iBytes(c * 2 + 1)
         Else
-            StdFontToLogFont_Screen.lfFaceName(c) = 0
+            StdFontToLogFont_Screen.lfFaceName(c * 2) = 0
+            StdFontToLogFont_Screen.lfFaceName(c * 2 + 1) = 0
         End If
     Next
      
@@ -1921,16 +1931,6 @@ Public Function GetFormPersistedWindowState(nForm As Object) As Long
     If Not iFormPersist Is Nothing Then
         GetFormPersistedWindowState = iFormPersist.GetFormPersistedWindowState
     End If
-End Function
-
-Public Function GetSavedFormWindowState(nForm As Object, Optional nContext As String, Optional nDefaultValue As Long = -1) As FormWindowStateConstants
-    Dim iName As String
-    Dim iNameAndContext As String
-    
-    iName = nForm.Name
-    iNameAndContext = Base64Encode(iName & nContext)
-    GetSavedFormWindowState = GetSetting(AppNameForRegistry, "WindowsPos", iNameAndContext & ".WS", nDefaultValue)
-    
 End Function
 
 Public Sub ShowModal(nForm As Object, Optional nWaitWithDoevents As Boolean = True, Optional nSetIcon As Boolean = True, Optional nFormsHwndToKeepEnabled As Variant, Optional nKeepEnabledTaskBarWindows As Boolean = True, Optional nNoOwner As Boolean)
@@ -2233,20 +2233,22 @@ Public Function ColorsBlended(ByVal nColor1 As Long, ByVal nColor2 As Long, ByVa
 End Function
 
 Public Function GetSystemFont(nSystemFont As vbExSystemFontConstants) As StdFont
-    Dim iLF As LOGFONT
-    Dim iNcm As NONCLIENTMETRICS
-    Dim iILf As LOGFONT
+    Dim iLF As LOGFONTW
+    Dim iNcm As NONCLIENTMETRICSW
+    Dim iILf As LOGFONTW
     Dim iRet As Long
     
-    iNcm.cbSize = 340
-    iRet = SystemParametersInfo(SPI_GETNONCLIENTMETRICS, iNcm.cbSize, iNcm, 0)
+'    iNcm.cbSize = 340
+'    iNcm.cbSize = 500
+    iNcm.cbSize = LenB(iNcm)
+    iRet = SystemParametersInfoW(SPI_GETNONCLIENTMETRICS, iNcm.cbSize, iNcm, 0)
     If (iRet = 0) Then Exit Function
     
     Select Case nSystemFont
         Case vxCaptionFont
             CopyMemoryAny1 iLF, iNcm.lfCaptionFont, LenB(iNcm.lfCaptionFont)
         Case vxIconFont
-            iRet = SystemParametersInfo(SPI_GETICONTITLELOGFONT, 0, iILf, 0)
+            iRet = SystemParametersInfoW(SPI_GETICONTITLELOGFONT, LenB(iILf), iILf, 0)
             If (iRet <> 0) Then
                 CopyMemoryAny1 iLF, iILf, LenB(iILf)
             End If
@@ -2265,7 +2267,7 @@ Public Function GetSystemFont(nSystemFont As vbExSystemFontConstants) As StdFont
     Set GetSystemFont = LogFontToStdFont(iLF)
 End Function
 
-Private Function LogFontToStdFont(lF As LOGFONT, Optional nPrinterFont As Boolean) As iFont
+Private Function LogFontToStdFont(lF As LOGFONTW, Optional nPrinterFont As Boolean) As iFont
     Dim iFontName As String
     Dim iDPIY As Single
     Dim iDC As Long
@@ -2282,11 +2284,11 @@ Private Function LogFontToStdFont(lF As LOGFONT, Optional nPrinterFont As Boolea
         ReleaseDC 0, iDC
     End If
     
-    iFontName = StrConv(lF.lfFaceName, vbUnicode)
-    If InStr(iFontName, Chr(0)) > 0 Then
-        If (InStr(iFontName, Chr(0)) = 1) And Len(iFontName) > 1 Then
+    iFontName = lF.lfFaceName
+    If Len(iFontName) > 0 Then
+        If InStr(iFontName, Chr(0)) > 0 Then
+            iFontName = Left$(iFontName, InStr(iFontName, Chr(0)) - 1)
         End If
-        iFontName = Left$(iFontName, InStr(iFontName, Chr(0)) - 1)
     End If
     
     If iFontName <> "" Then
@@ -2372,10 +2374,10 @@ Public Function MakeLong(ByVal wLow As Long, ByVal wHi As Long) As Long
 
 End Function
 
-Public Function DirExists(ByVal strDirName As String) As Boolean
+Public Function FolderExists(ByVal nFolderPath As String) As Boolean
     On Error Resume Next
 
-    DirExists = (GetAttr(strDirName) And vbDirectory) = vbDirectory
+    FolderExists = (GetAttr(nFolderPath) And vbDirectory) = vbDirectory
 
     Err.Clear
 End Function
@@ -2518,7 +2520,7 @@ Public Function GetProgramDocumentsFolder() As String
     If iStr = "" Then
         iStr = GetSpecialfolder(sfidPERSONAL Or sfidFlagCreate)
     Else
-        If Not DirExists(iStr) Then
+        If Not FolderExists(iStr) Then
             iStr = GetSpecialfolder(sfidPERSONAL Or sfidFlagCreate)
         End If
     End If
@@ -2544,19 +2546,11 @@ Public Sub SaveProgramDocumentsFolder(ByVal nPath As String)
     SaveSetting AppNameForRegistry, "Preferences", "DocsFolder", nPath
 End Sub
 
-Public Function GetFileFolderPath(nFileFullPath As String) As String
-    Dim iFolderPath As String
-    
-    SeparatePathAndFileName nFileFullPath, iFolderPath
-    GetFileFolderPath = iFolderPath
-    AddDirSep GetFileFolderPath
-End Function
-
-Public Function GetFileNameFromFullPath(nFileFullPath As String) As String
+Public Function GetFileName(nFileFullPath As String) As String
     Dim iFileName As String
     
     SeparatePathAndFileName nFileFullPath, , iFileName
-    GetFileNameFromFullPath = iFileName
+    GetFileName = iFileName
 End Function
 
 Private Sub DoubleTo2Longs(ByVal dbl As Double, nLongLOW As Long, nLongHigh As Long)
@@ -2600,7 +2594,7 @@ Private Sub DoubleTo2Longs(ByVal dbl As Double, nLongLOW As Long, nLongHigh As L
 
 End Sub
 
-Public Function CheckDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes As Double) As Boolean
+Public Function CheckFreeDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes As Double) As Boolean
     Dim iFileHandle As Long
     Dim iFilePath As String
     Dim iFileSizeBytes As Double
@@ -2608,7 +2602,7 @@ Public Function CheckDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes 
     Dim iFileSizeHigh As Long
     
     If nRequiredFreeSpaceInBytes < 1 Then
-        CheckDiskSpace = True
+        CheckFreeDiskSpace = True
         Exit Function
     End If
     
@@ -2622,7 +2616,7 @@ Public Function CheckDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes 
             On Error GoTo 0
         End If
         If Dir(iFilePath) <> "" Then
-'            CheckDiskSpace = True
+'            CheckFreeDiskSpace = True
             Exit Function
         End If
     Else
@@ -2636,7 +2630,7 @@ Public Function CheckDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes 
         Call DoubleTo2Longs(ByVal iFileSizeBytes, iFileSizeLow, iFileSizeHigh)
         If SetFilePointer(iFileHandle, iFileSizeLow, iFileSizeHigh, FILE_BEGIN) <> 0 Then
             If SetEndOfFile(iFileHandle) = 1 Then
-                CheckDiskSpace = True
+                CheckFreeDiskSpace = True
             End If 'SetEndOfFile
         End If 'SetFilePointer
     End If 'iFileHandle
@@ -3352,21 +3346,6 @@ Public Function FontExists(FontName As String) As Boolean
     bAns = StrComp(FontName, oFont.Name, vbTextCompare) = 0
     FontExists = bAns
 End Function
-
-Public Sub CVrStr(nString As String)
-    If Len(nString) > 0 Then
-        ZeroMemory ByVal StrPtr(nString), LenB(nString)
-    End If
-End Sub
-
-Public Sub CVrBA(nBA() As Byte)
-    On Error GoTo TheExit
-    If UBound(nBA) > -1 Then
-        ZeroMemory nBA(0), UBound(nBA) + 1
-    End If
-    
-TheExit:
-End Sub
 
 Public Sub SaveTextFile(nPath As String, nText As String)
     Dim iFreeFile
