@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form Form1 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Form1"
-   ClientHeight    =   3816
+   ClientHeight    =   4008
    ClientLeft      =   1548
    ClientTop       =   1440
    ClientWidth     =   4908
@@ -18,7 +18,7 @@ Begin VB.Form Form1
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3816
+   ScaleHeight     =   4008
    ScaleWidth      =   4908
    Begin VB.CommandButton Command4 
       Caption         =   "Sample 4: scroll other controls"
@@ -57,8 +57,16 @@ Begin VB.Form Form1
       Height          =   408
       Left            =   3204
       TabIndex        =   0
-      Top             =   3240
+      Top             =   3384
       Width           =   1308
+   End
+   Begin VB.Label Label3 
+      Caption         =   "Note: Use it with the Ocx compiled, it doesn't work in source code (it is by design)"
+      Height          =   696
+      Left            =   612
+      TabIndex        =   6
+      Top             =   3204
+      Width           =   2388
    End
    Begin VB.Label Label1 
       Alignment       =   2  'Center
