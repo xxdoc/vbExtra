@@ -2122,53 +2122,53 @@ TheExit:
 End Sub
 
 Private Function GridHasData(nGrid As Object) As Boolean
-    Dim r As Long
+    Dim R As Long
     Dim c As Long
     
     If nGrid.Rows = nGrid.FixedRows Then Exit Function
     
-    r = nGrid.FixedRows
-    If Trim$(nGrid.TextMatrix(r, 0)) <> "" Then
+    R = nGrid.FixedRows
+    If Trim$(nGrid.TextMatrix(R, 0)) <> "" Then
         GridHasData = True
     Else
-        If Trim$(nGrid.TextMatrix(r, nGrid.Cols - 1)) <> "" Then
+        If Trim$(nGrid.TextMatrix(R, nGrid.Cols - 1)) <> "" Then
             GridHasData = True
         End If
     End If
     If Not GridHasData Then
-        r = nGrid.Rows - 1
-        If Trim$(nGrid.TextMatrix(r, 0)) <> "" Then
+        R = nGrid.Rows - 1
+        If Trim$(nGrid.TextMatrix(R, 0)) <> "" Then
             GridHasData = True
         Else
-            If Trim$(nGrid.TextMatrix(r, nGrid.Cols - 1)) <> "" Then
+            If Trim$(nGrid.TextMatrix(R, nGrid.Cols - 1)) <> "" Then
                 GridHasData = True
             End If
         End If
     End If
     If Not GridHasData Then
-        r = (nGrid.Rows - 1) / 2
-        If r > nGrid.FixedRows Then
-            If Trim$(nGrid.TextMatrix(r, 0)) <> "" Then
+        R = (nGrid.Rows - 1) / 2
+        If R > nGrid.FixedRows Then
+            If Trim$(nGrid.TextMatrix(R, 0)) <> "" Then
                 GridHasData = True
             Else
-                If Trim$(nGrid.TextMatrix(r, nGrid.Cols - 1)) <> "" Then
+                If Trim$(nGrid.TextMatrix(R, nGrid.Cols - 1)) <> "" Then
                     GridHasData = True
                 End If
             End If
         End If
     End If
     If Not GridHasData Then
-        r = nGrid.FixedRows
+        R = nGrid.FixedRows
         For c = 1 To nGrid.Cols - 1
-            If Trim$(nGrid.TextMatrix(r, c)) <> "" Then
+            If Trim$(nGrid.TextMatrix(R, c)) <> "" Then
                 GridHasData = True
             End If
             If GridHasData Then Exit For
         Next c
         If Not GridHasData Then
             For c = 1 To nGrid.Cols - 1
-                r = nGrid.Rows - 1
-                If Trim$(nGrid.TextMatrix(r, c)) <> "" Then
+                R = nGrid.Rows - 1
+                If Trim$(nGrid.TextMatrix(R, c)) <> "" Then
                     GridHasData = True
                 End If
                 If GridHasData Then Exit For

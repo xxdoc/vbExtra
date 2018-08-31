@@ -70,9 +70,9 @@ Private Type BITMAP
 End Type
 
 Private Type COLORS_RGB
-    r As Long
+    R As Long
     G As Long
-    b As Long
+    B As Long
 End Type
 
 Private Declare Function TranslateColor Lib "olepro32.dll" Alias "OleTranslateColor" (ByVal clr As OLE_COLOR, ByVal palet As Long, col As Long) As Long
@@ -383,9 +383,9 @@ End Sub
 
 Private Function RGBColor(nColor As Long) As COLORS_RGB
     If nColor < 0 Then Exit Function
-    RGBColor.r = nColor And 255
+    RGBColor.R = nColor And 255
     RGBColor.G = (nColor \ 256) And 255
-    RGBColor.b = (nColor \ 65536) And 255
+    RGBColor.B = (nColor \ 65536) And 255
 End Function
 
 Private Sub SetImage()
@@ -401,6 +401,7 @@ Private Sub SetImage()
     Dim iPxColor As Long
     Dim iTx As Single
     Dim iPic As StdPicture
+    Dim iBrightness As Long
     
     mSettingImage = True
     iAmbientUserMode = Ambient.UserMode
@@ -460,21 +461,29 @@ Private Sub SetImage()
     
     iBackColorRGB = RGBColor(iBackColor)
     
-    iAuxRGBColor.r = iBackColorRGB.r - 52
+    iAuxRGBColor.R = iBackColorRGB.R - 52
     iAuxRGBColor.G = iBackColorRGB.G - 52
-    iAuxRGBColor.b = iBackColorRGB.b - 52
-    If iAuxRGBColor.r < 0 Then iAuxRGBColor.r = 0
+    iAuxRGBColor.B = iBackColorRGB.B - 52
+    If iAuxRGBColor.R < 0 Then iAuxRGBColor.R = 0
     If iAuxRGBColor.G < 0 Then iAuxRGBColor.G = 0
-    If iAuxRGBColor.b < 0 Then iAuxRGBColor.b = 0
-    iDarkColor = RGB(iAuxRGBColor.r, iAuxRGBColor.G, iAuxRGBColor.b)
+    If iAuxRGBColor.B < 0 Then iAuxRGBColor.B = 0
+    iDarkColor = RGB(iAuxRGBColor.R, iAuxRGBColor.G, iAuxRGBColor.B)
     
-    iAuxRGBColor.r = iBackColorRGB.r + 52
-    iAuxRGBColor.G = iBackColorRGB.G + 52
-    iAuxRGBColor.b = iBackColorRGB.b + 52
-    If iAuxRGBColor.r > 255 Then iAuxRGBColor.r = 255
+    iBrightness = (iBackColorRGB.R + iBackColorRGB.G + iBackColorRGB.B) / 3
+    
+    If iBrightness > 125 Then
+        iAuxRGBColor.R = iBackColorRGB.R + 52
+        iAuxRGBColor.G = iBackColorRGB.G + 52
+        iAuxRGBColor.B = iBackColorRGB.B + 52
+    Else
+        iAuxRGBColor.R = iBackColorRGB.R + 152
+        iAuxRGBColor.G = iBackColorRGB.G + 152
+        iAuxRGBColor.B = iBackColorRGB.B + 152
+    End If
+    If iAuxRGBColor.R > 255 Then iAuxRGBColor.R = 255
     If iAuxRGBColor.G > 255 Then iAuxRGBColor.G = 255
-    If iAuxRGBColor.b > 255 Then iAuxRGBColor.b = 255
-    iLightColor = RGB(iAuxRGBColor.r, iAuxRGBColor.G, iAuxRGBColor.b)
+    If iAuxRGBColor.B > 255 Then iAuxRGBColor.B = 255
+    iLightColor = RGB(iAuxRGBColor.R, iAuxRGBColor.G, iAuxRGBColor.B)
     
     UserControl.Width = ScaleX(mWidth * 2, vbPixels, vbTwips)
     UserControl.Height = ScaleY(mHeight, vbPixels, vbTwips)

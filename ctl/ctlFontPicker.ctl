@@ -82,6 +82,7 @@ Private mVisualStyles As Boolean
 Private mButtonToolTipText As String
 Private mButtonToolTipText_Default As String
 Private WithEvents mFont As StdFont
+Attribute mFont.VB_VarHelpID = -1
 Private mSampleTextEnding As vbExTextEndingStyleConstants
 Private Const cDefaultSampleTextEnding = vxTEVanish
 Private mEnabled As Boolean

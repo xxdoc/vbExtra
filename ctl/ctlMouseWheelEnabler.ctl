@@ -179,7 +179,7 @@ Private Sub mMouseWheelNotifierObject_MouseWheelRotation(Direction As Long, Hand
     Static sGridRowsPrev As Long
     Dim iControlIsActiveControl As Boolean
     Dim iAuxHeight As Long
-    Dim r As Long
+    Dim R As Long
     Dim iControlIsGrid As Boolean
     
     On Error GoTo TheExit:
@@ -215,13 +215,13 @@ Private Sub mMouseWheelNotifierObject_MouseWheelRotation(Direction As Long, Hand
             If (sGridNamePrev <> sControlToScroll.Name) Or (sGridRowsPrev <> sControlToScroll.Rows) Then
                 ' calculate the scroll step based on grid variables
                 iAuxHeight = 0
-                For r = 0 To sControlToScroll.Rows - 1
-                    iAuxHeight = iAuxHeight + sControlToScroll.RowHeight(r)
+                For R = 0 To sControlToScroll.Rows - 1
+                    iAuxHeight = iAuxHeight + sControlToScroll.RowHeight(R)
                     If iAuxHeight >= sControlToScroll.Height Then
                         Exit For
                     End If
-                Next r
-                sScrollStep = r / 4
+                Next R
+                sScrollStep = R / 4
                 If sScrollStep = 0 Then sScrollStep = 1
             End If
             

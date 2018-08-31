@@ -184,13 +184,13 @@ Private Type TRACKMOUSEEVENT_STRUCT
 End Type
 
 'Kernel32 declares used by the Subclasser
-Private Declare Function GetModuleHandleA Lib "kernel32" (ByVal lpModuleName As String) As Long
-Private Declare Function FreeLibrary Lib "kernel32" (ByVal hLibModule As Long) As Long
-Private Declare Function LoadLibraryA Lib "kernel32" (ByVal lpLibFileName As String) As Long
+Private Declare Function GetModuleHandleA Lib "Kernel32" (ByVal lpModuleName As String) As Long
+Private Declare Function FreeLibrary Lib "Kernel32" (ByVal hLibModule As Long) As Long
+Private Declare Function LoadLibraryA Lib "Kernel32" (ByVal lpLibFileName As String) As Long
 Private Declare Function TrackMouseEvent Lib "user32" (lpEventTrack As TRACKMOUSEEVENT_STRUCT) As Long
 Private Declare Function TrackMouseEventComCtl Lib "comctl32" Alias "_TrackMouseEvent" (lpEventTrack As TRACKMOUSEEVENT_STRUCT) As Long
-Private Declare Function GetProcAddress Lib "kernel32" (ByVal hModule As Long, ByVal lpProcName As String) As Long
-Private Declare Function GetVersionEx Lib "kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
+Private Declare Function GetProcAddress Lib "Kernel32" (ByVal hModule As Long, ByVal lpProcName As String) As Long
+Private Declare Function GetVersionEx Lib "Kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
 
 '  End of Subclassing Declares
 '==========================================================================================================================================================================================================================================================================================================
@@ -233,7 +233,7 @@ End Type
 'Private Type RGBColor
 '    R       As Single
 '    G       As Single
-'    b       As Single
+'    B       As Single
 'End Type
 
 '  for gradient painting and bitmap tiling
@@ -2281,32 +2281,32 @@ Private Function ShiftColor(Color As Long, PercentInDecimal As Single) As Long
     '* A Littlebit modified by me                                               *
     '****************************************************************************
 
-    Dim r As Long
+    Dim R As Long
     Dim G As Long
-    Dim b As Long
+    Dim B As Long
 
     '  Add or remove a certain color quantity by how many percent.
 
-    r = Color And 255
+    R = Color And 255
     G = (Color \ 256) And 255
-    b = (Color \ 65536) And 255
+    B = (Color \ 65536) And 255
 
-    r = r + PercentInDecimal * 255       ' Percent should already
+    R = R + PercentInDecimal * 255       ' Percent should already
     G = G + PercentInDecimal * 255       ' be translated.
-    b = b + PercentInDecimal * 255       ' Ex. 50% -> 50 / 100 = 0.5
+    B = B + PercentInDecimal * 255       ' Ex. 50% -> 50 / 100 = 0.5
 
     '  When overflow occurs, ....
     If (PercentInDecimal > 0) Then       ' RGB values must be between 0-255 only
-        If (r > 255) Then r = 255
+        If (R > 255) Then R = 255
         If (G > 255) Then G = 255
-        If (b > 255) Then b = 255
+        If (B > 255) Then B = 255
     Else
-        If (r < 0) Then r = 0
+        If (R < 0) Then R = 0
         If (G < 0) Then G = 0
-        If (b < 0) Then b = 0
+        If (B < 0) Then B = 0
     End If
 
-    ShiftColor = r + 256& * G + 65536 * b ' Return shifted color value
+    ShiftColor = R + 256& * G + 65536 * B ' Return shifted color value
 
 End Function
 
