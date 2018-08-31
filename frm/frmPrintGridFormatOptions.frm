@@ -97,7 +97,7 @@ Begin VB.Form frmPrintGridFormatOptions
       EndProperty
       TabsPerRow      =   4
       Tab             =   2
-      TabHeight       =   520,347
+      TabHeight       =   520
       Themed          =   -1  'True
       TabCaption(0)   =   "# Options"
       Tab(0).ControlCount=   1
@@ -1062,7 +1062,7 @@ End Sub
 
 Private Sub DrawSample()
     Dim c As Long
-    Dim r As Long
+    Dim R As Long
     Dim d As Long
     Dim iHeadersBackgroundColor As Long
     Dim iOtherBackgroundColor As Long
@@ -1202,27 +1202,27 @@ Private Sub DrawSample()
     d = 0
     picSample.FontBold = False
     For c = 1 To 3
-        For r = 1 To 3
+        For R = 1 To 3
             d = d + 1
             If iColorMode Then
                 picSample.ForeColor = vbBlack
                 If c = 3 Then
-                    If r = 2 Then
+                    If R = 2 Then
                         picSample.ForeColor = vbRed
-                    ElseIf r = 3 Then
+                    ElseIf R = 3 Then
                         picSample.ForeColor = vbBlue
                     End If
                 End If
             End If
-            picSample.CurrentY = 430 + 550 * r
+            picSample.CurrentY = 430 + 550 * R
             If c = 1 Then
                 picSample.CurrentX = 880 + 1200 * (c - 1)
-                picSample.Print GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_DrawSample_Element) & " " & r
+                picSample.Print GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_DrawSample_Element) & " " & R
             Else
                 picSample.CurrentX = 1080 + 1200 * (c - 1)
                 picSample.Print GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_DrawSample_Data) & " " & c - 1
             End If
-        Next r
+        Next R
     Next c
     
     Set iPic = picSample.Image

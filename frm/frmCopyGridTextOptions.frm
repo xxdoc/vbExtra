@@ -8,7 +8,7 @@ Begin VB.Form frmCopyGridTextOptions
    ClientWidth     =   7236
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8
+      Size            =   7.8
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -24,7 +24,7 @@ Begin VB.Form frmCopyGridTextOptions
    ScaleWidth      =   7236
    ShowInTaskbar   =   0   'False
    Begin VB.ListBox lstColumns 
-      Height          =   1872
+      Height          =   1776
       Left            =   132
       Style           =   1  'Checkbox
       TabIndex        =   4
@@ -71,7 +71,7 @@ Begin VB.Form frmCopyGridTextOptions
       ShowFocusRect   =   -1  'True
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
-         Size            =   8
+         Size            =   7.8
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -93,7 +93,7 @@ Begin VB.Form frmCopyGridTextOptions
       ShowFocusRect   =   -1  'True
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
-         Size            =   8
+         Size            =   7.8
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -293,7 +293,7 @@ End Sub
 
 Private Sub ShowColumns()
     Dim c As Long
-    Dim r As Long
+    Dim R As Long
     Dim iStr As String
     Dim x As Long
     
@@ -302,9 +302,9 @@ Private Sub ShowColumns()
     
     For c = 0 To mGrid.Cols - 1
         iStr = ""
-        For r = 0 To mGrid.FixedRows - 1
-            iStr = iStr & mGrid.TextMatrix(r, c) & " "
-        Next r
+        For R = 0 To mGrid.FixedRows - 1
+            iStr = iStr & mGrid.TextMatrix(R, c) & " "
+        Next R
         If Len(iStr) > 0 Then
             iStr = Left$(iStr, Len(iStr) - 1)
         End If
