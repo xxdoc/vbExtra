@@ -76,7 +76,7 @@ Private Declare Function ColorRGBToHLS Lib "shlwapi.dll" (ByVal clrRGB As Long, 
 Private Declare Function ColorHLSToRGB Lib "shlwapi.dll" (ByVal wHue As Long, ByVal wLuminance As Long, ByVal wSaturation As Long) As Long
 Private Declare Function SetDIBitsToDevice Lib "gdi32" (ByVal hDC As Long, ByVal x As Long, ByVal y As Long, ByVal dx As Long, ByVal dy As Long, ByVal SrcX As Long, ByVal SrcY As Long, ByVal Scan As Long, ByVal NumScans As Long, Bits As Any, BitsInfo As BITMAPINFOHEADER, ByVal wUsage As Long) As Long
 
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 Private Declare Function GetObjectAPI Lib "gdi32" Alias "GetObjectA" (ByVal hObject As Long, ByVal nCount As Long, lpObject As Any) As Long
 Private Declare Function VarPtrArray Lib "msvbvm60" Alias "VarPtr" (Ptr() As Any) As Long
 Private Declare Function OleCreatePictureIndirect Lib "olepro32" (PicDesc As PicBmp, RefIID As GUID, ByVal fPictureOwnsHandle&, iPic As IPicture) As Long
@@ -248,12 +248,12 @@ End Sub
 ' and that the reconstruction error for synthetic examples is proportional to the square of the sampling distance.
 ' Two new filters were proposed, the first with B=3/2 and C=1/3 suppresses post-aliasing but is unnecessarily blurring,
 ' the second with B=1/3 and C=1/3 turns out to be a satisfactory compromise between ringing, blurring, and anisotropy.
-Private Function Cubic_BCSpline(ByVal x As Double, cubic_b As Double, cubic_c As Double) As Double
+Private Function Cubic_BCSpline(ByVal x As Double, cubic_B As Double, cubic_c As Double) As Double
     x = Abs(x)
     If x < 1 Then
-        Cubic_BCSpline = ((12 - 9 * cubic_b - 6 * cubic_c) * x * x * x + (-18 + 12 * cubic_b + 6 * cubic_c) * x * x + 6 - 2 * cubic_b) / 6
+        Cubic_BCSpline = ((12 - 9 * cubic_B - 6 * cubic_c) * x * x * x + (-18 + 12 * cubic_B + 6 * cubic_c) * x * x + 6 - 2 * cubic_B) / 6
     ElseIf x < 2 Then
-        Cubic_BCSpline = ((-cubic_b - 6 * cubic_c) * x * x * x + (6 * cubic_b + 30 * cubic_c) * x * x + (-12 * cubic_b - 48 * cubic_c) * x + (8 * cubic_b + 24 * cubic_c)) / 6
+        Cubic_BCSpline = ((-cubic_B - 6 * cubic_c) * x * x * x + (6 * cubic_B + 30 * cubic_c) * x * x + (-12 * cubic_B - 48 * cubic_c) * x + (8 * cubic_B + 24 * cubic_c)) / 6
     End If
 End Function
 
