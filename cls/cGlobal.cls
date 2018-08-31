@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
 
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 '[Enumerations]
 
@@ -822,3 +822,15 @@ End Function
 Public Sub SaveBinaryFile(nFilePath As String, nBytes() As Byte, Optional nDateTime)
     mGlobals.SaveBinaryFile nFilePath, nBytes, nDateTime
 End Sub
+
+Public Function AdjustPictureWithHLS(nSourcePic As StdPicture, Optional HAddition As Long, Optional LAddition As Long, Optional SAddition As Long, Optional LFactor As Single = 1, Optional SFactor As Single = 1, Optional ColorToPreserve As Long = -1) As StdPicture
+    Set AdjustPictureWithHLS = MPicStretch.AdjustPictureWithHLS(nSourcePic, HAddition, LAddition, SAddition, LFactor, SFactor, ColorToPreserve)
+End Function
+
+Public Function AdjustColorWithHLS(nColor As Long, Optional HAddition As Long, Optional LAddition As Long, Optional SAddition As Long, Optional LFactor As Single = 1, Optional SFactor As Single = 1) As Long
+    AdjustColorWithHLS = MPicStretch.AdjustColorWithHLS(nColor, HAddition, LAddition, SAddition, LFactor, SFactor)
+End Function
+
+Public Function SetColorToSameHue(nColor As Long, nReferenceColor As Long) As Long
+    SetColorToSameHue = MPicStretch.SetColorToSameHue(nColor, nReferenceColor)
+End Function
