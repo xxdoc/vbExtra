@@ -116,6 +116,8 @@ Public Enum vbExButtonPictureAlignConstants
 End Enum
 
 
+Private Declare Function ColorRGBToHLS Lib "shlwapi.dll" (ByVal clrRGB As Long, pwHue As Long, pwLuminance As Long, pwSaturation As Long) As Long
+
 Private Declare Function GetObjectAPI Lib "gdi32" Alias "GetObjectA" (ByVal hObject As Long, ByVal nCount As Long, lpObject As Any) As Long
 Private Declare Function InflateRect Lib "user32" (lpRect As RECT, ByVal x As Long, ByVal y As Long) As Long
 Private Declare Function GetPixel Lib "gdi32" (ByVal hDC As Long, ByVal x As Long, ByVal y As Long) As Long
@@ -182,13 +184,13 @@ Private Type TRACKMOUSEEVENT_STRUCT
 End Type
 
 'Kernel32 declares used by the Subclasser
-Private Declare Function GetModuleHandleA Lib "Kernel32" (ByVal lpModuleName As String) As Long
-Private Declare Function FreeLibrary Lib "Kernel32" (ByVal hLibModule As Long) As Long
-Private Declare Function LoadLibraryA Lib "Kernel32" (ByVal lpLibFileName As String) As Long
+Private Declare Function GetModuleHandleA Lib "kernel32" (ByVal lpModuleName As String) As Long
+Private Declare Function FreeLibrary Lib "kernel32" (ByVal hLibModule As Long) As Long
+Private Declare Function LoadLibraryA Lib "kernel32" (ByVal lpLibFileName As String) As Long
 Private Declare Function TrackMouseEvent Lib "user32" (lpEventTrack As TRACKMOUSEEVENT_STRUCT) As Long
 Private Declare Function TrackMouseEventComCtl Lib "comctl32" Alias "_TrackMouseEvent" (lpEventTrack As TRACKMOUSEEVENT_STRUCT) As Long
-Private Declare Function GetProcAddress Lib "Kernel32" (ByVal hModule As Long, ByVal lpProcName As String) As Long
-Private Declare Function GetVersionEx Lib "Kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
+Private Declare Function GetProcAddress Lib "kernel32" (ByVal hModule As Long, ByVal lpProcName As String) As Long
+Private Declare Function GetVersionEx Lib "kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
 
 '  End of Subclassing Declares
 '==========================================================================================================================================================================================================================================================================================================
@@ -297,7 +299,7 @@ Private Const BF_RECT       As Long = (BF_Left Or BF_TOP Or BF_Right Or BF_BOTTO
 
 ' --Color Constant
 Private Const CLR_INVALID       As Long = &HFFFF
-Private Const DIB_RGB_COLOR    As Long = 0
+Private Const DIB_RGB_COLORS    As Long = 0
 
 ' --Formatting Text Consts
 'Private Const DT_SINGLELINE     As Long = &H20
@@ -399,11 +401,11 @@ Private Function PaintGrayScale(ByVal lHDC As Long, ByVal hPicture As Long, ByVa
     Dim x          As Long
     Dim xMax       As Long
     Dim TmpCol     As Long
-    Dim r1         As Long
+    Dim R1         As Long
     Dim G1         As Long
     Dim B1         As Long
     Dim bIsIcon    As Boolean
-
+    
     'Dim hDCSrc   As Long
     'Dim hOldob   As Long
     'Dim PicSize  As Long
@@ -418,7 +420,7 @@ Private Function PaintGrayScale(ByVal lHDC As Long, ByVal hPicture As Long, ByVa
         GetIconInfo hPicture, mIcon
         hPicture = mIcon.hbmColor
     End If
-
+    
     '  Get image info
     GetObject hPicture, Len(BMP), BMP
 
@@ -444,15 +446,15 @@ Private Function PaintGrayScale(ByVal lHDC As Long, ByVal hPicture As Long, ByVa
 
     '  Create TemDC and Get the image bits
     TmpDC = CreateCompatibleDC(lHDC)
-    GetDIBits TmpDC, hPicture, 0, BMP.bmHeight, lBits(0), BMPiH, 0
+    GetDIBits TmpDC, hPicture, 0, BMP.bmHeight, lBits(0), BMPiH, DIB_RGB_COLORS
 
     '  Loop through the array... (grayscale - average!!)
     xMax = BMPiH.biSizeImage - 1
     For x = 0 To xMax - 3 Step 3
-        r1 = lBits(x)
+        R1 = lBits(x)
         G1 = lBits(x + 1)
         B1 = lBits(x + 2)
-        TmpCol = (r1 + G1 + B1) \ 3
+        TmpCol = (R1 + G1 + B1) \ 3
         lBits(x) = TmpCol
         lBits(x + 1) = TmpCol
         lBits(x + 2) = TmpCol
@@ -461,16 +463,16 @@ Private Function PaintGrayScale(ByVal lHDC As Long, ByVal hPicture As Long, ByVa
     '  Paint it!
     If bIsIcon Then
         ReDim lTrans(Len(BMPiH) + BMPiH.biSizeImage)
-        GetDIBits TmpDC, mIcon.hbmMask, 0, BMP.bmHeight, lTrans(0), BMPiH, 0  ' Get the mask
-        StretchDIBits lHDC, lLeft, lTop, lWidth, lHeight, 0, 0, BMP.bmWidth, BMP.bmHeight, lTrans(0), BMPiH, 0, vbSrcAnd    ' Draw the mask
-        PaintGrayScale = StretchDIBits(lHDC, lLeft, lTop, lWidth, lHeight, 0, 0, BMP.bmWidth, BMP.bmHeight, lBits(0), BMPiH, 0, vbSrcPaint)  'Draw the gray
+        GetDIBits TmpDC, mIcon.hbmMask, 0, BMP.bmHeight, lTrans(0), BMPiH, DIB_RGB_COLORS   ' Get the mask
+        StretchDIBits lHDC, lLeft, lTop, lWidth, lHeight, 0, 0, BMP.bmWidth, BMP.bmHeight, lTrans(0), BMPiH, DIB_RGB_COLORS, vbSrcAnd     ' Draw the mask
+        PaintGrayScale = StretchDIBits(lHDC, lLeft, lTop, lWidth, lHeight, 0, 0, BMP.bmWidth, BMP.bmHeight, lBits(0), BMPiH, DIB_RGB_COLORS, vbSrcPaint)   'Draw the gray
         DeleteObject mIcon.hbmMask  'Delete the extracted images
         DeleteObject mIcon.hbmColor
     Else
         ReDim lTrans(Len(BMPiH) + BMPiH.biSizeImage)
-        GetDIBits TmpDC, mIcon.hbmMask, 0, BMP.bmHeight, lTrans(0), BMPiH, 0  ' Get the mask
-        StretchDIBits lHDC, lLeft, lTop, lWidth, lHeight, 0, 0, BMP.bmWidth, BMP.bmHeight, lTrans(0), BMPiH, 0, vbSrcAnd    ' Draw the mask
-        PaintGrayScale = StretchDIBits(lHDC, lLeft, lTop, lWidth, lHeight, 0, 0, BMP.bmWidth, BMP.bmHeight, lBits(0), BMPiH, 0, vbSrcPaint)
+        GetDIBits TmpDC, mIcon.hbmMask, 0, BMP.bmHeight, lTrans(0), BMPiH, DIB_RGB_COLORS  ' Get the mask
+        StretchDIBits lHDC, lLeft, lTop, lWidth, lHeight, 0, 0, BMP.bmWidth, BMP.bmHeight, lTrans(0), BMPiH, DIB_RGB_COLORS, vbSrcAnd    ' Draw the mask
+        PaintGrayScale = StretchDIBits(lHDC, lLeft, lTop, lWidth, lHeight, 0, 0, BMP.bmWidth, BMP.bmHeight, lBits(0), BMPiH, DIB_RGB_COLORS, vbSrcPaint)
         DeleteObject mIcon.hbmMask  'Delete the extracted images
         DeleteObject mIcon.hbmColor
     End If
@@ -564,10 +566,10 @@ Private Sub DrawGradientEx(ByVal x As Long, ByVal y As Long, ByVal Width As Long
     Dim lBits() As Long
     Dim lGrad() As Long
 
-    Dim r1      As Long
+    Dim R1      As Long
     Dim G1      As Long
     Dim B1      As Long
-    Dim r2      As Long
+    Dim R2      As Long
     Dim G2      As Long
     Dim B2      As Long
     Dim dR      As Long
@@ -591,20 +593,20 @@ Private Sub DrawGradientEx(ByVal x As Long, ByVal y As Long, ByVal Width As Long
 
     '-- Decompose colors
     Color1 = Color1 And &HFFFFFF
-    r1 = Color1 Mod &H100&
+    R1 = Color1 Mod &H100&
     Color1 = Color1 \ &H100&
     G1 = Color1 Mod &H100&
     Color1 = Color1 \ &H100&
     B1 = Color1 Mod &H100&
     Color2 = Color2 And &HFFFFFF
-    r2 = Color2 Mod &H100&
+    R2 = Color2 Mod &H100&
     Color2 = Color2 \ &H100&
     G2 = Color2 Mod &H100&
     Color2 = Color2 \ &H100&
     B2 = Color2 Mod &H100&
 
     '-- Get color distances
-    dR = r2 - r1
+    dR = R2 - R1
     dG = G2 - G1
     dB = B2 - B1
 
@@ -622,10 +624,10 @@ Private Sub DrawGradientEx(ByVal x As Long, ByVal y As Long, ByVal Width As Long
     iEnd = UBound(lGrad())
     If (iEnd = 0) Then
         '-- Special case (1-pixel wide gradient)
-        lGrad(0) = (B1 \ 2 + B2 \ 2) + 256 * (G1 \ 2 + G2 \ 2) + 65536 * (r1 \ 2 + r2 \ 2)
+        lGrad(0) = (B1 \ 2 + B2 \ 2) + 256 * (G1 \ 2 + G2 \ 2) + 65536 * (R1 \ 2 + R2 \ 2)
     Else
         For i = 0 To iEnd
-            lGrad(i) = B1 + (dB * i) \ iEnd + 256 * (G1 + (dG * i) \ iEnd) + 65536 * (r1 + (dR * i) \ iEnd)
+            lGrad(i) = B1 + (dB * i) \ iEnd + 256 * (G1 + (dG * i) \ iEnd) + 65536 * (R1 + (dR * i) \ iEnd)
         Next i
     End If
 
@@ -691,7 +693,7 @@ Private Sub DrawGradientEx(ByVal x As Long, ByVal y As Long, ByVal Width As Long
     End With
 
     '-- Paint it!
-    StretchDIBits UserControl.hDC, x, y, Width, Height, 0, 0, Width, Height, lBits(0), uBIH, DIB_RGB_COLOR, vbSrcCopy
+    StretchDIBits UserControl.hDC, x, y, Width, Height, 0, 0, Width, Height, lBits(0), uBIH, DIB_RGB_COLORS, vbSrcCopy
 
 End Sub
 
@@ -1812,10 +1814,73 @@ Private Sub DrawInstallShieldReverseButton(ByVal vState As enumButtonStates)
 End Sub
 
 Private Sub DrawVistaToolbarStyle(ByVal vState As enumButtonStates)
-
+    Static sVistaColor(4) As Long
+    Static sLastBackColor As Long
+    
+    Dim c As Long
+    
     Dim lpRect As RECT
     'Dim FocusRect As RECT
-
+    
+    If (sLastBackColor = 0) Or (m_BackColor <> sLastBackColor) Then
+        If m_BackColor = vbButtonFace Then
+            For c = 0 To 4
+                sVistaColor(c) = GetVistaColor(c)
+            Next c
+        Else
+            Dim R1 As Long
+            Dim G1 As Long
+            Dim B1 As Long
+            Dim H1 As Long
+            Dim L1 As Long
+            Dim S1 As Long
+            
+            Dim R2 As Long
+            Dim G2 As Long
+            Dim B2 As Long
+            Dim H2 As Long
+            Dim L2 As Long
+            Dim S2 As Long
+            
+            Dim H3 As Long
+            Dim L3 As Long
+            Dim S3 As Long
+            
+            R1 = GetVistaColor(5) And 255 ' R
+            G1 = (GetVistaColor(5) \ 256) And 255 ' G
+            B1 = (GetVistaColor(5) \ 65536) And 255 ' B
+            
+            ColorRGBToHLS RGB(R1, G1, B1), H1, L1, S1
+            
+            R2 = m_bColors.tBackColor And 255 ' R
+            G2 = (m_bColors.tBackColor \ 256) And 255 ' G
+            B2 = (m_bColors.tBackColor \ 65536) And 255 ' B
+            
+            ColorRGBToHLS RGB(R2, G2, B2), H2, L2, S2
+            
+            H3 = H2 - H1
+            
+            If H3 > 120 Then
+                H3 = H3 - 240
+            End If
+            If H3 < -120 Then
+                H3 = H3 + 240
+            End If
+            
+            L3 = L2 - L1
+            S3 = S2 - S1
+            
+            ' some limits:
+            If L3 > 50 Then L3 = 50
+            If S3 > 50 Then S3 = 50
+            
+            For c = 0 To 4
+                sVistaColor(c) = AdjustColorWithHLS(GetVistaColor(c), H3, L3, S3)
+            Next c
+        End If
+        sLastBackColor = m_BackColor
+    End If
+    
     lh = ScaleHeight
     lw = ScaleWidth
 
@@ -1836,27 +1901,27 @@ Private Sub DrawVistaToolbarStyle(ByVal vState As enumButtonStates)
     ElseIf vState = eStateOver Then
 
         ' --Draws a gradient effect with the folowing colors
-        DrawGradientEx 1, 1, lw - 2, lh - 2, &HFDF9F1, &HF8ECD0, gdVertical
+        DrawGradientEx 1, 1, lw - 2, lh - 2, sVistaColor(0), sVistaColor(1), gdVertical
 
         ' --Draws a gradient in half region to give a Light Effect
-        DrawGradientEx 1, lh / 1.7, lw - 2, lh - 2, &HF8ECD0, &HF8ECD0, gdVertical
+        DrawGradientEx 1, lh / 1.7, lw - 2, lh - 2, sVistaColor(1), sVistaColor(1), gdVertical
 
         ' --Draw outside borders
-        DrawRectangle 0, 0, lw, lh, &HCA9E61
-        DrawRectangle 1, 1, lw - 2, lh - 2, vbWhite
+        DrawRectangle 0, 0, lw, lh, sVistaColor(2)
+        DrawRectangle 1, 1, lw - 2, lh - 2, ShiftColor(sVistaColor(4), 0.5)
 
     ElseIf vState = eStateDown Then
 
-        DrawGradientEx 1, 1, lw - 2, lh - 2, &HF1DEB0, &HF9F1DB, gdVertical
+        DrawGradientEx 1, 1, lw - 2, lh - 2, sVistaColor(3), sVistaColor(4), gdVertical
 
         ' --Draws outside borders
-        DrawRectangle 0, 0, lw, lh, &HCA9E61
-        DrawRectangle 1, 1, lw - 2, lh - 2, vbWhite
+        DrawRectangle 0, 0, lw, lh, sVistaColor(2)
+        DrawRectangle 1, 1, lw - 2, lh - 2, ShiftColor(sVistaColor(4), 0.5)
 
     End If
 
     If vState = eStateDown Or vState = eStateOver Then
-        DrawCorners ShiftColor(&HCA9E61, 0.3)
+        DrawCorners ShiftColor(sVistaColor(2), 0.3)
     End If
 
 End Sub
@@ -3491,3 +3556,20 @@ End Property
 Public Property Get Redraw() As Boolean
     Redraw = mRedraw
 End Property
+
+Private Function GetVistaColor(nColorIndex As Long) As Long
+    Select Case nColorIndex
+        Case 0
+            GetVistaColor = &HFDF9F1
+        Case 1
+            GetVistaColor = &HF8ECD0
+        Case 2
+            GetVistaColor = &HCA9E61
+        Case 3
+            GetVistaColor = &HF1DEB0
+        Case 4
+            GetVistaColor = &HF9F1DB
+        Case 5
+            GetVistaColor = 14932157 ' 15841645
+    End Select
+End Function
