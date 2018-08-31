@@ -1,3 +1,4 @@
+08/31/2018 updated SizeGrip control
 08/31/2018 updated MouseWheelEnabler control
 08/30/2018 updated PopupList control
 08/29/2018 cGridHandler, FlexFn and FlexFnObject updated
