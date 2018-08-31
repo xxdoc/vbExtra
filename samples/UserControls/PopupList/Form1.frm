@@ -1,9 +1,9 @@
 VERSION 5.00
-Object = "{F22668DE-E08D-467B-8E41-13900013BD5F}#1.6#0"; "vbExtra1.ocx"
+Object = "{F22668DE-E08D-467B-8E41-13900013BD5F}#1.7#0"; "vbExtra1.ocx"
 Begin VB.Form Form1 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Number of fixed thelephone lines by country"
-   ClientHeight    =   5820
+   ClientHeight    =   5964
    ClientLeft      =   2268
    ClientTop       =   2016
    ClientWidth     =   5712
@@ -19,14 +19,14 @@ Begin VB.Form Form1
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5820
+   ScaleHeight     =   5964
    ScaleWidth      =   5712
    Begin VB.CommandButton cmdClose 
       Caption         =   "Close"
       Height          =   408
-      Left            =   3528
+      Left            =   3564
       TabIndex        =   2
-      Top             =   5256
+      Top             =   5400
       Width           =   1524
    End
    Begin vbExtra.PopupList pplYear 
@@ -65,6 +65,15 @@ Begin VB.Form Form1
       TabIndex        =   0
       Top             =   648
       Width           =   5412
+   End
+   Begin VB.Label Label1 
+      Caption         =   "The PopupList control is similar to a ComboBox with its Style set to DropDownList, but with a different look"
+      ForeColor       =   &H00FF0000&
+      Height          =   624
+      Left            =   180
+      TabIndex        =   3
+      Top             =   5256
+      Width           =   3036
    End
 End
 Attribute VB_Name = "Form1"
