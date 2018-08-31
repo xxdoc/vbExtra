@@ -1110,7 +1110,7 @@ End Property
 
 Private Sub FindTextInGrid(TextToFind, Optional nFindNext As Boolean)
     Dim iTextToFind As String
-    Dim r As Long
+    Dim R As Long
     Dim c As Long
     Dim iCellBackColor As Long
     Dim iPass As Long
@@ -1172,30 +1172,30 @@ Private Sub FindTextInGrid(TextToFind, Optional nFindNext As Boolean)
     
     iPass = 1
     If iTextToFind <> "" Then
-        r = mCurrentGrid.Row - 1
+        R = mCurrentGrid.Row - 1
         c = mCurrentGrid.col
 Again:
-        Do Until r = mCurrentGrid.Rows - 1
-            r = r + 1
-            If mCurrentGrid.RowHeight(r) <> 0 Then
+        Do Until R = mCurrentGrid.Rows - 1
+            R = R + 1
+            If mCurrentGrid.RowHeight(R) <> 0 Then
                 Do Until c = mCurrentGrid.Cols - 1
                     c = c + 1
                     If mCurrentGrid.ColWidth(c) <> 0 Then
-                        If InStr(LCase$(mCurrentGrid.TextMatrix(r, c)), iTextToFind) > 0 Then
+                        If InStr(LCase$(mCurrentGrid.TextMatrix(R, c)), iTextToFind) > 0 Then
                             mCurrentGrid.col = c
                             sLastCol = c
-                            If r > 1 Then
-                                If mCurrentGrid.TopRow < (r - 1) Then
-                                   mCurrentGrid.TopRow = r - 1
+                            If R > 1 Then
+                                If mCurrentGrid.TopRow < (R - 1) Then
+                                   mCurrentGrid.TopRow = R - 1
                                 End If
                             Else
-                                mCurrentGrid.TopRow = r
+                                mCurrentGrid.TopRow = R
                             End If
-                            mCurrentGrid.Row = r
-                            sLastRow = r
-                            If Not mCurrentGrid.RowIsVisible(r) Then
-                                If r > 1 Then
-                                    mCurrentGrid.TopRow = r - 1
+                            mCurrentGrid.Row = R
+                            sLastRow = R
+                            If Not mCurrentGrid.RowIsVisible(R) Then
+                                If R > 1 Then
+                                    mCurrentGrid.TopRow = R - 1
                                 End If
                             End If
                             If Not mCurrentGrid.ColIsVisible(c) Then
@@ -1227,26 +1227,26 @@ Again:
                             mCurrentGrid.Refresh
                             Sleep 250
                             mCurrentGrid.HighLight = iHighLight
-                            'mCurrentGrid.RowSel = r
+                            'mCurrentGrid.RowSel = R
                             'mCurrentGrid.ColSel = c
                             
-                            RaiseEvent TextFound(r, c, iTextToFind)
+                            RaiseEvent TextFound(R, c, iTextToFind)
                             GoTo TheExit:
                         End If
                     End If
                     If iPass = 2 Then
-                        If r = mCurrentGrid.Row And c > mCurrentGrid.col Then Exit Do
+                        If R = mCurrentGrid.Row And c > mCurrentGrid.col Then Exit Do
                     End If
                 Loop
             End If
             If iPass = 2 Then
-                If r = mCurrentGrid.Row And c > mCurrentGrid.col Then Exit Do
+                If R = mCurrentGrid.Row And c > mCurrentGrid.col Then Exit Do
             End If
             c = -1
         Loop
         If iPass = 1 Then
             iPass = 2
-            r = mCurrentGrid.FixedRows - 1
+            R = mCurrentGrid.FixedRows - 1
             c = -1
             GoTo Again:
         End If
@@ -2075,7 +2075,7 @@ End Function
 
 Private Function CopyGridToClipboard() As Boolean
     Dim iSeparatorCharacter As String
-    Dim r As Long
+    Dim R As Long
     Dim c As Long
     Dim iText As String
     Dim iLongestColumnText() As Long
@@ -2168,11 +2168,11 @@ Private Function CopyGridToClipboard() As Boolean
         iTextMatrix = CopyGridTextMatrix(mCurrentGrid)
         Select Case mCopyToClipboardMode
             Case gfnSeparateWithTabs, gfnSeparateWithSpecialCharacters
-                For r = 0 To UBound(iTextMatrix, 1)
+                For R = 0 To UBound(iTextMatrix, 1)
                     For c = 0 To mCurrentGrid.Cols - 1
                         If iCopyColumn(c) Then
                             If mCurrentGrid.ColWidth(c) <> 0 Then
-                                iConcat.AddString CStr(iTextMatrix(r, c))
+                                iConcat.AddString CStr(iTextMatrix(R, c))
                                 If c <> iLastCopyColumn Then
                                     iConcat.AddString iSeparatorCharacter
                                 End If
@@ -2180,17 +2180,17 @@ Private Function CopyGridToClipboard() As Boolean
                         End If
                     Next c
                     iConcat.AddString vbCrLf
-                Next r
+                Next R
             Case gfnSeparateWithSpacesForFixedFont
                 
                 iNeedNormalization = False
                 ' too long cell text must be splitted into lines
-                For r = 0 To UBound(iTextMatrix, 1)
+                For R = 0 To UBound(iTextMatrix, 1)
                     For c = 0 To mCurrentGrid.Cols - 1
                         'If the text of the cell is longer than the max allowed for a column
-                        If (Len(iTextMatrix(r, c)) > cMaxFixedTextLenght) Or (InStr(iTextMatrix(r, c), vbCrLf) > 0) Then
+                        If (Len(iTextMatrix(R, c)) > cMaxFixedTextLenght) Or (InStr(iTextMatrix(R, c), vbCrLf) > 0) Then
                             iNeedNormalization = True
-                            iStr = iTextMatrix(r, c)
+                            iStr = iTextMatrix(R, c)
                             
                             ' remove line feeds at the beginning, if any
                             Do While Left$(iStr, 2) = vbCrLf
@@ -2247,10 +2247,10 @@ Private Function CopyGridToClipboard() As Boolean
                                 iCellLines(UBound(iCellLines)) = iStr
                             End If
                             
-                            iTextMatrix(r, c) = iCellLines
+                            iTextMatrix(R, c) = iCellLines
                         End If
                     Next c
-                Next r
+                Next R
                 If iNeedNormalization Then
                     iTextMatrix = GridTextMatrixNormalized(iTextMatrix)
                 End If
@@ -2259,29 +2259,29 @@ Private Function CopyGridToClipboard() As Boolean
                 For c = 0 To mCurrentGrid.Cols - 1
                     If iCopyColumn(c) Then
                         If mCurrentGrid.ColWidth(c) <> 0 Then
-                            For r = 0 To UBound(iTextMatrix, 1)
-                                iStr = iTextMatrix(r, c)
+                            For R = 0 To UBound(iTextMatrix, 1)
+                                iStr = iTextMatrix(R, c)
                                 iLng = Len(iStr)
                                 If iLng > iLongestColumnText(c) Then
                                     iLongestColumnText(c) = iLng
                                 End If
-                            Next r
+                            Next R
                         End If
                     End If
                 Next c
                 
-                For r = 0 To UBound(iTextMatrix, 1)
+                For R = 0 To UBound(iTextMatrix, 1)
                     For c = 0 To mCurrentGrid.Cols - 1
                         If iCopyColumn(c) Then
                             If mCurrentGrid.ColWidth(c) <> 0 Then
-                                iStr = iTextMatrix(r, c)
+                                iStr = iTextMatrix(R, c)
                                 iConcat.AddString iStr
                                 iConcat.AddString Space$(iLongestColumnText(c) - Len(iStr) + 5)
                             End If
                         End If
                     Next c
                     iConcat.AddString vbCrLf
-                Next r
+                Next R
             Case gfnSeparateWithSpacesForVariableFont
                 
                 iNeedNormalization = False
@@ -2292,22 +2292,22 @@ Private Function CopyGridToClipboard() As Boolean
                 iMaxVariableFontTextWidth = mCurrentGrid.Parent.TextWidth(String$(cMaxFixedTextLenght, "a"))
                 iSpaceWidth = mCurrentGrid.Parent.TextWidth(Space$(100)) / 100
                 ReDim iTextWidths(UBound(iTextMatrix, 1), mCurrentGrid.Cols - 1)
-                For r = 0 To UBound(iTextMatrix, 1)
+                For R = 0 To UBound(iTextMatrix, 1)
                     For c = 0 To mCurrentGrid.Cols - 1
                         If iCopyColumn(c) Then
-                            iTextWidths(r, c) = mCurrentGrid.Parent.TextWidth(iTextMatrix(r, c))
+                            iTextWidths(R, c) = mCurrentGrid.Parent.TextWidth(iTextMatrix(R, c))
                         End If
                     Next c
-                Next r
+                Next R
                 
                 ' too long cell text must be splitted into lines
-                For r = 0 To UBound(iTextMatrix, 1)
+                For R = 0 To UBound(iTextMatrix, 1)
                     For c = 0 To mCurrentGrid.Cols - 1
                         'If the text of the cell is longer than the max allowed for a column
-                        If (iTextWidths(r, c) > iMaxVariableFontTextWidth) Or (InStr(iTextMatrix(r, c), vbCrLf) > 0) Then
+                        If (iTextWidths(R, c) > iMaxVariableFontTextWidth) Or (InStr(iTextMatrix(R, c), vbCrLf) > 0) Then
                             
                             iNeedNormalization = True
-                            iStr = iTextMatrix(r, c)
+                            iStr = iTextMatrix(R, c)
                             
                             ' remove line feeds at the beginning, if any
                             Do While Left$(iStr, 2) = vbCrLf
@@ -2402,23 +2402,23 @@ Private Function CopyGridToClipboard() As Boolean
                                 iCellLines(UBound(iCellLines)) = iStr
                             End If
                             
-                            iTextMatrix(r, c) = iCellLines
+                            iTextMatrix(R, c) = iCellLines
                             
                         End If
                     Next c
-                Next r
+                Next R
                 
                 If iNeedNormalization Then
                     iTextMatrix = GridTextMatrixNormalized(iTextMatrix, iTextWidths)
-                    For r = 0 To UBound(iTextMatrix, 1)
+                    For R = 0 To UBound(iTextMatrix, 1)
                         For c = 0 To mCurrentGrid.Cols - 1
-                            If iTextWidths(r, c) = 0 Then
-                                If iTextMatrix(r, c) <> "" Then
-                                    iTextWidths(r, c) = mCurrentGrid.Parent.TextWidth(iTextMatrix(r, c))
+                            If iTextWidths(R, c) = 0 Then
+                                If iTextMatrix(R, c) <> "" Then
+                                    iTextWidths(R, c) = mCurrentGrid.Parent.TextWidth(iTextMatrix(R, c))
                                 End If
                             End If
                         Next c
-                    Next r
+                    Next R
                 End If
                 Set mCurrentGrid.Parent.Font = iFontPrev
                 
@@ -2427,11 +2427,11 @@ Private Function CopyGridToClipboard() As Boolean
                 For c = 0 To mCurrentGrid.Cols - 1
                     If iCopyColumn(c) Then
                         If mCurrentGrid.ColWidth(c) <> 0 Then
-                            For r = 0 To UBound(iTextMatrix, 1)
-                                If iTextWidths(r, c) > iLongestColumnTextWidth(c) Then
-                                    iLongestColumnTextWidth(c) = iTextWidths(r, c)
+                            For R = 0 To UBound(iTextMatrix, 1)
+                                If iTextWidths(R, c) > iLongestColumnTextWidth(c) Then
+                                    iLongestColumnTextWidth(c) = iTextWidths(R, c)
                                 End If
-                            Next r
+                            Next R
                         End If
                     End If
                 Next c
@@ -2448,23 +2448,23 @@ Private Function CopyGridToClipboard() As Boolean
                 ' add the necessary spaces to each text
                 ReDim iTextWidthCopied(UBound(iTextMatrix, 1))
                 ReDim iColPosRightOfLastRow(mCurrentGrid.Cols - 1)
-                For r = 0 To UBound(iTextMatrix, 1)
+                For R = 0 To UBound(iTextMatrix, 1)
                     For c = 0 To mCurrentGrid.Cols - 1
                         If iCopyColumn(c) Then
                             If mCurrentGrid.ColWidth(c) <> 0 Then
-                                iStr = iTextMatrix(r, c)
+                                iStr = iTextMatrix(R, c)
                                 iConcat.AddString iStr
                                 If c = 0 Then
-                                    iLen = Round((iColPosRigth(c) - iTextWidths(r, c)) / iSpaceWidth)
+                                    iLen = Round((iColPosRigth(c) - iTextWidths(R, c)) / iSpaceWidth)
                                 Else
-                                    iLen = Round((iColPosRigth(c) - iTextWidthCopied(r) - iTextWidths(r, c)) / iSpaceWidth)
+                                    iLen = Round((iColPosRigth(c) - iTextWidthCopied(R) - iTextWidths(R, c)) / iSpaceWidth)
                                 End If
-                                iTextWidthCopied(r) = iTextWidthCopied(r) + iTextWidths(r, c)
+                                iTextWidthCopied(R) = iTextWidthCopied(R) + iTextWidths(R, c)
                                 iStr = Space$(iLen)
                                 iSpaceLength = iSpaceWidth * iLen
-                                iTextWidthCopied(r) = iTextWidthCopied(r) + iSpaceWidth * iLen
+                                iTextWidthCopied(R) = iTextWidthCopied(R) + iSpaceWidth * iLen
                                 
-                                If r = 0 Then
+                                If R = 0 Then
                                     iColPosRightOfLastRow(c) = iColPosRigth(c)
                                 End If
                                 If c > 0 Then
@@ -2474,17 +2474,17 @@ Private Function CopyGridToClipboard() As Boolean
                                 End If
                                 
                                 ' check if adding one more space is better
-                                If Abs((iPreviousColumnRight + iTextWidths(r, c) + iSpaceLength + iSpaceWidth) - iColPosRightOfLastRow(c)) < Abs((iPreviousColumnRight + iTextWidths(r, c) + iSpaceLength) - iColPosRightOfLastRow(c)) Then
+                                If Abs((iPreviousColumnRight + iTextWidths(R, c) + iSpaceLength + iSpaceWidth) - iColPosRightOfLastRow(c)) < Abs((iPreviousColumnRight + iTextWidths(R, c) + iSpaceLength) - iColPosRightOfLastRow(c)) Then
                                         iStr = iStr & " "
                                         iSpaceLength = iSpaceLength + iSpaceWidth
-                                        iTextWidthCopied(r) = iTextWidthCopied(r) + iSpaceWidth
+                                        iTextWidthCopied(R) = iTextWidthCopied(R) + iSpaceWidth
                                 End If
                                 
-                                If Trim$(iTextMatrix(r, c)) <> "" Then
+                                If Trim$(iTextMatrix(R, c)) <> "" Then
                                     If c > 0 Then
-                                        iColPosRightOfLastRow(c) = iColPosRightOfLastRow(c - 1) + iTextWidths(r, c) + iSpaceLength
+                                        iColPosRightOfLastRow(c) = iColPosRightOfLastRow(c - 1) + iTextWidths(R, c) + iSpaceLength
                                     Else
-                                        iColPosRightOfLastRow(c) = iTextWidths(r, c) + iSpaceLength
+                                        iColPosRightOfLastRow(c) = iTextWidths(R, c) + iSpaceLength
                                     End If
                                 End If
                                 
@@ -2493,7 +2493,7 @@ Private Function CopyGridToClipboard() As Boolean
                         End If
                     Next c
                     iConcat.AddString vbCrLf
-                Next r
+                Next R
                 
         End Select
         
@@ -2514,11 +2514,11 @@ Private Function CopyGridToClipboard() As Boolean
 End Function
 
 Private Function CopyGridTextMatrix(nGrid As Object) As Variant
-    Dim r As Long
+    Dim R As Long
     Dim c As Long
     Dim iCopyGridTextMatrix()
     Dim iCopyGridTextMatrix2()
-    Dim r2 As Long
+    Dim R2 As Long
     Dim iMergeRows As Boolean
     Dim iMergeCols As Boolean
     Dim iCopy As Boolean
@@ -2529,63 +2529,63 @@ Private Function CopyGridTextMatrix(nGrid As Object) As Variant
     iMergeRows = (nGrid.MergeCells = flexMergeFree) Or (nGrid.MergeCells = flexMergeRestrictRows)
     
     ReDim iCopyGridTextMatrix(nGrid.Rows - 1, nGrid.Cols - 1)
-    r2 = -1
-    For r = 0 To nGrid.Rows - 1
-        If nGrid.RowHeight(r) <> 0 Then
-            r2 = r2 + 1
+    R2 = -1
+    For R = 0 To nGrid.Rows - 1
+        If nGrid.RowHeight(R) <> 0 Then
+            R2 = R2 + 1
             For c = 0 To nGrid.Cols - 1
                 iCopy = True
-                If iMergeRows And nGrid.MergeRow(r) Then
+                If iMergeRows And nGrid.MergeRow(R) Then
                     If c > 0 Then
                         iLastVisibleText = ""
                         For c2 = c - 1 To 0 Step -1
                             If nGrid.ColWidth(c2) <> 0 Then
-                                iLastVisibleText = nGrid.TextMatrix(r, c2)
+                                iLastVisibleText = nGrid.TextMatrix(R, c2)
                                 Exit For
                             End If
                         Next c2
-                        If nGrid.TextMatrix(r, c) = iLastVisibleText Then
+                        If nGrid.TextMatrix(R, c) = iLastVisibleText Then
                             iCopy = False
                         End If
                     End If
                 End If
                 If iCopy Then
                     If iMergeCols And nGrid.MergeCol(c) Then
-                        If r > 0 Then
+                        If R > 0 Then
                             iLastVisibleText = ""
-                            For c2 = r - 1 To 0 Step -1
+                            For c2 = R - 1 To 0 Step -1
                                 If nGrid.RowHeight(c2) <> 0 Then
                                     iLastVisibleText = nGrid.TextMatrix(c2, c)
                                     Exit For
                                 End If
                             Next c2
-                            If nGrid.TextMatrix(r, c) = iLastVisibleText Then
+                            If nGrid.TextMatrix(R, c) = iLastVisibleText Then
                                 iCopy = False
                             End If
                         End If
                     End If
                 End If
                 If iCopy Then
-                    iCopyGridTextMatrix(r2, c) = nGrid.TextMatrix(r, c)
+                    iCopyGridTextMatrix(R2, c) = nGrid.TextMatrix(R, c)
                 End If
             Next c
         End If
-    Next r
+    Next R
     
-    If r2 = -1 Then r2 = 0
+    If R2 = -1 Then R2 = 0
     
-    ReDim iCopyGridTextMatrix2(r2, nGrid.Cols - 1)
-    For r = 0 To r2
+    ReDim iCopyGridTextMatrix2(R2, nGrid.Cols - 1)
+    For R = 0 To R2
         For c = 0 To nGrid.Cols - 1
-            iCopyGridTextMatrix2(r, c) = iCopyGridTextMatrix(r, c)
+            iCopyGridTextMatrix2(R, c) = iCopyGridTextMatrix(R, c)
         Next c
-    Next r
+    Next R
     
     CopyGridTextMatrix = iCopyGridTextMatrix2
 End Function
 
 Private Function GridTextMatrixNormalized(nTextMatrix, Optional nTextWidths) As Variant
-    Dim r As Long
+    Dim R As Long
     Dim c As Long
     Dim iGridTextMatrixNormalized()
     Dim iInvertedMatrix()
@@ -2607,32 +2607,32 @@ Private Function GridTextMatrixNormalized(nTextMatrix, Optional nTextWidths) As 
         iTW = True
         ReDim iInvertedTextWidthsNew(iCols - 1, iRows - 1)
         ReDim iTextWidthsOld(iRows - 1, iCols - 1)
-        For r = 0 To iRows - 1
+        For R = 0 To iRows - 1
             For c = 0 To iCols - 1
-                iTextWidthsOld(r, c) = nTextWidths(r, c)
+                iTextWidthsOld(R, c) = nTextWidths(R, c)
             Next c
-        Next r
+        Next R
     End If
     
     ReDim iInvertedMatrix(iCols - 1, iRows - 1)
     
-    For r = 0 To iRows - 1
+    For R = 0 To iRows - 1
         iMultipleLines = False
         For c = 0 To iCols - 1
-            If IsArray(nTextMatrix(r, c)) Then
-                iInvertedMatrix(c, r + iShift) = nTextMatrix(r, c)(1)
+            If IsArray(nTextMatrix(R, c)) Then
+                iInvertedMatrix(c, R + iShift) = nTextMatrix(R, c)(1)
                 iMultipleLines = True
             Else
-                iInvertedMatrix(c, r + iShift) = nTextMatrix(r, c)
+                iInvertedMatrix(c, R + iShift) = nTextMatrix(R, c)
                 If iTW Then
-                    iInvertedTextWidthsNew(c, r + iShift) = iTextWidthsOld(r, c)
+                    iInvertedTextWidthsNew(c, R + iShift) = iTextWidthsOld(R, c)
                 End If
             End If
         Next c
         If iMultipleLines Then
 '            If iTW Then
 '                For c2 = 0 To iCols - 1
-'                    iInvertedTextWidthsNew(c2, r + iShift) = 0
+'                    iInvertedTextWidthsNew(c2, R + iShift) = 0
 '                Next c2
 '            End If
             l = 1
@@ -2640,8 +2640,8 @@ Private Function GridTextMatrixNormalized(nTextMatrix, Optional nTextWidths) As 
                 l = l + 1
                 iAddALine = False
                 For c2 = 0 To iCols - 1
-                    If IsArray(nTextMatrix(r, c2)) Then
-                        If UBound(nTextMatrix(r, c2)) >= l Then
+                    If IsArray(nTextMatrix(R, c2)) Then
+                        If UBound(nTextMatrix(R, c2)) >= l Then
                             iAddALine = True
                             Exit For
                         End If
@@ -2654,9 +2654,9 @@ Private Function GridTextMatrixNormalized(nTextMatrix, Optional nTextWidths) As 
                         ReDim Preserve iInvertedTextWidthsNew(iCols - 1, iRows - 1 + iShift)
                     End If
                     For c2 = 0 To iCols - 1
-                        If IsArray(nTextMatrix(r, c2)) Then
-                            If UBound(nTextMatrix(r, c2)) >= l Then
-                                iInvertedMatrix(c2, r + iShift) = nTextMatrix(r, c2)(l)
+                        If IsArray(nTextMatrix(R, c2)) Then
+                            If UBound(nTextMatrix(R, c2)) >= l Then
+                                iInvertedMatrix(c2, R + iShift) = nTextMatrix(R, c2)(l)
                             End If
                         End If
                     Next c2
@@ -2665,20 +2665,20 @@ Private Function GridTextMatrixNormalized(nTextMatrix, Optional nTextWidths) As 
                 End If
             Loop
         End If
-    Next r
+    Next R
     
     ReDim iGridTextMatrixNormalized(UBound(iInvertedMatrix, 2), UBound(iInvertedMatrix, 1))
     If iTW Then
         ReDim nTextWidths(UBound(iInvertedMatrix, 2), UBound(iInvertedMatrix, 1))
     End If
-    For r = 0 To UBound(iInvertedMatrix, 2)
+    For R = 0 To UBound(iInvertedMatrix, 2)
         For c = 0 To UBound(iInvertedMatrix, 1)
-            iGridTextMatrixNormalized(r, c) = iInvertedMatrix(c, r)
+            iGridTextMatrixNormalized(R, c) = iInvertedMatrix(c, R)
             If iTW Then
-                nTextWidths(r, c) = iInvertedTextWidthsNew(c, r)
+                nTextWidths(R, c) = iInvertedTextWidthsNew(c, R)
             End If
         Next c
-    Next r
+    Next R
     
     GridTextMatrixNormalized = iGridTextMatrixNormalized
     
@@ -3118,7 +3118,7 @@ Private Sub mMouseWheelNotifierObject_MouseWheelRotation(Direction As Long, Hand
     Static sGridRowsPrev As Long
     Dim iGridIsActiveControl As Boolean
     Dim iAuxHeight As Long
-    Dim r As Long
+    Dim R As Long
     Dim iHasScrollBar As Boolean
     
     If mScrollWithMouseWheel = 0 Then Exit Sub
@@ -3157,13 +3157,13 @@ On Error GoTo TheExit:
         If (sGridNamePrev <> sGrid.Name) Or (sGridRowsPrev <> sGrid.Rows) Then
             ' calculate the scroll step based on Grid variables
             iAuxHeight = 0
-            For r = 0 To sGrid.Rows - 1
-                iAuxHeight = iAuxHeight + sGrid.RowHeight(r)
+            For R = 0 To sGrid.Rows - 1
+                iAuxHeight = iAuxHeight + sGrid.RowHeight(R)
                 If iAuxHeight >= sGrid.Height Then
                     Exit For
                 End If
-            Next r
-            sScrollStep = r / 4
+            Next R
+            sScrollStep = R / 4
             If sScrollStep = 0 Then sScrollStep = 1
         End If
         
@@ -3440,7 +3440,7 @@ Private Sub DrawGrid(nCanceled As Boolean)
     Dim iFontsProportion As Single
     Dim iLongerTexts() As Long
     Dim iLongerTextsRow() As Long
-    Dim r As Long
+    Dim R As Long
     Dim iGridReDraw As Boolean
     Dim iLen As Long
     Dim iSng As Single
@@ -3663,20 +3663,20 @@ Part2:
     ReDim iLongerTexts(iGridCols - 1, 5)
     ReDim iLongerTextsRow(iGridCols - 1, 5)
     For c = 0 To iGridCols - 1
-        For r = iFixedRows To iLastRowToPrint
-            If mGridPrintingData.RowIsVisible(r) Then
+        For R = iFixedRows To iLastRowToPrint
+            If mGridPrintingData.RowIsVisible(R) Then
                 iIgnore = False
                 If (iGrid.MergeCells = flexMergeFree) Or (iGrid.MergeCells = flexMergeRestrictRows) Then
-                    If iGrid.MergeRow(r) = True Then
+                    If iGrid.MergeRow(R) = True Then
                         iConsiderGridWordWrap = True
                         If c > 0 Then
-                            If iGrid.TextMatrix(r, c) = iGrid.TextMatrix(r, c - 1) Then
+                            If iGrid.TextMatrix(R, c) = iGrid.TextMatrix(R, c - 1) Then
                                 iIgnore = True
                             End If
                         End If
                         If Not iIgnore Then
                             If c < (iGridCols - 1) Then
-                                If iGrid.TextMatrix(r, c) = iGrid.TextMatrix(r, c + 1) Then
+                                If iGrid.TextMatrix(R, c) = iGrid.TextMatrix(R, c + 1) Then
                                     iIgnore = True
                                 End If
                             End If
@@ -3687,27 +3687,27 @@ Part2:
                 End If
                 
                 If Not iIgnore Then
-                    iLen = Len(iGrid.TextMatrix(r, c)) * mGridPrintingData.CellFontAttibutes(r, c).Size
+                    iLen = Len(iGrid.TextMatrix(R, c)) * mGridPrintingData.CellFontAttibutes(R, c).Size
                     If iLen > iLongerTexts(c, 5) Then
                         If iLen > iLongerTexts(c, 1) Then
                             iLongerTexts(c, 1) = iLen
-                            iLongerTextsRow(c, 1) = r
+                            iLongerTextsRow(c, 1) = R
                         Else
                             If iLen > iLongerTexts(c, 2) Then
                                 iLongerTexts(c, 2) = iLen
-                                iLongerTextsRow(c, 2) = r
+                                iLongerTextsRow(c, 2) = R
                             Else
                                 If iLen > iLongerTexts(c, 3) Then
                                     iLongerTexts(c, 3) = iLen
-                                    iLongerTextsRow(c, 3) = r
+                                    iLongerTextsRow(c, 3) = R
                                 Else
                                     If iLen > iLongerTexts(c, 4) Then
                                         iLongerTexts(c, 4) = iLen
-                                        iLongerTextsRow(c, 4) = r
+                                        iLongerTextsRow(c, 4) = R
                                     Else
                                         If iLen > iLongerTexts(c, 5) Then
                                             iLongerTexts(c, 5) = iLen
-                                            iLongerTextsRow(c, 5) = r
+                                            iLongerTextsRow(c, 5) = R
                                         End If
                                     End If
                                 End If
@@ -3716,7 +3716,7 @@ Part2:
                     End If
                 End If
             End If
-        Next r
+        Next R
     Next c
     
     Set Printer2.Font = iGrid.Font
@@ -3730,9 +3730,9 @@ Part2:
     For c = 0 To iGridCols - 1
         If mGridPrintingData.ColIsVisible(c) Then
             iGrid.col = c
-            For r = 0 To iFixedRows - 1
-                If mGridPrintingData.RowIsVisible(r) Then
-                    iGrid.Row = r
+            For R = 0 To iFixedRows - 1
+                If mGridPrintingData.RowIsVisible(R) Then
+                    iGrid.Row = R
                     Printer2.FontName = iGrid.CellFontName
                     Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
                     iSng = iFontsProportion
@@ -3754,7 +3754,7 @@ Part2:
                         iColumnHeadersTextWidths(c) = iSng
                     End If
                 End If
-            Next r
+            Next R
         End If
     Next c
     
@@ -3763,10 +3763,10 @@ Part2:
     For c = 0 To iGridCols - 1
         If mGridPrintingData.ColIsVisible(c) Then
             iGrid.col = c
-            For r = 1 To 5
-                If mGridPrintingData.RowIsVisible(r) Then
-                    If iLongerTexts(c, r) <> 0 Then
-                        iGrid.Row = iLongerTextsRow(c, r)
+            For R = 1 To 5
+                If mGridPrintingData.RowIsVisible(R) Then
+                    If iLongerTexts(c, R) <> 0 Then
+                        iGrid.Row = iLongerTextsRow(c, R)
                         Printer2.FontName = iGrid.CellFontName
                         Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
                         iSng = iFontsProportion
@@ -3789,7 +3789,7 @@ Part2:
                         End If
                     End If
                 End If
-            Next r
+            Next R
         End If
     Next c
     
@@ -3944,10 +3944,10 @@ Part2:
                 If iColumnHeadersTextWidths(c) > iColumnDataTextWidths(c) Then
                     iReduceTheColumnsHeadersFont = True And (Not iDoNotReduceFontSize)
                     iColumnHeadersTextWidths(c) = 0
-                    For r = 0 To iFixedRows - 1
-                        If mGridPrintingData.RowIsVisible(r) Then
+                    For R = 0 To iFixedRows - 1
+                        If mGridPrintingData.RowIsVisible(R) Then
                             iGrid.col = c
-                            iGrid.Row = r
+                            iGrid.Row = R
                             Printer2.FontName = iGrid.CellFontName
                             Printer2.FontSize = iGrid.CellFontSize * iFontsProportion * 0.75
                             Printer2.FontBold = iGrid.CellFontBold
@@ -3963,7 +3963,7 @@ Part2:
                                 iColumnHeadersTextWidths(c) = iSng
                             End If
                         End If
-                    Next r
+                    Next R
                 End If
                 
                 If iColumnHeadersTextWidths(c) > iColumnDataTextWidths(c) Then
@@ -3995,13 +3995,13 @@ Part2:
             For c = 0 To iGridCols - 1
                 If mGridPrintingData.ColIsVisible(c) Then
                     If iColumnHeadersTextWidths(c) > iColumnDataTextWidths(c) Then
-                        For r = 0 To iFixedRows - 1
-                            If mGridPrintingData.RowIsVisible(r) Then
-                                If InStr(iGrid.TextMatrix(r, c), " ") > 0 Then
+                        For R = 0 To iFixedRows - 1
+                            If mGridPrintingData.RowIsVisible(R) Then
+                                If InStr(iGrid.TextMatrix(R, c), " ") > 0 Then
                                     iWordWrapTheColumnHeaders = True
                                 End If
                                 iGrid.col = c
-                                iGrid.Row = r
+                                iGrid.Row = R
                                 Printer2.FontName = iGrid.CellFontName
                                 If iReduceTheColumnsHeadersFont Then
                                     Printer2.FontSize = iGrid.CellFontSize * iFontsProportion * 0.75
@@ -4027,7 +4027,7 @@ Part2:
                                     iAuxColumnTextWidths(c) = iSng
                                 End If
                             End If
-                        Next r
+                        Next R
                         iColumnHeadersTextWidths(c) = iAuxColumnTextWidths(c)
                     End If
                     
@@ -4063,11 +4063,11 @@ Part2:
                     If iColumnDataTextWidths(c) > iColumnHeadersTextWidths(c) Then
                         iReduceTheColumnsDataFont = True And (Not iDoNotReduceFontSize)
                         iColumnDataTextWidths(c) = 0
-                        For r = 1 To 5
-                            If mGridPrintingData.RowIsVisible(r) Then
-                                If iLongerTexts(c, r) <> 0 Then
+                        For R = 1 To 5
+                            If mGridPrintingData.RowIsVisible(R) Then
+                                If iLongerTexts(c, R) <> 0 Then
                                     iGrid.col = c
-                                    iGrid.Row = iLongerTextsRow(c, r)
+                                    iGrid.Row = iLongerTextsRow(c, R)
                                     Printer2.FontName = iGrid.CellFontName
                                     Printer2.FontSize = iGrid.CellFontSize * iFontsProportion * 0.75
                                     Printer2.FontBold = iGrid.CellFontBold
@@ -4084,7 +4084,7 @@ Part2:
                                     End If
                                 End If
                             End If
-                        Next r
+                        Next R
                     End If
                     
                     If iColumnHeadersTextWidths(c) > iColumnDataTextWidths(c) Then
@@ -4119,15 +4119,15 @@ Part2:
             For c = 0 To iGridCols - 1
                 If mGridPrintingData.ColIsVisible(c) Then
                     If iColumnDataTextWidths(c) > iColumnHeadersTextWidths(c) Then
-                        For r = 1 To 5
-                            If mGridPrintingData.RowIsVisible(r) Then
-                                If iLongerTexts(c, r) <> 0 Then
-                                    If InStr(iGrid.TextMatrix(iLongerTextsRow(c, r), c), " ") > 0 Then
+                        For R = 1 To 5
+                            If mGridPrintingData.RowIsVisible(R) Then
+                                If iLongerTexts(c, R) <> 0 Then
+                                    If InStr(iGrid.TextMatrix(iLongerTextsRow(c, R), c), " ") > 0 Then
                                         iWordWrapTheColumnData = True
                                         iColumnDataWordWraps(c) = True
                                     End If
                                     iGrid.col = c
-                                    iGrid.Row = iLongerTextsRow(c, r)
+                                    iGrid.Row = iLongerTextsRow(c, R)
                                     Printer2.FontName = iGrid.CellFontName
                                     If iReduceTheColumnsDataFont Then
                                         Printer2.FontSize = iGrid.CellFontSize * iFontsProportion * 0.75
@@ -4154,7 +4154,7 @@ Part2:
                                     End If
                                 End If
                             End If
-                        Next r
+                        Next R
                         iColumnDataTextWidths(c) = iAuxColumnTextWidths(c)
                     End If
                     
@@ -4445,7 +4445,7 @@ Part2:
     Dim iAuxTop As Long
     Dim c2 As Long
     Dim ci As Long
-    Dim r2 As Long
+    Dim R2 As Long
     Dim iRow As Long
     Dim h As Long
     Dim iRh As Long
@@ -4533,28 +4533,28 @@ Part2:
     
     ' prepare object with preinting data
     iAuxTop = 0
-    For r = 0 To iLastRowToPrint
-        If mGridPrintingData.RowIsVisible(r) Then
-            iMergeRow = iMergeRows And iGrid.MergeRow(r)
+    For R = 0 To iLastRowToPrint
+        If mGridPrintingData.RowIsVisible(R) Then
+            iMergeRow = iMergeRows And iGrid.MergeRow(R)
     
             ' calculate the height of the row
             iPosCellLineLeft = 0
             For c = 0 To iGridCols - 1
 '                If mGridPrintingData.ColIsVisible(c) Then
                     ci = c
-                    iText = iGrid.TextMatrix(r, c)
+                    iText = iGrid.TextMatrix(R, c)
                     iLen = Len(iText)
                     iMergeCol = iMergeCols And iGrid.MergeCol(c)
                     iPosCellLineLeft = mGridPrintingData.ColPosLeft(c)
-                    iAuxFontIndex = mGridPrintingData.CellFontAttibutesIndex(r, c)
-                    If r < iFixedRows Then
+                    iAuxFontIndex = mGridPrintingData.CellFontAttibutesIndex(R, c)
+                    If R < iFixedRows Then
                         iAuxReduceFont = iReduceTheColumnsHeadersFont
                     Else
                         iAuxReduceFont = iReduceTheColumnsDataFont
                     End If
                     If (iAuxFontIndex <> iLastFontIndex) Or (iAuxReduceFont <> iLastFontWasReduced) Then
                         iLastFontIndex = iAuxFontIndex
-                        Set iFontAttibutes = mGridPrintingData.CellFontAttibutes(r, c)
+                        Set iFontAttibutes = mGridPrintingData.CellFontAttibutes(R, c)
                         Printer2.FontName = iFontAttibutes.Name
                         If iAuxReduceFont Then
                             Printer2.FontSize = iFontAttibutes.Size * iFontsProportion * 0.75
@@ -4575,7 +4575,7 @@ Part2:
                             iPosCellLineRight = mGridPrintingData.ColPosRight(c)
                         Else
                             c2 = c + 1
-                            Do Until iGrid.TextMatrix(r, c2) <> iText
+                            Do Until iGrid.TextMatrix(R, c2) <> iText
                                 c2 = c2 + 1
                                 If c2 = iGridCols Then
                                     Exit Do
@@ -4584,7 +4584,7 @@ Part2:
                             c2 = c2 - 1
                             iPosCellLineRight = mGridPrintingData.ColPosRight(c2)
                             If c2 <> c Then
-                                mGridPrintingData.LastColMergedInThisCellAtThisRow(r, c) = c2
+                                mGridPrintingData.LastColMergedInThisCellAtThisRow(R, c) = c2
                                 c = c2
                             End If
                         End If
@@ -4594,20 +4594,20 @@ Part2:
                     iIgnore = False
                     iMergeUpToRow = -1
                     If iMergeCol And Not (iLen = 0) Then
-                        If mGridPrintingData.RowWhereCellIsMerged(r, c) <> -1 Then
+                        If mGridPrintingData.RowWhereCellIsMerged(R, c) <> -1 Then
                             iIgnore = True
                         Else
-                            If (r <> (iGridRows - 1)) And (r <> (iFixedRows - 1)) Then
-                                r2 = r + 1
-                                Do Until iGrid.TextMatrix(r2, c) <> iText
-                                    r2 = r2 + 1
-                                    If r2 = iGridRows Then
+                            If (R <> (iGridRows - 1)) And (R <> (iFixedRows - 1)) Then
+                                R2 = R + 1
+                                Do Until iGrid.TextMatrix(R2, c) <> iText
+                                    R2 = R2 + 1
+                                    If R2 = iGridRows Then
                                         Exit Do
                                     End If
                                 Loop
-                                r2 = r2 - 1
-                                If r2 <> r Then
-                                    iMergeUpToRow = r2
+                                R2 = R2 - 1
+                                If R2 <> R Then
+                                    iMergeUpToRow = R2
                                 End If
                             End If
                         End If
@@ -4616,38 +4616,38 @@ Part2:
                     If Not iIgnore Then
                         iCellWidth = iPosCellLineRight - iPosCellLineLeft
                         If iLen <> 0 Then
-                            If r < iFixedRows Then
+                            If R < iFixedRows Then
                                 iWW = iWordWrapTheColumnHeaders Or iWordBreakTheColumnTexts
                             Else
                                 iWW = iWordWrapTheColumnData Or iWordBreakTheColumnTexts
                             End If
-                            iAuxLng = PrinterEx.TextHeightEx(iText, vxNoLineFeed, iPosCellLineLeft, , iCellWidth, mGridPrintingData.CellAlignment(r, c), iWW, iWordBreakTheColumnTexts, iCellMarginsX, iCellMarginsY)
-                            If mGridPrintingData.LastRowMergedInThisCellAtThisCol(r, c) = 0 Then
+                            iAuxLng = PrinterEx.TextHeightEx(iText, vxNoLineFeed, iPosCellLineLeft, , iCellWidth, mGridPrintingData.CellAlignment(R, c), iWW, iWordBreakTheColumnTexts, iCellMarginsX, iCellMarginsY)
+                            If mGridPrintingData.LastRowMergedInThisCellAtThisCol(R, c) = 0 Then
                                 If iMergeUpToRow = -1 Then
-                                    If iAuxLng > mGridPrintingData.TextHeightRow(r) Then
-                                        mGridPrintingData.TextHeightRow(r) = iAuxLng
+                                    If iAuxLng > mGridPrintingData.TextHeightRow(R) Then
+                                        mGridPrintingData.TextHeightRow(R) = iAuxLng
                                     End If
                                 End If
                             Else
-                                mGridPrintingData.TextHeightCell(r, c) = iAuxLng
+                                mGridPrintingData.TextHeightCell(R, c) = iAuxLng
                             End If
                         End If
                         If iCellWidth <> 0 Then
-                            mGridPrintingData.CellText(r, ci) = iText
+                            mGridPrintingData.CellText(R, ci) = iText
                             If iMergeUpToRow = -1 Then
-                                mGridPrintingData.PrintCell(r, ci) = True
+                                mGridPrintingData.PrintCell(R, ci) = True
                             End If
                         End If
-                        mGridPrintingData.CellWidth(r, ci) = iCellWidth
-                        mGridPrintingData.CellPrintRightLine(r, ci) = c <> (mGridPrintingData.LastVisibleCol)
+                        mGridPrintingData.CellWidth(R, ci) = iCellWidth
+                        mGridPrintingData.CellPrintRightLine(R, ci) = c <> (mGridPrintingData.LastVisibleCol)
                         If iMergeUpToRow <> -1 Then
-                            mGridPrintingData.LastRowMergedInThisCellAtThisCol(r, c) = iMergeUpToRow
+                            mGridPrintingData.LastRowMergedInThisCellAtThisCol(R, c) = iMergeUpToRow
                         End If
                     End If
 '                End If
             Next c
         End If
-    Next r
+    Next R
     
     ' print the Grid
     ' print the first headers
@@ -4700,11 +4700,11 @@ Part2:
         Printer2.Line (iOuterBorderRight, iOuterBorderTop - iHeadersHeight)-(iOuterBorderRight, iOuterBorderTop - iHeadersHeight + iHeadersHeight), iGridReportStyle.HeadersBorderColor
         Printer2.CurrentY = iCY
     End If
-    For r = iFixedRows To iLastRowToPrint
-        If mGridPrintingData.RowIsVisible(r) Then
+    For R = iFixedRows To iLastRowToPrint
+        If mGridPrintingData.RowIsVisible(R) Then
             'aaaaaaaaaaaaaaaa
             If mGridPrintingData.mfrmSettingGridDataProgressShown Then
-                If r Mod 350 = 0 Then
+                If R Mod 350 = 0 Then
                     frmSettingGridDataProgress.CurrentPage = Printer2.Page
                     frmSettingGridDataProgress.ZOrder
                     DoEvents
@@ -4717,7 +4717,7 @@ Part2:
                         iGrid.Redraw = iGridReDraw
                         Exit Sub
                     End If
-                    frmSettingGridDataProgress.pgb1.Value = frmSettingGridDataProgress.pgb1.Max / 3 + (r * iGridCols / 1000 * 2)
+                    frmSettingGridDataProgress.pgb1.Value = frmSettingGridDataProgress.pgb1.Max / 3 + (R * iGridCols / 1000 * 2)
                 End If
             End If
             iRowInPage = iRowInPage + 1
@@ -4726,17 +4726,17 @@ Part2:
                 ' the row final height can change due to different fonts in the cells
                 iAuxLng = 0
                 For c2 = 0 To iGridCols - 1
-                    If mGridPrintingData.PrintCell(r, c2) Or mGridPrintingData.RowWhereCellIsMerged(r, c2) <> -1 Then
+                    If mGridPrintingData.PrintCell(R, c2) Or mGridPrintingData.RowWhereCellIsMerged(R, c2) <> -1 Then
                         
-                        iAuxFontIndex = mGridPrintingData.CellFontAttibutesIndex(r, c2)
-                        If r < iFixedRows Then
+                        iAuxFontIndex = mGridPrintingData.CellFontAttibutesIndex(R, c2)
+                        If R < iFixedRows Then
                             iAuxReduceFont = iReduceTheColumnsHeadersFont
                         Else
                             iAuxReduceFont = iReduceTheColumnsDataFont
                         End If
                         If (iAuxFontIndex <> iLastFontIndex) Or (iAuxReduceFont <> iLastFontWasReduced) Then
                             iLastFontIndex = iAuxFontIndex
-                            Set iFontAttibutes = mGridPrintingData.CellFontAttibutes(r, c2)
+                            Set iFontAttibutes = mGridPrintingData.CellFontAttibutes(R, c2)
                             Printer2.FontName = iFontAttibutes.Name
                             If iAuxReduceFont Then
                                 Printer2.FontSize = iFontAttibutes.Size * iFontsProportion * 0.75
@@ -4752,33 +4752,33 @@ Part2:
                             PrinterEx.FontWidth = iFontAttibutes.Width
                         End If
                         
-                        If r < iFixedRows Then
+                        If R < iFixedRows Then
                             iWW = iWordWrapTheColumnHeaders Or iWordBreakTheColumnTexts
                         Else
                             iWW = iWordWrapTheColumnData Or iWordBreakTheColumnTexts
                         End If
-                        iAuxLng2 = PrinterEx.TextHeightEx(mGridPrintingData.CellText(r, c2), vxNoLineFeed, mGridPrintingData.ColPosLeft(c2), , mGridPrintingData.CellWidth(r, c2), mGridPrintingData.CellAlignment(r, c2), iWW, iWordBreakTheColumnTexts, iCellMarginsX, iCellMarginsY)
+                        iAuxLng2 = PrinterEx.TextHeightEx(mGridPrintingData.CellText(R, c2), vxNoLineFeed, mGridPrintingData.ColPosLeft(c2), , mGridPrintingData.CellWidth(R, c2), mGridPrintingData.CellAlignment(R, c2), iWW, iWordBreakTheColumnTexts, iCellMarginsX, iCellMarginsY)
                         
-                        If mGridPrintingData.PrintCell(r, c2) Or mGridPrintingData.ColIsBeingMergedForPrintingInRow(c2) = r Then  ' no se si esto ultimo va (si sirve)
+                        If mGridPrintingData.PrintCell(R, c2) Or mGridPrintingData.ColIsBeingMergedForPrintingInRow(c2) = R Then  ' no se si esto ultimo va (si sirve)
                             If iAuxLng2 > iAuxLng Then
                                 iAuxLng = iAuxLng2
                             End If
                         End If
                         
                         ' put the text height
-                        mGridPrintingData.TextHeightCell(r, c2) = iAuxLng2
+                        mGridPrintingData.TextHeightCell(R, c2) = iAuxLng2
                     End If
                 Next c2
             '    If iAuxLng > 0 Then
-            '        mGridPrintingData.TextHeightRow(r) = iAuxLng
+            '        mGridPrintingData.TextHeightRow(R) = iAuxLng
             '    End If
-                iRowHeight = mGridPrintingData.GetRowHeightWithText(r)
+                iRowHeight = mGridPrintingData.GetRowHeightWithText(R)
                 If iAuxLng > iRowHeight Then
                     iRowHeight = iAuxLng
                 End If
                 
             Else
-                iRowHeight = mGridPrintingData.GetRowHeightWithText(r)
+                iRowHeight = mGridPrintingData.GetRowHeightWithText(R)
             End If
             
             ' check new page
@@ -4789,44 +4789,44 @@ MakeNewPage:
                     iThereWereColsBeingMerged = False
                     For c = 0 To iGridCols - 1
                         
-                        If (mGridPrintingData.ColIsBeingMergedForPrintingInRow(c) <> -1) And (mGridPrintingData.ColMergeForPrintingBegunAtRow(c) <> r) Then
+                        If (mGridPrintingData.ColIsBeingMergedForPrintingInRow(c) <> -1) And (mGridPrintingData.ColMergeForPrintingBegunAtRow(c) <> R) Then
                             iThereWereColsBeingMerged = True
                             ' we need to end the merge of the col
-                            mGridPrintingData.PrintCell(r - 1, c) = True
-                            mGridPrintingData.CellTop(r - 1, c) = mGridPrintingData.RowFinalPosYForTop(mGridPrintingData.ColMergeForPrintingBegunAtRow(c))
+                            mGridPrintingData.PrintCell(R - 1, c) = True
+                            mGridPrintingData.CellTop(R - 1, c) = mGridPrintingData.RowFinalPosYForTop(mGridPrintingData.ColMergeForPrintingBegunAtRow(c))
                             
                             mGridPrintingData.EndMergingColForPrinting (c)
-                            mGridPrintingData.StartMergingColForPrinting c, mGridPrintingData.RowWidthDataForColMergedForPrinting(c), r
+                            mGridPrintingData.StartMergingColForPrinting c, mGridPrintingData.RowWidthDataForColMergedForPrinting(c), R
                         
                             'if one merged cell has a larger font, it can take several other rows to fit its height, and if the space is not enought we need to increse the space
-                            iAuxRowHeight = mGridPrintingData.TextHeightCell(r, c)
+                            iAuxRowHeight = mGridPrintingData.TextHeightCell(R, c)
                             iAuxMergedHeight = 0
-                            r2 = r
+                            R2 = R
                             Do
-                                If r2 > (iGridRows - 1) Then
+                                If R2 > (iGridRows - 1) Then
                                     Exit Do
                                 End If
-                                If mGridPrintingData.CellIsColMergedInRow(r2, c) <> mGridPrintingData.RowWidthDataForColMergedForPrinting(c) Then
+                                If mGridPrintingData.CellIsColMergedInRow(R2, c) <> mGridPrintingData.RowWidthDataForColMergedForPrinting(c) Then
                                     Exit Do
                                 End If
-                                iAuxMergedHeight = iAuxMergedHeight + mGridPrintingData.GetRowHeightWithText(r2)
+                                iAuxMergedHeight = iAuxMergedHeight + mGridPrintingData.GetRowHeightWithText(R2)
                                 If iAuxMergedHeight >= iAuxRowHeight Then
                                     Exit Do
                                 End If
-                                r2 = r2 + 1
+                                R2 = R2 + 1
                             Loop
-                            iLastMergedRow = r2 - 1
+                            iLastMergedRow = R2 - 1
                             
                             If iAuxMergedHeight < iAuxRowHeight Then
                                 If iAuxMergedHeight > 0 Then
                                     iFactor = iAuxRowHeight / iAuxMergedHeight
-                                    For r2 = r To iLastMergedRow
-                                        mGridPrintingData.TextHeightRow(r2) = mGridPrintingData.GetRowHeightWithText(r2) * iFactor
-                                    Next r2
+                                    For R2 = R To iLastMergedRow
+                                        mGridPrintingData.TextHeightRow(R2) = mGridPrintingData.GetRowHeightWithText(R2) * iFactor
+                                    Next R2
                                 End If
                             End If
                         Else
-                            mGridPrintingData.PrintCell(r - 1, c) = False
+                            mGridPrintingData.PrintCell(R - 1, c) = False
                         End If
                     Next c
                     If iThereWereColsBeingMerged Then
@@ -4871,7 +4871,7 @@ MakeNewPage:
                 
                 ' print headers
                 If (iFontsProportion * 0.95) > 0.3 Then
-'                    iRh = mGridPrintingData.GetRowHeightWithText(r)
+'                    iRh = mGridPrintingData.GetRowHeightWithText(R)
 '                    If (Printer2.CurrentY + iHeadersHeight + iRh) > Printer2.ScaleHeight Then
 '                        Printer2.KillDoc
 '                        mPrintGridFormatSettings.ScalePercent = 95
@@ -4909,61 +4909,61 @@ MakeNewPage:
                     If mGridPrintingData.ColIsVisible(c) Then
                         iAuxColEndMerge = False
                         If mGridPrintingData.ColIsBeingMergedForPrintingInRow(c) <> -1 Then
-                            If r = iGridRows - 1 Then
+                            If R = iGridRows - 1 Then
                                 iAuxColEndMerge = True
                             Else
-                                iAuxColEndMerge = mGridPrintingData.CellIsColMergedInRow(r + 1, c) <> mGridPrintingData.RowWidthDataForColMergedForPrinting(c)
+                                iAuxColEndMerge = mGridPrintingData.CellIsColMergedInRow(R + 1, c) <> mGridPrintingData.RowWidthDataForColMergedForPrinting(c)
                             End If
                         End If
                         If iAuxColEndMerge Then
                             ' we need to end the merge of the col
-                            mGridPrintingData.PrintCell(r, c) = True
-                            mGridPrintingData.CellTop(r, c) = mGridPrintingData.RowFinalPosYForTop(mGridPrintingData.ColMergeForPrintingBegunAtRow(c))
+                            mGridPrintingData.PrintCell(R, c) = True
+                            mGridPrintingData.CellTop(R, c) = mGridPrintingData.RowFinalPosYForTop(mGridPrintingData.ColMergeForPrintingBegunAtRow(c))
                             mGridPrintingData.EndMergingColForPrinting (c)
                         Else
-                            If mGridPrintingData.CellIsColMergedInRow(r, c) <> -1 Then
-                                If mGridPrintingData.CellIsColMergedInRow(r, c) <> mGridPrintingData.RowWidthDataForColMergedForPrinting(c) Then
+                            If mGridPrintingData.CellIsColMergedInRow(R, c) <> -1 Then
+                                If mGridPrintingData.CellIsColMergedInRow(R, c) <> mGridPrintingData.RowWidthDataForColMergedForPrinting(c) Then
                                     
                                     ' start merge
-                                    mGridPrintingData.StartMergingColForPrinting c, r, r
+                                    mGridPrintingData.StartMergingColForPrinting c, R, R
                                     'if one merged cell has a larger font, it can take several other rows to fit its height, and if the space is not enought we need to increse the space
-                                    iAuxRowHeight = mGridPrintingData.TextHeightCell(r, c)
+                                    iAuxRowHeight = mGridPrintingData.TextHeightCell(R, c)
                                     
                                     If (Printer2.CurrentY + iAuxRowHeight) > iScaleHeight Then
-                                        mGridPrintingData.CellText(r - 1, c) = ""
+                                        mGridPrintingData.CellText(R - 1, c) = ""
                                         iAuxStartsNewPage = True
                                     End If
                                     
                                     iAuxMergedHeight = 0
-                                    r2 = r
+                                    R2 = R
                                     Do
-                                        If r2 > (iGridRows - 1) Then
+                                        If R2 > (iGridRows - 1) Then
                                             Exit Do
                                         End If
-                                        If mGridPrintingData.CellIsColMergedInRow(r2, c) <> mGridPrintingData.RowWidthDataForColMergedForPrinting(c) Then
+                                        If mGridPrintingData.CellIsColMergedInRow(R2, c) <> mGridPrintingData.RowWidthDataForColMergedForPrinting(c) Then
                                             Exit Do
                                         End If
                                         If Not iAuxStartsNewPage Then
-                                            If (Printer2.CurrentY + iAuxMergedHeight + mGridPrintingData.GetRowHeightWithText(r2)) > iScaleHeight Then
+                                            If (Printer2.CurrentY + iAuxMergedHeight + mGridPrintingData.GetRowHeightWithText(R2)) > iScaleHeight Then
                                                 Exit Do
                                             Else
-                                                iAuxMergedHeight = iAuxMergedHeight + mGridPrintingData.GetRowHeightWithText(r2)
+                                                iAuxMergedHeight = iAuxMergedHeight + mGridPrintingData.GetRowHeightWithText(R2)
                                             End If
                                         Else
-                                            iAuxMergedHeight = iAuxMergedHeight + mGridPrintingData.GetRowHeightWithText(r2)
+                                            iAuxMergedHeight = iAuxMergedHeight + mGridPrintingData.GetRowHeightWithText(R2)
                                         End If
                                         If iAuxMergedHeight >= iAuxRowHeight Then
                                             Exit Do
                                         End If
-                                        r2 = r2 + 1
+                                        R2 = R2 + 1
                                     Loop
-                                    iLastMergedRow = r2 - 1
+                                    iLastMergedRow = R2 - 1
                                     If iAuxMergedHeight < iAuxRowHeight Then
                                         If iAuxMergedHeight > 0 Then
                                             iFactor = iAuxRowHeight / iAuxMergedHeight
-                                            For r2 = r To iLastMergedRow
-                                                mGridPrintingData.TextHeightRow(r2) = mGridPrintingData.GetRowHeightWithText(r2) * iFactor
-                                            Next r2
+                                            For R2 = R To iLastMergedRow
+                                                mGridPrintingData.TextHeightRow(R2) = mGridPrintingData.GetRowHeightWithText(R2) * iFactor
+                                            Next R2
                                         End If
                                     End If
                                 End If
@@ -4977,12 +4977,12 @@ MakeNewPage:
             End If
         
             ' print the row
-            iRowHeight = mGridPrintingData.GetRowHeightWithText(r)
-            iRow = r
+            iRowHeight = mGridPrintingData.GetRowHeightWithText(R)
+            iRow = R
             iRh = iRowHeight
             GoSub PrintRow:
         End If
-    Next r
+    Next R
     If mGridPrintingData.mfrmSettingGridDataProgressShown Then
         Unload frmSettingGridDataProgress
         DoEvents

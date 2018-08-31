@@ -2583,14 +2583,14 @@ Private Function GetDevNameString( _
    )
    Dim Ptr As Long
    Dim lSize As Long
-   Dim b() As Byte
+   Dim B() As Byte
       
    Ptr = UnsignedAdd(ptrDevNames, ptrOffset)
    lSize = lstrlenPtr(Ptr)
    If (lSize > 0) Then
-      ReDim b(0 To lSize - 1) As Byte
-      CopyMemory b(0), ByVal Ptr, lSize
-      GetDevNameString = StrConv(b, vbUnicode)
+      ReDim B(0 To lSize - 1) As Byte
+      CopyMemory B(0), ByVal Ptr, lSize
+      GetDevNameString = StrConv(B, vbUnicode)
    End If
 End Function
 

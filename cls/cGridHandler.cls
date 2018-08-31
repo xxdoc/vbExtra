@@ -1111,7 +1111,7 @@ End Sub
 Private Sub StoreGridValuesFromClient()
     Dim c As Long
     Dim iLng As Long
-    Dim r As Long
+    Dim R As Long
     Dim iStr As String
     
     mGridCols = mGrid.Cols
@@ -1155,9 +1155,9 @@ Private Sub StoreGridValuesFromClient()
     Next c
 
     iLng = 0
-    For r = 0 To mGrid.FixedRows - 1
-        iLng = iLng + mGrid.RowHeight(r)
-    Next r
+    For R = 0 To mGrid.FixedRows - 1
+        iLng = iLng + mGrid.RowHeight(R)
+    Next R
     
     On Error Resume Next
     Err.Clear
@@ -1294,7 +1294,7 @@ End Sub
 Private Sub SetAuxGridColumsHeaders(Optional nIncludeForOrder As Boolean)
     Dim c As Long
     Dim iStr As String
-    Dim r As Long
+    Dim R As Long
     Dim iThereAreDefinedColHeaders As Boolean
     Dim iThereAreUndefinedColHeaders As Boolean
     
@@ -1308,9 +1308,9 @@ Private Sub SetAuxGridColumsHeaders(Optional nIncludeForOrder As Boolean)
     mAllColHeadersAreEmpty = True
     For c = 0 To mGrid.Cols - 1
         iStr = ""
-        For r = 0 To mGrid.FixedRows - 1
-            iStr = iStr & mGrid.TextMatrix(r, c) & " "
-        Next r
+        For R = 0 To mGrid.FixedRows - 1
+            iStr = iStr & mGrid.TextMatrix(R, c) & " "
+        Next R
         If Len(iStr) > 0 Then
             iStr = Left$(iStr, Len(iStr) - 1)
         End If
@@ -1992,7 +1992,7 @@ Public Sub OrderGridByColumn(Optional nOrderByColumn As Long = -1, Optional nOrd
 End Sub
 
 Private Sub RestoreSelection(nPrevCol As Long, nPrevColSel As Long)
-    Dim r As Long
+    Dim R As Long
     Dim iCol As Long
     Dim iSel1 As Boolean
     Dim iSel2 As Boolean
@@ -2001,24 +2001,24 @@ Private Sub RestoreSelection(nPrevCol As Long, nPrevColSel As Long)
     
     iR = mGrid.Row
     iCol = mGrid.Cols - 1
-    For r = mGrid.FixedRows To mGrid.Rows - 1
-        If mGrid.TextMatrix(r, iCol) <> "" Then
-            Select Case mGrid.TextMatrix(r, iCol)
+    For R = mGrid.FixedRows To mGrid.Rows - 1
+        If mGrid.TextMatrix(R, iCol) <> "" Then
+            Select Case mGrid.TextMatrix(R, iCol)
                 Case "1"
-                    mGrid.Row = r
+                    mGrid.Row = R
                     iSel1 = True
                     If iSel2 Then Exit For
                 Case "2"
-                    mGrid.RowSel = r
+                    mGrid.RowSel = R
                     iSel2 = True
                     If iSel1 Then Exit For
                 Case "3"
-                    mGrid.Row = r
-                    mGrid.RowSel = r
+                    mGrid.Row = R
+                    mGrid.RowSel = R
                     Exit For
             End Select
         End If
-    Next r
+    Next R
     mGrid.col = nPrevCol
     mGrid.ColSel = nPrevColSel
     If mGrid.Row <> iR Then
@@ -2059,23 +2059,23 @@ End Sub
 
 Private Function RemoveEmptyRowsAtTheEnd() As Long
     Dim c As Long
-    Dim r As Long
+    Dim R As Long
     Dim iEmpty As Boolean
     
     'Exit Function
     mTooManyEmptyRowsAtTheEnd = False
-    r = mGrid.Rows - 1
+    R = mGrid.Rows - 1
     Do
         iEmpty = True
         For c = 0 To mGrid.Cols - 1
-            If mGrid.TextMatrix(r, c) <> "" Then
+            If mGrid.TextMatrix(R, c) <> "" Then
                 iEmpty = False
             End If
         Next c
         If iEmpty Then
-            If r <= (mGrid.FixedRows) Then Exit Do
+            If R <= (mGrid.FixedRows) Then Exit Do
             RemoveEmptyRowsAtTheEnd = RemoveEmptyRowsAtTheEnd + 1
-            r = r - 1
+            R = R - 1
             If RemoveEmptyRowsAtTheEnd > 2000 Then
                 RemoveEmptyRowsAtTheEnd = 0
                 mTooManyEmptyRowsAtTheEnd = True
@@ -2422,7 +2422,7 @@ Private Sub StoreCellsData()
     Dim iFontWidth_Prev As Long
     Dim iGrid_CellFontStrikeThrough As Boolean
     
-    Dim r As Long
+    Dim R As Long
     Dim c As Long
     Dim f As Long
     
@@ -2458,11 +2458,11 @@ Private Sub StoreCellsData()
     
     mGrid.Redraw = False
     
-    For r = mGrid.FixedRows To mGridRows - 1
-        mGrid.Row = r
+    For R = mGrid.FixedRows To mGridRows - 1
+        mGrid.Row = R
         For c = mGrid.FixedCols To mGridCols - 1
             mGrid.col = c
-            mCellForeColor(r, c) = mGrid.CellForeColor
+            mCellForeColor(R, c) = mGrid.CellForeColor
             
             On Error Resume Next
             Err.Clear
@@ -2542,12 +2542,12 @@ Private Sub StoreCellsData()
                 End If
             End If
             
-            mCellFontIndex(r, c) = iCurrentFontIndex
+            mCellFontIndex(R, c) = iCurrentFontIndex
         Next c
         
-        If r Mod 1000 = 0 Then
+        If R Mod 1000 = 0 Then
             DoEvents
-            If mGrid.Row <> r Then
+            If mGrid.Row <> R Then
                 mCellDataStored = False
                 GoTo TheExit:
             End If
@@ -2556,7 +2556,7 @@ Private Sub StoreCellsData()
                 GoTo TheExit:
             End If
         End If
-    Next r
+    Next R
     
     mGrid.Row = iRow_Prev
     mGrid.RowSel = iRowSel_Prev
@@ -2763,7 +2763,7 @@ Private Sub ShowHideBorder()
 End Sub
 
 Private Function GridShowsVerticalScrollBar() As Boolean
-    Dim r As Long
+    Dim R As Long
     Dim iHeight As Long
     Dim iGridHeight As Long
     
@@ -2772,13 +2772,13 @@ Private Function GridShowsVerticalScrollBar() As Boolean
     Else
         iGridHeight = mGrid.Height
         
-        For r = 0 To mGrid.Rows - 1
-            iHeight = iHeight + mGrid.RowHeight(r)
+        For R = 0 To mGrid.Rows - 1
+            iHeight = iHeight + mGrid.RowHeight(R)
             If iHeight >= iGridHeight Then
                 GridShowsVerticalScrollBar = True
                 Exit Function
             End If
-        Next r
+        Next R
     End If
     
 End Function

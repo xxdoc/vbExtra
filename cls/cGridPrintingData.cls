@@ -67,7 +67,7 @@ Public mfrmSettingGridDataProgressShown As Boolean
 
 Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
     Dim c As Long
-    Dim r As Long
+    Dim R As Long
     Dim iFontChanged As Boolean
     Dim iCurrentFontIndex As Long
     Dim f As Long
@@ -125,19 +125,19 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
     iFixedCols = mGrid.FixedCols
     
     mVisibleFixedRows = 0
-    For r = 0 To iFixedRows - 1
-        If mGrid.RowHeight(r) <> 0 Then
+    For R = 0 To iFixedRows - 1
+        If mGrid.RowHeight(R) <> 0 Then
             mVisibleFixedRows = mVisibleFixedRows + 1
         End If
-    Next r
+    Next R
     
-    For r = 0 To mGrid.Rows - 1
-        If mGrid.RowHeight(r) = -1 Then
-            mRowIsVisible(r) = True
+    For R = 0 To mGrid.Rows - 1
+        If mGrid.RowHeight(R) = -1 Then
+            mRowIsVisible(R) = True
         Else
-            mRowIsVisible(r) = mGrid.RowHeight(r) > 35
+            mRowIsVisible(R) = mGrid.RowHeight(R) > 35
         End If
-    Next r
+    Next R
     
     iAuxMergeRow0 = mGrid.MergeRow(0)
     mGrid.MergeRow(0) = False
@@ -165,15 +165,15 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
     mGrid.MergeRow(0) = iAuxMergeRow0
     
     mLastRowWithData = -1
-    For r = mGrid.Rows - 1 To mGrid.FixedRows Step -1
+    For R = mGrid.Rows - 1 To mGrid.FixedRows Step -1
         For c = 0 To mGrid.Cols - 1
-            If mGrid.TextMatrix(r, c) <> "" Then
-                mLastRowWithData = r
+            If mGrid.TextMatrix(R, c) <> "" Then
+                mLastRowWithData = R
                 Exit For
             End If
         Next c
         If mLastRowWithData <> -1 Then Exit For
-    Next r
+    Next R
     
     iBackColorFixed = mGrid.BackColorFixed
     
@@ -198,10 +198,10 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
             mVisibleCols = mVisibleCols + 1
         End If
         
-        For r = 0 To mGrid.Rows - 1
+        For R = 0 To mGrid.Rows - 1
             If mfrmSettingGridDataProgressShown Then
-                If r Mod 1000 = 0 Then
-                    frmSettingGridDataProgress.pgb1.Value = (r + c * mGrid.Rows) / 1000
+                If R Mod 1000 = 0 Then
+                    frmSettingGridDataProgress.pgb1.Value = (R + c * mGrid.Rows) / 1000
                     frmSettingGridDataProgress.ZOrder
                     DoEvents
                     If frmSettingGridDataProgress.Canceled Then
@@ -212,18 +212,18 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
                     End If
                 End If
             End If
-            mGrid.Row = r
+            mGrid.Row = R
             If mGridType = efnGridTypeMSFlex Then
                 ' CellAlignment
                 iLng = mGrid.CellAlignment
                 If iLng = 0 Then
-                    If r < iFixedRows Then
-                        mCellAlignment(r, c) = mGrid.FixedAlignment(c)
+                    If R < iFixedRows Then
+                        mCellAlignment(R, c) = mGrid.FixedAlignment(c)
                     Else
-                        mCellAlignment(r, c) = mGrid.ColAlignment(c)
+                        mCellAlignment(R, c) = mGrid.ColAlignment(c)
                     End If
                 Else
-                    mCellAlignment(r, c) = iLng
+                    mCellAlignment(R, c) = iLng
                 End If
                 
                 'CellBackColor
@@ -235,28 +235,28 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
                 End If
                 TranslateColor iLng, 0, iLng
                 If iLng = 0 Then
-                    If Not ((r < iFixedRows) Or (c < iFixedCols)) Then
-                        mCellBackColor(r, c) = iBackColor
+                    If Not ((R < iFixedRows) Or (c < iFixedCols)) Then
+                        mCellBackColor(R, c) = iBackColor
                     End If
                 Else
-                    mCellBackColor(r, c) = iLng
-                    mCellBackColorIsExplicitelySet(r, c) = True
+                    mCellBackColor(R, c) = iLng
+                    mCellBackColorIsExplicitelySet(R, c) = True
                 End If
                 
                 TranslateColor mGrid.CellForeColor, 0, iLng
                 If iLng = 0 Then
-                    If (r < iFixedRows) Or (c < iFixedCols) Then
-                        mCellForeColor(r, c) = iForeColorFixed
+                    If (R < iFixedRows) Or (c < iFixedCols) Then
+                        mCellForeColor(R, c) = iForeColorFixed
                     Else
-                        mCellForeColor(r, c) = iForeColor
+                        mCellForeColor(R, c) = iForeColor
                     End If
                 Else
-                    mCellForeColor(r, c) = iLng
+                    mCellForeColor(R, c) = iLng
                 End If
                 
             Else
-                mCellAlignment(r, c) = mGrid.CellAlignment
-                If (r < iFixedRows) Or (c < iFixedCols) Then
+                mCellAlignment(R, c) = mGrid.CellAlignment
+                If (R < iFixedRows) Or (c < iFixedCols) Then
                     iGridCellBackColor = mGrid.CellBackColor
                     If iGridCellBackColor = 0 Then
                         TranslateColor mGrid.CellForeColor, 0, iLng2
@@ -266,8 +266,8 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
                     End If
                     If iGridCellBackColor <> iGridBackColorFixed Then
                         TranslateColor mGrid.CellBackColor, 0, iLng
-                        mCellBackColor(r, c) = iLng
-                        mCellBackColorIsExplicitelySet(r, c) = True
+                        mCellBackColor(R, c) = iLng
+                        mCellBackColorIsExplicitelySet(R, c) = True
                     End If
                 Else
                     iLng = mGrid.CellBackColor
@@ -283,15 +283,15 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
                         End If
                     End If
                     TranslateColor iLng, 0, iLng
-                    mCellBackColor(r, c) = iLng
+                    mCellBackColor(R, c) = iLng
                 End If
             
-                If (r < iFixedRows) Or (c < iFixedCols) Then
+                If (R < iFixedRows) Or (c < iFixedCols) Then
                     TranslateColor mGrid.CellForeColor, 0, iLng
-                    mCellForeColor(r, c) = iLng
+                    mCellForeColor(R, c) = iLng
                 Else
                     TranslateColor mGrid.CellForeColor, 0, iLng
-                    mCellForeColor(r, c) = iLng
+                    mCellForeColor(R, c) = iLng
                 End If
             
             End If
@@ -380,9 +380,9 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
             
             End If
             
-            mCellFontIndex(r, c) = iCurrentFontIndex
+            mCellFontIndex(R, c) = iCurrentFontIndex
             
-        Next r
+        Next R
     Next c
     
     ResetAddedData nBackColorFixed
@@ -490,18 +490,18 @@ End Property
 
 
 Public Property Let LastRowMergedInThisCellAtThisCol(Row As Long, col As Long, nLastRow As Long)
-    Dim r As Long
+    Dim R As Long
     mLastRowMergedInThisCellAtThisCol(Row, col) = nLastRow
-    For r = Row To nLastRow
-        mRowWhereCellIsMerged(r, col) = Row
-        mCellForeColor(r, col) = mCellForeColor(Row, col)
-        mCellBackColor(r, col) = mCellBackColor(Row, col)
-        mCellFontIndex(r, col) = mCellFontIndex(Row, col)
-        mCellText(r, col) = mCellText(Row, col)
-        mCellWidth(r, col) = mCellWidth(Row, col)
-        mCellPrintRightLine(r, col) = mCellPrintRightLine(Row, col)
-        mCellAlignment(r, col) = mCellAlignment(Row, col)
-    Next r
+    For R = Row To nLastRow
+        mRowWhereCellIsMerged(R, col) = Row
+        mCellForeColor(R, col) = mCellForeColor(Row, col)
+        mCellBackColor(R, col) = mCellBackColor(Row, col)
+        mCellFontIndex(R, col) = mCellFontIndex(Row, col)
+        mCellText(R, col) = mCellText(Row, col)
+        mCellWidth(R, col) = mCellWidth(Row, col)
+        mCellPrintRightLine(R, col) = mCellPrintRightLine(Row, col)
+        mCellAlignment(R, col) = mCellAlignment(Row, col)
+    Next R
 End Property
 
 Public Property Get LastRowMergedInThisCellAtThisCol(Row As Long, col As Long) As Long
@@ -610,11 +610,11 @@ End Sub
 
 
 Public Sub SetRowsHeightsToProportion(nProportion As Single)
-    Dim r As Long
+    Dim R As Long
     
-    For r = 0 To mGrid.Rows - 1
-        mRowHeight(r) = mGrid.RowHeight(r) * nProportion
-    Next r
+    For R = 0 To mGrid.Rows - 1
+        mRowHeight(R) = mGrid.RowHeight(R) * nProportion
+    Next R
 End Sub
 
 Public Sub CalcColPos()
@@ -689,7 +689,7 @@ End Property
 
 Public Sub ResetAddedData(nBackColorFixed As Long)
     Dim c As Long
-    Dim r As Long
+    Dim R As Long
     Dim iBackColorFixed As Long
     Dim iFixedRows As Long
     Dim iFixedCols As Long
@@ -730,17 +730,17 @@ Public Sub ResetAddedData(nBackColorFixed As Long)
     For c = 0 To mGrid.Cols - 1
         mColMergeForPrintingBegunAtRow(c) = -1
         mRowWidthDataForColMergedForPrinting(c) = -1
-        For r = 0 To mGrid.Rows - 1
-            mRowWhereCellIsMerged(r, c) = -1
-            mFirstColMergedInThisCellAtThisRow(r, c) = iCols
+        For R = 0 To mGrid.Rows - 1
+            mRowWhereCellIsMerged(R, c) = -1
+            mFirstColMergedInThisCellAtThisRow(R, c) = iCols
             
-            If (r < iFixedRows) Or (c < iFixedCols) Then
+            If (R < iFixedRows) Or (c < iFixedCols) Then
                 If Not mCellBackColorIsExplicitelySet Then
-                    mCellBackColor(r, c) = iBackColorFixed
+                    mCellBackColor(R, c) = iBackColorFixed
                 End If
             End If
             
-        Next r
+        Next R
     Next c
     
     mColWidthsAreSet = False

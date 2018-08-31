@@ -69,7 +69,7 @@ Private Declare Function Arc Lib "gdi32" (ByVal hDC As Long, ByVal nLeftRect As 
 Private Declare Function Ellipse Lib "gdi32" (ByVal hDC As Long, ByVal nLeftRect As Long, ByVal nTopRect As Long, ByVal nRightRect As Long, ByVal nBottomRect As Long) As Long
 
 'Private Declare Function MulDiv Lib "kernel32" (ByVal nNumber As Long, ByVal nNumerator As Long, ByVal nDenominator As Long) As Long
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (hpvDest As Any, hpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (hpvDest As Any, hpvSource As Any, ByVal cbCopy As Long)
 Private Declare Function ResetDC Lib "gdi32" Alias "ResetDCA" (ByVal hDC As Long, lpInitData As Any) As Long
 
 Private Const CCHDEVICENAME = 32
@@ -2792,7 +2792,7 @@ Private Sub SetBackMode()
     mPages(mCurrentPage).FontTransparent = mFontTransparent
 End Sub
 
-Public Sub DrawLine(X1 As Single, Y1 As Single, X2 As Single, Y2 As Single, Optional Color, Optional b As Boolean, Optional f As Boolean)
+Public Sub DrawLine(X1 As Single, Y1 As Single, X2 As Single, Y2 As Single, Optional Color, Optional B As Boolean, Optional f As Boolean)
     Dim iMetaDC As Long
     Dim iPenPrev As Long
     Dim iPen As Long
@@ -2828,7 +2828,7 @@ Public Sub DrawLine(X1 As Single, Y1 As Single, X2 As Single, Y2 As Single, Opti
         iColor = mForeColorTranslated
     End If
     
-    If Not b Then
+    If Not B Then
         ' draw line
         iPoints(0).x = iX1
         iPoints(0).y = iY1
@@ -4047,7 +4047,7 @@ End Sub
 
 
 Private Sub Printer_Line(ByVal Flags As Integer, ByVal X1 As Single, ByVal Y1 As Single, ByVal X2 As Single, ByVal Y2 As Single, ByVal Color As Long)
-    Dim b As Boolean
+    Dim B As Boolean
     Dim f As Boolean
     Dim c As Boolean
     Dim iStep1 As Boolean
@@ -4059,9 +4059,9 @@ Private Sub Printer_Line(ByVal Flags As Integer, ByVal X1 As Single, ByVal Y1 As
     iStep2 = (Flags And LF_STEP2)
     c = (Flags And LF_COLOR)
     
-    b = (Flags And LF_B)
+    B = (Flags And LF_B)
     f = (Flags And LF_BF)
-    If f Then b = True
+    If f Then B = True
     
     If iFirstCoord Then
         If iStep1 Then
@@ -4078,9 +4078,9 @@ Private Sub Printer_Line(ByVal Flags As Integer, ByVal X1 As Single, ByVal Y1 As
     End If
     
     If c Then
-        DrawLine X1, Y1, X2, Y2, Color, b, f
+        DrawLine X1, Y1, X2, Y2, Color, B, f
     Else
-        DrawLine X1, Y1, X2, Y2, , b, f
+        DrawLine X1, Y1, X2, Y2, , B, f
     End If
     
 End Sub
@@ -6083,7 +6083,7 @@ Public Sub PrintRichTextBox(nRTB As Object)
     Dim rcPage As RECT
     Dim iTextLength As Long
     Dim iNextCharPosition As Long
-    Dim r As Long
+    Dim R As Long
     Dim iPPScaleMode As Long
     Dim p As Long
     Dim iCx As Long
@@ -6157,7 +6157,7 @@ Public Sub PrintRichTextBox(nRTB As Object)
     Loop
     
     ' Allow the nRTB to free up memory
-    r = SendMessage(nRTB.hWnd, EM_FORMATRANGE, False, ByVal CLng(0))
+    R = SendMessage(nRTB.hWnd, EM_FORMATRANGE, False, ByVal CLng(0))
     Printer_CurrentY = Printer_CurrentY + rcMeasure.Bottom - rcMeasure.Top - Printer_TextHeight("A")
     Printer_ScaleMode = iPPScaleMode
 End Sub

@@ -81,13 +81,13 @@ Private Declare Sub keybd_event Lib "user32" ( _
 Private Const KEYEVENTF_EXTENDEDKEY = &H1
 Private Const KEYEVENTF_KEYUP = &H2
 
-Private Declare Function GetVersion Lib "kernel32" () As Long
+Private Declare Function GetVersion Lib "Kernel32" () As Long
 Private Declare Function VkKeyScan Lib "user32" Alias "VkKeyScanA" ( _
    ByVal cChar As Byte) As Integer
 Private Declare Function VkKeyScanW Lib "user32" ( _
    ByVal cChar As Integer) As Integer
 
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
+Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" ( _
     lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 Private Function nextChar(ByRef sString As String, ByVal iPos As Long, Optional ByVal lLen As Long = 0) As String
@@ -327,7 +327,7 @@ End Sub
 Public Function KeyCode(ByVal sChar As String) As KeyCodeConstants
 Dim bNt As Boolean
 Dim iKeyCode As Integer
-Dim b() As Byte
+Dim B() As Byte
 Dim iKey As Integer
 'Dim vKey As KeyCodeConstants
 'Dim iShift As ShiftConstants
@@ -337,12 +337,12 @@ Dim iKey As Integer
    
    ' Get the keyboard scan code for the character:
    If (bNt) Then
-      b = sChar
-      CopyMemory iKey, b(0), 2
+      B = sChar
+      CopyMemory iKey, B(0), 2
       iKeyCode = VkKeyScanW(iKey)
    Else
-      b = StrConv(sChar, vbFromUnicode)
-      iKeyCode = VkKeyScan(b(0))
+      B = StrConv(sChar, vbFromUnicode)
+      iKeyCode = VkKeyScan(B(0))
    End If
    
 '   KeyCode = (iKeyCode And &HFF&)

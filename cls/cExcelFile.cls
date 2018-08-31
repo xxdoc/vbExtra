@@ -32,7 +32,7 @@ Option Explicit
 'the memory copy API is used in the MKI$ function which converts an integer
 'value to a 2-byte string value to write to the file. (used by the Horizontal
 'Page Break function).
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 'enum to handle the various types of values that can be written
 'to the excel file.
@@ -417,7 +417,7 @@ Public Function WriteValue(ValueType As XLSValueTypes, CellFontUsed As XLSCellFo
             Put #FileNumber, , NUMBER_RECORD
 
         Case XLSValueTypes.xlsText
-            Dim b As Byte
+            Dim B As Byte
             ST$ = CStr(Value)
             If Len(ST$) > 255 Then
                 ST$ = Left$(ST$, 252) & "..."
@@ -446,8 +446,8 @@ Public Function WriteValue(ValueType As XLSValueTypes, CellFontUsed As XLSCellFo
 
                 'Then the actual string data
                 For a = 1 To l%
-                    b = Asc(Mid$(ST$, a, 1))
-                    Put #FileNumber, , b
+                    B = Asc(Mid$(ST$, a, 1))
+                    Put #FileNumber, , B
                 Next
             End With
 
@@ -536,10 +536,10 @@ Public Function SetFont(FontName As String, FontHeight As Integer, FontFormat As
     Put #FileNumber, , FONTNAME_RECORD
 
     'Then the actual font name data
-    Dim b As Byte
+    Dim B As Byte
     For a = 1 To l%
-        b = Asc(Mid$(FontName, a, 1))
-        Put #FileNumber, , b
+        B = Asc(Mid$(FontName, a, 1))
+        Put #FileNumber, , B
     Next
 
     SetFont = 0
@@ -570,10 +570,10 @@ Public Function SetHeader(HeaderText As String) As Integer
     Put #FileNumber, , HEADER_RECORD
 
     'Then the actual Header text
-    Dim b As Byte
+    Dim B As Byte
     For a = 1 To l%
-        b = Asc(Mid$(HeaderText, a, 1))
-        Put #FileNumber, , b
+        B = Asc(Mid$(HeaderText, a, 1))
+        Put #FileNumber, , B
     Next
 
     SetHeader = 0
@@ -605,10 +605,10 @@ Public Function SetFooter(FooterText As String) As Integer
     Put #FileNumber, , FOOTER_RECORD
 
     'Then the actual Header text
-    Dim b As Byte
+    Dim B As Byte
     For a = 1 To l%
-        b = Asc(Mid$(FooterText, a, 1))
-        Put #FileNumber, , b
+        B = Asc(Mid$(FooterText, a, 1))
+        Put #FileNumber, , B
     Next
 
     SetFooter = 0
@@ -639,10 +639,10 @@ Public Function SetFilePassword(PasswordText As String) As Integer
     Put #FileNumber, , FILE_PASSWORD_RECORD
 
     'Then the actual Password text
-    Dim b As Byte
+    Dim B As Byte
     For a = 1 To l%
-        b = Asc(Mid$(PasswordText, a, 1))
-        Put #FileNumber, , b
+        B = Asc(Mid$(PasswordText, a, 1))
+        Put #FileNumber, , B
     Next
 
     SetFilePassword = 0
@@ -761,10 +761,10 @@ Public Function WriteDefaultFormats() As Integer
         Put #FileNumber, , cFORMAT_RECORD
 
         'Then the actual format
-        Dim b As Byte, a As Long
+        Dim B As Byte, a As Long
         For a = 1 To l
-            b = Asc(Mid$(aFormat(lIndex), a, 1))
-            Put #FileNumber, , b
+            B = Asc(Mid$(aFormat(lIndex), a, 1))
+            Put #FileNumber, , B
         Next
     Next lIndex
 
