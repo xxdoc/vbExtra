@@ -657,15 +657,15 @@ Private Sub chkPageSetupButtonVisible_Click()
 End Sub
 
 Private Sub chkPrintPrevUseAltScaleIcons_Click()
-    Dim b As Boolean
+    Dim B As Boolean
     
     If Not mLoading Then Changed = True
     
-    b = (chkPrintPrevUseAltScaleIcons.Value = 0)
-    tbrScaleIcons.Buttons("DecreaseScale").Enabled = b
-    tbrScaleIcons.Buttons("IncreaseScale").Enabled = b
-    tbrScaleIcons.Buttons("DecreaseScaleAlt").Enabled = Not b
-    tbrScaleIcons.Buttons("IncreaseScaleAlt").Enabled = Not b
+    B = (chkPrintPrevUseAltScaleIcons.Value = 0)
+    tbrScaleIcons.Buttons("DecreaseScale").Enabled = B
+    tbrScaleIcons.Buttons("IncreaseScale").Enabled = B
+    tbrScaleIcons.Buttons("DecreaseScaleAlt").Enabled = Not B
+    tbrScaleIcons.Buttons("IncreaseScaleAlt").Enabled = Not B
 End Sub
 
 Private Sub cmdBrowsePic_Click(Index As Integer)
