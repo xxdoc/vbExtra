@@ -3525,6 +3525,25 @@ Private Sub IPrinterEx_ShowPrintPreview(Optional nObject As Object, Optional nPr
     mPrintFnObject.FromPage = mFromPage
     mPrintFnObject.ToPage = mToPage
     
+    mPrintFnObject.MinLeftMargin = MinLeftMargin
+    mPrintFnObject.MinRightMargin = MinRightMargin
+    mPrintFnObject.MinTopMargin = MinTopMargin
+    mPrintFnObject.MinBottomMargin = MinBottomMargin
+    mPrintFnObject.UnitsForUser = UnitsForUser
+    
+    mPrintFnObject.LeftMargin = LeftMargin
+    mPrintFnObject.TopMargin = TopMargin
+    mPrintFnObject.RightMargin = RightMargin
+    mPrintFnObject.BottomMargin = BottomMargin
+    
+    mPrintFnObject.PaperSize = mPaperSize
+    mPrintFnObject.PaperBin = mPaperBin
+    mPrintFnObject.Duplex = mDuplex
+    mPrintFnObject.Orientation = mOrientation
+    mPrintFnObject.PrintQuality = mPrintQuality
+    mPrintFnObject.ColorMode = mColorMode
+    mPrintFnObject.CommonDialogExObject.UpdateDevModeWithCurrentSettings
+    
     mPrintFnObject.ShowPrintPreview mDocKey
     
     gPrinterExDoNotMakeNewPrinterExObject = False
