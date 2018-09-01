@@ -53,13 +53,6 @@ Public Sub MyPrintingRoutine()
     Printer.EndDoc
 End Sub
 
-Private Sub Form_Load()
-    ' This project shows how to use this Printer object as a replacement of the original VB's Printer object in an existent project
-    ' But if you are programming a new project, then you can not put the following two lines
-'    PrinterEx.PrintPrevPageSetupButtonVisible = False
-'    PrinterEx.HandleMargins = False ' in existing projects it is necessary to change this property to False because it defaults to True. Existing projects must be already handling the margins with their code.
-End Sub
-
 Private Sub mnuEdit_Click()
     MsgBox "Menu Edit... (it does nothing)"
 End Sub
