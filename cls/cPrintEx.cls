@@ -1749,7 +1749,7 @@ Private Sub Class_Initialize()
     
     If Not IsEmpty(gPrinterExZoom) Then mZoom = gPrinterExZoom
     If Not IsEmpty(gPrinterExHandleMargins) Then mHandleMargins = gPrinterExHandleMargins Else mHandleMargins = True
-    If Not IsEmpty(gPrinterExPrintPageNumbers) Then PrintPageNumbers = gPrinterExPrintPageNumbers Else PrintPageNumbers = False
+    If Not IsEmpty(gPrinterExPrintPageNumbers) Then PrintPageNumbers = gPrinterExPrintPageNumbers Else PrintPageNumbers = True
     If Not IsEmpty(gPrinterExPageNumbersFont) Then
         Set PageNumbersFont = gPrinterExPageNumbersFont
     Else
@@ -1894,7 +1894,7 @@ Public Function PrintText(nText As String, Optional ByVal nLeft, Optional ByVal 
         If Not IsMissing(nLeft) Then
             iW = CurrentPageScaleWidthInPixels - iX + PageLeftMarginInPixels - mScaleLeftPixels
         Else
-            iW = CurrentPageScaleWidthInPixels - mCurrentXPixels + PageLeftMarginInPixels - mScaleLeftPixels - iX
+            iW = CurrentPageScaleWidthInPixels - mCurrentXPixels + PageLeftMarginInPixels - mScaleLeftPixels
         End If
     Else
         iW = ScaleX(CSng(nWidth), mScaleMode, vbPixels)
@@ -3543,6 +3543,7 @@ Private Sub IPrinterEx_ShowPrintPreview(Optional nObject As Object, Optional nPr
     mPrintFnObject.PrintQuality = mPrintQuality
     mPrintFnObject.ColorMode = mColorMode
     mPrintFnObject.CommonDialogExObject.UpdateDevModeWithCurrentSettings
+    mPrintFnObject.PrintPageNumbers = mPrintPageNumbers
     
     mPrintFnObject.ShowPrintPreview mDocKey
     
