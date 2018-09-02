@@ -1,0 +1,3 @@
+See sample for FlexFn UserControl
+
+[...]samples\UserControls\FlexFn
