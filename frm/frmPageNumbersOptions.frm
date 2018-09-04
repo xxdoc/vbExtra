@@ -116,10 +116,10 @@ Begin VB.Form frmPageNumbersOptions
    End
    Begin vbExtra.FontPicker fpcPageNumbers 
       Height          =   432
-      Left            =   2772
+      Left            =   2760
       TabIndex        =   9
       Top             =   1452
-      Width           =   2556
+      Width           =   2550
       _ExtentX        =   4509
       _ExtentY        =   762
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
