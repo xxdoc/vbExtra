@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
 
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 '[Enumerations]
 
@@ -223,7 +223,17 @@ Public Enum vbExPrintExAlignConstants
     vxAlignRightBottom = 8
 End Enum
 
+Public Enum vbExStandardBorderStyleConstants
+    vxNone = 0
+    vxFixedSingle = 1
+End Enum
 
+Public Enum vbExStandardAppearanceConstants
+    vxAppearanceFlat = 0
+    vxAppearance3D = 1
+End Enum
+ 
+ 
 Private Sub Class_Initialize()
     InitGlobal
 End Sub
