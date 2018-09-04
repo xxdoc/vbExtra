@@ -107,6 +107,7 @@ PropertyPage=ptp\ptpFontSizeChanger.pag
 PropertyPage=ptp\ptpHistoryGeneral.pag
 PropertyPage=ptp\ptpHistoryToolTipText.pag
 PropertyPage=ptp\ptpScrollableContainer.pag
+Form=frm\frmPageNumbersOptions.frm
 Startup="(None)"
 HelpFile=""
 Title="vbExtra"
