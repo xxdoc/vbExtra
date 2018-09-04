@@ -75,6 +75,8 @@ Private mForeColor As Long
 Private Const cDefaultForeColor = vbButtonText
 Private mBackColor As Long
 Private Const cDefaultBackColor = vbWindowBackground
+Private mBorderStyle As vbExStandardBorderStyleConstants
+Private mAppearance As vbExStandardAppearanceConstants
 Private mChooseForeColor As Boolean
 Private mBorderColor As Long
 Private Const cDefaultBorderColor = vbWindowFrame
@@ -139,6 +141,34 @@ Public Property Let BackColor(nValue As OLE_COLOR)
     If nValue <> mBackColor Then
         mBackColor = nValue
         PropertyChanged "BackColor"
+        DrawSample
+    End If
+End Property
+
+
+Public Property Get BorderStyle() As vbExStandardBorderStyleConstants
+    BorderStyle = mBorderStyle
+End Property
+
+Public Property Let BorderStyle(nValue As vbExStandardBorderStyleConstants)
+    If nValue <> mBorderStyle Then
+        mBorderStyle = nValue
+        UserControl.BorderStyle = mBorderStyle
+        PropertyChanged "BorderStyle"
+        DrawSample
+    End If
+End Property
+
+
+Public Property Get Appearance() As vbExStandardAppearanceConstants
+    Appearance = mAppearance
+End Property
+
+Public Property Let Appearance(nValue As vbExStandardAppearanceConstants)
+    If nValue <> mAppearance Then
+        mAppearance = nValue
+        UserControl.Appearance = mAppearance
+        PropertyChanged "Appearance"
         DrawSample
     End If
 End Property
@@ -295,6 +325,10 @@ Private Sub UserControl_InitProperties()
     mSampleTextEnding = cDefaultSampleTextEnding
     mEnabled = True
     UserControl.Size 1600, 400
+    mBorderStyle = vxFixedSingle
+    UserControl.BorderStyle = mBorderStyle
+    mAppearance = vxAppearance3D
+    UserControl.Appearance = mAppearance
     If Ambient.UserMode Then
         mUserControlHwnd = UserControl.hWnd
         AttachMessage Me, mUserControlHwnd, WM_UILANGCHANGED
@@ -313,6 +347,11 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mButtonToolTipText = PropBag.ReadProperty("ButtonToolTipText", mButtonToolTipText_Default)
     mSampleTextEnding = PropBag.ReadProperty("SampleTextEnding", cDefaultSampleTextEnding)
     mEnabled = PropBag.ReadProperty("Enabled", True)
+    
+    mBorderStyle = PropBag.ReadProperty("BorderStyle", vxFixedSingle)
+    UserControl.BorderStyle = mBorderStyle
+    mAppearance = PropBag.ReadProperty("Appearance", vxAppearance3D)
+    UserControl.Appearance = mAppearance
     
     cmdSelectFont.Enabled = mEnabled
     UserControl.Enabled = mEnabled
@@ -352,6 +391,9 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     PropBag.WriteProperty "ButtonToolTipText", mButtonToolTipText, mButtonToolTipText_Default
     PropBag.WriteProperty "SampleTextEnding", mSampleTextEnding, cDefaultSampleTextEnding
     PropBag.WriteProperty "Enabled", mEnabled, True
+    PropBag.WriteProperty "BorderStyle", mBorderStyle, vxFixedSingle
+    PropBag.WriteProperty "Appearance", mAppearance, vxAppearance3D
+    
 End Sub
 
 Private Sub DrawSample()
@@ -430,7 +472,10 @@ Private Sub DrawSample()
     Else
         iBorderColor = mBorderColor
     End If
-    UserControl.Line (0, 0)-(UserControl.ScaleWidth - Screen.TwipsPerPixelX, UserControl.ScaleHeight - Screen.TwipsPerPixelY), iBorderColor, B
+    
+    If (mBorderStyle = vxFixedSingle) And (mAppearance = vxAppearanceFlat) Then
+        UserControl.Line (0, 0)-(UserControl.ScaleWidth - Screen.TwipsPerPixelX, UserControl.ScaleHeight - Screen.TwipsPerPixelY), iBorderColor, B
+    End If
     
     If mSampleTextEnding = vxTEVanish Then
         If picSample.TextWidth(mSampleText) > picSample.ScaleWidth Then
