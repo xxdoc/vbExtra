@@ -119,6 +119,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     Dim c As Long
     Dim iFont As StdFont
     Dim iLng As Long
+    Dim iBool As Boolean
     
     mPrintFnObject.AmbientUserMode = Ambient.UserMode
     
@@ -131,6 +132,10 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mPrintFnObject.MinScalePercent = PropBag.ReadProperty("MinScalePercent", cPrintPreviewDefaultMinScale)
     mPrintFnObject.MaxScalePercent = PropBag.ReadProperty("MaxScalePercent", cPrintPreviewDefaultMaxScale)
     mPrintFnObject.FormatButtonVisible = PropBag.ReadProperty("FormatButtonVisible", False)
+    iBool = PropBag.ReadProperty("PageNumbersButtonVisible", True)
+    If iBool <> mPrintFnObject.PageNumbersButtonVisible Then
+        mPrintFnObject.PageNumbersButtonVisible = iBool
+    End If
     mPrintFnObject.FormatButtonToolTipText = PropBag.ReadProperty("FormatButtonToolTipText", "")
     For c = 0 To 4
         Set mPrintFnObject.FormatButtonPicture(c) = PropBag.ReadProperty("FormatButtonPicture_" & CStr(c), Nothing)
@@ -456,6 +461,18 @@ Public Property Let FormatButtonVisible(nValue As Boolean)
 End Property
 
 
+Public Property Get PageNumbersButtonVisible() As Boolean
+    PageNumbersButtonVisible = mPrintFnObject.PageNumbersButtonVisible
+End Property
+
+Public Property Let PageNumbersButtonVisible(nValue As Boolean)
+    If nValue <> mPrintFnObject.PageNumbersButtonVisible Then
+        mPrintFnObject.PageNumbersButtonVisible = nValue
+        PropertyChanged "PageNumbersButtonVisible"
+    End If
+End Property
+
+
 Public Property Get PageSetupButtonVisible() As Boolean
     PageSetupButtonVisible = mPrintFnObject.PageSetupButtonVisible
 End Property
@@ -576,6 +593,7 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     PropBag.WriteProperty "MinScalePercent", mPrintFnObject.MinScalePercent, cPrintPreviewDefaultMinScale
     PropBag.WriteProperty "MaxScalePercent", mPrintFnObject.MaxScalePercent, cPrintPreviewDefaultMaxScale
     PropBag.WriteProperty "FormatButtonVisible", mPrintFnObject.FormatButtonVisible, False
+    PropBag.WriteProperty "PageNumbersButtonVisible", mPrintFnObject.PageNumbersButtonVisible, True
     iStr = mPrintFnObject.FormatButtonToolTipText
     If iStr = GetLocalizedString(efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_Format) Then
         iStr = ""
