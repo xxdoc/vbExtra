@@ -69,7 +69,7 @@ Private Declare Function Arc Lib "gdi32" (ByVal hDC As Long, ByVal nLeftRect As 
 Private Declare Function Ellipse Lib "gdi32" (ByVal hDC As Long, ByVal nLeftRect As Long, ByVal nTopRect As Long, ByVal nRightRect As Long, ByVal nBottomRect As Long) As Long
 
 'Private Declare Function MulDiv Lib "kernel32" (ByVal nNumber As Long, ByVal nNumerator As Long, ByVal nDenominator As Long) As Long
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (hpvDest As Any, hpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (hpvDest As Any, hpvSource As Any, ByVal cbCopy As Long)
 Private Declare Function ResetDC Lib "gdi32" Alias "ResetDCA" (ByVal hDC As Long, lpInitData As Any) As Long
 
 Private Const CCHDEVICENAME = 32
@@ -3241,8 +3241,12 @@ End Property
 
 
 Private Property Let IPrinterEx_PrintPageNumbers(ByVal RHS As Boolean)
-    PrintPageNumbers = RHS
-    gPrinterExPrintPageNumbers = mPrintPageNumbers
+    If mLoaded_PrintPageNumbers Then
+        mOriginal_PrintPageNumbers = RHS
+    Else
+        PrintPageNumbers = RHS
+    End If
+    gPrinterExPrintPageNumbers = RHS
 End Property
 
 Private Property Get IPrinterEx_PrintPageNumbers() As Boolean
@@ -3256,7 +3260,11 @@ End Property
 
 
 Private Property Let IPrinterEx_Collate(ByVal RHS As Boolean)
-    Collate = RHS
+    If mLoaded_Collate Then
+        mOriginal_Collate = RHS
+    Else
+        Collate = RHS
+    End If
 End Property
 
 Private Property Get IPrinterEx_Collate() As Boolean
@@ -3328,8 +3336,12 @@ End Sub
 
 
 Private Property Set IPrinterEx_PageNumbersFont(ByVal RHS As stdole.Font)
-    Set PageNumbersFont = RHS
-    Set gPrinterExPageNumbersFont = mPageNumbersFont
+    If mLoaded_PageNumbersFont Then
+        Set mOriginal_PageNumbersFont = RHS
+    Else
+        Set PageNumbersFont = RHS
+    End If
+    Set gPrinterExPageNumbersFont = RHS
 End Property
 
 Private Property Get IPrinterEx_PageNumbersFont() As stdole.Font
@@ -3338,8 +3350,12 @@ End Property
 
 
 Private Property Let IPrinterEx_PageNumbersForeColor(ByVal RHS As OLE_COLOR)
-    PageNumbersForeColor = RHS
-    gPrinterExPageNumbersForeColor = mPageNumbersForeColor
+    If mLoaded_PageNumbersForeColor Then
+        mOriginal_PageNumbersForeColor = RHS
+    Else
+        PageNumbersForeColor = RHS
+    End If
+    gPrinterExPageNumbersForeColor = RHS
 End Property
 
 Private Property Get IPrinterEx_PageNumbersForeColor() As OLE_COLOR
@@ -3348,7 +3364,14 @@ End Property
 
 
 Private Property Let IPrinterEx_PageNumbersFormat(ByVal RHS As String)
-    PageNumbersFormat = RHS
+    If mLoaded_PageNumbersFormat Then
+        mOriginal_PageNumbersFormat = RHS
+    Else
+        PageNumbersFormat = RHS
+    End If
+    If Not mPrintFnObject Is Nothing Then
+        mPrintFnObject.EnsurePageNumberFormatInList RHS
+    End If
 End Property
 
 Private Property Get IPrinterEx_PageNumbersFormat() As String
@@ -3357,8 +3380,12 @@ End Property
 
 
 Private Property Let IPrinterEx_PageNumbersPosition(ByVal RHS As vbExPageNumbersPositionConstants)
-    PageNumbersPosition = RHS
-    gPrinterExPageNumbersPosition = mPageNumbersPosition
+    If mLoaded_PageNumbersPosition Then
+        mOriginal_PageNumbersPosition = RHS
+    Else
+        PageNumbersPosition = RHS
+    End If
+    gPrinterExPageNumbersPosition = RHS
 End Property
 
 Private Property Get IPrinterEx_PageNumbersPosition() As vbExPageNumbersPositionConstants
@@ -3781,7 +3808,11 @@ End Property
 
 
 Private Property Let IPrinterEx_LeftMargin(ByVal RHS As Single)
-    LeftMargin = RHS
+    If mLoaded_LeftMargin Then
+        mOriginal_LeftMargin = RHS
+    Else
+        LeftMargin = RHS
+    End If
     gPrinterExLeftMargin = RHS
 End Property
 
@@ -3795,7 +3826,11 @@ End Property
 
 
 Private Property Let IPrinterEx_TopMargin(ByVal RHS As Single)
-    TopMargin = RHS
+    If mLoaded_TopMargin Then
+        mOriginal_TopMargin = RHS
+    Else
+        TopMargin = RHS
+    End If
     gPrinterExTopMargin = RHS
 End Property
 
@@ -3809,7 +3844,11 @@ End Property
 
 
 Private Property Let IPrinterEx_RightMargin(ByVal RHS As Single)
-    RightMargin = RHS
+    If mLoaded_RightMargin Then
+        mOriginal_RightMargin = RHS
+    Else
+        RightMargin = RHS
+    End If
     gPrinterExRightMargin = RHS
 End Property
 
@@ -3823,7 +3862,11 @@ End Property
 
 
 Private Property Let IPrinterEx_BottomMargin(ByVal RHS As Single)
-    BottomMargin = RHS
+    If mLoaded_BottomMargin Then
+        mOriginal_BottomMargin = RHS
+    Else
+        BottomMargin = RHS
+    End If
     gPrinterExBottomMargin = RHS
 End Property
 
@@ -4050,7 +4093,11 @@ End Sub
 
 
 Private Property Let Printer_ColorMode(ByVal RHS As Integer)
-    ColorMode = RHS
+    If mLoaded_ColorMode Then
+        mOriginal_ColorMode = RHS
+    Else
+        ColorMode = RHS
+    End If
 End Property
 
 Private Property Get Printer_ColorMode() As Integer
@@ -4142,7 +4189,11 @@ Private Property Get Printer_Duplex() As Integer
 End Property
 
 Private Property Let Printer_Duplex(ByVal RHS As Integer)
-    Duplex = RHS
+    If mLoaded_Duplex Then
+        mOriginal_Duplex = RHS
+    Else
+        Duplex = RHS
+    End If
 End Property
 
 
@@ -4325,7 +4376,11 @@ End Sub
 
 
 Private Property Let Printer_Orientation(ByVal RHS As Integer)
-    Orientation = RHS
+    If mLoaded_Orientation Then
+        mOriginal_Orientation = RHS
+    Else
+        Orientation = RHS
+    End If
 End Property
 
 Private Property Get Printer_Orientation() As Integer
@@ -4344,7 +4399,11 @@ End Sub
 
 
 Private Property Let Printer_PaperBin(ByVal RHS As Integer)
-    PaperBin = RHS
+    If mLoaded_PaperBin Then
+        mOriginal_PaperBin = RHS
+    Else
+        PaperBin = RHS
+    End If
 End Property
     
 Private Property Get Printer_PaperBin() As Integer
@@ -4357,7 +4416,11 @@ Private Property Let Printer_PaperSize(ByVal RHS As Integer)
         mDeviceName = VB.Printer.DeviceName
         mPort = VB.Printer.Port
     End If
-    PaperSize = RHS
+    If mLoaded_PaperSize Then
+        mOriginal_PaperSize = RHS
+    Else
+        PaperSize = RHS
+    End If
 End Property
 
 Private Property Get Printer_PaperSize() As Integer
@@ -4402,7 +4465,11 @@ End Sub
 
 
 Private Property Let Printer_PrintQuality(ByVal RHS As Integer)
-    PrintQuality = RHS
+    If mLoaded_PrintQuality Then
+        mOriginal_PrintQuality = RHS
+    Else
+        PrintQuality = RHS
+    End If
 End Property
 
 Private Property Get Printer_PrintQuality() As Integer
@@ -6055,7 +6122,7 @@ Private Sub PrintPageNumbers1(nFirstPageIndex As Long, nLastPageIndex As Long)
     Dim iTopMarginMillimeters As Single
     Dim iAuxFont As StdFont
     Dim iPageNumbersFontHeight As Single
-    Dim iPNF As String
+    Dim iPnf As String
     Dim iAuxWidth As String
     Dim iM As Single
     Dim iAuxY As Single
@@ -6113,8 +6180,8 @@ Private Sub PrintPageNumbers1(nFirstPageIndex As Long, nLastPageIndex As Long)
                 CurrentY = PageHeight - iPageNumbersFontHeight - iEndFreeSpace - PageNonPrintableAreaTop - 0.5
         End Select
         
-        iPNF = GetFormattedPageNumberString(mPageNumbersFormat, GetPageNumber(c), iPageCount) 'GetDocPageCount(c))
-        iPageNumbersWidth = TextWidth(iPNF)
+        iPnf = GetFormattedPageNumberString(mPageNumbersFormat, GetPageNumber(c), iPageCount) 'GetDocPageCount(c))
+        iPageNumbersWidth = TextWidth(iPnf)
         
         Select Case mPageNumbersPosition
             Case vxPositionBottomRight, vxPositionTopRight
@@ -6135,7 +6202,7 @@ Private Sub PrintPageNumbers1(nFirstPageIndex As Long, nLastPageIndex As Long)
         End Select
         iAuxY = CurrentY
         If mPrintPageNumbers Then
-            PrintText iPNF
+            PrintText iPnf
         End If
         
         iFixedImage = Not (gPrinterExPageFixedImage Is Nothing)
@@ -6516,7 +6583,6 @@ Private Sub LoadUserDocPreferences()
     Static sLastDocKey As String
     Dim iDn As String
     
-    
     If (sLastDocKey <> mDocKey) Then
         ' restore originals
         If mLoaded_Orientation Then
@@ -6619,6 +6685,12 @@ Private Sub LoadUserDocPreferences()
             End If
             
             ' Page numbers
+            If mPrintPageNumbers Then
+                If mPrintFnObject Is Nothing Then
+                    Set mPrintFnObject = New PrintFnObject
+                End If
+                mPrintFnObject.PageNumbersButtonVisible = True
+            End If
             iStr = GetSetting(AppNameForRegistry, "PrintingSettings", iContextGeneral & "_PrintPageNumbers", CStr(CLng(mPrintPageNumbers)))
             If (iStr <> "") And (iStr <> "-") Then
                 If IsNumeric(iStr) Then
@@ -6646,6 +6718,10 @@ Private Sub LoadUserDocPreferences()
                                 mOriginal_PageNumbersFormat = PageNumbersFormat
                                 mLoaded_PageNumbersFormat = True
                             End If
+                            If mPrintFnObject Is Nothing Then
+                                Set mPrintFnObject = New PrintFnObject
+                            End If
+                            mPrintFnObject.EnsurePageNumberFormatInList mPageNumbersFormat
                             PageNumbersFormat = iStr
                         End If
                         ' Font

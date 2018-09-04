@@ -368,10 +368,12 @@ Private Sub mfrmPrintPreview_PageNumbersOptionsClick(ByRef Canceled As Boolean)
     
     Set ifrmPageNumbersOptions.PrintFnObject = Me
     
+    EnsurePageNumberFormatInList mPageNumbersFormat
+    
     ifrmPageNumbersOptions.PrintPageNumbers = mPrintPageNumbers
     ifrmPageNumbersOptions.PageNumbersPosition = mPageNumbersPosition
     
-    If mPageNumbersFormat = "Default" Then
+    If (mPageNumbersFormat = "Default") Or Trim$(mPageNumbersFormat) = "" Then
         ifrmPageNumbersOptions.PageNumbersFormatLong = 0
     Else
         ifrmPageNumbersOptions.PageNumbersFormatLong = GetPageNumbersFormatStringsIndex(mPageNumbersFormat)
@@ -734,6 +736,7 @@ Public Property Let PageNumbersFormat(ByVal nValue As String)
         mPageNumbersFormat = "Default"
     Else
         mPageNumbersFormat = nValue
+        EnsurePageNumberFormatInList mPageNumbersFormat
     End If
 End Property
 
@@ -773,11 +776,11 @@ End Property
 Public Property Let PageNumbersButtonVisible(ByVal nValue As Boolean)
     If mPageNumbersButtonVisible <> nValue Then
         mPageNumbersButtonVisible = nValue
-        mPageNumbersButtonHiddenAutomatically = 2
         If Not mfrmPrintPreview Is Nothing Then
             mfrmPrintPreview.PageNumbersButtonVisible = mPageNumbersButtonVisible
         End If
     End If
+    mPageNumbersButtonHiddenAutomatically = 2
 End Property
 
 
@@ -1202,3 +1205,20 @@ Public Function GetPageNumbersFormatStringsIndex(nFormatString As String) As Lon
         End If
     Next c
 End Function
+
+Friend Sub EnsurePageNumberFormatInList(nFormatString As String)
+    Dim c As Long
+    Dim iFound As Boolean
+    
+    For c = 0 To UBound(mPredefinedPageNumbersFormatStrings)
+        If mPredefinedPageNumbersFormatStrings(c) = nFormatString Then
+            iFound = True
+            Exit For
+        End If
+    Next c
+    
+    If Not iFound Then
+        ReDim Preserve mPredefinedPageNumbersFormatStrings(UBound(mPredefinedPageNumbersFormatStrings) + 1)
+        mPredefinedPageNumbersFormatStrings(UBound(mPredefinedPageNumbersFormatStrings)) = nFormatString
+    End If
+End Sub
