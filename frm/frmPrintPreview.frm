@@ -87,7 +87,7 @@ Begin VB.Form frmPrintPreview
          PicHeight24     =   30
          PicHeight30     =   36
          PicHeight36     =   44
-         ButtonsCount    =   15
+         ButtonsCount    =   16
          ButtonWidth1    =   80
          ButtonStyle1    =   4
          ButtonKey2      =   "Print"
@@ -104,46 +104,45 @@ Begin VB.Form frmPrintPreview
          ButtonPic303    =   "frmPrintPreview.frx":54EC
          ButtonPic363    =   "frmPrintPreview.frx":646E
          ButtonToolTipText3=   "# Page setup"
-         ButtonKey4      =   "Format"
+         ButtonKey4      =   "PageNumbers"
          ButtonPic164    =   "frmPrintPreview.frx":7B70
          ButtonPic204    =   "frmPrintPreview.frx":8072
          ButtonPic244    =   "frmPrintPreview.frx":8784
          ButtonPic304    =   "frmPrintPreview.frx":929E
          ButtonPic364    =   "frmPrintPreview.frx":A220
-         ButtonToolTipText4=   "# Format"
-         ButtonKey5      =   "OrientationLabelSpace"
-         ButtonWidth5    =   1100
-         ButtonStyle5    =   4
-         ButtonChecked6  =   -1  'True
-         ButtonKey6      =   "OrientationPortrait"
-         ButtonPic166    =   "frmPrintPreview.frx":B922
-         ButtonPic206    =   "frmPrintPreview.frx":BE24
-         ButtonPic246    =   "frmPrintPreview.frx":C536
-         ButtonPic306    =   "frmPrintPreview.frx":D050
-         ButtonPic366    =   "frmPrintPreview.frx":DFD2
-         ButtonStyle6    =   2
-         ButtonToolTipText6=   "# Orientation portrait"
-         ButtonKey7      =   "OrientationLandscape"
+         ButtonToolTipText4=   "# Page numbers options"
+         ButtonVisible4  =   0   'False
+         ButtonKey5      =   "Format"
+         ButtonPic165    =   "frmPrintPreview.frx":B922
+         ButtonPic205    =   "frmPrintPreview.frx":BE24
+         ButtonPic245    =   "frmPrintPreview.frx":C536
+         ButtonPic305    =   "frmPrintPreview.frx":D050
+         ButtonPic365    =   "frmPrintPreview.frx":DFD2
+         ButtonToolTipText5=   "# Format"
+         ButtonKey6      =   "OrientationLabelSpace"
+         ButtonWidth6    =   1100
+         ButtonStyle6    =   4
+         ButtonChecked7  =   -1  'True
+         ButtonKey7      =   "OrientationPortrait"
          ButtonPic167    =   "frmPrintPreview.frx":F6D4
          ButtonPic207    =   "frmPrintPreview.frx":FBD6
          ButtonPic247    =   "frmPrintPreview.frx":102E8
          ButtonPic307    =   "frmPrintPreview.frx":10E02
          ButtonPic367    =   "frmPrintPreview.frx":11D84
          ButtonStyle7    =   2
-         ButtonToolTipText7=   "# Orientation landscape"
-         ButtonKey8      =   "ViewLabelSpace"
-         ButtonWidth8    =   660
-         ButtonStyle8    =   4
-         ButtonKey9      =   "ViewNormalSize"
-         ButtonTag9      =   "view"
-         ButtonPic169    =   "frmPrintPreview.frx":13486
-         ButtonPic209    =   "frmPrintPreview.frx":13988
-         ButtonPic249    =   "frmPrintPreview.frx":1409A
-         ButtonPic309    =   "frmPrintPreview.frx":14BB4
-         ButtonPic369    =   "frmPrintPreview.frx":15B36
-         ButtonStyle9    =   2
-         ButtonToolTipText9=   "# View normal page size"
-         ButtonKey10     =   "ViewScreenWidth"
+         ButtonToolTipText7=   "# Orientation portrait"
+         ButtonKey8      =   "OrientationLandscape"
+         ButtonPic168    =   "frmPrintPreview.frx":13486
+         ButtonPic208    =   "frmPrintPreview.frx":13988
+         ButtonPic248    =   "frmPrintPreview.frx":1409A
+         ButtonPic308    =   "frmPrintPreview.frx":14BB4
+         ButtonPic368    =   "frmPrintPreview.frx":15B36
+         ButtonStyle8    =   2
+         ButtonToolTipText8=   "# Orientation landscape"
+         ButtonKey9      =   "ViewLabelSpace"
+         ButtonWidth9    =   660
+         ButtonStyle9    =   4
+         ButtonKey10     =   "ViewNormalSize"
          ButtonTag10     =   "view"
          ButtonPic1610   =   "frmPrintPreview.frx":17238
          ButtonPic2010   =   "frmPrintPreview.frx":1773A
@@ -151,9 +150,8 @@ Begin VB.Form frmPrintPreview
          ButtonPic3010   =   "frmPrintPreview.frx":18966
          ButtonPic3610   =   "frmPrintPreview.frx":198E8
          ButtonStyle10   =   2
-         ButtonToolTipText10=   "# View page adjusted to the screen width"
-         ButtonChecked11 =   -1  'True
-         ButtonKey11     =   "ViewScreenHeight"
+         ButtonToolTipText10=   "# View normal page size"
+         ButtonKey11     =   "ViewScreenWidth"
          ButtonTag11     =   "view"
          ButtonPic1611   =   "frmPrintPreview.frx":1AFEA
          ButtonPic2011   =   "frmPrintPreview.frx":1B4EC
@@ -161,9 +159,9 @@ Begin VB.Form frmPrintPreview
          ButtonPic3011   =   "frmPrintPreview.frx":1C718
          ButtonPic3611   =   "frmPrintPreview.frx":1D69A
          ButtonStyle11   =   2
-         ButtonToolTipText11=   "# View page adjusted to the screen height"
-         ButtonEnabled12 =   0   'False
-         ButtonKey12     =   "ViewSeveralPages"
+         ButtonToolTipText11=   "# View page adjusted to the screen width"
+         ButtonChecked12 =   -1  'True
+         ButtonKey12     =   "ViewScreenHeight"
          ButtonTag12     =   "view"
          ButtonPic1612   =   "frmPrintPreview.frx":1ED9C
          ButtonPic2012   =   "frmPrintPreview.frx":1F29E
@@ -171,34 +169,44 @@ Begin VB.Form frmPrintPreview
          ButtonPic3012   =   "frmPrintPreview.frx":204CA
          ButtonPic3612   =   "frmPrintPreview.frx":2144C
          ButtonStyle12   =   2
-         ButtonToolTipText12=   "# View several pages"
-         ButtonKey13     =   "ScaleSpace"
-         ButtonWidth13   =   2100
-         ButtonStyle13   =   4
-         ButtonKey14     =   "DecreaseScale"
-         ButtonPic1614   =   "frmPrintPreview.frx":22B4E
-         ButtonPic2014   =   "frmPrintPreview.frx":23050
-         ButtonPic2414   =   "frmPrintPreview.frx":23762
-         ButtonPic3014   =   "frmPrintPreview.frx":2427C
-         ButtonPic3614   =   "frmPrintPreview.frx":251FE
-         ButtonPic16Alt14=   "frmPrintPreview.frx":26900
-         ButtonPic20Alt14=   "frmPrintPreview.frx":26E02
-         ButtonPic24Alt14=   "frmPrintPreview.frx":27514
-         ButtonPic30Alt14=   "frmPrintPreview.frx":2802E
-         ButtonPic36Alt14=   "frmPrintPreview.frx":28FB0
-         ButtonToolTipText14=   "# Decrease fonts and elements size"
-         ButtonKey15     =   "IncreaseScale"
-         ButtonPic1615   =   "frmPrintPreview.frx":2A6B2
-         ButtonPic2015   =   "frmPrintPreview.frx":2ABB4
-         ButtonPic2415   =   "frmPrintPreview.frx":2B2C6
-         ButtonPic3015   =   "frmPrintPreview.frx":2BDE0
-         ButtonPic3615   =   "frmPrintPreview.frx":2CD62
-         ButtonPic16Alt15=   "frmPrintPreview.frx":2E464
-         ButtonPic20Alt15=   "frmPrintPreview.frx":2E966
-         ButtonPic24Alt15=   "frmPrintPreview.frx":2F078
-         ButtonPic30Alt15=   "frmPrintPreview.frx":2FB92
-         ButtonPic36Alt15=   "frmPrintPreview.frx":30B14
-         ButtonToolTipText15=   "# Increase fonts and elements size"
+         ButtonToolTipText12=   "# View page adjusted to the screen height"
+         ButtonEnabled13 =   0   'False
+         ButtonKey13     =   "ViewSeveralPages"
+         ButtonTag13     =   "view"
+         ButtonPic1613   =   "frmPrintPreview.frx":22B4E
+         ButtonPic2013   =   "frmPrintPreview.frx":23050
+         ButtonPic2413   =   "frmPrintPreview.frx":23762
+         ButtonPic3013   =   "frmPrintPreview.frx":2427C
+         ButtonPic3613   =   "frmPrintPreview.frx":251FE
+         ButtonStyle13   =   2
+         ButtonToolTipText13=   "# View several pages"
+         ButtonKey14     =   "ScaleSpace"
+         ButtonWidth14   =   2100
+         ButtonStyle14   =   4
+         ButtonKey15     =   "DecreaseScale"
+         ButtonPic1615   =   "frmPrintPreview.frx":26900
+         ButtonPic2015   =   "frmPrintPreview.frx":26E02
+         ButtonPic2415   =   "frmPrintPreview.frx":27514
+         ButtonPic3015   =   "frmPrintPreview.frx":2802E
+         ButtonPic3615   =   "frmPrintPreview.frx":28FB0
+         ButtonPic16Alt15=   "frmPrintPreview.frx":2A6B2
+         ButtonPic20Alt15=   "frmPrintPreview.frx":2ABB4
+         ButtonPic24Alt15=   "frmPrintPreview.frx":2B2C6
+         ButtonPic30Alt15=   "frmPrintPreview.frx":2BDE0
+         ButtonPic36Alt15=   "frmPrintPreview.frx":2CD62
+         ButtonToolTipText15=   "# Decrease fonts and elements size"
+         ButtonKey16     =   "IncreaseScale"
+         ButtonPic1616   =   "frmPrintPreview.frx":2E464
+         ButtonPic2016   =   "frmPrintPreview.frx":2E966
+         ButtonPic2416   =   "frmPrintPreview.frx":2F078
+         ButtonPic3016   =   "frmPrintPreview.frx":2FB92
+         ButtonPic3616   =   "frmPrintPreview.frx":30B14
+         ButtonPic16Alt16=   "frmPrintPreview.frx":32216
+         ButtonPic20Alt16=   "frmPrintPreview.frx":32718
+         ButtonPic24Alt16=   "frmPrintPreview.frx":32E2A
+         ButtonPic30Alt16=   "frmPrintPreview.frx":33944
+         ButtonPic36Alt16=   "frmPrintPreview.frx":348C6
+         ButtonToolTipText16=   "# Increase fonts and elements size"
          Begin VB.Timer tmrcboScalePercentChange 
             Enabled         =   0   'False
             Interval        =   5000
@@ -281,9 +289,9 @@ Begin VB.Form frmPrintPreview
                   Strikethrough   =   0   'False
                EndProperty
                Height          =   312
-               ItemData        =   "frmPrintPreview.frx":32216
+               ItemData        =   "frmPrintPreview.frx":35FC8
                Left            =   948
-               List            =   "frmPrintPreview.frx":32232
+               List            =   "frmPrintPreview.frx":35FE4
                TabIndex        =   15
                Text            =   "cboFontScale"
                Top             =   60
@@ -348,27 +356,27 @@ Begin VB.Form frmPrintPreview
          ButtonStyle1    =   4
          ButtonEnabled2  =   0   'False
          ButtonKey2      =   "FirstPage"
-         ButtonPic162    =   "frmPrintPreview.frx":32263
-         ButtonPic202    =   "frmPrintPreview.frx":32EB5
-         ButtonPic242    =   "frmPrintPreview.frx":341C7
+         ButtonPic162    =   "frmPrintPreview.frx":36015
+         ButtonPic202    =   "frmPrintPreview.frx":36C67
+         ButtonPic242    =   "frmPrintPreview.frx":37F79
          ButtonToolTipText2=   "# First page"
          ButtonEnabled3  =   0   'False
          ButtonKey3      =   "PreviousPage"
-         ButtonPic163    =   "frmPrintPreview.frx":35D19
-         ButtonPic203    =   "frmPrintPreview.frx":3696B
-         ButtonPic243    =   "frmPrintPreview.frx":37C7D
+         ButtonPic163    =   "frmPrintPreview.frx":39ACB
+         ButtonPic203    =   "frmPrintPreview.frx":3A71D
+         ButtonPic243    =   "frmPrintPreview.frx":3BA2F
          ButtonToolTipText3=   "# Previous page"
          ButtonEnabled4  =   0   'False
          ButtonKey4      =   "NextPage"
-         ButtonPic164    =   "frmPrintPreview.frx":397CF
-         ButtonPic204    =   "frmPrintPreview.frx":3A421
-         ButtonPic244    =   "frmPrintPreview.frx":3B733
+         ButtonPic164    =   "frmPrintPreview.frx":3D581
+         ButtonPic204    =   "frmPrintPreview.frx":3E1D3
+         ButtonPic244    =   "frmPrintPreview.frx":3F4E5
          ButtonToolTipText4=   "# Next page"
          ButtonEnabled5  =   0   'False
          ButtonKey5      =   "LastPage"
-         ButtonPic165    =   "frmPrintPreview.frx":3D285
-         ButtonPic205    =   "frmPrintPreview.frx":3DED7
-         ButtonPic245    =   "frmPrintPreview.frx":3F1E9
+         ButtonPic165    =   "frmPrintPreview.frx":41037
+         ButtonPic205    =   "frmPrintPreview.frx":41C89
+         ButtonPic245    =   "frmPrintPreview.frx":42F9B
          ButtonToolTipText5=   "# Last page"
          Begin VB.PictureBox picPageNumber 
             BorderStyle     =   0  'None
@@ -540,9 +548,9 @@ Begin VB.Form frmPrintPreview
             Strikethrough   =   0   'False
          EndProperty
          Height          =   360
-         ItemData        =   "frmPrintPreview.frx":40D3B
+         ItemData        =   "frmPrintPreview.frx":44AED
          Left            =   4980
-         List            =   "frmPrintPreview.frx":40D3D
+         List            =   "frmPrintPreview.frx":44AEF
          Style           =   2  'Dropdown List
          TabIndex        =   6
          Top             =   240
@@ -673,6 +681,7 @@ Private mMaxScalePercent As Long
 
 Public Event PrepareDoc(Cancel As Boolean)
 Public Event FormatOptionsClick(ByRef Canceled As Boolean)
+Public Event PageNumbersOptionsClick(ByRef Canceled As Boolean)
 Public Event ScaleChange(NewScalePercent As Integer)
 
 Private mRefreshed As Boolean
@@ -1196,6 +1205,11 @@ Private Sub tbrTop_ButtonClick(Button As ToolBarDAButton)
 '                    If Not PrinterExCurrentDocument Is Nothing Then
 '                        PrinterExCurrentDocument.DontCheckError396 = False
 '                    End If
+                    If Not iCanceled Then
+                        RaiseEventPrepareDoc
+                    End If
+                Case "PageNumbers"
+                    RaiseEvent PageNumbersOptionsClick(iCanceled)
                     If Not iCanceled Then
                         RaiseEventPrepareDoc
                     End If
@@ -2112,6 +2126,13 @@ Public Property Let PageSetupButtonVisible(nValue As Boolean)
     End If
 End Property
 
+Public Property Let PageNumbersButtonVisible(nValue As Boolean)
+    tbrTop.Buttons("PageNumbers").Visible = nValue
+    If mControlsPositioned Then
+        PositionControls
+    End If
+End Property
+
 Public Property Let FormatButtonToolTipText(nValue As String)
     mFormatButtonToolTipText = nValue
     tbrTop.Buttons("Format").ToolTipText = Trim(mFormatButtonToolTipText)
@@ -2442,6 +2463,7 @@ Private Sub LoadGUICaptions()
     
     tbrTop.Buttons("Print").ToolTipText = GetLocalizedString(efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_Print)
     tbrTop.Buttons("PageSetup").ToolTipText = GetLocalizedString(efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_PageSetup)
+    tbrTop.Buttons("PageNumbers").ToolTipText = GetLocalizedString(efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_PageNumbersOptions)
     If mFormatButtonToolTipText = "" Then
         tbrTop.Buttons("Format").ToolTipText = GetLocalizedString(efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_Format)
     End If

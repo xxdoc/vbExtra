@@ -131,7 +131,7 @@ Private mOKPressed As Boolean
 Private mCopyToClipboardMode As Long
 Private mSpecialSeparatorCharacters As String
 Private mGrid As Object
-Private mKeyname As String
+Private mContext As String
 Private mColumnsHeaders() As String
 Private mConsiderColumn() As Boolean
 Private mCopyColumn() As Boolean
@@ -162,9 +162,9 @@ End Property
 '    End If
 'End Property
 
-Public Sub SetGrid(nGrid As Object, nKeyname As String)
+Public Sub SetGrid(nGrid As Object, nContext As String)
     Set mGrid = nGrid
-    mKeyname = nKeyname
+    mContext = nContext
     ShowColumns
 End Sub
 
@@ -230,7 +230,7 @@ Private Sub cmdOK_Click()
     End If
     
     If mSave_CopyToClipboardMode Then
-        SaveSetting AppNameForRegistry, "Preferences", "CopyGridText_" & mKeyname & "_CopyToClipboardMode", mCopyToClipboardMode
+        SaveSetting AppNameForRegistry, "Preferences", "CopyGridText_" & mContext & "_CopyToClipboardMode", mCopyToClipboardMode
         mSave_CopyToClipboardMode = False
     End If
     mOKPressed = True
@@ -241,7 +241,7 @@ Private Sub cmdOK_Click()
         If mConsiderColumn(c) Then
             For x = 0 To lstColumns.ListCount - 1
                 If lstColumns.ItemData(x) = c Then
-                    SaveSetting AppNameForRegistry, "Preferences", "CopyGridText_" & mKeyname & "_Col" & mColumnsHeaders(c), CLng(lstColumns.Selected(x))
+                    SaveSetting AppNameForRegistry, "Preferences", "CopyGridText_" & mContext & "_Col" & mColumnsHeaders(c), CLng(lstColumns.Selected(x))
                     If lstColumns.Selected(x) Then
                         mCopyColumn(c) = True
                     End If
@@ -262,7 +262,7 @@ Private Sub Form_Load()
     LoadGUICaptions
     AssignAccelerators Me, True
     
-    iLng = CLng(Val(GetSetting(AppNameForRegistry, "Preferences", "CopyGridText_" & mKeyname & "_CopyToClipboardMode", 2)))
+    iLng = CLng(Val(GetSetting(AppNameForRegistry, "Preferences", "CopyGridText_" & mContext & "_CopyToClipboardMode", 2)))
     If (iLng > 0) And (iLng < 5) Then
         cboMode.ListIndex = iLng - 1
     End If
@@ -331,7 +331,7 @@ Private Sub ShowColumns()
         If mConsiderColumn(c) Then
             For x = 0 To lstColumns.ListCount - 1
                 If lstColumns.ItemData(x) = c Then
-                    lstColumns.Selected(x) = GetSetting(AppNameForRegistry, "Preferences", "CopyGridText_" & mKeyname & "_Col" & mColumnsHeaders(c), -1)
+                    lstColumns.Selected(x) = GetSetting(AppNameForRegistry, "Preferences", "CopyGridText_" & mContext & "_Col" & mColumnsHeaders(c), -1)
                     Exit For
                 End If
             Next x

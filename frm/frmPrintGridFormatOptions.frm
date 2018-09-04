@@ -1019,6 +1019,14 @@ Private Sub fpcPageNumbers_Change()
 End Sub
 
 Private Sub Form_Load()
+    Dim iPt As POINTAPI
+    
+    GetCursorPos iPt
+    iPt.x = iPt.x - 15
+    If iPt.x < 10 Then iPt.x = 10
+    iPt.y = iPt.y + 20
+    Me.Move ScaleX(iPt.x, vbPixels, ScaleMode), ScaleY(iPt.y, vbPixels, ScaleMode)
+    
     mLoading = True
     LoadGUICaptions
     
@@ -1866,9 +1874,9 @@ Private Sub LoadGUICaptions()
     lblOtherTextsFont.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblOtherTextsFont_Caption)
     lblSubheadingFont.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblSubheadingFont_Caption)
     lblHeadingFont.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblHeadingFont_Caption)
-    lblPageNumbersFont.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersFont_Caption)
-    lblPageNumbersFormat.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersFormat_Caption)
-    lblPageNumbersPosition.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersPosition_Caption)
+    lblPageNumbersFont.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersFont_Caption)
+    lblPageNumbersFormat.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersFormat_Caption)
+    lblPageNumbersPosition.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersPosition_Caption)
     lblGridAlign.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblGridAlign_Caption)
     lblColor.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblColor_Caption)
     lblScalePercent.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblScalePercent_Caption)
@@ -1908,7 +1916,7 @@ Private Sub LoadGUICaptions()
             End If
         End If
         If Not iSkip Then
-            cboPageNumbersPosition.AddItem GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_cboPageNumbersPosition_List, c)
+            cboPageNumbersPosition.AddItem GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_cboPageNumbersPosition_List, c)
             cboPageNumbersPosition.ItemData(cboPageNumbersPosition.NewIndex) = c
         End If
     Next c
