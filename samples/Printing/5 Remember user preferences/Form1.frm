@@ -81,7 +81,7 @@ Public Sub MyPrintingRoutine()
 End Sub
 
 Private Sub Form_Load()
-    PrinterEx.DocKey = "My_Report_01"
+    PrinterEx.DocKey = Me.Name & "_MyReport_01"
 End Sub
 
 Private Sub mnuEdit_Click()
