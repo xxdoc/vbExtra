@@ -179,7 +179,7 @@ Private mDefaultFolderPathPrev As String
 Private mCopyToClipboardModePrev As Long
 Private mSpecialSeparatorCharactersPrev As String
 
-Private mLastReportKeyname As String
+Private mLastReportContext As String
 Private mLastReporScalePercent As Long
 Private mGridHandlersCollection As Collection
 Private mFormHwnd As Long
@@ -343,6 +343,7 @@ Private Sub Class_Initialize()
     mPrintGridFormatSettings.ScalePercent = 100
     
     mPrintFnObject.FormatButtonVisible = True
+    mPrintFnObject.PageNumbersButtonVisible = False
     mPrintFnObject.AllowUserChangeScale = True
     
     Set mGridReportStyle = GetGridReportStyle("Default" & CStr(mDefaultReportStyle))
@@ -655,7 +656,7 @@ Public Sub ShowPrint(Optional nGrid As Object, Optional nGridName, Optional nRep
         ScalePercent = nScalePercent
     End If
     
-    If Keyname <> mLastReportKeyname Then
+    If Context <> mLastReportContext Then
         ResetReportSpecificVariables
     Else
         If IsMissing(nScalePercent) Then
@@ -664,7 +665,7 @@ Public Sub ShowPrint(Optional nGrid As Object, Optional nGridName, Optional nRep
             End If
         End If
     End If
-    mLastReportKeyname = Keyname
+    mLastReportContext = Context
     
     EnsurePrintFormatSettingsLoaded
     
@@ -714,7 +715,7 @@ Public Sub ShowPrintPreview(Optional nGrid As Object, Optional nGridName, Option
         ScalePercent = nScalePercent
     End If
     
-    If Keyname <> mLastReportKeyname Then
+    If Context <> mLastReportContext Then
         ResetReportSpecificVariables
     Else
         If IsMissing(nScalePercent) Then
@@ -723,7 +724,7 @@ Public Sub ShowPrintPreview(Optional nGrid As Object, Optional nGridName, Option
             End If
         End If
     End If
-    mLastReportKeyname = Keyname
+    mLastReportContext = Context
     
     EnsurePrintFormatSettingsLoaded
     
@@ -865,28 +866,28 @@ Private Sub LoadUserSettings()
     If RememberUserPrintingPreferences = gfnDontRemember Then Exit Sub
     If mCurrentGrid Is Nothing Then Exit Sub
     
-    iAuxLng = GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_ScalePercent", 0)
+    iAuxLng = GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_ScalePercent", 0)
     If iAuxLng <> 0 Then
         mPrintGridFormatSettings.ScalePercent = iAuxLng
     End If
     If (RememberUserPrintingPreferences = gfnRememberByReportIDIfAvailable) Or (RememberUserPrintingPreferences = gfnRememberByGridName) Then
-        mUserChangedScale = CBool(GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_UserChangedScale", 0))
+        mUserChangedScale = CBool(GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_UserChangedScale", 0))
     End If
-    mPrintGridFormatSettings.ColorMode = CLng(GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_ColorMode", mPrintGridFormatSettings.ColorMode))
-    mPrintGridFormatSettings.GridAlign = GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_GridAlign", mPrintGridFormatSettings.GridAlign)
-    mPrintGridFormatSettings.PrintPageNumbers = CBool(GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_PrintPageNumbers", CLng(mPrintGridFormatSettings.PrintPageNumbers)))
-    mPrintGridFormatSettings.PageNumbersPosition = GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_PageNumbersPosition", mPrintGridFormatSettings.PageNumbersPosition)
-    mPrintGridFormatSettings.PageNumbersFormatLong = GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_PageNumbersFormatLong", mPrintGridFormatSettings.PageNumbersFormatLong)
-    Set mPrintGridFormatSettings.PageNumbersFont = GetSettingFont(AppNameForRegistry, "PrintingSettings", Keyname & "_PageNumbersFont", mPrintGridFormatSettings.PageNumbersFont)
-    mPrintGridFormatSettings.PageNumbersForeColor = GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_PageNumbersForeColor", mPrintGridFormatSettings.PageNumbersForeColor)
-    Set mPrintGridFormatSettings.HeadingFont = GetSettingFont(AppNameForRegistry, "PrintingSettings", Keyname & "_HeadingFont", mPrintGridFormatSettings.HeadingFont)
-    mPrintGridFormatSettings.HeadingFontColor = GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_HeadingFontColor", mPrintGridFormatSettings.HeadingFontColor)
-    Set mPrintGridFormatSettings.SubheadingFont = GetSettingFont(AppNameForRegistry, "PrintingSettings", Keyname & "_SubheadingFont", mPrintGridFormatSettings.SubheadingFont)
-    mPrintGridFormatSettings.SubheadingFontColor = GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_SubheadingFontColor", mPrintGridFormatSettings.SubheadingFontColor)
-    Set mPrintGridFormatSettings.OtherTextsFont = GetSettingFont(AppNameForRegistry, "PrintingSettings", Keyname & "_OtherTextsFont", mPrintGridFormatSettings.OtherTextsFont)
-    mPrintGridFormatSettings.OtherTextsFontColor = GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_OtherTextsFontColor", mPrintGridFormatSettings.OtherTextsFontColor)
+    mPrintGridFormatSettings.ColorMode = CLng(GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_ColorMode", mPrintGridFormatSettings.ColorMode))
+    mPrintGridFormatSettings.GridAlign = GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_GridAlign", mPrintGridFormatSettings.GridAlign)
+    mPrintGridFormatSettings.PrintPageNumbers = CBool(GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_PrintPageNumbers", CLng(mPrintGridFormatSettings.PrintPageNumbers)))
+    mPrintGridFormatSettings.PageNumbersPosition = GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_PageNumbersPosition", mPrintGridFormatSettings.PageNumbersPosition)
+    mPrintGridFormatSettings.PageNumbersFormatLong = GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_PageNumbersFormatLong", mPrintGridFormatSettings.PageNumbersFormatLong)
+    Set mPrintGridFormatSettings.PageNumbersFont = GetSettingFont(AppNameForRegistry, "PrintingSettings", Context & "_PageNumbersFont", mPrintGridFormatSettings.PageNumbersFont)
+    mPrintGridFormatSettings.PageNumbersForeColor = GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_PageNumbersForeColor", mPrintGridFormatSettings.PageNumbersForeColor)
+    Set mPrintGridFormatSettings.HeadingFont = GetSettingFont(AppNameForRegistry, "PrintingSettings", Context & "_HeadingFont", mPrintGridFormatSettings.HeadingFont)
+    mPrintGridFormatSettings.HeadingFontColor = GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_HeadingFontColor", mPrintGridFormatSettings.HeadingFontColor)
+    Set mPrintGridFormatSettings.SubheadingFont = GetSettingFont(AppNameForRegistry, "PrintingSettings", Context & "_SubheadingFont", mPrintGridFormatSettings.SubheadingFont)
+    mPrintGridFormatSettings.SubheadingFontColor = GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_SubheadingFontColor", mPrintGridFormatSettings.SubheadingFontColor)
+    Set mPrintGridFormatSettings.OtherTextsFont = GetSettingFont(AppNameForRegistry, "PrintingSettings", Context & "_OtherTextsFont", mPrintGridFormatSettings.OtherTextsFont)
+    mPrintGridFormatSettings.OtherTextsFontColor = GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_OtherTextsFontColor", mPrintGridFormatSettings.OtherTextsFontColor)
     
-    iStyleID = GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_GridReportStyle", "")
+    iStyleID = GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_GridReportStyle", "")
     If iStyleID = "" Then
         mUsingDefaultReportStyle = True
         Set mGridReportStyle = GetGridReportStyle("Default" & CStr(mDefaultReportStyle))
@@ -917,7 +918,7 @@ Private Sub LoadUserSettings()
     End If
     
     If mOrientation = gfnDecideOnReportWidth Then
-        iAuxLng = GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_EnableAutoOrientation", 20)
+        iAuxLng = GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_EnableAutoOrientation", 20)
         If iAuxLng <> 20 Then
             mEnableAutoOrientation = CBool(iAuxLng)
         Else
@@ -926,7 +927,7 @@ Private Sub LoadUserSettings()
         mAuxAllowAutoOrientation = mEnableAutoOrientation
         If RememberUserPrintingPreferences <> gfnRememberGlobally Then
             If Not mEnableAutoOrientation Then
-                mPrintFnObject.Orientation = GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_Orientation", mPrintFnObject.Orientation)
+                mPrintFnObject.Orientation = GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_Orientation", mPrintFnObject.Orientation)
                 mDefaultReportOrientation = mPrintFnObject.Orientation
             End If
         End If
@@ -934,10 +935,10 @@ Private Sub LoadUserSettings()
     
     iUnits = mPrintFnObject.Units
     mPrintFnObject.Units = vbMillimeters
-    mPrintFnObject.LeftMargin = GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_LeftMargin", mPrintFnObject.LeftMargin)
-    mPrintFnObject.TopMargin = GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_TopMargin", mPrintFnObject.TopMargin)
-    mPrintFnObject.RightMargin = GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_RightMargin", mPrintFnObject.RightMargin)
-    mPrintFnObject.BottomMargin = GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_BottomMargin", mPrintFnObject.BottomMargin)
+    mPrintFnObject.LeftMargin = Val(GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_LeftMargin", mPrintFnObject.LeftMargin))
+    mPrintFnObject.TopMargin = Val(GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_TopMargin", mPrintFnObject.TopMargin))
+    mPrintFnObject.RightMargin = Val(GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_RightMargin", mPrintFnObject.RightMargin))
+    mPrintFnObject.BottomMargin = Val(GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_BottomMargin", mPrintFnObject.BottomMargin))
     mPrintFnObject.Units = iUnits
 End Sub
 
@@ -956,25 +957,25 @@ Private Sub SaveUserSettings()
         SaveSetting AppNameForRegistry, "PrintingSettings", "Global" & "_EnableAutoOrientation", CLng(mEnableAutoOrientation)
         mSave_EnableAutoOrientation = False
         
-        If (GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_AutoOrientationAutoDisabled", 10) <> 10) Then
-            DeleteSetting AppNameForRegistry, "PrintingSettings", Keyname & "_AutoOrientationAutoDisabled"
+        If (GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_AutoOrientationAutoDisabled", 10) <> 10) Then
+            DeleteSetting AppNameForRegistry, "PrintingSettings", Context & "_AutoOrientationAutoDisabled"
         End If
-        If (GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_EnableAutoOrientation", 10) <> 10) Then
-            DeleteSetting AppNameForRegistry, "PrintingSettings", Keyname & "_EnableAutoOrientation"
+        If (GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_EnableAutoOrientation", 10) <> 10) Then
+            DeleteSetting AppNameForRegistry, "PrintingSettings", Context & "_EnableAutoOrientation"
         End If
     Else
         If RememberUserPrintingPreferences <> gfnRememberGlobally Then
             If mPrintFnObject.Orientation <> mDefaultReportOrientation Then
                 If mEnableAutoOrientation Then
                     mEnableAutoOrientation = False
-                    SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_EnableAutoOrientation", CLng(mEnableAutoOrientation)
-                    SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_AutoOrientationAutoDisabled", CLng(True)
+                    SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_EnableAutoOrientation", CLng(mEnableAutoOrientation)
+                    SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_AutoOrientationAutoDisabled", CLng(True)
                 Else
                     If mPrintFnObject.Orientation = vbPRORLandscape Then
-                        If CBool(GetSetting(AppNameForRegistry, "PrintingSettings", Keyname & "_AutoOrientationAutoDisabled", 0)) Then
-                            DeleteSetting AppNameForRegistry, "PrintingSettings", Keyname & "_AutoOrientationAutoDisabled"
+                        If CBool(GetSetting(AppNameForRegistry, "PrintingSettings", Context & "_AutoOrientationAutoDisabled", 0)) Then
+                            DeleteSetting AppNameForRegistry, "PrintingSettings", Context & "_AutoOrientationAutoDisabled"
                             mEnableAutoOrientation = True
-                            SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_EnableAutoOrientation", CLng(mEnableAutoOrientation)
+                            SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_EnableAutoOrientation", CLng(mEnableAutoOrientation)
                         End If
                     End If
                 End If
@@ -987,75 +988,75 @@ Private Sub SaveUserSettings()
     
     If RememberUserPrintingPreferences <> gfnRememberGlobally Then
         If mPrintFnObject.Orientation <> mDefaultReportOrientation Then
-            SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_Orientation", mPrintFnObject.Orientation
+            SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_Orientation", mPrintFnObject.Orientation
         End If
     End If
     
     If mSave_ScalePercent Then
         If (mPrintGridFormatSettings.ScalePercent >= 60) And (mPrintGridFormatSettings.ScalePercent <= 200) Then
-            SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_ScalePercent", mPrintGridFormatSettings.ScalePercent
+            SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_ScalePercent", mPrintGridFormatSettings.ScalePercent
         End If
         mSave_ScalePercent = False
     End If
     If mSave_ColorMode Then
         If mPrintGridFormatSettings.ColorMode = vbPRCMPrinterDefault Then
-            DeleteSetting AppNameForRegistry, "PrintingSettings", Keyname & "_ColorMode"
+            DeleteSetting AppNameForRegistry, "PrintingSettings", Context & "_ColorMode"
         Else
-            SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_ColorMode", mPrintGridFormatSettings.ColorMode
+            SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_ColorMode", mPrintGridFormatSettings.ColorMode
         End If
         mSave_ColorMode = False
     End If
     If mSave_GridAlign Then
-        SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_GridAlign", mPrintGridFormatSettings.GridAlign
+        SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_GridAlign", mPrintGridFormatSettings.GridAlign
         mSave_GridAlign = False
     End If
     If mSave_PrintPageNumbers Then
-        SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_PrintPageNumbers", CLng(mPrintGridFormatSettings.PrintPageNumbers)
+        SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_PrintPageNumbers", CLng(mPrintGridFormatSettings.PrintPageNumbers)
         mSave_PrintPageNumbers = False
     End If
     If mSave_PageNumbersPosition Then
-        SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_PageNumbersPosition", mPrintGridFormatSettings.PageNumbersPosition
+        SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_PageNumbersPosition", mPrintGridFormatSettings.PageNumbersPosition
         mSave_PageNumbersPosition = False
     End If
     If mSave_PageNumbersFormatLong Then
-        SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_PageNumbersFormatLong", mPrintGridFormatSettings.PageNumbersFormatLong
+        SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_PageNumbersFormatLong", mPrintGridFormatSettings.PageNumbersFormatLong
         mSave_PageNumbersFormatLong = False
     End If
     If mSave_PageNumbersFont Then
-        SaveSettingFont AppNameForRegistry, "PrintingSettings", Keyname & "_PageNumbersFont", mPrintGridFormatSettings.PageNumbersFont
+        SaveSettingFont AppNameForRegistry, "PrintingSettings", Context & "_PageNumbersFont", mPrintGridFormatSettings.PageNumbersFont
         mSave_PageNumbersFont = True
     End If
     If mSave_PageNumbersForeColor Then
-        SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_PageNumbersForeColor", mPrintGridFormatSettings.PageNumbersForeColor
+        SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_PageNumbersForeColor", mPrintGridFormatSettings.PageNumbersForeColor
         mSave_PageNumbersForeColor = False
     End If
     If mSave_HeadingFont Then
-        SaveSettingFont AppNameForRegistry, "PrintingSettings", Keyname & "_HeadingFont", mPrintGridFormatSettings.HeadingFont
+        SaveSettingFont AppNameForRegistry, "PrintingSettings", Context & "_HeadingFont", mPrintGridFormatSettings.HeadingFont
         mSave_HeadingFont = False
     End If
     If mSave_HeadingFontColor Then
-        SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_HeadingFontColor", mPrintGridFormatSettings.HeadingFontColor
+        SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_HeadingFontColor", mPrintGridFormatSettings.HeadingFontColor
         mSave_HeadingFontColor = False
     End If
     If mSave_SubheadingFont Then
-        SaveSettingFont AppNameForRegistry, "PrintingSettings", Keyname & "_SubheadingFont", mPrintGridFormatSettings.SubheadingFont
+        SaveSettingFont AppNameForRegistry, "PrintingSettings", Context & "_SubheadingFont", mPrintGridFormatSettings.SubheadingFont
         mSave_SubheadingFont = False
     End If
     If mSave_SubheadingFontColor Then
-        SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_SubheadingFontColor", mPrintGridFormatSettings.SubheadingFontColor
+        SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_SubheadingFontColor", mPrintGridFormatSettings.SubheadingFontColor
         mSave_SubheadingFontColor = False
     End If
     If mSave_OtherTextsFont Then
-        SaveSettingFont AppNameForRegistry, "PrintingSettings", Keyname & "_OtherTextsFont", mPrintGridFormatSettings.OtherTextsFont
+        SaveSettingFont AppNameForRegistry, "PrintingSettings", Context & "_OtherTextsFont", mPrintGridFormatSettings.OtherTextsFont
         mSave_OtherTextsFont = False
     End If
     If mSave_OtherTextsFontColor Then
-        SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_OtherTextsFontColor", mPrintGridFormatSettings.OtherTextsFontColor
+        SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_OtherTextsFontColor", mPrintGridFormatSettings.OtherTextsFontColor
         mSave_OtherTextsFontColor = False
     End If
 
     If mUserChangedScale Then
-        SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_UserChangedScale", CLng(mUserChangedScale)
+        SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_UserChangedScale", CLng(mUserChangedScale)
     End If
 
 End Sub
@@ -1065,15 +1066,21 @@ Private Sub SaveMarginSettings()
     
     iUnits = mPrintFnObject.Units
     mPrintFnObject.Units = vbMillimeters
-    SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_LeftMargin", mPrintFnObject.LeftMargin
-    SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_TopMargin", mPrintFnObject.TopMargin
-    SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_RightMargin", mPrintFnObject.RightMargin
-    SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_BottomMargin", mPrintFnObject.BottomMargin
+    SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_LeftMargin", Str$(mPrintFnObject.LeftMargin)
+    SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_TopMargin", Str$(mPrintFnObject.TopMargin)
+    SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_RightMargin", Str$(mPrintFnObject.RightMargin)
+    SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_BottomMargin", Str$(mPrintFnObject.BottomMargin)
     mPrintFnObject.Units = iUnits
 End Sub
 
+' Kept for keeping binary compatibility, it will be removed in the next version
 Public Property Get Keyname() As String
 Attribute Keyname.VB_MemberFlags = "40"
+
+End Property
+
+Public Property Get Context() As String
+Attribute Context.VB_MemberFlags = "40"
     Dim iGrid As Object
     Dim iCurrentGridNameWithParent As String
     
@@ -1088,23 +1095,23 @@ Attribute Keyname.VB_MemberFlags = "40"
                 iCurrentGridNameWithParent = mCurrentGridNameWithParent
             End If
             If iCurrentGridNameWithParent <> "" Then
-                Keyname = mCurrentGridNameWithParent
+                Context = mCurrentGridNameWithParent
                 If Trim$(mReportID) <> "" Then
-                    Keyname = Keyname & "_" & Base64Encode(Trim$(mReportID))
+                    Context = Context & "_" & Base64Encode(Trim$(mReportID))
                 End If
             Else
                 If Trim$(mReportID) <> "" Then
-                    Keyname = Base64Encode(Trim$(mReportID))
+                    Context = Base64Encode(Trim$(mReportID))
                 End If
             End If
         Case gfnRememberByGridName
             If mCurrentGridNameWithParent <> "" Then
-                Keyname = mCurrentGridNameWithParent
+                Context = mCurrentGridNameWithParent
             Else
-                Keyname = "DefaultGridSetttings"
+                Context = "DefaultGridSetttings"
             End If
         Case gfnRememberGlobally
-            Keyname = "Global"
+            Context = "Global"
     End Select
 End Property
 
@@ -2123,7 +2130,7 @@ Private Function CopyGridToClipboard() As Boolean
     ReDim iCopyColumn(mCurrentGrid.Cols - 1)
     If mCopyToClipboardMode = 0 Then
         ifrmCopyGridTextOptions.SpecialSeparatorCharacters = mSpecialSeparatorCharacters
-        ifrmCopyGridTextOptions.SetGrid mCurrentGrid, Keyname
+        ifrmCopyGridTextOptions.SetGrid mCurrentGrid, Context
         
         Set iGH = GetGridHandler(mCurrentGrid)
         If Not iGH Is Nothing Then iGH.TimerCheckRedrawEnabled = False
@@ -2925,7 +2932,7 @@ Private Sub SaveGridReportStyle()
         
     End If
     
-    SaveSetting AppNameForRegistry, "PrintingSettings", Keyname & "_GridReportStyle", iStyleID
+    SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_GridReportStyle", iStyleID
     
 End Sub
 

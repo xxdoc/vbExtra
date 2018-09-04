@@ -63,6 +63,8 @@ Private mDocumentName As String
 Private mFormatButtonVisible As Boolean
 Private mFormatButtonToolTipText As String
 Private mFormatButtonPicture(4) As Object
+Private mPageNumbersButtonVisible As Boolean
+Private mPageNumbersButtonHiddenAutomatically As Long ' 0: normal, 1: hidden automatically, 2: show or hidden by code
 Private mAllowUserChangeScale As Boolean
 Private mScalePercent As Long
 Private mMinScalePercent As Long
@@ -133,6 +135,7 @@ Public Sub ShowPrint(Optional DocKey As String)
     Dim iAuxPaperBin As Long
     Dim iAuxPrintQuality As Long
     Dim iFlags_Prev As Long
+    Dim iDocKey_Prev As String
     
     mDocKey = DocKey
     mCanceled = False
@@ -239,10 +242,11 @@ Public Sub ShowPrint(Optional DocKey As String)
                         PrinterExCurrentDocument.FromPage = 0
                         PrinterExCurrentDocument.ToPage = 0
                     End If
+                    iDocKey_Prev = PrinterExCurrentDocument.DocKey
                     PrinterExCurrentDocument.DocKey = mDocKey
                     PrinterExCurrentDocument.PrintDocumentToPrinterDC mDlg.hDC
                     RaiseEvent DocPrinted(mDocKey)
-                    PrinterExCurrentDocument.DocKey = ""
+                    PrinterExCurrentDocument.DocKey = iDocKey_Prev
                 End If
             End If
             If Not mfrmPrintPreview Is Nothing Then
@@ -290,6 +294,7 @@ Public Sub ShowPrintPreview(Optional DocKey As String)
             Next c
         End If
         mfrmPrintPreview.PageSetupButtonVisible = mPageSetupButtonVisible
+        mfrmPrintPreview.PageNumbersButtonVisible = mPageNumbersButtonVisible
         mfrmPrintPreview.AllowUserChangeScale = mAllowUserChangeScale And Not (mMinScalePercent = mMaxScalePercent)
         
         mfrmPrintPreview.ScalePercent = mScalePercent
@@ -323,6 +328,7 @@ Private Sub Class_Initialize()
     mPageNumbersPosition = vxPositionBottomRight
     mPageNumbersFormat = "Default"
     mFormatButtonVisible = False
+    mPageNumbersButtonVisible = True
     mPageSetupButtonVisible = True
     mFormatButtonToolTipText = ""
     mAllowUserChangeScale = True
@@ -355,6 +361,39 @@ End Sub
 
 Private Sub mfrmPrintPreview_FormatOptionsClick(ByRef Canceled As Boolean)
     RaiseEvent FormatOptionsClick(Canceled)
+End Sub
+
+Private Sub mfrmPrintPreview_PageNumbersOptionsClick(ByRef Canceled As Boolean)
+    Dim ifrmPageNumbersOptions As New frmPageNumbersOptions
+    
+    Set ifrmPageNumbersOptions.PrintFnObject = Me
+    
+    ifrmPageNumbersOptions.PrintPageNumbers = mPrintPageNumbers
+    ifrmPageNumbersOptions.PageNumbersPosition = mPageNumbersPosition
+    
+    If mPageNumbersFormat = "Default" Then
+        ifrmPageNumbersOptions.PageNumbersFormatLong = 0
+    Else
+        ifrmPageNumbersOptions.PageNumbersFormatLong = GetPageNumbersFormatStringsIndex(mPageNumbersFormat)
+    End If
+    Set ifrmPageNumbersOptions.PageNumbersFont = mPageNumbersFont
+    ifrmPageNumbersOptions.PageNumbersForeColor = mPageNumbersForeColor
+    
+    ifrmPageNumbersOptions.Show vbModal
+    
+    If ifrmPageNumbersOptions.OKPressed And ifrmPageNumbersOptions.Changed Then
+        mPrintPageNumbers = ifrmPageNumbersOptions.PrintPageNumbers
+        mPageNumbersPosition = ifrmPageNumbersOptions.PageNumbersPosition
+        If ifrmPageNumbersOptions.PageNumbersFormatLong = 0 Then
+            mPageNumbersFormat = "Default"
+        Else
+            mPageNumbersFormat = GetPredefinedPageNumbersFormatString(ifrmPageNumbersOptions.PageNumbersFormatLong)
+        End If
+        Set mPageNumbersFont = ifrmPageNumbersOptions.PageNumbersFont
+        mPageNumbersForeColor = ifrmPageNumbersOptions.PageNumbersForeColor
+    Else
+        Canceled = True
+    End If
 End Sub
 
 
@@ -633,6 +672,20 @@ End Property
 Public Property Let PrintPageNumbers(ByVal nValue As Boolean)
     If mPrintPageNumbers <> nValue Then
         mPrintPageNumbers = nValue
+        If Not mPrintPageNumbers Then
+            If mPageNumbersButtonHiddenAutomatically = 0 Then
+                mPageNumbersButtonHiddenAutomatically = 1
+                mPageNumbersButtonVisible = False
+            End If
+        Else
+            If mPageNumbersButtonHiddenAutomatically = 1 Then
+                mPageNumbersButtonHiddenAutomatically = 0
+                mPageNumbersButtonVisible = True
+            End If
+        End If
+        If Not mfrmPrintPreview Is Nothing Then
+            mfrmPrintPreview.PageNumbersButtonVisible = mPageNumbersButtonVisible
+        End If
     End If
 End Property
 
@@ -708,6 +761,21 @@ Public Property Let FormatButtonVisible(ByVal nValue As Boolean)
         mFormatButtonVisible = nValue
         If Not mfrmPrintPreview Is Nothing Then
             mfrmPrintPreview.FormatButtonVisible = mFormatButtonVisible
+        End If
+    End If
+End Property
+
+
+Public Property Get PageNumbersButtonVisible() As Boolean
+    PageNumbersButtonVisible = mPageNumbersButtonVisible
+End Property
+
+Public Property Let PageNumbersButtonVisible(ByVal nValue As Boolean)
+    If mPageNumbersButtonVisible <> nValue Then
+        mPageNumbersButtonVisible = nValue
+        mPageNumbersButtonHiddenAutomatically = 2
+        If Not mfrmPrintPreview Is Nothing Then
+            mfrmPrintPreview.PageNumbersButtonVisible = mPageNumbersButtonVisible
         End If
     End If
 End Property
@@ -877,12 +945,14 @@ End Property
 
 Private Sub RaiseEventPrepareDoc(nCancel As Boolean)
     Dim iCancel As Boolean
+    Dim iDocKey_Prev As String
     
     gPrinterExFromPrintFn = gPrinterExFromPrintFn + 1
     
     SetPrinterExSettings
     
     Set mPrinterExEvents = PrinterExCurrentDocument.Events
+    iDocKey_Prev = PrinterExCurrentDocument.DocKey
     PrinterExCurrentDocument.DocKey = mDocKey
     
     If Not (mParent Is Nothing) And (mProcedureName <> "") Then
@@ -900,7 +970,7 @@ Private Sub RaiseEventPrepareDoc(nCancel As Boolean)
     
     If Not PrinterExCurrentDocument Is Nothing Then
         PrinterExCurrentDocument.RaiseEvent_EndDoc PrinterExCurrentDocument.GetDocFirstPageIndex(PrinterExCurrentDocument.PageCount), PrinterExCurrentDocument.GetDocLastPageIndex(PrinterExCurrentDocument.PageCount)
-        PrinterExCurrentDocument.DocKey = ""
+        PrinterExCurrentDocument.DocKey = iDocKey_Prev
     End If
     Set mPrinterExEvents = Nothing
     
@@ -1110,7 +1180,11 @@ Private Sub LoadPredefinedPageNumbersFormatStrings()
 End Sub
 
 Public Function GetPredefinedPageNumbersFormatString(nIndex As Long) As String
-    GetPredefinedPageNumbersFormatString = mPredefinedPageNumbersFormatStrings(nIndex)
+    If nIndex = -1 Then
+        GetPredefinedPageNumbersFormatString = "Default"
+    Else
+        GetPredefinedPageNumbersFormatString = mPredefinedPageNumbersFormatStrings(nIndex)
+    End If
 End Function
 
 Public Property Get GetPredefinedPageNumbersFormatStringsCount() As Long

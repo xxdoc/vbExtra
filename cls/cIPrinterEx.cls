@@ -436,3 +436,13 @@ End Sub
 Public Property Get SomethingPrintedOnPage() As Boolean
 
 End Property
+
+
+Public Property Get DocKey() As String
+    
+End Property
+
+Public Property Let DocKey(nValue As String)
+    
+End Property
+

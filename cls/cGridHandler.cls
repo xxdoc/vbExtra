@@ -231,19 +231,19 @@ Public Property Get Error() As Boolean
     Error = mError
 End Property
 
-Private Property Get Keyname() As String
+Private Property Get Context() As String
     Select Case mRememberUserPrintingPreferences
         Case gfnRememberByReportIDIfAvailable
-            Keyname = mGridNameWithParent
+            Context = mGridNameWithParent
             If Trim$(mReportID) <> "" Then
-                Keyname = Keyname & "_" & Trim$(mReportID)
+                Context = Context & "_" & Trim$(mReportID)
             End If
         Case gfnRememberByGridName
-            Keyname = mGridNameWithParent
+            Context = mGridNameWithParent
         Case gfnRememberGlobally
-            Keyname = "Global"
+            Context = "Global"
     End Select
-    Keyname = Base64Encode(Keyname)
+    Context = Base64Encode(Context)
 End Property
 
 Private Sub SubclassGrid()
@@ -1175,7 +1175,7 @@ Private Sub StoreGridValuesFromClient()
     
     If (Not mDoNotRememberOrder) And mEnableOrderByColumns Then
         If Not mLastOrderColumnRetrived Then
-            iStr = Base64Decode(GetSetting(AppNameForRegistry, "Preferences", Keyname & "_OrderByCol", ""))
+            iStr = Base64Decode(GetSetting(AppNameForRegistry, "Preferences", Context & "_OrderByCol", ""))
             If iStr = "" Then
                 mLastColumnClicked = mInitialOrderColumn
             Else
@@ -1347,14 +1347,14 @@ End Sub
 Private Sub SetGridVisibleColumnsWithDataFromRegistry()
     Dim c As Long
     Dim iStr As String
-    Dim iKeyName As String
+    Dim iContext As String
     Dim x As Long
     
     If Not mIsTypeSupported Then Exit Sub
     
-    iKeyName = Keyname
+    iContext = Context
     c = 1
-    iStr = Base64Decode(GetSetting(AppNameForRegistry, "Preferences\" & iKeyName, "HideCol_" & CStr(c), ""))
+    iStr = Base64Decode(GetSetting(AppNameForRegistry, "Preferences\" & iContext, "HideCol_" & CStr(c), ""))
     mThereAreHiddenCols = False
     Do Until iStr = ""
         x = GetColIndexByColHeader(iStr)
@@ -1366,7 +1366,7 @@ Private Sub SetGridVisibleColumnsWithDataFromRegistry()
             mThereAreHiddenCols = True
         End If
         c = c + 1
-        iStr = Base64Decode(GetSetting(AppNameForRegistry, "Preferences\" & iKeyName, "HideCol_" & CStr(c), ""))
+        iStr = Base64Decode(GetSetting(AppNameForRegistry, "Preferences\" & iContext, "HideCol_" & CStr(c), ""))
     Loop
     If mLastColumnClicked > -1 Then
         If mColumnsHiddenByComponent(mLastColumnClicked) Then
@@ -1580,7 +1580,7 @@ Public Sub UnHideAllCols()
     Next c
     mThereAreHiddenCols = False
     On Error Resume Next
-    DeleteSetting AppNameForRegistry, "Preferences\" & Keyname
+    DeleteSetting AppNameForRegistry, "Preferences\" & Context
     On Error GoTo 0
     If iAuxThereWereColsHidden Then
         If mStretchColumnsWidthsToFill Then
@@ -1705,15 +1705,15 @@ End Sub
 Private Sub UpdateHiddenColsDataInRegistry()
     Dim c As Long
     Dim x As Long
-    Dim iKeyName As String
+    Dim iContext As String
     Dim iAuxSavedHiddenColsHeaders() As String
     Dim iStr As String
     
-    iKeyName = Keyname
+    iContext = Context
     ReDim iAuxSavedHiddenColsHeaders(0)
     x = 1
     Do
-        iStr = Base64Decode(GetSetting(AppNameForRegistry, "Preferences\" & iKeyName, "HideCol_" & CStr(x), ""))
+        iStr = Base64Decode(GetSetting(AppNameForRegistry, "Preferences\" & iContext, "HideCol_" & CStr(x), ""))
         If iStr = "" Then Exit Do
         If Not ColHeaderExist(iStr) Then
             ReDim Preserve iAuxSavedHiddenColsHeaders(UBound(iAuxSavedHiddenColsHeaders) + 1)
@@ -1724,18 +1724,18 @@ Private Sub UpdateHiddenColsDataInRegistry()
     
     x = 1
     On Error Resume Next
-    DeleteSetting AppNameForRegistry, "Preferences\" & iKeyName
+    DeleteSetting AppNameForRegistry, "Preferences\" & iContext
     On Error GoTo 0
     If mThereAreHiddenCols Then
         For c = 0 To mGrid.Cols - 1
             If mColumnsHiddenByComponent(c) Then
-                SaveSetting AppNameForRegistry, "Preferences\" & iKeyName, "HideCol_" & CStr(x), Base64Encode(mColumnsHeaders(c))
+                SaveSetting AppNameForRegistry, "Preferences\" & iContext, "HideCol_" & CStr(x), Base64Encode(mColumnsHeaders(c))
                 x = x + 1
             End If
         Next c
     End If
     For c = 1 To UBound(iAuxSavedHiddenColsHeaders)
-        SaveSetting AppNameForRegistry, "Preferences\" & iKeyName, "HideCol_" & CStr(x), Base64Encode(iAuxSavedHiddenColsHeaders(c))
+        SaveSetting AppNameForRegistry, "Preferences\" & iContext, "HideCol_" & CStr(x), Base64Encode(iAuxSavedHiddenColsHeaders(c))
         x = x + 1
     Next c
 End Sub
@@ -1848,7 +1848,7 @@ Private Function GetColumnByPosX(nXPos As Long)
 End Function
 
 Public Sub OrderGridByColumn(Optional nOrderByColumn As Long = -1, Optional nOrderDescending, Optional nDoNotSave As Boolean)
-    Dim iKeyName As String
+    Dim iContext As String
     Dim iOrderCol As Long
     Dim iOrderDescending As Boolean
     Dim iRedraw As Boolean
@@ -1868,7 +1868,7 @@ Public Sub OrderGridByColumn(Optional nOrderByColumn As Long = -1, Optional nOrd
     If (nOrderByColumn = -1) And mDoNotRememberOrder Then Exit Sub
     If nOrderByColumn > (mGridCols - 1) Then Exit Sub
     
-    iKeyName = Keyname
+    iContext = Context
     
     If nOrderByColumn = -1 Then
         iOrderCol = mLastColumnClicked
@@ -1894,7 +1894,7 @@ Public Sub OrderGridByColumn(Optional nOrderByColumn As Long = -1, Optional nOrd
             iStr = iStr & "_A"
         End If
         If Not nDoNotSave Then
-            SaveSetting AppNameForRegistry, "Preferences", iKeyName & "_OrderByCol", Base64Encode(iStr)
+            SaveSetting AppNameForRegistry, "Preferences", iContext & "_OrderByCol", Base64Encode(iStr)
         End If
     End If
     
@@ -3130,7 +3130,7 @@ End Property
 
 Public Sub DeleteOrderByColumnSaved()
     On Error Resume Next
-    DeleteSetting AppNameForRegistry, "Preferences", Keyname & "_OrderByCol"
+    DeleteSetting AppNameForRegistry, "Preferences", Context & "_OrderByCol"
     mLastOrderColumnRetrived = False
     mLastColumnClicked = mInitialOrderColumn
     mLastOrderDescending = 0
