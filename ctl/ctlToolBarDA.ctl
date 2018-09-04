@@ -103,10 +103,10 @@ Private mRedraw As Boolean
 Private mIconsSize As vbExToolbarDAIconsSizeConstants
 Private mRefreshPending As Boolean
 Private mAllButtonsWidth As Long
-Private mHidedButtonsCount As Long
+Private mHiddenButtonsCount As Long
 Private mLastAvailableWidth As Long
 Private mNeedToHide As Boolean
-Private mHidedAtWidth As Long
+Private mHiddenAtWidth As Long
 Private mRefreshing As Boolean
 Private mHwndParent As Long
 Private mUserControlHwnd As Long
@@ -487,10 +487,10 @@ Public Property Let AvailableWidth(nValue As Long)
         If (mLastAvailableWidth = -1) Or (mAvailableWidth = -1) Then
             Refresh
         ElseIf (mAvailableWidth < UserControl.Width) Then
-            If (Not mNeedToHide) Or (mAvailableWidth - mHidedAtWidth) >= (mButtonWidth / 4) Then
+            If (Not mNeedToHide) Or (mAvailableWidth - mHiddenAtWidth) >= (mButtonWidth / 4) Then
                 Refresh
             End If
-        ElseIf (mHidedButtonsCount > 0) Or mNeedToHide Then
+        ElseIf (mHiddenButtonsCount > 0) Or mNeedToHide Then
             If Abs(mAvailableWidth - mLastAvailableWidth) >= (mButtonWidth / 4) Then
                 Refresh
             End If
@@ -733,9 +733,9 @@ Public Sub Refresh()
     mButtonWidth = iButtonHeight + mInterButtonSpaceInPixels * Screen.TwipsPerPixelX
     mVisibleButtonsCount = 0
     
-    mHidedButtonsCount = 0
+    mHiddenButtonsCount = 0
     For c = 1 To mButtons.Count
-        mButtons(c).Hided = False
+        mButtons(c).Hidden = False
     Next c
     mNeedToHide = False
     If mAvailableWidth > -1 Then
@@ -763,32 +763,32 @@ Public Sub Refresh()
             For c = 1 To mButtons.Count * 3
                 For c2 = 1 To mButtons.Count
                     If mButtons(c2).OrderToHide = c Then
-                        mButtons(c2).Hided = True
+                        mButtons(c2).Hidden = True
                         iWidthGained = iWidthGained + mButtons(c2).Width
-                        mHidedButtonsCount = mHidedButtonsCount + 1
+                        mHiddenButtonsCount = mHiddenButtonsCount + 1
                     End If
                 Next c2
                 If iWidthGained >= iWidthToGain Then Exit For
             Next c
             If iWidthGained < iWidthToGain Then
                 mNeedToHide = True
-                mHidedAtWidth = mAvailableWidth
+                mHiddenAtWidth = mAvailableWidth
             End If
         End If
     End If
     If mAvailableWidth < -1 Then
         mNeedToHide = True
-        mHidedAtWidth = mAvailableWidth
+        mHiddenAtWidth = mAvailableWidth
     End If
     iVisibleButtonsCount = 0
     For c = 1 To mButtons.Count
-        If Not mButtons(c).Hided Then
+        If Not mButtons(c).Hidden Then
             iVisibleButtonsCount = iVisibleButtonsCount + 1
         End If
     Next c
     If iVisibleButtonsCount = 0 Then
         mNeedToHide = True
-        mHidedAtWidth = mAvailableWidth
+        mHiddenAtWidth = mAvailableWidth
     End If
     mLastAvailableWidth = mAvailableWidth
     If mNeedToHide Then
@@ -813,7 +813,7 @@ Public Sub Refresh()
         Set iButton = mButtons(c)
         iButton.Index = c
         
-        If iButton.Visible And Not iButton.Hided Then
+        If iButton.Visible And Not iButton.Hidden Then
             mVisibleButtonsCount = mVisibleButtonsCount + 1
             Select Case iButton.Style
                 Case vxTBSeparator

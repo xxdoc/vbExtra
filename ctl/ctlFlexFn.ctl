@@ -1221,7 +1221,7 @@ Private Sub UserControl_Show()
         End If
         
         If mGroupDataButtonVisible Then
-            mFlexFnObject.SameDataGroupedInColumns = CBool(GetSetting(AppNameForRegistry, "Preferences", mFlexFnObject.Keyname & "_DataGrouped", CLng(mFlexFnObject.SameDataGroupedInColumns)))
+            mFlexFnObject.SameDataGroupedInColumns = CBool(GetSetting(AppNameForRegistry, "Preferences", mFlexFnObject.Context & "_DataGrouped", CLng(mFlexFnObject.SameDataGroupedInColumns)))
         End If
 
         RaiseEvent PersonalizeDefaultPrintGridFormatSettings(mFlexFnObject.PrintGridFormatSettings)
@@ -2543,7 +2543,7 @@ Public Property Let SameDataGroupedInColumns(Optional nGrid As Object, nValue As
         RaiseEvent BeforeAction("GroupData", iGridName, iLng, iCancel)
         If Not iCancel Then
             mFlexFnObject.SameDataGroupedInColumns(nGrid) = CBool(iLng)
-            SaveSetting AppNameForRegistry, "Preferences", mFlexFnObject.Keyname & "_DataGrouped", iLng
+            SaveSetting AppNameForRegistry, "Preferences", mFlexFnObject.Context & "_DataGrouped", iLng
             RaiseEvent AfterAction("GroupData", iGridName, iLng)
         End If
         
