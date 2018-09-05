@@ -30,7 +30,7 @@ Begin VB.Form Form1
          Strikethrough   =   0   'False
       EndProperty
       Height          =   1884
-      Left            =   576
+      Left            =   828
       TabIndex        =   0
       Top             =   612
       Width           =   3612
