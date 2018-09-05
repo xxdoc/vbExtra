@@ -1066,10 +1066,10 @@ Private Sub SaveMarginSettings()
     
     iUnits = mPrintFnObject.Units
     mPrintFnObject.Units = vbMillimeters
-    SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_LeftMargin", Str$(mPrintFnObject.LeftMargin)
-    SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_TopMargin", Str$(mPrintFnObject.TopMargin)
-    SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_RightMargin", Str$(mPrintFnObject.RightMargin)
-    SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_BottomMargin", Str$(mPrintFnObject.BottomMargin)
+    SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_LeftMargin", Trim$(Str$(mPrintFnObject.LeftMargin))
+    SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_TopMargin", Trim$(Str$(mPrintFnObject.TopMargin))
+    SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_RightMargin", Trim$(Str$(mPrintFnObject.RightMargin))
+    SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_BottomMargin", Trim$(Str$(mPrintFnObject.BottomMargin))
     mPrintFnObject.Units = iUnits
 End Sub
 

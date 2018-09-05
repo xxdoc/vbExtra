@@ -446,3 +446,7 @@ Public Property Let DocKey(nValue As String)
     
 End Property
 
+
+Public Sub DeleteSavedUserPreferences(Optional nDocKey As String)
+    
+End Sub

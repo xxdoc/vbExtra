@@ -69,7 +69,7 @@ Private Declare Function Arc Lib "gdi32" (ByVal hDC As Long, ByVal nLeftRect As 
 Private Declare Function Ellipse Lib "gdi32" (ByVal hDC As Long, ByVal nLeftRect As Long, ByVal nTopRect As Long, ByVal nRightRect As Long, ByVal nBottomRect As Long) As Long
 
 'Private Declare Function MulDiv Lib "kernel32" (ByVal nNumber As Long, ByVal nNumerator As Long, ByVal nDenominator As Long) As Long
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (hpvDest As Any, hpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (hpvDest As Any, hpvSource As Any, ByVal cbCopy As Long)
 Private Declare Function ResetDC Lib "gdi32" Alias "ResetDCA" (ByVal hDC As Long, lpInitData As Any) As Long
 
 Private Const CCHDEVICENAME = 32
@@ -3080,6 +3080,10 @@ Private Property Get IPrinterEx_CommonDialogFlags() As Long
 End Property
 
 
+Private Sub IPrinterEx_DeleteSavedUserPreferences(Optional nDocKey As String)
+    DeleteSavedUserPreferences nDocKey
+End Sub
+
 Private Property Let IPrinterEx_DocKey(RHS As String)
     DocKey = RHS
 End Property
@@ -3439,6 +3443,10 @@ Private Sub IPrinterEx_ShowPageSetup(Optional ByVal nFlags As cdeCommonDialogExP
     Dim iColorMode_Prev As Long
     Dim iFlags_Prev As Long
     
+    Dim iCollate_Prev As Boolean
+    Dim iOrientation_Prev As Long
+    Dim iDuplex_Prev As Long
+    
     If gPrinterExFromPrintFn > 0 Then Exit Sub
     
     If mShowingPrintPreview Then
@@ -3477,6 +3485,10 @@ Private Sub IPrinterEx_ShowPageSetup(Optional ByVal nFlags As cdeCommonDialogExP
     iPaperBin_Prev = mDlg.PaperSize
     iPrintQuality_Prev = mDlg.PrintQuality
     iColorMode_Prev = mDlg.ColorMode
+    iCollate_Prev = mDlg.Collate
+    iOrientation_Prev = mDlg.Orientation
+    iDuplex_Prev = mDlg.Duplex
+    
     
     mDlg.ShowPageSetup
     mCanceled = mDlg.Canceled
@@ -3514,6 +3526,22 @@ Private Sub IPrinterEx_ShowPageSetup(Optional ByVal nFlags As cdeCommonDialogExP
         If mDlg.PaperSize <> iPaperBin_Prev Then gPrinterExPaperSize = mDlg.PaperSize
         If mDlg.PrintQuality <> iPrintQuality_Prev Then gPrinterExPrintQuality = mDlg.PrintQuality
         If mDlg.ColorMode <> iColorMode_Prev Then gPrinterExColorMode = mDlg.ColorMode
+        
+        If mDlg.DeviceName <> "" Then
+            If mDlg.DeviceName <> iDeviceName_Prev Then mSave_DeviceName = True
+        End If
+        If mDlg.PaperBin <> iPaperBin_Prev Then mSave_PaperBin = True
+        If mDlg.PaperSize <> iPaperSize_Prev Then mSave_PaperSize = True
+        If mDlg.PrintQuality <> iPrintQuality_Prev Then mSave_PrintQuality = True
+        If mDlg.ColorMode <> iColorMode_Prev Then mSave_ColorMode = True
+        If mDlg.Collate <> iCollate_Prev Then mSave_Collate = True
+        If mDlg.Orientation <> iOrientation_Prev Then mSave_Orientation = True
+        If mDlg.Duplex <> iDuplex_Prev Then mSave_Duplex = True
+        
+        If mDlg.LeftMargin <> iLeftMargin_Prev Then mSave_LeftMargin = True
+        If mDlg.TopMargin <> iTopMargin_Prev Then mSave_TopMargin = True
+        If mDlg.RightMargin <> iRightMargin_Prev Then mSave_RightMargin = True
+        If mDlg.BottomMargin <> iBottomMargin_Prev Then mSave_BottomMargin = True
         
         CheckMarginsLimits
         
@@ -3727,6 +3755,7 @@ Private Sub IPrinterEx_ShowPrintPreview(Optional nObject As Object, Optional nPr
     mPrintFnObject.Orientation = mOrientation
     mPrintFnObject.PrintQuality = mPrintQuality
     mPrintFnObject.ColorMode = mColorMode
+    mPrintFnObject.CommonDialogExObject.Collate = mDlg.Collate
     mPrintFnObject.CommonDialogExObject.UpdateDevModeWithCurrentSettings
     mPrintFnObject.PrintPageNumbers = mPrintPageNumbers
     mPrintFnObject.PageNumbersPosition = mPageNumbersPosition
@@ -6491,11 +6520,11 @@ Private Sub SaveUserDocPreferences()
     Dim iContextGeneral As String
     
     If mDocKey <> "" Then
-        iContextByDevice = Base64Encode("Prn" & mDeviceName & "_" & mDocKey)
-        iContextGeneral = Base64Encode("Prn" & "_" & mDocKey)
+        iContextByDevice = Base64Encode(mDocKey) & "_Prn_" & mDeviceName
+        iContextGeneral = Base64Encode(mDocKey) & "_Prn" & "_General"
     
         If mSave_DeviceName Then
-            SaveSetting AppNameForRegistry, "PrintingSettings", iContextGeneral & "_DeviceName", mPrintFnObject.CommonDialogExObject.DeviceName
+            SaveSetting AppNameForRegistry, "PrintingSettings", iContextGeneral & "_DeviceName", DeviceName
         End If
     
         If mSave_PrintPageNumbers Then
@@ -6515,20 +6544,20 @@ Private Sub SaveUserDocPreferences()
         End If
     
         If mSave_ColorMode Then
-            SaveSetting AppNameForRegistry, "PrintingSettings", iContextGeneral & "_ColorMode", mPrintFnObject.CommonDialogExObject.ColorMode
+            SaveSetting AppNameForRegistry, "PrintingSettings", iContextGeneral & "_ColorMode", ColorMode
         End If
     
         If mSave_LeftMargin Then
-            SaveSetting AppNameForRegistry, "PrintingSettings", iContextGeneral & "_LeftMargin", Str$(mPrintFnObject.CommonDialogExObject.LeftMargin)
+            SaveSetting AppNameForRegistry, "PrintingSettings", iContextGeneral & "_LeftMargin", Trim$(Str$(LeftMargin))
         End If
         If mSave_RightMargin Then
-            SaveSetting AppNameForRegistry, "PrintingSettings", iContextGeneral & "_RightMargin", Str$(mPrintFnObject.CommonDialogExObject.RightMargin)
+            SaveSetting AppNameForRegistry, "PrintingSettings", iContextGeneral & "_RightMargin", Trim$(Str$(RightMargin))
         End If
         If mSave_TopMargin Then
-            SaveSetting AppNameForRegistry, "PrintingSettings", iContextGeneral & "_TopMargin", Str$(mPrintFnObject.CommonDialogExObject.TopMargin)
+            SaveSetting AppNameForRegistry, "PrintingSettings", iContextGeneral & "_TopMargin", Trim$(Str$(TopMargin))
         End If
         If mSave_BottomMargin Then
-            SaveSetting AppNameForRegistry, "PrintingSettings", iContextGeneral & "_BottomMargin", Str$(mPrintFnObject.CommonDialogExObject.BottomMargin)
+            SaveSetting AppNameForRegistry, "PrintingSettings", iContextGeneral & "_BottomMargin", Trim$(Str$(BottomMargin))
         End If
     
         If mSave_ScalePercent Then
@@ -6536,22 +6565,22 @@ Private Sub SaveUserDocPreferences()
         End If
     
         If mSave_Orientation Then
-            SaveSetting AppNameForRegistry, "PrintingSettings", iContextByDevice & "_Orientation", mPrintFnObject.CommonDialogExObject.Orientation
+            SaveSetting AppNameForRegistry, "PrintingSettings", iContextByDevice & "_Orientation", Orientation
         End If
         If mSave_PaperSize Then
-            SaveSetting AppNameForRegistry, "PrintingSettings", iContextByDevice & "_PaperSize", mPrintFnObject.CommonDialogExObject.PaperSize
+            SaveSetting AppNameForRegistry, "PrintingSettings", iContextByDevice & "_PaperSize", PaperSize
         End If
         If mSave_PaperBin Then
-            SaveSetting AppNameForRegistry, "PrintingSettings", iContextByDevice & "_PaperBin", mPrintFnObject.CommonDialogExObject.PaperBin
+            SaveSetting AppNameForRegistry, "PrintingSettings", iContextByDevice & "_PaperBin", PaperBin
         End If
         If mSave_PrintQuality Then
-            SaveSetting AppNameForRegistry, "PrintingSettings", iContextByDevice & "_PrintQuality", mPrintFnObject.CommonDialogExObject.PrintQuality
+            SaveSetting AppNameForRegistry, "PrintingSettings", iContextByDevice & "_PrintQuality", PrintQuality
         End If
         If mSave_Collate Then
-            SaveSetting AppNameForRegistry, "PrintingSettings", iContextByDevice & "_Collate", CLng(mPrintFnObject.CommonDialogExObject.Collate)
+            SaveSetting AppNameForRegistry, "PrintingSettings", iContextByDevice & "_Collate", CLng(Collate)
         End If
         If mSave_Duplex Then
-            SaveSetting AppNameForRegistry, "PrintingSettings", iContextByDevice & "_Duplex", mPrintFnObject.CommonDialogExObject.Duplex
+            SaveSetting AppNameForRegistry, "PrintingSettings", iContextByDevice & "_Duplex", Duplex
         End If
     End If
     
@@ -6585,89 +6614,11 @@ Private Sub LoadUserDocPreferences()
     
     If (sLastDocKey <> mDocKey) Then
         ' restore originals
-        If mLoaded_Orientation Then
-            Orientation = mOriginal_Orientation
-            mLoaded_Orientation = False
-        End If
-        If mLoaded_PaperSize Then
-            PaperSize = mOriginal_PaperSize
-            mLoaded_PaperSize = False
-        End If
-        If mLoaded_PaperBin Then
-            PaperBin = mOriginal_PaperBin
-            mLoaded_PaperBin = False
-        End If
-        If mLoaded_PrintQuality Then
-            PrintQuality = mOriginal_PrintQuality
-            mLoaded_PrintQuality = False
-        End If
-        If mLoaded_Collate Then
-            Collate = mOriginal_Collate
-            mLoaded_Collate = False
-        End If
-        If mLoaded_Duplex Then
-            Duplex = mOriginal_Duplex
-            mLoaded_Duplex = False
-        End If
-        
-        If mLoaded_ScalePercent Then
-            mPrintFnObject.ScalePercent = mOriginal_ScalePercent
-            mLoaded_ScalePercent = False
-        End If
-        
-        If mLoaded_LeftMargin Then
-            LeftMargin = mOriginal_LeftMargin
-            mLoaded_LeftMargin = False
-        End If
-        If mLoaded_TopMargin Then
-            TopMargin = mOriginal_TopMargin
-            mLoaded_TopMargin = False
-        End If
-        If mLoaded_RightMargin Then
-            RightMargin = mOriginal_RightMargin
-            mLoaded_RightMargin = False
-        End If
-        If mLoaded_BottomMargin Then
-            BottomMargin = mOriginal_BottomMargin
-            mLoaded_BottomMargin = False
-        End If
-        
-        If mLoaded_ColorMode Then
-            ColorMode = mOriginal_ColorMode
-            mLoaded_ColorMode = False
-        End If
-        
-        If mLoaded_PrintPageNumbers Then
-            PrintPageNumbers = mOriginal_PrintPageNumbers
-            mLoaded_PrintPageNumbers = False
-        End If
-        If mLoaded_PageNumbersPosition Then
-            PageNumbersPosition = mOriginal_PageNumbersPosition
-            mLoaded_PageNumbersPosition = False
-        End If
-        If mLoaded_PageNumbersFormat Then
-            PageNumbersFormat = mOriginal_PageNumbersFormat
-            mLoaded_PageNumbersFormat = False
-        End If
-        If mLoaded_PageNumbersFont Then
-            Set PageNumbersFont = mOriginal_PageNumbersFont
-            mLoaded_PageNumbersFont = False
-        End If
-        If mLoaded_PageNumbersForeColor Then
-            PageNumbersForeColor = mOriginal_PageNumbersForeColor
-            mLoaded_PageNumbersForeColor = False
-        End If
-        
-        If mLoaded_DeviceName Then
-            DeviceName = mOriginal_DeviceName
-            mLoaded_DeviceName = False
-        End If
-        
-        
+        RestoreOriginalSettings
         
         If (mDocKey <> "") Then
-            iContextByDevice = Base64Encode("Prn" & mDeviceName & "_" & mDocKey)
-            iContextGeneral = Base64Encode("Prn" & "_" & mDocKey)
+            iContextByDevice = Base64Encode(mDocKey) & "_Prn_" & mDeviceName
+            iContextGeneral = Base64Encode(mDocKey) & "_Prn" & "_General"
             
             ' DeviceName
             iStr = GetSetting(AppNameForRegistry, "PrintingSettings", iContextGeneral & "_DeviceName", "-")
@@ -6879,4 +6830,114 @@ Private Sub LoadUserDocPreferences()
         End If
         sLastDocKey = mDocKey
     End If
+End Sub
+
+Private Sub RestoreOriginalSettings()
+    If mLoaded_Orientation Then
+        Orientation = mOriginal_Orientation
+        mLoaded_Orientation = False
+    End If
+    If mLoaded_PaperSize Then
+        PaperSize = mOriginal_PaperSize
+        mLoaded_PaperSize = False
+    End If
+    If mLoaded_PaperBin Then
+        PaperBin = mOriginal_PaperBin
+        mLoaded_PaperBin = False
+    End If
+    If mLoaded_PrintQuality Then
+        PrintQuality = mOriginal_PrintQuality
+        mLoaded_PrintQuality = False
+    End If
+    If mLoaded_Collate Then
+        Collate = mOriginal_Collate
+        mLoaded_Collate = False
+    End If
+    If mLoaded_Duplex Then
+        Duplex = mOriginal_Duplex
+        mLoaded_Duplex = False
+    End If
+    
+    If mLoaded_ScalePercent Then
+        mPrintFnObject.ScalePercent = mOriginal_ScalePercent
+        mLoaded_ScalePercent = False
+    End If
+    
+    If mLoaded_LeftMargin Then
+        LeftMargin = mOriginal_LeftMargin
+        mLoaded_LeftMargin = False
+    End If
+    If mLoaded_TopMargin Then
+        TopMargin = mOriginal_TopMargin
+        mLoaded_TopMargin = False
+    End If
+    If mLoaded_RightMargin Then
+        RightMargin = mOriginal_RightMargin
+        mLoaded_RightMargin = False
+    End If
+    If mLoaded_BottomMargin Then
+        BottomMargin = mOriginal_BottomMargin
+        mLoaded_BottomMargin = False
+    End If
+    
+    If mLoaded_ColorMode Then
+        ColorMode = mOriginal_ColorMode
+        mLoaded_ColorMode = False
+    End If
+    
+    If mLoaded_PrintPageNumbers Then
+        PrintPageNumbers = mOriginal_PrintPageNumbers
+        mLoaded_PrintPageNumbers = False
+    End If
+    If mLoaded_PageNumbersPosition Then
+        PageNumbersPosition = mOriginal_PageNumbersPosition
+        mLoaded_PageNumbersPosition = False
+    End If
+    If mLoaded_PageNumbersFormat Then
+        PageNumbersFormat = mOriginal_PageNumbersFormat
+        mLoaded_PageNumbersFormat = False
+    End If
+    If mLoaded_PageNumbersFont Then
+        Set PageNumbersFont = mOriginal_PageNumbersFont
+        mLoaded_PageNumbersFont = False
+    End If
+    If mLoaded_PageNumbersForeColor Then
+        PageNumbersForeColor = mOriginal_PageNumbersForeColor
+        mLoaded_PageNumbersForeColor = False
+    End If
+    
+    If mLoaded_DeviceName Then
+        DeviceName = mOriginal_DeviceName
+        mLoaded_DeviceName = False
+    End If
+End Sub
+
+Private Sub DeleteSavedUserPreferences(Optional nDocKey As String)
+    Dim iDocKey As String
+    Dim iContext As String
+    Dim iSettings
+    Dim iSetting
+    
+    If nDocKey <> "" Then
+        iDocKey = nDocKey
+    Else
+        iDocKey = mDocKey
+    End If
+    
+    If iDocKey = "" Then
+        RaiseError 1215, "PrinterEx", "DocKey can't be null"
+        Exit Sub
+    End If
+    iContext = Base64Encode(mDocKey) & "_Prn_"
+    
+    iSettings = GetAllSettings(AppNameForRegistry, "PrintingSettings")
+    If Not IsEmpty(iSettings) Then
+        For Each iSetting In iSettings
+            If CStr(iSetting) Like iContext & "*" Then
+                DeleteSetting AppNameForRegistry, "PrintingSettings", iSetting
+            End If
+        Next
+    End If
+    
+    RestoreOriginalSettings
 End Sub

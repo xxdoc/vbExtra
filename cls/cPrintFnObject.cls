@@ -878,6 +878,7 @@ Private Sub SetPrinterExSettings()
     PrinterExCurrentDocument.PaperBin = mDlg.PaperBin
     PrinterExCurrentDocument.PrintQuality = mDlg.PrintQuality
     PrinterExCurrentDocument.Duplex = mDlg.Duplex
+    PrinterExCurrentDocument.Collate = mDlg.Collate
     PrinterExCurrentDocument.ColorMode = mDlg.ColorMode
     PrinterExCurrentDocument.DevModePtr = mDlg.DevModePtr
     PrinterExCurrentDocument.LeftMargin = mDlg.LeftMargin
