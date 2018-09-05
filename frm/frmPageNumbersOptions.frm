@@ -102,7 +102,7 @@ Begin VB.Form frmPageNumbersOptions
       Caption         =   "# Cancel"
       Height          =   435
       Left            =   3690
-      TabIndex        =   0
+      TabIndex        =   1
       Top             =   2424
       Width           =   1515
    End
@@ -110,7 +110,7 @@ Begin VB.Form frmPageNumbersOptions
       Caption         =   "# OK"
       Height          =   435
       Left            =   1920
-      TabIndex        =   1
+      TabIndex        =   0
       Top             =   2424
       Width           =   1515
    End
