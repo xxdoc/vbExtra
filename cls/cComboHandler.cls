@@ -18,7 +18,7 @@ Implements ISubclass
 'Private Const CB_GETITEMHEIGHT As Long = &H154
 Private Const CB_GETMINVISIBLE As Long = &H1702&
 
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 Private Declare Function GetFocus Lib "user32" () As Long
 
@@ -97,7 +97,7 @@ Private Sub AutoSizeDropDownWidth()
     Dim iAuxWidth As Long
     Dim iLargerWidth As Long
     Dim iRc As RECT
-    Dim iLOGFONT As LOGFONT
+    Dim iLOGFONT As LOGFONTW
     Dim iFontHandle As Long
     Dim iOldFont As Long
     Dim iMiddleItem As Long
@@ -129,7 +129,7 @@ Private Sub AutoSizeDropDownWidth()
     If mListCount = 0 Then Exit Sub
     
     iLOGFONT = StdFontToLogFont_Screen(iDC, GetCombo.Font)
-    iFontHandle = CreateFontIndirect(iLOGFONT)
+    iFontHandle = CreateFontIndirectW(iLOGFONT)
     iOldFont = SelectObject(iDC, iFontHandle)
     
     'Get the width of the largest item
@@ -505,7 +505,7 @@ Public Function GetNeededWidth()
     Dim c As Long
     Dim iAuxWidth As Long
     Dim iWidth As Long
-    Dim iLOGFONT As LOGFONT
+    Dim iLOGFONT As LOGFONTW
     Dim iFontHandle As Long
     Dim iOldFont As Long
     Dim iText As String
@@ -522,7 +522,7 @@ Public Function GetNeededWidth()
     iListCount = GetCombo.ListCount
     
     iLOGFONT = StdFontToLogFont_Screen(iDC, GetCombo.Font)
-    iFontHandle = CreateFontIndirect(iLOGFONT)
+    iFontHandle = CreateFontIndirectW(iLOGFONT)
     iOldFont = SelectObject(iDC, iFontHandle)
     
     'Get the width of the largest item
