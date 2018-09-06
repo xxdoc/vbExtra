@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{F22668DE-E08D-467B-8E41-13900013BD5F}#1.7#0"; "vbExtra1.ocx"
+Object = "{F22668DE-E08D-467B-8E41-13900013BD5F}#2.0#0"; "vbExtra2.ocx"
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
 Begin VB.Form Form1 
    Caption         =   "Form1"

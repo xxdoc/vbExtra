@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "msflxgrd.ocx"
-Object = "{F22668DE-E08D-467B-8E41-13900013BD5F}#1.7#0"; "vbExtra1.ocx"
+Object = "{F22668DE-E08D-467B-8E41-13900013BD5F}#2.0#0"; "vbExtra2.ocx"
 Begin VB.Form frmFlexFnTest 
    Caption         =   "World populaton data from UN"
    ClientHeight    =   6468

@@ -1,7 +1,7 @@
 Type=Exe
 Form=Form1.frm
 Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#F:\WINDOWS\system32\stdole2.tlb#OLE Automation
-Object={F22668DE-E08D-467B-8E41-13900013BD5F}#1.6#0; vbExtra1.ocx
+Object={F22668DE-E08D-467B-8E41-13900013BD5F}#2.0#0; vbExtra2.ocx
 Startup="Form1"
 Command32=""
 Name="Project1"

@@ -25,6 +25,24 @@ Begin VB.Form Form1
       Top             =   720
       Width           =   984
    End
+   Begin VB.Label Label1 
+      Alignment       =   2  'Center
+      Caption         =   "This is Sample 1 modified. MyPrintingRoutine now has parameters (also called arguments)"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   10.2
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   1128
+      Left            =   2124
+      TabIndex        =   1
+      Top             =   828
+      Width           =   2604
+   End
 End
 Attribute VB_Name = "Form1"
 Attribute VB_GlobalNameSpace = False
@@ -37,17 +55,20 @@ Private Sub Command1_Click()
     ' This project shows how to use this Printer object as a replacement of the original VB's Printer object in an existent project
     ' But if you are programming a new project, then you may want to remove or comment the following two lines and let the object to automatically handle the margins and page numbers
     PrinterEx.PrintPageNumbers = False
-    PrinterEx.HandleMargins = False ' in existing projects it is necessary to change this property to False because it defaults to True. Existing projects must be already handling the margins with their code.
-    PrinterEx.ShowPrintPreview Me, "MyPrintingRoutine"
+    PrinterEx.HandleMargins = False
+    PrinterEx.ShowPrintPreview Me, "MyPrintingRoutine", , Array("This is the title", vbRed) ' here are the parameters to send to MyPrintingRoutine
 End Sub
 
-Public Sub MyPrintingRoutine()
+Public Sub MyPrintingRoutine(nTitle As String, nTitleColor As Long)
     Printer.FontName = "Arial"
-    Printer.FontSize = 12
-    Printer.FontUnderline = True
-    Printer.Print "This is a sample"
-    Printer.Print
     Printer.FontSize = 16
+    Printer.FontUnderline = True
+    Printer.ForeColor = nTitleColor
+    Printer.CurrentX = (Printer.ScaleWidth - Printer.TextWidth(nTitle)) / 2
+    Printer.Print nTitle
+    Printer.Print
+    Printer.ForeColor = vbBlack
+    Printer.FontSize = 12
     Printer.FontUnderline = False
     Printer.Print "Some other text bigger..."
     Printer.NewPage
