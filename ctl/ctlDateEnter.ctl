@@ -247,7 +247,7 @@ End Sub
 Private Sub DTPicker1_CloseUp()
     RaiseEvent CloseUp
     If txtMasked.Visible Then
-        tmrSetFocusToMasked.Enabled = True
+        If mOnFocus Then tmrSetFocusToMasked.Enabled = True
     Else
         SetFocusTo2 DTPicker1
     End If
@@ -443,6 +443,7 @@ Private Sub txtMasked_DblClick()
 End Sub
 
 Private Sub txtMasked_GotFocus()
+    mOnFocus = True
     If mDontDoGotFocus Then
         mDontDoGotFocus = False
         Exit Sub
@@ -636,6 +637,7 @@ Private Sub DTPicker1_Change()
 End Sub
 
 Private Sub DTPicker1_GotFocus()
+    mOnFocus = True
     If txtMasked.Visible Then
         SetFocusTo2 txtMasked
     End If
@@ -700,6 +702,7 @@ Private Sub UserControl_ExitFocus()
 End Sub
 
 Private Sub UserControl_GotFocus()
+    mOnFocus = True
     If Not IsNull(Value) Then
         SetFocusTo2 DTPicker1
     Else
@@ -718,6 +721,7 @@ Private Sub UserControl_InitProperties()
     mCalendarTitleBackColor = vbActiveTitleBar
     mCalendarTitleForeColor = vbActiveTitleBarText
     mCalendarTrailingForeColor = vbGrayText
+    mAppearance = cc3d
     
     mMinDate = cDTPickerMinDate
     mMaxDate = cDTPickerMaxDate
@@ -791,7 +795,7 @@ Public Property Let Value(nDate As Variant)
         txtMasked.Visible = True
         DTPicker1.TabStop = False
         txtMasked.Refresh
-        tmrSetFocusToMasked.Enabled = True
+        If mOnFocus Then tmrSetFocusToMasked.Enabled = True
     Else
         If txtMasked.Visible Then
             txtMasked.Visible = False
@@ -1497,7 +1501,7 @@ Private Sub Validate1(nAllowEmpty As Boolean, Optional nKeyReturn As Boolean, Op
         End If
         mDontDoGotFocus = True
         nUserReEnteringDate = True
-        tmrSetFocusToMasked.Enabled = True
+        If mOnFocus Then tmrSetFocusToMasked.Enabled = True
         tmrValidate.Enabled = False
         txtMasked.SelStart = iPosD - 1
         txtMasked.SelLength = iLenD
@@ -1526,7 +1530,7 @@ Private Sub Validate1(nAllowEmpty As Boolean, Optional nKeyReturn As Boolean, Op
             End If
             mDontDoGotFocus = True
             nUserReEnteringDate = True
-            tmrSetFocusToMasked.Enabled = True
+            If mOnFocus Then tmrSetFocusToMasked.Enabled = True
             tmrValidate.Enabled = False
             txtMasked.SelStart = iPosD - 1
             txtMasked.SelLength = iLenD
@@ -1553,7 +1557,7 @@ Private Sub Validate1(nAllowEmpty As Boolean, Optional nKeyReturn As Boolean, Op
             End If
             mDontDoGotFocus = True
             nUserReEnteringDate = True
-            tmrSetFocusToMasked.Enabled = True
+            If mOnFocus Then tmrSetFocusToMasked.Enabled = True
             tmrValidate.Enabled = False
             txtMasked.SelStart = iPosD - 1
             txtMasked.SelLength = iLenD
@@ -1582,7 +1586,7 @@ Private Sub Validate1(nAllowEmpty As Boolean, Optional nKeyReturn As Boolean, Op
         End If
         mDontDoGotFocus = True
         nUserReEnteringDate = True
-        tmrSetFocusToMasked.Enabled = True
+        If mOnFocus Then tmrSetFocusToMasked.Enabled = True
         tmrValidate.Enabled = False
         txtMasked.SelStart = iPosM - 1
         txtMasked.SelLength = iLenM
@@ -1611,7 +1615,7 @@ Private Sub Validate1(nAllowEmpty As Boolean, Optional nKeyReturn As Boolean, Op
             End If
             mDontDoGotFocus = True
             nUserReEnteringDate = True
-            tmrSetFocusToMasked.Enabled = True
+            If mOnFocus Then tmrSetFocusToMasked.Enabled = True
             tmrValidate.Enabled = False
             txtMasked.SelStart = iPosM - 1
             txtMasked.SelLength = iLenM
@@ -1640,7 +1644,7 @@ Private Sub Validate1(nAllowEmpty As Boolean, Optional nKeyReturn As Boolean, Op
         End If
         mDontDoGotFocus = True
         nUserReEnteringDate = True
-        tmrSetFocusToMasked.Enabled = True
+        If mOnFocus Then tmrSetFocusToMasked.Enabled = True
         tmrValidate.Enabled = False
         txtMasked.SelStart = iPosY - 1
         txtMasked.SelLength = iLenY
@@ -1675,7 +1679,7 @@ Private Sub Validate1(nAllowEmpty As Boolean, Optional nKeyReturn As Boolean, Op
         End If
         mDontDoGotFocus = True
         nUserReEnteringDate = True
-        tmrSetFocusToMasked.Enabled = True
+        If mOnFocus Then tmrSetFocusToMasked.Enabled = True
         tmrValidate.Enabled = False
         txtMasked.SelStart = iPosY - 1
         txtMasked.SelLength = iLenY
@@ -1707,7 +1711,7 @@ Private Sub Validate1(nAllowEmpty As Boolean, Optional nKeyReturn As Boolean, Op
         End If
         mDontDoGotFocus = True
         nUserReEnteringDate = True
-        tmrSetFocusToMasked.Enabled = True
+        If mOnFocus Then tmrSetFocusToMasked.Enabled = True
         tmrValidate.Enabled = False
         txtMasked.SelStart = iPosY - 1
         txtMasked.SelLength = iLenY
@@ -1774,7 +1778,7 @@ Private Sub SetFocusTo2(nControl As Variant)
 '    Debug.Print Ambient.DisplayName
     tmrSetFocus2.Enabled = False
     If Not mOnFocus Then Exit Sub
-    tmrSetFocus2.Enabled = True
+    If mOnFocus Then tmrSetFocus2.Enabled = True
     Set mSetFocus2Control = nControl
 End Sub
 
