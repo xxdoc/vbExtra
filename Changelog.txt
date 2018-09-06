@@ -1,4 +1,5 @@
-09/04/2018 important update to PrinterEx object 
+09/06/2018 added a feature that broke the binary compatibility so there is a version change. Now the call to PrinterEx.ShowPrintPreview can have parameters to send to the printing procedure.
+09/04/2018 important update to PrinterEx object
 08/31/2018 updated TrayIcon control
 08/31/2018 updated DateEnter control
 08/31/2018 updated SizeGrip control
