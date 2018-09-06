@@ -681,6 +681,15 @@ Attribute ProcedureName.VB_MemberFlags = "200"
 End Property
 
 
+Public Property Let ParametersArray(ByVal nParametersArray As Variant)
+    mPrintFnObject.ParametersArray = nParametersArray
+End Property
+
+Public Property Get ParametersArray() As Variant
+    ParametersArray = mPrintFnObject.ParametersArray
+End Property
+
+
 Public Property Get Printed() As Boolean
     Printed = mPrintFnObject.Printed
 End Property
@@ -721,16 +730,6 @@ End Property
 
 Public Property Get Copies() As Long
     Copies = mPrintFnObject.Copies
-End Property
-
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Property Let CommonDialogFlags(nValue As Long)
-    
-End Property
-
-Public Property Get CommonDialogFlags() As Long
-Attribute CommonDialogFlags.VB_MemberFlags = "40"
-    
 End Property
 
 

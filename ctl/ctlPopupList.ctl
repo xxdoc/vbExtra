@@ -319,7 +319,6 @@ Private Declare Function IsIconic Lib "user32" (ByVal hWnd As Long) As Long
 Public Event DropDown()
 Public Event Click()
 Attribute Click.VB_MemberFlags = "200"
-Public Event ListHided() ' Kept for keeping binary compatibility, it will be removed in the next version
 Public Event ListHide()
 Public Event ItemClick()
 
