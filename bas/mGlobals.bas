@@ -1,6 +1,9 @@
 Attribute VB_Name = "mGlobals"
 Option Explicit
 
+Private Declare Function rtcCallByName Lib "msvbvm60" (ByRef vRet As Variant, ByVal cObj As Object, ByVal sMethod As Long, ByVal eCallType As VbCallType, ByRef pArgs() As Variant, ByVal lcid As Long) As Long
+Private Declare Function rtcCallByNameIDE Lib "vba6" Alias "rtcCallByName" (ByRef vRet As Variant, ByVal cObj As Object, ByVal sMethod As Long, ByVal eCallType As VbCallType, ByRef pArgs() As Variant, ByVal lcid As Long) As Long
+
 Public Const LF_FACESIZE = 32
 
 Public Type LOGFONTW
@@ -4281,4 +4284,32 @@ Public Function DecimalSignAsc() As Long
         sValue = Asc(Left$(iBuff, iPos - 1))
     End If
     DecimalSignAsc = sValue
+End Function
+
+Public Function CallByNameEx(nObject As Object, nProcedureName As String, nCallType As VbCallType, nParametersArray As Variant)
+    If IsArray(nParametersArray) Then
+        CallByNameEx = CallByName2(nObject, nProcedureName, nCallType, nParametersArray)
+    Else
+        CallByNameEx = CallByName(nObject, nProcedureName, nCallType)
+    End If
+End Function
+
+' Author: The trick: http://www.vbforums.com/showthread.php?866039&p=5315395&viewfull=1#post5315395
+Private Function CallByName2(ByVal cObject As Object, ByRef sProcName As String, ByVal eCallType As VbCallType, vArgs As Variant) As Variant
+    Dim hr      As Long
+    Dim vLoc()
+    
+    vLoc = vArgs
+    
+    If InIDE Then
+        hr = rtcCallByNameIDE(CallByName2, cObject, StrPtr(sProcName), eCallType, vLoc, &H409)
+    Else
+        hr = rtcCallByName(CallByName2, cObject, StrPtr(sProcName), eCallType, vLoc, &H409)
+    End If
+    
+    
+    If hr < 0 Then
+        Err.Raise hr
+    End If
+    
 End Function
