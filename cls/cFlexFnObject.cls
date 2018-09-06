@@ -18,9 +18,9 @@ Implements ISubclass
 Private Declare Function CLSIDFromProgID Lib "ole32.dll" (ByVal lpszProgID As Long, pCLSID As Any) As Long
 Private Declare Function StringFromCLSID Lib "ole32.dll" (pCLSID As Any, lpszProgID As Long) As Long
 Private Declare Sub CoTaskMemFree Lib "ole32.dll" (ByVal pv As Long)
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
 
-Private Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
+Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 Private Const SW_SHOWMAXIMIZED = 3
 
@@ -1072,12 +1072,6 @@ Private Sub SaveMarginSettings()
     SaveSetting AppNameForRegistry, "PrintingSettings", Context & "_BottomMargin", Trim$(Str$(mPrintFnObject.BottomMargin))
     mPrintFnObject.Units = iUnits
 End Sub
-
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Property Get Keyname() As String
-Attribute Keyname.VB_MemberFlags = "40"
-
-End Property
 
 Public Property Get Context() As String
 Attribute Context.VB_MemberFlags = "40"
@@ -3508,7 +3502,7 @@ Private Sub DrawGrid(nCanceled As Boolean)
     Set iDefAuxFont = Printer2.Font
     
     Dim iT1 As Double
-    iT1 = Timer
+    iT1 = timer
     
     iGridStatus_Row = iGrid.Row
     iGridStatus_RowSel = iGrid.RowSel

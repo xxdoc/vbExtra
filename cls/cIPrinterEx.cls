@@ -378,19 +378,9 @@ End Property
 
 
 
-Public Sub ShowPrintPreview(Optional nObject As Object, Optional nProcedureName As String, Optional DocKey As String)
+Public Sub ShowPrintPreview(Optional nObject As Object, Optional nProcedureName As String, Optional nDocKey As String, Optional nParametersArray As Variant)
     
 End Sub
-
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Property Let CommonDialogFlags(nValue As Long)
-    
-End Property
-
-Public Property Get CommonDialogFlags() As Long
-Attribute CommonDialogFlags.VB_MemberFlags = "40"
-    
-End Property
 
 
 Public Property Let PrinterFlags(nValue As cdeCommonDialogExPrinterFlagsConstants)

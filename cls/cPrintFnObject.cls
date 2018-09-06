@@ -72,6 +72,7 @@ Private mMaxScalePercent As Long
 Private mPrintWithDefaultSettings As Boolean
 Private mDocKey As String
 Private mProcedureName As String
+Private mParametersArray As Variant
 Private mPageSetupButtonVisible As Boolean
 Private mPrintPrevToolBarIconsSize As vbExPrintPrevToolBarIconsSizeConstants
 Private mPrintPrevUseAltScaleIcons As Boolean
@@ -960,7 +961,7 @@ Private Sub RaiseEventPrepareDoc(nCancel As Boolean)
     PrinterExCurrentDocument.DocKey = mDocKey
     
     If Not (mParent Is Nothing) And (mProcedureName <> "") Then
-        CallByName mParent, mProcedureName, VbMethod
+        CallByNameEx mParent, mProcedureName, VbMethod, mParametersArray
     Else
         RaiseEvent PrepareDoc(iCancel, mDocKey)
     End If
@@ -1086,6 +1087,15 @@ Public Property Get ProcedureName() As String
 End Property
 
 
+Public Property Let ParametersArray(ByVal nParametersArray As Variant)
+    mParametersArray = nParametersArray
+End Property
+
+Public Property Get ParametersArray() As Variant
+    ParametersArray = mParametersArray
+End Property
+
+
 Public Property Get Printed() As Boolean
     If Not PrinterExCurrentDocument Is Nothing Then
         Printed = mPrinted
@@ -1109,17 +1119,6 @@ End Property
 
 Public Property Get PageSetupButtonVisible() As Boolean
     PageSetupButtonVisible = mPageSetupButtonVisible
-End Property
-
-
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Property Let CommonDialogFlags(ByVal nValue As Long)
-
-End Property
-
-Public Property Get CommonDialogFlags() As Long
-Attribute CommonDialogFlags.VB_MemberFlags = "40"
-
 End Property
 
 

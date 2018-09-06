@@ -69,7 +69,7 @@ Private Declare Function Arc Lib "gdi32" (ByVal hDC As Long, ByVal nLeftRect As 
 Private Declare Function Ellipse Lib "gdi32" (ByVal hDC As Long, ByVal nLeftRect As Long, ByVal nTopRect As Long, ByVal nRightRect As Long, ByVal nBottomRect As Long) As Long
 
 'Private Declare Function MulDiv Lib "kernel32" (ByVal nNumber As Long, ByVal nNumerator As Long, ByVal nDenominator As Long) As Long
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (hpvDest As Any, hpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (hpvDest As Any, hpvSource As Any, ByVal cbCopy As Long)
 Private Declare Function ResetDC Lib "gdi32" Alias "ResetDCA" (ByVal hDC As Long, lpInitData As Any) As Long
 
 Private Const CCHDEVICENAME = 32
@@ -3070,16 +3070,6 @@ End Property
 
 ' IPrinterEx Interface
 
-' Kept for keeping binary compatibility, it will be removed in the next version
-Private Property Let IPrinterEx_CommonDialogFlags(RHS As Long)
-    
-End Property
-
-Private Property Get IPrinterEx_CommonDialogFlags() As Long
-    
-End Property
-
-
 Private Sub IPrinterEx_DeleteSavedUserPreferences(Optional nDocKey As String)
     DeleteSavedUserPreferences nDocKey
 End Sub
@@ -3674,7 +3664,7 @@ Private Sub IPrinterEx_ShowPrint(Optional ByVal nFlags As cdeCommonDialogExPrint
 End Sub
 
 
-Private Sub IPrinterEx_ShowPrintPreview(Optional nObject As Object, Optional nProcedureName As String, Optional nDocKey As String)
+Private Sub IPrinterEx_ShowPrintPreview(Optional nObject As Object, Optional nProcedureName As String, Optional nDocKey As String, Optional nParametersArray As Variant)
     Dim c As Long
     Dim iDocKey_Prev As String
     
@@ -3715,6 +3705,7 @@ Private Sub IPrinterEx_ShowPrintPreview(Optional nObject As Object, Optional nPr
         Set mPrintFnObject = New PrintFnObject
     End If
     Set mPrintFnObject.Parent = nObject
+    mPrintFnObject.ParametersArray = nParametersArray
     mPrintFnObject.ProcedureName = nProcedureName
     mPrintFnObject.FormatButtonVisible = mPrintPrevFormatButtonVisible
     If mPrintPrevFormatButtonVisible Then

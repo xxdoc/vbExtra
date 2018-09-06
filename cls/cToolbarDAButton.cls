@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
 
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 Public Enum vbExToolBarDAButtonStyleConstants
     vxTBDefault = 0
@@ -299,16 +299,6 @@ End Property
 
 Public Property Get IconSize() As vbExToolbarDAIconsSizeConstants
     IconSize = mIconSize
-End Property
-
-
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Property Get Hided() As Boolean
-    
-End Property
-
-Public Property Let Hided(ByVal bHided As Boolean)
-    
 End Property
 
 
