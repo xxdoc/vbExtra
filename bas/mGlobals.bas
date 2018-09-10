@@ -1,8 +1,8 @@
 Attribute VB_Name = "mGlobals"
 Option Explicit
 
-Private Declare Function rtcCallByName Lib "msvbvm60" (ByRef vRet As Variant, ByVal cObj As Object, ByVal sMethod As Long, ByVal eCallType As VbCallType, ByRef pArgs() As Variant, ByVal lcid As Long) As Long
-Private Declare Function rtcCallByNameIDE Lib "vba6" Alias "rtcCallByName" (ByRef vRet As Variant, ByVal cObj As Object, ByVal sMethod As Long, ByVal eCallType As VbCallType, ByRef pArgs() As Variant, ByVal lcid As Long) As Long
+Private Declare Function rtcCallByName Lib "msvbvm60" (ByRef vRet As Variant, ByVal cObj As Object, ByVal sMethod As Long, ByVal eCallType As VbCallType, ByRef pArgs() As Variant, ByVal LCID As Long) As Long
+Private Declare Function rtcCallByNameIDE Lib "vba6" Alias "rtcCallByName" (ByRef vRet As Variant, ByVal cObj As Object, ByVal sMethod As Long, ByVal eCallType As VbCallType, ByRef pArgs() As Variant, ByVal LCID As Long) As Long
 
 Public Const LF_FACESIZE = 32
 
@@ -623,7 +623,6 @@ Private Const gstrSEP_DIRALT$ = "/"                      ' Alternate directory s
 'Private Const gstrSEP_EXT$ = "."                         ' Filename extension separator character
 Private Const gstrSEP_URLDIR$ = "/"                      ' Separator for dividing directories in URL addresses.
 
-' FlexGrid constants that are not in TLB:
 Public Const flexSelectionFree = 0
 Public Const flexHighlightNever = 0
 Public Const flexSelectionByRow = 1
@@ -2570,7 +2569,7 @@ Private Sub DoubleTo2Longs(ByVal dbl As Double, nLongLOW As Long, nLongHigh As L
     
     'use a constant to avoid the
     'slow "2^31" below (2147483648)
-    Const G2 = 2# * &H40000000
+    Const g2 = 2# * &H40000000
     
     If dbl < 0 Then
         IsNegative = True
@@ -2580,13 +2579,13 @@ Private Sub DoubleTo2Longs(ByVal dbl As Double, nLongLOW As Long, nLongHigh As L
     End If
     
     '(2 ^ 31)) = 2147483648
-    temp = Int(dblTemp# / G2)
+    temp = Int(dblTemp# / g2)
     
     '(2 ^ 31))
-    nLongLOW = dblTemp# - (temp * G2)
+    nLongLOW = dblTemp# - (temp * g2)
     
     '(2 ^ 31)
-    If temp And 1 Then nLongLOW = nLongLOW Or -G2
+    If temp And 1 Then nLongLOW = nLongLOW Or -g2
     
     nLongHigh = Int(temp / 2)
     

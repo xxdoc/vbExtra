@@ -200,8 +200,8 @@ Private Sub Resample_BicubicBCSpline(bDibDest() As Byte, ByVal dstWidth As Long,
     Dim iR As Double
     Dim iG As Double
     Dim iB As Double
-    Dim R1 As Double
-    Dim R2 As Double
+    Dim r1 As Double
+    Dim r2 As Double
     
     kX = (srcWidth - 1) / (dstWidth - 1)
     kY = (srcHeight - 1) / (dstHeight - 1)
@@ -216,12 +216,12 @@ Private Sub Resample_BicubicBCSpline(bDibDest() As Byte, ByVal dstWidth As Long,
             X1 = X1 * 3
             iR = 0: iG = 0: iB = 0
             For M = -1 To 2
-                R1 = Cubic_BCSpline(M - fY, nBicubic_B, nBicubic_C)
+                r1 = Cubic_BCSpline(M - fY, nBicubic_B, nBicubic_C)
                 For N = -1 To 2
-                    R2 = Cubic_BCSpline(fX - N, nBicubic_B, nBicubic_C)
-                    iB = iB + bDibSource(X1 + N * 3, Y1 + M) * R1 * R2
-                    iG = iG + bDibSource(X1 + N * 3 + 1, Y1 + M) * R1 * R2
-                    iR = iR + bDibSource(X1 + N * 3 + 2, Y1 + M) * R1 * R2
+                    r2 = Cubic_BCSpline(fX - N, nBicubic_B, nBicubic_C)
+                    iB = iB + bDibSource(X1 + N * 3, Y1 + M) * r1 * r2
+                    iG = iG + bDibSource(X1 + N * 3 + 1, Y1 + M) * r1 * r2
+                    iR = iR + bDibSource(X1 + N * 3 + 2, Y1 + M) * r1 * r2
                 Next
             Next
             If iB < 0 Then iB = 0
@@ -314,7 +314,7 @@ End Function
 
 Sub Resample_Gaussian(bDibD() As Byte, ByVal dstWidth&, ByVal dstHeight&, bDibS() As Byte, ByVal srcWidth&, ByVal srcHeight&, nGaussianExtent As Long)
     Dim x&, y&, X1&, Y1&, M&, N&, kX#, kY#, fX#, fY#
-    Dim iR#, iG#, iB#, R1#, R2#
+    Dim iR#, iG#, iB#, r1#, r2#
     kX = (srcWidth - 1) / (dstWidth - 1)
     kY = (srcHeight - 1) / (dstHeight - 1)
     For y = dstHeight - 1 To 0 Step -1
@@ -329,12 +329,12 @@ Sub Resample_Gaussian(bDibD() As Byte, ByVal dstWidth&, ByVal dstHeight&, bDibS(
             iR = 0: iG = 0: iB = 0
             ' Uses various kernel size
             For M = -nGaussianExtent + 1 To nGaussianExtent
-                R1 = Gaussian_Func(M - fY, nGaussianExtent)
+                r1 = Gaussian_Func(M - fY, nGaussianExtent)
                 For N = -nGaussianExtent + 1 To nGaussianExtent
-                    R2 = Gaussian_Func(fX - N, nGaussianExtent)
-                    iB = iB + bDibS(X1 + N * 3, Y1 + M) * R1 * R2
-                    iG = iG + bDibS(X1 + N * 3 + 1, Y1 + M) * R1 * R2
-                    iR = iR + bDibS(X1 + N * 3 + 2, Y1 + M) * R1 * R2
+                    r2 = Gaussian_Func(fX - N, nGaussianExtent)
+                    iB = iB + bDibS(X1 + N * 3, Y1 + M) * r1 * r2
+                    iG = iG + bDibS(X1 + N * 3 + 1, Y1 + M) * r1 * r2
+                    iR = iR + bDibS(X1 + N * 3 + 2, Y1 + M) * r1 * r2
                 Next
             Next
             If iB < 0 Then iB = 0
@@ -383,9 +383,9 @@ Public Function AdjustPictureWithHLS(nSourcePic As StdPicture, Optional HAdditio
     Dim iPic As IPicture
     Dim iBMPInfo As BITMAPINFO
     
-    Dim R1 As Long
-    Dim G1 As Long
-    Dim B1 As Long
+    Dim r1 As Long
+    Dim g1 As Long
+    Dim b1 As Long
     Dim H1 As Long
     Dim L1 As Long
     Dim S1 As Long
@@ -435,22 +435,22 @@ Public Function AdjustPictureWithHLS(nSourcePic As StdPicture, Optional HAdditio
     iMax = iBMPiH.biSizeImage - 1
     
     For x = 0 To iMax - 3 Step 3
-        B1 = iBits(x)
-        G1 = iBits(x + 1)
-        R1 = iBits(x + 2)
+        b1 = iBits(x)
+        g1 = iBits(x + 1)
+        r1 = iBits(x + 2)
         
         iPreservePixel = False
         If ColorToPreserve > -1 Then
-            iPixelColor = RGB(R1, G1, B1)
+            iPixelColor = RGB(r1, g1, b1)
             If iPixelColor = ColorToPreserve Then
                 iPreservePixel = True
             End If
         End If
         
         If Not iPreservePixel Then
-            ColorRGBToHLS RGB(R1, G1, B1), H1, L1, S1
+            ColorRGBToHLS RGB(r1, g1, b1), H1, L1, S1
             
-            If (R1 = 255) And (G1 = 255) And (B1 = 255) Then
+            If (r1 = 255) And (g1 = 255) And (b1 = 255) Then
                 If iLastH <> 0 Then
                     H1 = iLastH
                     S1 = 240
@@ -525,18 +525,18 @@ Public Function AdjustPictureWithHLS(nSourcePic As StdPicture, Optional HAdditio
 End Function
 
 Public Function AdjustColorWithHLS(nColor As Long, Optional HAddition As Long, Optional LAddition As Long, Optional SAddition As Long, Optional LFactor As Single = 1, Optional SFactor As Single = 1) As Long
-    Dim R1 As Long
-    Dim G1 As Long
-    Dim B1 As Long
+    Dim r1 As Long
+    Dim g1 As Long
+    Dim b1 As Long
     Dim H1 As Long
     Dim L1 As Long
     Dim S1 As Long
     
-    R1 = nColor And 255 ' R
-    G1 = (nColor \ 256) And 255 ' G
-    B1 = (nColor \ 65536) And 255 ' B
+    r1 = nColor And 255 ' R
+    g1 = (nColor \ 256) And 255 ' G
+    b1 = (nColor \ 65536) And 255 ' B
     
-    ColorRGBToHLS RGB(R1, G1, B1), H1, L1, S1
+    ColorRGBToHLS RGB(r1, g1, b1), H1, L1, S1
     
     H1 = H1 + HAddition
     If H1 > 240 Then H1 = H1 - 240
@@ -560,16 +560,16 @@ Public Function SetColorToSameHue(nColor As Long, nReferenceColor As Long) As Lo
     Dim iColor As Long
     Dim iReferenceColor As Long
     
-    Dim R1 As Long
-    Dim G1 As Long
-    Dim B1 As Long
+    Dim r1 As Long
+    Dim g1 As Long
+    Dim b1 As Long
     Dim H1 As Long
     Dim L1 As Long
     Dim S1 As Long
     
-    Dim R2 As Long
-    Dim G2 As Long
-    Dim B2 As Long
+    Dim r2 As Long
+    Dim g2 As Long
+    Dim b2 As Long
     Dim H2 As Long
     Dim L2 As Long
     Dim S2 As Long
@@ -577,17 +577,17 @@ Public Function SetColorToSameHue(nColor As Long, nReferenceColor As Long) As Lo
     TranslateColor nColor, 0, iColor
     TranslateColor nReferenceColor, 0, iReferenceColor
 
-    R1 = iColor And 255 ' R
-    G1 = (iColor \ 256) And 255 ' G
-    B1 = (iColor \ 65536) And 255 ' B
+    r1 = iColor And 255 ' R
+    g1 = (iColor \ 256) And 255 ' G
+    b1 = (iColor \ 65536) And 255 ' B
     
-    ColorRGBToHLS RGB(R1, G1, B1), H1, L1, S1
+    ColorRGBToHLS RGB(r1, g1, b1), H1, L1, S1
     
-    R2 = iReferenceColor And 255 ' R
-    G2 = (iReferenceColor \ 256) And 255 ' G
-    B2 = (iReferenceColor \ 65536) And 255 ' B
+    r2 = iReferenceColor And 255 ' R
+    g2 = (iReferenceColor \ 256) And 255 ' G
+    b2 = (iReferenceColor \ 65536) And 255 ' B
     
-    ColorRGBToHLS RGB(R2, G2, B2), H2, L2, S2
+    ColorRGBToHLS RGB(r2, g2, b2), H2, L2, S2
     
     SetColorToSameHue = ColorHLSToRGB(H2, L1, S1)
 End Function
