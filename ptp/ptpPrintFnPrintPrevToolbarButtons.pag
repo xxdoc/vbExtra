@@ -18,13 +18,29 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
    PaletteMode     =   0  'Halftone
    ScaleHeight     =   4248
    ScaleWidth      =   7668
+   Begin VB.CheckBox chkFormatButtonVisible 
+      Caption         =   "FormatButtonVisible"
+      Height          =   228
+      Left            =   2232
+      TabIndex        =   6
+      Top             =   1440
+      Width           =   2676
+   End
+   Begin VB.CheckBox chkPageNumbersButtonVisible 
+      Caption         =   "PageNumbersButtonVisible"
+      Height          =   228
+      Left            =   2232
+      TabIndex        =   7
+      Top             =   1728
+      Width           =   2676
+   End
    Begin VB.ComboBox cboPrintPrevToolBarIconsSize 
       Height          =   288
       ItemData        =   "ptpPrintFnPrintPrevToolbarButtons.pgx":0000
       Left            =   2244
       List            =   "ptpPrintFnPrintPrevToolbarButtons.pgx":0002
       Style           =   2  'Dropdown List
-      TabIndex        =   34
+      TabIndex        =   1
       Top             =   180
       Width           =   3432
    End
@@ -32,31 +48,23 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
       Caption         =   "AllowUserChangeScale"
       Height          =   228
       Left            =   2244
-      TabIndex        =   33
+      TabIndex        =   2
       Top             =   576
       Width           =   1932
    End
-   Begin VB.CheckBox chkFormatButtonVisible 
-      Caption         =   "FormatButtonVisible"
-      Height          =   228
-      Left            =   2244
-      TabIndex        =   32
-      Top             =   1548
-      Width           =   2676
-   End
    Begin VB.Frame fraFormatButton 
       Caption         =   "Format button"
-      Height          =   2280
+      Height          =   2268
       Left            =   36
-      TabIndex        =   3
-      Top             =   1908
+      TabIndex        =   8
+      Top             =   1944
       Width           =   7608
       Begin VB.Frame FramePic 
          Caption         =   "30:"
          Height          =   1380
          Index           =   3
          Left            =   4572
-         TabIndex        =   25
+         TabIndex        =   32
          Tag             =   "E"
          Top             =   828
          Width           =   1452
@@ -76,7 +84,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             Left            =   930
             Picture         =   "ptpPrintFnPrintPrevToolbarButtons.pgx":0004
             Style           =   1  'Graphical
-            TabIndex        =   29
+            TabIndex        =   36
             Tag             =   "E"
             ToolTipText     =   "Clear Picture"
             Top             =   930
@@ -102,7 +110,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             ScaleHeight     =   45
             ScaleMode       =   3  'Pixel
             ScaleWidth      =   45
-            TabIndex        =   28
+            TabIndex        =   35
             TabStop         =   0   'False
             Top             =   270
             Width           =   540
@@ -122,7 +130,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             Left            =   930
             Picture         =   "ptpPrintFnPrintPrevToolbarButtons.pgx":058E
             Style           =   1  'Graphical
-            TabIndex        =   27
+            TabIndex        =   34
             Tag             =   "E"
             ToolTipText     =   "Browse Picture"
             Top             =   150
@@ -144,7 +152,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             Left            =   930
             Picture         =   "ptpPrintFnPrintPrevToolbarButtons.pgx":06D8
             Style           =   1  'Graphical
-            TabIndex        =   26
+            TabIndex        =   33
             Tag             =   "E"
             ToolTipText     =   "Clear Picture"
             Top             =   540
@@ -156,7 +164,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
          Height          =   1380
          Index           =   4
          Left            =   6084
-         TabIndex        =   20
+         TabIndex        =   27
          Tag             =   "E"
          Top             =   828
          Width           =   1452
@@ -176,7 +184,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             Left            =   930
             Picture         =   "ptpPrintFnPrintPrevToolbarButtons.pgx":0822
             Style           =   1  'Graphical
-            TabIndex        =   24
+            TabIndex        =   31
             Tag             =   "E"
             ToolTipText     =   "Clear Picture"
             Top             =   930
@@ -202,7 +210,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             ScaleHeight     =   45
             ScaleMode       =   3  'Pixel
             ScaleWidth      =   45
-            TabIndex        =   23
+            TabIndex        =   30
             TabStop         =   0   'False
             Top             =   270
             Width           =   540
@@ -222,7 +230,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             Left            =   930
             Picture         =   "ptpPrintFnPrintPrevToolbarButtons.pgx":0DAC
             Style           =   1  'Graphical
-            TabIndex        =   22
+            TabIndex        =   29
             Tag             =   "E"
             ToolTipText     =   "Browse Picture"
             Top             =   150
@@ -244,7 +252,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             Left            =   930
             Picture         =   "ptpPrintFnPrintPrevToolbarButtons.pgx":0EF6
             Style           =   1  'Graphical
-            TabIndex        =   21
+            TabIndex        =   28
             Tag             =   "E"
             ToolTipText     =   "Clear Picture"
             Top             =   540
@@ -256,7 +264,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
          Height          =   1380
          Index           =   2
          Left            =   3060
-         TabIndex        =   15
+         TabIndex        =   22
          Tag             =   "E"
          Top             =   828
          Width           =   1452
@@ -276,7 +284,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             Left            =   930
             Picture         =   "ptpPrintFnPrintPrevToolbarButtons.pgx":1040
             Style           =   1  'Graphical
-            TabIndex        =   19
+            TabIndex        =   26
             Tag             =   "E"
             ToolTipText     =   "Clear Picture"
             Top             =   540
@@ -297,7 +305,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             Left            =   930
             Picture         =   "ptpPrintFnPrintPrevToolbarButtons.pgx":118A
             Style           =   1  'Graphical
-            TabIndex        =   18
+            TabIndex        =   25
             Tag             =   "E"
             ToolTipText     =   "Browse Picture"
             Top             =   150
@@ -323,7 +331,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             ScaleHeight     =   45
             ScaleMode       =   3  'Pixel
             ScaleWidth      =   45
-            TabIndex        =   17
+            TabIndex        =   24
             TabStop         =   0   'False
             Top             =   270
             Width           =   540
@@ -344,7 +352,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             Left            =   930
             Picture         =   "ptpPrintFnPrintPrevToolbarButtons.pgx":12D4
             Style           =   1  'Graphical
-            TabIndex        =   16
+            TabIndex        =   23
             Tag             =   "E"
             ToolTipText     =   "Clear Picture"
             Top             =   930
@@ -356,7 +364,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
          Height          =   1380
          Index           =   1
          Left            =   1584
-         TabIndex        =   10
+         TabIndex        =   17
          Tag             =   "E"
          Top             =   828
          Width           =   1452
@@ -376,7 +384,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             Left            =   930
             Picture         =   "ptpPrintFnPrintPrevToolbarButtons.pgx":185E
             Style           =   1  'Graphical
-            TabIndex        =   14
+            TabIndex        =   21
             Tag             =   "E"
             ToolTipText     =   "Clear Picture"
             Top             =   540
@@ -397,7 +405,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             Left            =   930
             Picture         =   "ptpPrintFnPrintPrevToolbarButtons.pgx":19A8
             Style           =   1  'Graphical
-            TabIndex        =   13
+            TabIndex        =   20
             Tag             =   "E"
             ToolTipText     =   "Browse Picture"
             Top             =   150
@@ -423,7 +431,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             ScaleHeight     =   45
             ScaleMode       =   3  'Pixel
             ScaleWidth      =   45
-            TabIndex        =   12
+            TabIndex        =   19
             TabStop         =   0   'False
             Top             =   270
             Width           =   540
@@ -444,7 +452,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             Left            =   930
             Picture         =   "ptpPrintFnPrintPrevToolbarButtons.pgx":1AF2
             Style           =   1  'Graphical
-            TabIndex        =   11
+            TabIndex        =   18
             Tag             =   "E"
             ToolTipText     =   "Clear Picture"
             Top             =   930
@@ -456,7 +464,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
          Height          =   1380
          Index           =   0
          Left            =   72
-         TabIndex        =   5
+         TabIndex        =   12
          Tag             =   "E"
          Top             =   828
          Width           =   1452
@@ -476,7 +484,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             Left            =   930
             Picture         =   "ptpPrintFnPrintPrevToolbarButtons.pgx":207C
             Style           =   1  'Graphical
-            TabIndex        =   9
+            TabIndex        =   16
             Tag             =   "E"
             ToolTipText     =   "Clear Picture"
             Top             =   540
@@ -497,7 +505,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             Left            =   930
             Picture         =   "ptpPrintFnPrintPrevToolbarButtons.pgx":21C6
             Style           =   1  'Graphical
-            TabIndex        =   8
+            TabIndex        =   15
             Tag             =   "E"
             ToolTipText     =   "Browse Picture"
             Top             =   150
@@ -523,7 +531,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             ScaleHeight     =   45
             ScaleMode       =   3  'Pixel
             ScaleWidth      =   45
-            TabIndex        =   7
+            TabIndex        =   14
             TabStop         =   0   'False
             Top             =   270
             Width           =   540
@@ -544,7 +552,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
             Left            =   930
             Picture         =   "ptpPrintFnPrintPrevToolbarButtons.pgx":2310
             Style           =   1  'Graphical
-            TabIndex        =   6
+            TabIndex        =   13
             Tag             =   "E"
             ToolTipText     =   "Clear Picture"
             Top             =   930
@@ -554,7 +562,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
       Begin VB.TextBox txtFormatButtonToolTipText 
          Height          =   300
          Left            =   2208
-         TabIndex        =   4
+         TabIndex        =   10
          Top             =   216
          Width           =   3432
       End
@@ -562,7 +570,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
          Caption         =   "FormatButtonToolTipText:"
          Height          =   228
          Left            =   336
-         TabIndex        =   31
+         TabIndex        =   9
          Top             =   252
          Width           =   1884
       End
@@ -570,7 +578,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
          Caption         =   "FormatButtonPicture:"
          Height          =   192
          Left            =   72
-         TabIndex        =   30
+         TabIndex        =   11
          Top             =   576
          Width           =   1992
       End
@@ -578,7 +586,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
    Begin vbExtra.ToolBarDA tbrScaleIcons 
       Height          =   396
       Left            =   4344
-      Top             =   792
+      Top             =   756
       Width           =   2040
       _ExtentX        =   3598
       _ExtentY        =   699
@@ -597,8 +605,8 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
       Caption         =   "PrintPrevUseAltScaleIcons"
       Height          =   228
       Left            =   2244
-      TabIndex        =   0
-      Top             =   900
+      TabIndex        =   3
+      Top             =   864
       Value           =   2  'Grayed
       Width           =   2172
    End
@@ -606,8 +614,8 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
       Caption         =   "PageSetupButtonVisible"
       Height          =   228
       Left            =   2244
-      TabIndex        =   2
-      Top             =   1224
+      TabIndex        =   5
+      Top             =   1152
       Width           =   2676
    End
    Begin VB.Label Label2 
@@ -615,7 +623,7 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
       Caption         =   "PrintPrevToolBarIconsSize:"
       Height          =   336
       Left            =   72
-      TabIndex        =   35
+      TabIndex        =   0
       Top             =   252
       Width           =   2148
    End
@@ -624,8 +632,8 @@ Begin VB.PropertyPage ptpPrintFnPrintPrevTBButtons
       ForeColor       =   &H00FF0000&
       Height          =   408
       Left            =   6468
-      TabIndex        =   1
-      Top             =   792
+      TabIndex        =   4
+      Top             =   684
       Width           =   1128
    End
 End
@@ -653,6 +661,10 @@ Private Sub chkFormatButtonVisible_Click()
 End Sub
 
 Private Sub chkPageSetupButtonVisible_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkPageNumbersButtonVisible_Click()
     If Not mLoading Then Changed = True
 End Sub
 
@@ -715,6 +727,7 @@ Private Sub PropertyPage_ApplyChanges()
         For c = 0 To 4
             Set SelectedControls(0).FormatButtonPicture(c) = mFormatButtonPicture(c)
         Next c
+        SelectedControls(0).PageNumbersButtonVisible = CBool(chkPageNumbersButtonVisible.Value)
     End If
 End Sub
 
@@ -743,12 +756,14 @@ Private Sub PropertyPage_SelectionChanged()
     chkFormatButtonVisible.Value = CLng(SelectedControls(0).FormatButtonVisible) * -1
     If mCtrlTypeIsFlexFn Then
         fraFormatButton.Visible = False
+        chkPageNumbersButtonVisible.Visible = False
     Else
         txtFormatButtonToolTipText.Text = SelectedControls(0).FormatButtonToolTipText
         For c = 0 To 4
             Set mFormatButtonPicture(c) = SelectedControls(0).FormatButtonPicture(c)
         Next c
         UpdatePicsControls
+        chkPageNumbersButtonVisible.Value = CLng(SelectedControls(0).PageNumbersButtonVisible) * -1
     End If
     mLoading = False
 End Sub
