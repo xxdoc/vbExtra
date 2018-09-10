@@ -698,6 +698,7 @@ Private mFormatButtonToolTipText As String
 Private mAddedToScaleForRounding As Long
 Public DoNotLoad As Boolean
 Private mControlsPositioned As Boolean
+Private mCanceled As Boolean
 
 Private Sub cboChangeIconsSize_Click()
     SetToolBarIconsSize cboChangeIconsSize.ListIndex
@@ -729,6 +730,7 @@ Private Sub cboScalePercent_Change()
         If mRaiseFontEvent Then
             RaiseEvent ScaleChange(CInt(mScalePercent))
             RaiseEventPrepareDoc
+            If mCanceled Then Exit Sub
         End If
     End If
 
@@ -768,6 +770,7 @@ Private Sub cboScalePercent_KeyPress(KeyAscii As Integer)
         End If
         tmrcboScalePercentChange.Enabled = False
         cboScalePercent_Change
+        If mCanceled Then Exit Sub
     Else
         tmrcboScalePercentChange.Enabled = False
         tmrcboScalePercentChange.Enabled = True
@@ -910,6 +913,7 @@ Private Sub Form_Load()
     Dim iLng As Long
     
     If DoNotLoad Then Exit Sub
+    mCanceled = False
     
     LoadGUICaptions
     AssignAcceleratorToControl lblScalePercent
@@ -1181,6 +1185,7 @@ Private Sub tbrTop_ButtonClick(Button As ToolBarDAButton)
                     If mPrintFnObject.Changed Then
                         Orientation = mPrintFnObject.Orientation
                         RaiseEventPrepareDoc
+                        If mCanceled Then Exit Sub
                     End If
                 Case "OrientationPortrait", "OrientationLandscape"
                     If Button.Key = "OrientationPortrait" Then
@@ -1188,12 +1193,14 @@ Private Sub tbrTop_ButtonClick(Button As ToolBarDAButton)
                             ResetPrinter2
                             mPrintFnObject.Orientation = vbPRORPortrait
                             RaiseEventPrepareDoc
+                            If mCanceled Then Exit Sub
                         End If
                     Else
                         If mPrintFnObject.Orientation <> vbPRORLandscape Then
                             ResetPrinter2
                             mPrintFnObject.Orientation = vbPRORLandscape
                             RaiseEventPrepareDoc
+                            If mCanceled Then Exit Sub
                         End If
                     End If
                     Button.Checked = True
@@ -1207,11 +1214,13 @@ Private Sub tbrTop_ButtonClick(Button As ToolBarDAButton)
 '                    End If
                     If Not iCanceled Then
                         RaiseEventPrepareDoc
+                        If mCanceled Then Exit Sub
                     End If
                 Case "PageNumbers"
                     RaiseEvent PageNumbersOptionsClick(iCanceled)
                     If Not iCanceled Then
                         RaiseEventPrepareDoc
+                        If mCanceled Then Exit Sub
                     End If
                 Case "DecreaseScale"
                     iStrScalePercent = cboScalePercent.Text
@@ -2075,6 +2084,7 @@ Private Sub RaiseEventPrepareDoc()
     
     If iCancel Then
         Unload Me
+        mCanceled = True
         Exit Sub
     End If
     mCurrentPageNumber = iDocumentPosition * PrinterExCurrentDocument.PageCount + 1
@@ -2293,6 +2303,7 @@ Private Sub PositionControls()
     Dim iFontSize As Single
     Dim iScreenWidth As Long
     
+    tbrTop.Redraw = False
     picScalePercent.Visible = False
     iScreenWidth = Screen.Width / Screen.TwipsPerPixelX
     cboView.Top = tbrTop.Height - cboView.Height
@@ -2336,6 +2347,7 @@ Private Sub PositionControls()
     tbrTop.Buttons("ScaleSpace").Width = picScalePercent.Width
     picScalePercent.Left = tbrTop.Buttons("DecreaseScale").Left - picScalePercent.Width - 30
     picScalePercent.Visible = mAllowUserChangeScale
+    picScalePercent.Refresh
     
     picPageNumber.Top = 0
     picPageNumber.Height = tbrBottom.Height
@@ -2365,6 +2377,7 @@ Private Sub PositionControls()
     cmdClose.Font.Size = 10
     cmdClose_2.Font.Size = cmdClose.Font.Size
     
+    tbrTop.Redraw = True
     mControlsPositioned = True
 End Sub
 

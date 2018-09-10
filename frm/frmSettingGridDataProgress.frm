@@ -8,7 +8,7 @@ Begin VB.Form frmSettingGridDataProgress
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8
+      Size            =   7.8
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -20,6 +20,7 @@ Begin VB.Form frmSettingGridDataProgress
    LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
+   MousePointer    =   13  'Arrow and Hourglass
    ScaleHeight     =   1692
    ScaleWidth      =   6852
    ShowInTaskbar   =   0   'False
@@ -28,6 +29,7 @@ Begin VB.Form frmSettingGridDataProgress
       Caption         =   "# Cancel"
       Height          =   435
       Left            =   4920
+      MousePointer    =   1  'Arrow
       TabIndex        =   0
       Top             =   1050
       Width           =   1515
@@ -37,13 +39,14 @@ Begin VB.Form frmSettingGridDataProgress
       Left            =   1920
       TabIndex        =   2
       Top             =   1044
+      Visible         =   0   'False
       Width           =   432
       _ExtentX        =   402
       _ExtentY        =   402
       ShowFocusRect   =   -1  'True
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
-         Size            =   8
+         Size            =   7.8
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False

@@ -679,10 +679,7 @@ End Enum
 
 Private mOKPressed As Boolean
 Private mChanged As Boolean
-Private mGrid As Control
 Private mPrintFnObject As PrintFnObject
-Attribute mPrintFnObject.VB_VarHelpID = -1
-Private mFlexFnObject As FlexFnObject
 
 Private mScalePercent As Long
 Private mMinScalePercent As Long
@@ -719,9 +716,10 @@ Private mStylesIDs() As String
 Private mSampleTop As Long
 Private mStyleChanged As Boolean
 Private mRgn As Long
+Private mFromFlexFnObject As Boolean
 
 Private Sub cboColor_Click()
-    mColorMode = cboColor.ListIndex
+    mColorMode = cboColor.ItemData(cboColor.ListIndex)
     DrawSample
     mChanged = True
 End Sub
@@ -793,7 +791,7 @@ Private Sub cboStyle_Click()
     End If
     If Not mPuttingControlsToStyle And Not mSelectingProperStyle Then
         If cboStyle.ListIndex < cboStyle.ListCount - 1 Then
-            Set mGridReportStyle = mFlexFnObject.GetGridReportStyle(mStylesIDs(cboStyle.ListIndex))
+            Set mGridReportStyle = GetGridReportStyle(mStylesIDs(cboStyle.ListIndex))
             StyleChanged = True
             PutControlsToStyle
         End If
@@ -957,7 +955,13 @@ Private Sub cmdOK_Click()
     
     iVal = Val(cboScalePercent.Text)
     
-    If (iVal > 30) And (iVal < 300) Then
+    If iVal > 0 Then
+        If iVal < mMinScalePercent Then
+            iVal = mMinScalePercent
+        End If
+        If iVal > mMaxScalePercent Then
+            iVal = mMaxScalePercent
+        End If
         mScalePercent = iVal
     End If
     
@@ -1277,18 +1281,9 @@ Public Property Get Changed() As Boolean
     Changed = mChanged
 End Property
 
-Public Property Set Grid(nGrid As Control)
-    Set mGrid = nGrid
-End Property
 
-
-Public Property Set PrintFnObject(nPrintFnObject As Object)
+Public Property Set PrintFnObject(nPrintFnObject As PrintFnObject)
     Set mPrintFnObject = nPrintFnObject
-End Property
-
-
-Public Property Set FlexFnObject(nFlexFnObject As FlexFnObject)
-    Set mFlexFnObject = nFlexFnObject
 End Property
 
 
@@ -1324,7 +1319,7 @@ Public Property Let ColorMode(nValue As cdeColorModeConstants)
     If (nValue < vbPRCMPrinterDefault) Or (nValue > vbPRCMColor) Then Exit Property
     
     mColorMode = nValue
-    cboColor.ListIndex = mColorMode
+    SelectInComboByItemData cboColor, mColorMode
 End Property
 
 Public Property Get ColorMode() As cdeColorModeConstants
@@ -1599,7 +1594,19 @@ End Sub
 
 Private Sub LoadDefaultSettings()
     cboScalePercent.ListIndex = 1
-    cboColor.ListIndex = 0
+    If mFromFlexFnObject Then
+        cboColor.ListIndex = 0
+    Else
+        If Not PrinterExCurrentDocument Is Nothing Then
+            SelectInComboByItemData cboColor, PrinterExCurrentDocument.ColorMode
+        Else
+            If VB.Printers.Count < 0 Then
+                SelectInComboByItemData cboColor, Printer.ColorMode
+            Else
+                cboColor.ListIndex = 2
+            End If
+        End If
+    End If
     cboGridAlign.ListIndex = 0
     cboPageNumbersPosition.ListIndex = 0
     cboPageNumbersFormat.ListIndex = 0
@@ -1654,8 +1661,8 @@ Private Sub LoadPageNumbersFormatStrings()
     Dim c As Long
     
     cboPageNumbersFormat.Clear
-    For c = 0 To mFlexFnObject.GetPredefinedPageNumbersFormatStringsCount - 1
-        cboPageNumbersFormat.AddItem PrinterExCurrentDocument.GetFormattedPageNumberString(mFlexFnObject.GetPredefinedPageNumbersFormatString(c), 10, 30)
+    For c = 0 To mPrintFnObject.GetPredefinedPageNumbersFormatStringsCount - 1
+        cboPageNumbersFormat.AddItem PrinterExCurrentDocument.GetFormattedPageNumberString(mPrintFnObject.GetPredefinedPageNumbersFormatString(c), 10, 30)
     Next c
 End Sub
 
@@ -1663,7 +1670,7 @@ Private Sub SelectProperStyle()
     Dim iStyleID As String
     Dim c As Long
 
-    iStyleID = mFlexFnObject.GetStyleID(mGridReportStyle, 0)
+    iStyleID = GetGridReportStyleID(mGridReportStyle, 0)
     For c = 0 To UBound(mStylesIDs)
         If mStylesIDs(c) = iStyleID Then
             cboStyle.ListIndex = c
@@ -1727,24 +1734,24 @@ Private Sub LoadStyles()
     cboStyle.Clear
     iCount = -1
     c = 1
-    Set iGridReportStyle = mFlexFnObject.GetGridReportStyle("Default" & c)
+    Set iGridReportStyle = GetGridReportStyle("GRStyle" & c)
     Do Until iGridReportStyle.Tag = ""
         iCount = iCount + 1
         ReDim Preserve mStylesIDs(iCount)
-        mStylesIDs(iCount) = "Default" & c
+        mStylesIDs(iCount) = "GRStyle" & c
         cboStyle.AddItem GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_Style) & " " & c
         c = c + 1
-        Set iGridReportStyle = mFlexFnObject.GetGridReportStyle("Default" & c)
+        Set iGridReportStyle = GetGridReportStyle("GRStyle" & c)
     Loop
     c = 1
-    Set iGridReportStyle = mFlexFnObject.GetGridReportStyle("Custom" & c)
+    Set iGridReportStyle = GetGridReportStyle("Custom" & c)
     Do Until iGridReportStyle.Tag = ""
         iCount = iCount + 1
         ReDim Preserve mStylesIDs(iCount)
         mStylesIDs(iCount) = "Custom" & c
         cboStyle.AddItem GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_CustomStyle) & " " & c
         c = c + 1
-        Set iGridReportStyle = mFlexFnObject.GetGridReportStyle("Custom" & c)
+        Set iGridReportStyle = GetGridReportStyle("Custom" & c)
     Loop
     
     cboStyle.AddItem GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_Customize)
@@ -1895,8 +1902,9 @@ Private Sub LoadGUICaptions()
     cmdHeadersBorderColor2.ToolTipText = cmdOuterBorderColor.ToolTipText
     
     cboColor.Clear
-    For c = 0 To 2
+    For c = IIf(mFromFlexFnObject, 0, 1) To 2
         cboColor.AddItem GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_cboColor_List, c)
+        cboColor.ItemData(cboColor.NewIndex) = c
     Next c
     
     cboPageNumbersPosition.Clear
@@ -1953,3 +1961,7 @@ Private Sub UpdatecboScalePercentList()
     End If
     
 End Sub
+
+Public Property Let FromFlexFnObject(nValue As Boolean)
+    mFromFlexFnObject = nValue
+End Property
