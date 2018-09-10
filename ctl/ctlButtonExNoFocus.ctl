@@ -360,9 +360,9 @@ Private Function PaintGrayScale(ByVal lHDC As Long, ByVal hPicture As Long, ByVa
     Dim x          As Long
     Dim xMax       As Long
     Dim TmpCol     As Long
-    Dim R1         As Long
-    Dim G1         As Long
-    Dim B1         As Long
+    Dim r1         As Long
+    Dim g1         As Long
+    Dim b1         As Long
     Dim bIsIcon    As Boolean
 
     'Dim hDCSrc   As Long
@@ -410,10 +410,10 @@ Private Function PaintGrayScale(ByVal lHDC As Long, ByVal hPicture As Long, ByVa
     '  Loop through the array... (grayscale - average!!)
     xMax = BMPiH.biSizeImage - 1
     For x = 0 To xMax - 3 Step 3
-        R1 = lBits(x)
-        G1 = lBits(x + 1)
-        B1 = lBits(x + 2)
-        TmpCol = (R1 + G1 + B1) \ 3
+        r1 = lBits(x)
+        g1 = lBits(x + 1)
+        b1 = lBits(x + 2)
+        TmpCol = (r1 + g1 + b1) \ 3
         lBits(x) = TmpCol
         lBits(x + 1) = TmpCol
         lBits(x + 2) = TmpCol
@@ -525,12 +525,12 @@ Private Sub DrawGradientEx(ByVal x As Long, ByVal y As Long, ByVal Width As Long
     Dim lBits() As Long
     Dim lGrad() As Long
 
-    Dim R1      As Long
-    Dim G1      As Long
-    Dim B1      As Long
-    Dim R2      As Long
-    Dim G2      As Long
-    Dim B2      As Long
+    Dim r1      As Long
+    Dim g1      As Long
+    Dim b1      As Long
+    Dim r2      As Long
+    Dim g2      As Long
+    Dim b2      As Long
     Dim dR      As Long
     Dim dG      As Long
     Dim dB      As Long
@@ -552,22 +552,22 @@ Private Sub DrawGradientEx(ByVal x As Long, ByVal y As Long, ByVal Width As Long
 
     '-- Decompose colors
     Color1 = Color1 And &HFFFFFF
-    R1 = Color1 Mod &H100&
+    r1 = Color1 Mod &H100&
     Color1 = Color1 \ &H100&
-    G1 = Color1 Mod &H100&
+    g1 = Color1 Mod &H100&
     Color1 = Color1 \ &H100&
-    B1 = Color1 Mod &H100&
+    b1 = Color1 Mod &H100&
     Color2 = Color2 And &HFFFFFF
-    R2 = Color2 Mod &H100&
+    r2 = Color2 Mod &H100&
     Color2 = Color2 \ &H100&
-    G2 = Color2 Mod &H100&
+    g2 = Color2 Mod &H100&
     Color2 = Color2 \ &H100&
-    B2 = Color2 Mod &H100&
+    b2 = Color2 Mod &H100&
 
     '-- Get color distances
-    dR = R2 - R1
-    dG = G2 - G1
-    dB = B2 - B1
+    dR = r2 - r1
+    dG = g2 - g1
+    dB = b2 - b1
 
     '-- Size gradient-colors array
     Select Case GradientDirection
@@ -583,10 +583,10 @@ Private Sub DrawGradientEx(ByVal x As Long, ByVal y As Long, ByVal Width As Long
     iEnd = UBound(lGrad())
     If (iEnd = 0) Then
         '-- Special case (1-pixel wide gradient)
-        lGrad(0) = (B1 \ 2 + B2 \ 2) + 256 * (G1 \ 2 + G2 \ 2) + 65536 * (R1 \ 2 + R2 \ 2)
+        lGrad(0) = (b1 \ 2 + b2 \ 2) + 256 * (g1 \ 2 + g2 \ 2) + 65536 * (r1 \ 2 + r2 \ 2)
     Else
         For i = 0 To iEnd
-            lGrad(i) = B1 + (dB * i) \ iEnd + 256 * (G1 + (dG * i) \ iEnd) + 65536 * (R1 + (dR * i) \ iEnd)
+            lGrad(i) = b1 + (dB * i) \ iEnd + 256 * (g1 + (dG * i) \ iEnd) + 65536 * (r1 + (dR * i) \ iEnd)
         Next i
     End If
 
@@ -1786,16 +1786,16 @@ Private Sub DrawVistaToolbarStyle(ByVal vState As enumButtonStates)
                 sVistaColor(c) = GetVistaColor(c)
             Next c
         Else
-            Dim R1 As Long
-            Dim G1 As Long
-            Dim B1 As Long
+            Dim r1 As Long
+            Dim g1 As Long
+            Dim b1 As Long
             Dim H1 As Long
             Dim L1 As Long
             Dim S1 As Long
             
-            Dim R2 As Long
-            Dim G2 As Long
-            Dim B2 As Long
+            Dim r2 As Long
+            Dim g2 As Long
+            Dim b2 As Long
             Dim H2 As Long
             Dim L2 As Long
             Dim S2 As Long
@@ -1804,17 +1804,17 @@ Private Sub DrawVistaToolbarStyle(ByVal vState As enumButtonStates)
             Dim L3 As Long
             Dim S3 As Long
             
-            R1 = GetVistaColor(5) And 255 ' R
-            G1 = (GetVistaColor(5) \ 256) And 255 ' G
-            B1 = (GetVistaColor(5) \ 65536) And 255 ' B
+            r1 = GetVistaColor(5) And 255 ' R
+            g1 = (GetVistaColor(5) \ 256) And 255 ' G
+            b1 = (GetVistaColor(5) \ 65536) And 255 ' B
             
-            ColorRGBToHLS RGB(R1, G1, B1), H1, L1, S1
+            ColorRGBToHLS RGB(r1, g1, b1), H1, L1, S1
             
-            R2 = m_bColors.tBackColor And 255 ' R
-            G2 = (m_bColors.tBackColor \ 256) And 255 ' G
-            B2 = (m_bColors.tBackColor \ 65536) And 255 ' B
+            r2 = m_bColors.tBackColor And 255 ' R
+            g2 = (m_bColors.tBackColor \ 256) And 255 ' G
+            b2 = (m_bColors.tBackColor \ 65536) And 255 ' B
             
-            ColorRGBToHLS RGB(R2, G2, B2), H2, L2, S2
+            ColorRGBToHLS RGB(r2, g2, b2), H2, L2, S2
             
             H3 = H2 - H1
             

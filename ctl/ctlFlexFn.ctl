@@ -756,10 +756,6 @@ Private Sub mFlexFnObject_CellTextChange(ByVal GridName As String, Row As Long, 
     RaiseEvent CellTextChange(GridName, Row, col)
 End Sub
 
-Private Sub mFlexFnObject_GetUCControls(nUCC As Object)
-    Set nUCC = UserControl.Controls
-End Sub
-
 Private Sub mFlexFnObject_PersonalizeDefaultReportStyle(GridName As String, nRS As GridReportStyle)
     RaiseEvent PersonalizeDefaultReportStyle(GridName, nRS)
 End Sub
@@ -1096,7 +1092,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mFlexFnObject.DoNotRememberOrder = PropBag.ReadProperty("DoNotRememberOrder", False)
     mFlexFnObject.ShowToolTipsForOrderColumns = PropBag.ReadProperty("ShowToolTipsForOrderColumns", True)
     mFlexFnObject.AllowTextEdition = PropBag.ReadProperty("AllowTextEdition", False)
-    mFlexFnObject.TextEditionLocked = PropBag.ReadProperty("TextEditionLocked", True)
+    mFlexFnObject.TextEditionLocked = PropBag.ReadProperty("TextEditionLocked", False)
     mFlexFnObject.PrintPrevUseAltScaleIcons = PropBag.ReadProperty("PrintPrevUseAltScaleIcons", True)
     
     tbrButtons.IconsSize = mIconsSize
@@ -1322,7 +1318,7 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     Call PropBag.WriteProperty("DoNotRememberOrder", mFlexFnObject.DoNotRememberOrder, False)
     Call PropBag.WriteProperty("ShowToolTipsForOrderColumns", mFlexFnObject.ShowToolTipsForOrderColumns, True)
     Call PropBag.WriteProperty("AllowTextEdition", mFlexFnObject.AllowTextEdition, False)
-    Call PropBag.WriteProperty("TextEditionLocked", mFlexFnObject.TextEditionLocked, True)
+    Call PropBag.WriteProperty("TextEditionLocked", mFlexFnObject.TextEditionLocked, False)
     Call PropBag.WriteProperty("PrintPrevUseAltScaleIcons", mFlexFnObject.PrintPrevUseAltScaleIcons, True)
     
     ' PrintFnObject properties

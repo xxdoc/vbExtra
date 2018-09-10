@@ -531,7 +531,7 @@ Private Sub cmdHistoryBack_Click()
     tmrTextChanged2.Enabled = True
 End Sub
 
-Private Sub cmdHistoryBack_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub cmdHistoryBack_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = vbRightButton Then
         LoadHistoryCombo
         SendMessage cboHistory.hWnd, CB_SHOWDROPDOWN, True, ByVal CLng(0)
@@ -552,7 +552,7 @@ Private Sub cmdHistoryForward_Click()
     tmrTextChanged2.Enabled = True
 End Sub
 
-Private Sub cmdHistoryForward_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub cmdHistoryForward_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = vbRightButton Then
         LoadHistoryCombo
         SendMessage cboHistory.hWnd, CB_SHOWDROPDOWN, True, ByVal CLng(0)
@@ -1148,7 +1148,7 @@ Private Sub LoadHistory()
     Dim iAuxItems() As String
     Dim iLng As Long
     
-    On Error GoTo Salida:
+    On Error GoTo TheExit:
     mHistoryLoaded = True
     iStr = Base64Decode(GetSetting(AppNameForRegistry, "History", Base64Encode(mContext & Trim$(mBoundControlName) & Trim$(mBoundControlTag)), ""))
     If InStr(iStr, Chr(124)) = 0 Then Exit Sub
@@ -1168,7 +1168,7 @@ Private Sub LoadHistory()
     UpdateTT
     Exit Sub
     
-Salida:
+TheExit:
     ReDim mHistoryItems(0)
     ReDim mTextsToDisplay(0)
     ReDim mItemsTags(0)
@@ -1221,7 +1221,7 @@ Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, By
             Set mHistoriesCollection = New Collection
         Case WM_RBUTTONDOWN
             GetCursorPos iP1
-            If (IsWindowVisible(mcboHistoryListHwnd) <> 0) And (WindowFromPoint(iP1.X, iP1.Y) = mcboHistoryListHwnd) Then
+            If (IsWindowVisible(mcboHistoryListHwnd) <> 0) And (WindowFromPoint(iP1.x, iP1.y) = mcboHistoryListHwnd) Then
                 iIndex = SendMessage(hWnd, LB_ITEMFROMPOINT, 0&, ByVal lParam)
                 iIndex = iIndex And &HFF
                 If iIndex > -1 And iIndex < cboHistory.ListCount Then

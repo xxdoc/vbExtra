@@ -65,8 +65,8 @@ Private Type BITMAP
 End Type
 
 Private Declare Function GetObjectAPI Lib "gdi32" Alias "GetObjectA" (ByVal hObject As Long, ByVal nCount As Long, lpObject As Any) As Long
-'Private Declare Function UpdateWindow Lib "user32" (ByVal hWnd As Long) As Long
-'Private Declare Function InvalidateRectAsNull Lib "user32" Alias "InvalidateRect" (ByVal hWnd As Long, ByVal lpRect As Long, ByVal bErase As Long) As Long
+Private Declare Function UpdateWindow Lib "user32" (ByVal hWnd As Long) As Long
+Private Declare Function InvalidateRectAsNull Lib "user32" Alias "InvalidateRect" (ByVal hWnd As Long, ByVal lpRect As Long, ByVal bErase As Long) As Long
 
 Public Event ButtonClick(Button As ToolBarDAButton)
 Public Event Click()
@@ -337,7 +337,9 @@ Private Sub PositionControl()
 End Sub
 
 Private Sub UserControl_Show()
-    If mRefreshPending Then Refresh
+    If mRefreshPending Then
+        Refresh
+    End If
 End Sub
 
 Private Sub UserControl_Terminate()
@@ -697,6 +699,7 @@ Private Function GetNormalPicHeight() As Long
     End Select
 End Function
 
+
 Public Sub Refresh()
     Dim c As Long
     Dim c2 As Long
@@ -970,13 +973,14 @@ Public Property Let Redraw(nValue As Boolean)
         If mRedraw Then
             If mRefreshPending Then
                 Refresh
-                SetWindowRedraw UserControl.hWnd, True
-                UserControl.Refresh
             End If
+            UserControl.Refresh
+            SetWindowRedraw UserControl.hWnd, True
         Else
             SetWindowRedraw UserControl.hWnd, False
         End If
     End If
+                
 End Property
 
 Public Property Get Redraw() As Boolean

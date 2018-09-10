@@ -1156,16 +1156,16 @@ Private Sub PlaceBackPictures()
     Dim iHeight As Long
     Dim iBackColor As Long
     
-    Dim R1 As Long
-    Dim G1 As Long
-    Dim B1 As Long
+    Dim r1 As Long
+    Dim g1 As Long
+    Dim b1 As Long
     Dim H1 As Long
     Dim L1 As Long
     Dim S1 As Long
     
-    Dim R2 As Long
-    Dim G2 As Long
-    Dim B2 As Long
+    Dim r2 As Long
+    Dim g2 As Long
+    Dim b2 As Long
     Dim H2 As Long
     Dim L2 As Long
     Dim S2 As Long
@@ -1176,17 +1176,17 @@ Private Sub PlaceBackPictures()
     
     TranslateColor mBackColor, 0, iBackColor
     
-    R1 = cBackColor_Default And 255 ' R
-    G1 = (cBackColor_Default \ 256) And 255 ' G
-    B1 = (cBackColor_Default \ 65536) And 255 ' B
+    r1 = cBackColor_Default And 255 ' R
+    g1 = (cBackColor_Default \ 256) And 255 ' G
+    b1 = (cBackColor_Default \ 65536) And 255 ' B
     
-    ColorRGBToHLS RGB(R1, G1, B1), H1, L1, S1
+    ColorRGBToHLS RGB(r1, g1, b1), H1, L1, S1
     
-    R2 = iBackColor And 255 ' R
-    G2 = (iBackColor \ 256) And 255 ' G
-    B2 = (iBackColor \ 65536) And 255 ' B
+    r2 = iBackColor And 255 ' R
+    g2 = (iBackColor \ 256) And 255 ' G
+    b2 = (iBackColor \ 65536) And 255 ' B
     
-    ColorRGBToHLS RGB(R2, G2, B2), H2, L2, S2
+    ColorRGBToHLS RGB(r2, g2, b2), H2, L2, S2
     
     H3 = H2 - H1
     
