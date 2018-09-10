@@ -1,3 +1,5 @@
+09/10/2018 fixed a bug in PaintPicture related to right margin
+09/10/2018 added PrintFlexGrid method to PrinterEx
 09/06/2018 added a feature that broke the binary compatibility so there is a version change. Now the call to PrinterEx.ShowPrintPreview can have parameters to send to the printing procedure.
 09/04/2018 important update to PrinterEx object
 08/31/2018 updated TrayIcon control
