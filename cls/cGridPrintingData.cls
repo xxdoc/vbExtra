@@ -62,6 +62,7 @@ Private mRowHeight() As Long
 Private mTextHeightRow() As Long
 Private mRowFinalPosYForTop() As Long
 Private mColWidthsAreSet As Boolean
+Private mSizeStrStoredGrid As String
 Public Canceled As Boolean
 Public mfrmSettingGridDataProgressShown As Boolean
 
@@ -207,6 +208,7 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
                     If frmSettingGridDataProgress.Canceled Then
                         Unload frmSettingGridDataProgress
                         Set frmSettingGridDataProgress = Nothing
+                        mfrmSettingGridDataProgressShown = False
                         Canceled = True
                         Exit Sub
                     End If
@@ -386,6 +388,8 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
     Next c
     
     ResetAddedData nBackColorFixed
+    mSizeStrStoredGrid = GetGridSizeStr(mGrid)
+
 End Sub
 
 
@@ -758,3 +762,11 @@ Public Property Get ColWidthsAreSet() As Boolean
     ColWidthsAreSet = mColWidthsAreSet
 End Property
     
+Public Function GetGridSizeStr(nGrid As Object) As String
+    On Error Resume Next
+    GetGridSizeStr = nGrid.Rows & "-" & nGrid.Cols & "-" & nGrid.FixedRows & "-" & nGrid.FixedCols
+End Function
+
+Public Property Get SizeStrStoredGrid() As String
+    SizeStrStoredGrid = mSizeStrStoredGrid
+End Property

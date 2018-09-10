@@ -233,6 +233,48 @@ Public Enum vbExStandardAppearanceConstants
     vxAppearance3D = 1
 End Enum
  
+Public Enum vbExGridAlignmentConstants
+    vxGACentered = 0
+    vxGALeft = 1
+    vxGARight = 2
+    vxGAStretch = 3
+    vxGAStretchLastColumn = 4
+End Enum
+ 
+Public Enum gfnOrientation
+    gfnPrinterDefault = 0&
+    gfnPortrait = 1&
+    gfnLandscape = 2&
+    gfnDecideOnReportWidth = 3&
+End Enum
+
+Public Enum gfnRememberUserPrintingPreferences
+    gfnRememberByReportIDIfAvailable = 0&
+    gfnRememberByGridName = 1&
+    gfnRememberGlobally = 2&
+    gfnDontRemember = 3&
+End Enum
+
+Public Enum gfnCopyToClipboardModeOptions
+    gfnLetUserToSelect = 0&
+    gfnSeparateWithTabs = 1&
+    gfnSeparateWithSpacesForFixedFont = 2&
+    gfnSeparateWithSpacesForVariableFont = 3&
+    gfnSeparateWithSpecialCharacters = 4&
+End Enum
+
+Public Enum gfnAfterSaveActionSettings
+    gfnDoNothing = 0&
+    gfnShowConfirmationMessage = 1&
+    gfnOfferToOpen = 2&
+End Enum
+
+Public Enum gfnScrollWithMouseWheelSettings
+    gfnScrollDisabled = 0&
+    gfnScrollEnabled = 1&
+    gfnScrollOnlyOnFocus = 2&
+End Enum
+ 
  
 Private Sub Class_Initialize()
     InitGlobal

@@ -23,6 +23,7 @@ Private Declare Function SetFocusAPI Lib "user32" Alias "SetFocus" (ByVal hWnd A
 Private Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
 Private Const WM_KILLFOCUS As Long = &H8&
 Private Const WM_LBUTTONDBLCLK As Long = &H203
+Private Const WM_KEYDOWN As Long = &H100
 
 Private Declare Function GetDoubleClickTime Lib "user32" () As Long
 Private Const GAKS_KEYDOWN = &H8000
@@ -36,6 +37,8 @@ Private Declare Function GetCursor Lib "user32" () As Long
 Private Declare Function DestroyCursor Lib "user32" (ByVal hCursor As Long) As Long
 
 Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+
+Public Event GridContentChange()
 
 ' properties
 Private mStretchColumnsWidthsToFill As Boolean
@@ -81,6 +84,8 @@ Private WithEvents mTimerCheckScroll As cTimer
 Attribute mTimerCheckScroll.VB_VarHelpID = -1
 Private WithEvents mTimerCheckRedraw As cTimer
 Attribute mTimerCheckRedraw.VB_VarHelpID = -1
+Private WithEvents mTimerSetFlatAppearance As cTimer
+Attribute mTimerSetFlatAppearance.VB_VarHelpID = -1
 Private mGridValuesFromClientStored As Boolean
 Private mGridCols As Long
 Private mGridRows As Long
@@ -159,12 +164,13 @@ Private mEditCellRow As Long
 Private mEditCellHighLight As Long
 Private mEditCellTopRow As Long
 Private mEditCellLeftCol As Long
-Private mEditCellTextBoxOldParent As Long
-Private mUCControls As Object
 Private mLastOrderChanged As Boolean
 Private mCountNoRedraw As Long
 Private mError As Boolean
 Private mLastTextToFind As String
+Private mLast_CellText As String
+Private mLast_RowEdited As Long
+Private mLast_ColEdited As Long
 
 Private Enum efnFilterAligment
     efnFilterAligmentHorizontal
@@ -259,6 +265,7 @@ Private Sub SubclassGrid()
         AttachMessage Me, mGridHwnd, WM_LBUTTONDBLCLK
         AttachMessage Me, mGridHwnd, WM_ERASEBKGND
         AttachMessage Me, mGridHwnd, WM_WINDOWPOSCHANGED
+        AttachMessage Me, mGridHwnd, WM_KEYDOWN
     End If
 End Sub
 
@@ -275,6 +282,7 @@ Private Sub UnsubclassGrid()
         DetachMessage Me, mGridHwnd, WM_LBUTTONDBLCLK
         DetachMessage Me, mGridHwnd, WM_ERASEBKGND
         DetachMessage Me, mGridHwnd, WM_WINDOWPOSCHANGED
+        DetachMessage Me, mGridHwnd, WM_KEYDOWN
     End If
 End Sub
 
@@ -482,6 +490,7 @@ End Property
 Private Sub Class_Initialize()
     mHandIconHandle = LoadCursor(ByVal 0&, IDC_HAND)
     mLastColumnClicked = -1
+    mLast_RowEdited = -1
 End Sub
 
 Private Sub Class_Terminate()
@@ -527,7 +536,7 @@ Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, By
             sMouseOverGrid = MouseIsOverGrid
         End If
         If sMouseOverGrid Or MouseIsOverForm Then
-            If Not ((iMsg = WM_LBUTTONDOWN) Or (iMsg = WM_SIZE) Or (iMsg = WM_MOVE) Or (iMsg = WM_DESTROY) Or (iMsg = WM_ERASEBKGND) Or (iMsg = WM_WINDOWPOSCHANGED) Or (iMsg = WM_KILLFOCUS) Or (iMsg = WM_LBUTTONDBLCLK)) Then
+            If Not ((iMsg = WM_LBUTTONDOWN) Or (iMsg = WM_SIZE) Or (iMsg = WM_MOVE) Or (iMsg = WM_DESTROY) Or (iMsg = WM_ERASEBKGND) Or (iMsg = WM_WINDOWPOSCHANGED) Or (iMsg = WM_KILLFOCUS) Or (iMsg = WM_LBUTTONDBLCLK) Or (iMsg = WM_KEYDOWN)) Then
                 ISubclass_WindowProc = CallOldWindowProc(hWnd, iMsg, wParam, lParam)
                 Exit Function
             End If
@@ -810,10 +819,12 @@ Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, By
         Case WM_ERASEBKGND
             If mGridsFlatAppearance Then
                 iAuxBool = IsWindowVisible(hWnd) <> 0
-                mpicGridFlatLeft.Visible = iAuxBool
-                mpicGridFlatRight.Visible = iAuxBool
-                mpicGridFlatTop.Visible = iAuxBool
-                mpicGridFlatBottom.Visible = iAuxBool
+                If Not mpicGridFlatLeft Is Nothing Then
+                    mpicGridFlatLeft.Visible = iAuxBool
+                    mpicGridFlatRight.Visible = iAuxBool
+                    mpicGridFlatTop.Visible = iAuxBool
+                    mpicGridFlatBottom.Visible = iAuxBool
+                End If
             End If
             If mEditingCell Then
                 If mTimerCheckScroll Is Nothing Then
@@ -824,6 +835,21 @@ Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, By
         Case WM_WINDOWPOSCHANGED
             If mGridsFlatAppearance Then
                 ShowHideBorder
+            End If
+        Case WM_KEYDOWN
+            If (GetAsyncKeyState(vbKeyControl) < 0) Then
+                If wParam = vbKeyZ Then ' Ctrl+Z, Undo last edition
+                    If Not mGrid Is Nothing Then
+                        If mLast_RowEdited > -1 Then
+                            If mLast_RowEdited < mGrid.Rows Then
+                                If mLast_ColEdited < mGrid.Cols Then
+                                    mGrid.textmatrix(mLast_RowEdited, mLast_ColEdited) = mLast_CellText
+                                    mLast_RowEdited = -1
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
             End If
         Case WM_DESTROY
             Finish
@@ -866,8 +892,18 @@ Private Sub mEditCellTextBox_DblClick()
 End Sub
 
 Private Sub mEditCellTextBox_KeyDown(KeyCode As Integer, Shift As Integer)
+    Dim iStrs() As String
+    
     If KeyCode = vbKeyEscape Then
+        mEditCellTextBox.Text = mLast_CellText
         RemoveEditCell
+    End If
+End Sub
+
+Private Sub mEditCellTextBox_KeyPress(KeyAscii As Integer)
+    If KeyAscii = vbKeyReturn Then
+        RemoveEditCell
+        KeyAscii = 0
     End If
 End Sub
 
@@ -911,6 +947,12 @@ Private Sub mTimerCheckScroll_ThatTime()
     If (mGrid.TopRow <> mEditCellTopRow) Or (mGrid.LeftCol <> mEditCellLeftCol) Then
         RemoveEditCell
     End If
+End Sub
+
+Private Sub mTimerSetFlatAppearance_ThatTime()
+    mTimerSetFlatAppearance.Interval = 0
+    Set mTimerSetFlatAppearance = Nothing
+    SetFlatAppearance
 End Sub
 
 Private Sub mTimerSetFocusToEditCellTextBox_ThatTime()
@@ -1101,8 +1143,9 @@ Private Sub Finish()
         mTimerCheckRedraw.Interval = 0
         Set mTimerCheckRedraw = Nothing
     End If
-    If Not mUCControls Is Nothing Then
-        Set mUCControls = Nothing
+    If Not mTimerSetFlatAppearance Is Nothing Then
+        mTimerSetFlatAppearance.Interval = 0
+        Set mTimerSetFlatAppearance = Nothing
     End If
     Set mForm = Nothing
     Set mGridParent = Nothing
@@ -1124,10 +1167,10 @@ Private Sub StoreGridValuesFromClient()
     End If
     
     If (mGrid.FixedCols > mGrid.Cols) And (mGrid.FixedRows > mGrid.Rows) Then
-        mData00 = mGrid.TextMatrix(mGrid.FixedRows, mGrid.FixedCols)
-        mData01 = mGrid.TextMatrix(mGrid.FixedRows, mGrid.Cols - 1)
-        mData10 = mGrid.TextMatrix(mGrid.Rows - 1, mGrid.FixedCols)
-        mData11 = mGrid.TextMatrix(mGrid.Rows - 1, mGrid.Cols - 1)
+        mData00 = mGrid.textmatrix(mGrid.FixedRows, mGrid.FixedCols)
+        mData01 = mGrid.textmatrix(mGrid.FixedRows, mGrid.Cols - 1)
+        mData10 = mGrid.textmatrix(mGrid.Rows - 1, mGrid.FixedCols)
+        mData11 = mGrid.textmatrix(mGrid.Rows - 1, mGrid.Cols - 1)
     End If
     
     ReDim Preserve mColumnsWidthsFromClient(mGridCols - 1)
@@ -1309,7 +1352,7 @@ Private Sub SetAuxGridColumsHeaders(Optional nIncludeForOrder As Boolean)
     For c = 0 To mGrid.Cols - 1
         iStr = ""
         For R = 0 To mGrid.FixedRows - 1
-            iStr = iStr & mGrid.TextMatrix(R, c) & " "
+            iStr = iStr & mGrid.textmatrix(R, c) & " "
         Next R
         If Len(iStr) > 0 Then
             iStr = Left$(iStr, Len(iStr) - 1)
@@ -1460,6 +1503,7 @@ Private Sub CheckWhetherGridNeedsUpdate()
 '                    OrderGridByColumn mInitialOrderColumn, mInitialOrderDescending
 '                End If
             End If
+            RaiseEvent GridContentChange
         Else
             If mNeedToUpdateOrderByColumns Then
                 If mEnableOrderByColumns Then
@@ -1534,21 +1578,21 @@ Private Function GridNeedsToBeUpdated() As Boolean
                     mNeedToUpdateOrderByColumns = True
                 Else
                     If (mGrid.FixedCols < mGrid.Cols) And (mGrid.FixedRows < mGrid.Rows) Then
-                        If mGrid.TextMatrix(mGrid.FixedRows, mGrid.FixedCols) <> mData00 Then
+                        If mGrid.textmatrix(mGrid.FixedRows, mGrid.FixedCols) <> mData00 Then
                             mNeedToUpdateOrderByColumns = True
-                        ElseIf mGrid.TextMatrix(mGrid.FixedRows, mGrid.Cols - 1) <> mData01 Then
+                        ElseIf mGrid.textmatrix(mGrid.FixedRows, mGrid.Cols - 1) <> mData01 Then
                             mNeedToUpdateOrderByColumns = True
-                        ElseIf mGrid.TextMatrix(mGrid.Rows - 1, mGrid.FixedCols) <> mData10 Then
+                        ElseIf mGrid.textmatrix(mGrid.Rows - 1, mGrid.FixedCols) <> mData10 Then
                             mNeedToUpdateOrderByColumns = True
-                        ElseIf mGrid.TextMatrix(mGrid.Rows - 1, mGrid.Cols - 1) <> mData11 Then
+                        ElseIf mGrid.textmatrix(mGrid.Rows - 1, mGrid.Cols - 1) <> mData11 Then
                             mNeedToUpdateOrderByColumns = True
                         End If
                     End If
                     If mNeedToUpdateOrderByColumns Then
-                        mData00 = mGrid.TextMatrix(mGrid.FixedRows, mGrid.FixedCols)
-                        mData01 = mGrid.TextMatrix(mGrid.FixedRows, mGrid.Cols - 1)
-                        mData10 = mGrid.TextMatrix(mGrid.Rows - 1, mGrid.FixedCols)
-                        mData11 = mGrid.TextMatrix(mGrid.Rows - 1, mGrid.Cols - 1)
+                        mData00 = mGrid.textmatrix(mGrid.FixedRows, mGrid.FixedCols)
+                        mData01 = mGrid.textmatrix(mGrid.FixedRows, mGrid.Cols - 1)
+                        mData10 = mGrid.textmatrix(mGrid.Rows - 1, mGrid.FixedCols)
+                        mData11 = mGrid.textmatrix(mGrid.Rows - 1, mGrid.Cols - 1)
                     End If
                 End If
                 mGridRows = mGrid.Rows
@@ -1924,8 +1968,8 @@ Public Sub OrderGridByColumn(Optional nOrderByColumn As Long = -1, Optional nOrd
         mGrid.Redraw = False
         mGrid.Cols = mGrid.Cols + 1
         mGrid.ColWidth(mGrid.Cols - 1) = 0
-        mGrid.TextMatrix(iPrevRow, mGrid.Cols - 1) = "1"
-        mGrid.TextMatrix(iPrevRowSel, mGrid.Cols - 1) = Val(mGrid.TextMatrix(iPrevRowSel, mGrid.Cols - 1)) + 2
+        mGrid.textmatrix(iPrevRow, mGrid.Cols - 1) = "1"
+        mGrid.textmatrix(iPrevRowSel, mGrid.Cols - 1) = Val(mGrid.textmatrix(iPrevRowSel, mGrid.Cols - 1)) + 2
         
         mGrid.Row = 0
         For c = 0 To mGrid.Cols - 1
@@ -2002,8 +2046,8 @@ Private Sub RestoreSelection(nPrevCol As Long, nPrevColSel As Long)
     iR = mGrid.Row
     iCol = mGrid.Cols - 1
     For R = mGrid.FixedRows To mGrid.Rows - 1
-        If mGrid.TextMatrix(R, iCol) <> "" Then
-            Select Case mGrid.TextMatrix(R, iCol)
+        If mGrid.textmatrix(R, iCol) <> "" Then
+            Select Case mGrid.textmatrix(R, iCol)
                 Case "1"
                     mGrid.Row = R
                     iSel1 = True
@@ -2068,7 +2112,7 @@ Private Function RemoveEmptyRowsAtTheEnd() As Long
     Do
         iEmpty = True
         For c = 0 To mGrid.Cols - 1
-            If mGrid.TextMatrix(R, c) <> "" Then
+            If mGrid.textmatrix(R, c) <> "" Then
                 iEmpty = False
             End If
         Next c
@@ -2185,28 +2229,26 @@ Private Sub SetFlatAppearance()
             mGridOriginalGridLinesFixed = mGrid.GridLinesFixed
         End If
         
-        mGrid.BorderStyle = 0
-        mGrid.GridLines = flexGridFlat             ' 1
-        mGrid.GridLinesFixed = flexGridFlat    ' 1
-        
-        If mBorderColor = -1 Then
-            mBorderColor = mGrid.GridColor
-        End If
-        If mBorderWidth = -1 Then
-            mBorderWidth = mGrid.GridLineWidth
-        End If
-        
         mpicGridFlatLeft_Name = "picBorderLeft_" & mGridName
         mpicGridFlatRight_Name = "picBorderRight_" & mGridName
         mpicGridFlatTop_Name = "picBorderTop_" & mGridName
         mpicGridFlatBottom_Name = "picBorderBottom_" & mGridName
 
+        
+        If Not mTimerSetFlatAppearance Is Nothing Then
+            mTimerSetFlatAppearance.Interval = 0
+            Set mTimerSetFlatAppearance = Nothing
+        End If
         On Error Resume Next
         
         Err.Clear
         Set mpicGridFlatLeft = mGrid.Parent.Controls.Add("VB.PictureBox", mpicGridFlatLeft_Name)
         If Err.Number = 727 Then
             Set mpicGridFlatLeft = mGrid.Parent.Controls(mpicGridFlatLeft_Name)
+        ElseIf Err.Number = 745 Then
+            Set mTimerSetFlatAppearance = New cTimer
+            mTimerSetFlatAppearance.Interval = 1
+            Exit Sub
         End If
         mpicGridFlatLeft.BackColor = mBorderColor
         mpicGridFlatLeft.Width = mGrid.Parent.ScaleX(mBorderWidth, vbPixels, mGrid.Parent.ScaleMode)
@@ -2249,6 +2291,17 @@ Private Sub SetFlatAppearance()
         
         On Error GoTo 0
         
+        mGrid.BorderStyle = 0
+        mGrid.GridLines = flexGridFlat             ' 1
+        mGrid.GridLinesFixed = flexGridFlat    ' 1
+        
+        If mBorderColor = -1 Then
+            mBorderColor = mGrid.GridColor
+        End If
+        If mBorderWidth = -1 Then
+            mBorderWidth = mGrid.GridLineWidth
+        End If
+        
         PositionBorderPicBoxes
         
     Else
@@ -2277,7 +2330,9 @@ Private Sub PositionBorderPicBoxes()
     Dim mOnePixelXInContainerUnits As Single
     Dim mOnePixelYInContainerUnits As Single
     
-    'mShape.Move mControl.Left - mBorderWidth * Screen.TwipsPerPixelX, mControl.Top - mBorderWidth * Screen.TwipsPerPixelY, mControl.Width + (2 * mBorderWidth) * Screen.TwipsPerPixelX, mControl.Height + (2 * mBorderWidth) * Screen.TwipsPerPixelY
+    If mpicGridFlatLeft Is Nothing Then SetFlatAppearance
+    If mpicGridFlatLeft Is Nothing Then Exit Sub
+    
     On Error Resume Next
     
     mOnePixelXInContainerUnits = mGrid.Container.ScaleX(100, vbPixels, mGrid.Container.ScaleMode) / 100
@@ -2563,6 +2618,7 @@ Private Sub StoreCellsData()
     mGrid.col = iCol_Prev
     mGrid.ColSel = iColSel_Prev
     mGrid.Redraw = True '  iRedraw_Prev Or mGrid.Redraw
+    mLast_RowEdited = -1
     Exit Sub
     
 TheExit:
@@ -2594,7 +2650,7 @@ Private Sub TestWhetherToShowToolTip()
     
     On Error GoTo errorHandler:
     
-    iText = mGrid.TextMatrix(mRowUnderMouse, mColUnderMouse)
+    iText = mGrid.textmatrix(mRowUnderMouse, mColUnderMouse)
     
     If Trim$(iText) = "" Then Exit Sub
     
@@ -2619,9 +2675,12 @@ Private Sub TestWhetherToShowToolTip()
     Else
         iWordWrap = (iLng And 1) = 1
     End If
+    
+    Err.Clear
+    iRectCell.Right = mGrid.ColWidth(mColUnderMouse) / Screen.TwipsPerPixelX
+    If Err.Number Then Exit Sub
     On Error GoTo 0
     
-    iRectCell.Right = mGrid.ColWidth(mColUnderMouse) / Screen.TwipsPerPixelX
     iRectCell.Bottom = mGrid.RowHeight(mRowUnderMouse) / Screen.TwipsPerPixelY
     
     iDC = CreateCompatibleDC(GetDC(mGridHwnd))
@@ -2754,6 +2813,9 @@ End Sub
 Private Sub ShowHideBorder()
     Dim iVisible As Boolean
     
+    If mpicGridFlatLeft Is Nothing Then SetFlatAppearance
+    If mpicGridFlatLeft Is Nothing Then Exit Sub
+    
     iVisible = IsWindowVisible(mGridHwnd) <> 0
     mpicGridFlatLeft.Visible = iVisible
     mpicGridFlatRight.Visible = iVisible
@@ -2872,32 +2934,25 @@ Private Sub EditCell()
         mEditCellRow = mGrid.Row
     End If
     
-    If mUCControls Is Nothing Then
-        Set mUCControls = ParentFlexFnObject.GetControls
-    End If
-    If mUCControls Is Nothing Then
-        Exit Sub
-    End If
     Err.Clear
-    mUCControls.Add App.EXEName & ".uscTextBox", mGrid.Name & "_" & "EditCellTextBox"
-    'Debug.Print Err.Number, Err.Description
+    If Not mGrid.ColIsVisible(mGrid.col) Then GoTo TheExit:
+    If mGrid.ColWidth(mGrid.col) = 0 Then GoTo TheExit:
     
-    If Not mGrid.ColIsVisible(mGrid.col) Then GoTo Salida:
-    If mGrid.ColWidth(mGrid.col) = 0 Then GoTo Salida:
+    Set iCtl = mGrid.Parent.Controls(mGrid.Name & "_" & "EditCellTextBox")
+    If iCtl Is Nothing Then
+        Set iCtl = mGrid.Parent.Controls.Add("VB.TextBox", mGrid.Name & "_" & "EditCellTextBox")
+    End If
     
-    Set iCtl = mUCControls(mGrid.Name & "_" & "EditCellTextBox")
     If Not iCtl Is Nothing Then
         mEditingCell = True
     Else
-        GoTo Salida:
+        GoTo TheExit:
     End If
     iCtl.MultiLine = iWordWrap
-    Set mEditCellTextBox = iCtl.TextBoxControl
+    Set mEditCellTextBox = iCtl
     
     mEditCellTextBox.Alignment = FilterAlignment(mGrid.CellAlignment, efnFilterAligmentHorizontal)
     mEditCellTextBox.Visible = False
-    mEditCellTextBoxOldParent = SetParent(mEditCellTextBox.hWnd, mGrid.Container.hWnd)
-    If mEditCellTextBoxOldParent = 0 Then Exit Sub
     mEditCellTextBox.Locked = mTextEditionLocked
     mEditCellTextBox.Appearance = 0
     mEditCellTextBox.BorderStyle = 0
@@ -2910,19 +2965,26 @@ Private Sub EditCell()
     mEditCellTextBox.Font.Strikethrough = mGrid.CellFontStrikeThrough
     mEditCellTextBox.ForeColor = mGrid.CellForeColor
 '    Debug.Print mGrid.Row, mGrid.col, "&H" & Hex(mGrid.CellBackColor)
-    mEditCellTextBox.BackColor = mGrid.CellBackColor
+    iLng = mGrid.CellBackColor
+    If iLng = 0 Then iLng = mGrid.BackColor
+    mEditCellTextBox.BackColor = iLng
     
-    iAuxLeft = (mGrid.GridLineWidth - 1)
-    iAuxTop = mGrid.GridLineWidth
-    If iAuxLeft < 2 Then iAuxLeft = 2
-    If iAuxTop < 2 Then iAuxTop = 2
-    mEditCellTextBox.Text = mGrid.TextMatrix(mEditCellRow, mEditCellCol)
+    iAuxLeft = (mGrid.GridLineWidth - 1) + 7
+    iAuxTop = mGrid.GridLineWidth + 4
+    mEditCellTextBox.Text = mGrid.textmatrix(mEditCellRow, mEditCellCol)
+    
+    mLast_CellText = mGrid.textmatrix(mEditCellRow, mEditCellCol)
+    mLast_RowEdited = mEditCellRow
+    mLast_ColEdited = mEditCellCol
+    
     iStr = mEditCellTextBox.Text
-    iStr = Replace(iStr, "?", "")
+    If (InStr(mEditCellTextBox.Text, "?") > 0) And (mGrid.textmatrix(mEditCellRow, mEditCellCol) = 0) Then
+        iStr = Replace(iStr, "?", "")
+    End If
     iStr = Replace(iStr, " ", "")
     If iStr = "" Then
         RemoveEditCell
-        GoTo Salida:
+        GoTo TheExit:
     End If
     
     iAuxWW = False
@@ -2935,7 +2997,7 @@ Private Sub EditCell()
     Else
         Set iAuxFont = mGrid.Parent.Font
         Set mGrid.Parent.Font = mEditCellTextBox.Font
-        iAuxHeight = mGrid.Parent.TextHeight(mGrid.TextMatrix(mEditCellRow, mEditCellCol)) + 2 * Screen.TwipsPerPixelY
+        iAuxHeight = mGrid.Parent.TextHeight(mGrid.textmatrix(mEditCellRow, mEditCellCol)) + 2 * Screen.TwipsPerPixelY
         If iAuxHeight > mGrid.RowHeight(mEditCellRow) Then
             iAuxHeight = mGrid.RowHeight(mEditCellRow)
         End If
@@ -2960,7 +3022,7 @@ Private Sub EditCell()
     mEditCellTextBox.Tag = mGrid.HighLight
     mGrid.HighLight = 0
     
-Salida:
+TheExit:
     mGrid.col = iAuxCol
     mGrid.Row = iAuxRow
     mGrid.ColSel = iAuxColSel
@@ -2980,21 +3042,18 @@ Private Sub RemoveEditCell()
 '    If GetFocus = mEditCellTextBox.hWnd Then
     SetFocusAPI mGrid.hWnd
     mEditCellTextBox.Visible = False
-    If mEditCellTextBoxOldParent <> 0 Then
-        SetParent mEditCellTextBox.hWnd, mEditCellTextBoxOldParent
-        mEditCellTextBoxOldParent = 0
-    End If
 '    End If
     If Not mTextEditionLocked Then
-        If mEditCellTextBox.Text <> mGrid.TextMatrix(mEditCellRow, mEditCellCol) Then
-            mGrid.TextMatrix(mEditCellRow, mEditCellCol) = mEditCellTextBox.Text
+        If mEditCellTextBox.Text <> mGrid.textmatrix(mEditCellRow, mEditCellCol) Then
+            mGrid.textmatrix(mEditCellRow, mEditCellCol) = mEditCellTextBox.Text
             ParentFlexFnObject.EventRaise "CellTextChange", mGrid.Name, mEditCellRow, mEditCellCol
             mGrid.HighLight = Val(mEditCellTextBox.Tag)
             Set mEditCellTextBox = Nothing
         End If
     End If
-    If Not mUCControls Is Nothing Then
-        mUCControls.Remove mGrid.Name & "_" & "EditCellTextBox"
+    
+    If Not mGrid Is Nothing Then
+        mGrid.Parent.Controls.Remove mGrid.Name & "_" & "EditCellTextBox"
     End If
     If Not mTimerSetFocusToEditCellTextBox Is Nothing Then
         mTimerSetFocusToEditCellTextBox.Interval = 0
@@ -3109,14 +3168,14 @@ Public Sub CopyTextEditingCell()
     Dim iTxt As TextBox
     Dim iUniClipboard As UniClipboard
     
-    On Error GoTo Salida:
+    On Error GoTo TheExit:
     Set iTxt = mEditCellTextBox
     If iTxt.SelLength > 0 Then
         Set iUniClipboard = New UniClipboard
         iUniClipboard.SetText iTxt.SelText
     End If
     
-Salida:
+TheExit:
 End Sub
 
 

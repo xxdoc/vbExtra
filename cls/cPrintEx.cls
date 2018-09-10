@@ -69,7 +69,7 @@ Private Declare Function Arc Lib "gdi32" (ByVal hDC As Long, ByVal nLeftRect As 
 Private Declare Function Ellipse Lib "gdi32" (ByVal hDC As Long, ByVal nLeftRect As Long, ByVal nTopRect As Long, ByVal nRightRect As Long, ByVal nBottomRect As Long) As Long
 
 'Private Declare Function MulDiv Lib "kernel32" (ByVal nNumber As Long, ByVal nNumerator As Long, ByVal nDenominator As Long) As Long
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (hpvDest As Any, hpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (hpvDest As Any, hpvSource As Any, ByVal cbCopy As Long)
 Private Declare Function ResetDC Lib "gdi32" Alias "ResetDCA" (ByVal hDC As Long, lpInitData As Any) As Long
 
 Private Const CCHDEVICENAME = 32
@@ -238,6 +238,7 @@ Private mPrintPrevFormatButtonVisible As Boolean
 Private mPrintPrevFormatButtonToolTipText As String
 Private mPrintPrevFormatButtonPicture(4) As Object
 Private mPrintPrevPageSetupButtonVisible As Boolean
+Private mPrintPrevPageNumbersButtonVisible As Boolean
 Private mPrintPrevMinScalePercent As Long
 Private mPrintPrevMaxScalePercent As Long
 Private mPrintPrevToolBarIconsSize As vbExPrintPrevToolBarIconsSizeConstants
@@ -293,7 +294,13 @@ Private mDefaultColorMode As Long
 Private mDontCheckError396 As Boolean
 Private mShowingPrintPreview As Boolean
 Private mPrintingPageNumbers As Boolean
-Private mPageSetupMarginsDisabledAutomatically As Boolean
+Private mDisabledPageSetupMarginsAutomatically As Boolean
+Private mGridReportStyle As GridReportStyle ' used when there is only one style (all the grids use the same style or there is only one grid). It is what the user selected in frmPrintGridFormatOptions
+Private mGridsReportStylesCollection As Collection ' the collection is to track how many styles there are (if it was printed more than one grid in the document). Its use is related to mGridReportStyle
+Private mFlexGridPrinted As Boolean ' if there was any FlexGrid printed in the document (by calling PrintFlexGrid method of PrinterEx)
+Private mShowFormatButtonAutomatically As Boolean
+Private mFlexGridFnCollection As Collection ' when the grids are printed by calling PrintFlexGrid method of PrinterEx and from the ShowPrintPreview method, it stores the FlexGridFn objects corresponding to each grid that was printed in this collection, so the FlexGridFn objects are not destroyed and the cGridPrintingData is hold and not loaded avery time the print preview window redraws the document
+Private mPrintFlexGridCanceled As Boolean
 
 Private mSave_ScalePercent As Boolean
 Private mSave_PrintPageNumbers  As Boolean
@@ -313,6 +320,7 @@ Private mSave_LeftMargin As Boolean
 Private mSave_TopMargin As Boolean
 Private mSave_RightMargin As Boolean
 Private mSave_BottomMargin As Boolean
+Private mSave_GridReportStyle As Boolean
 
 Private mLoaded_ScalePercent As Boolean
 Private mLoaded_PrintPageNumbers  As Boolean
@@ -332,6 +340,7 @@ Private mLoaded_LeftMargin As Boolean
 Private mLoaded_TopMargin As Boolean
 Private mLoaded_RightMargin As Boolean
 Private mLoaded_BottomMargin As Boolean
+Private mLoaded_GridReportStyle As Boolean
 
 Private mOriginal_ScalePercent As Long
 Private mOriginal_PrintPageNumbers  As Boolean
@@ -397,6 +406,7 @@ Private Sub CreateDocument()
     ReDim mPageNumbers(0)
     NewPage
     mSomethingPrintedOnDoc = False
+    mFlexGridPrinted = False
 End Sub
 
 Public Sub PrintDocumentToPrinterDC(nHdc As Long)
@@ -663,6 +673,7 @@ Private Sub AddNewPage()
             mPrinted = False
             mPrinterExEvents.RaiseEvent_StartDoc mDocKey
             mSomethingPrintedOnDoc = False
+            mFlexGridPrinted = False
         End If
         
         ' raise event StartPage
@@ -745,6 +756,7 @@ Public Sub KillDoc()
     mCurrentYPixels = -mScaleTopPixels + PageTopMarginInPixels
     mDocumentCreated = False
     mSomethingPrintedOnDoc = False
+    mFlexGridPrinted = False
 End Sub
 
 Private Sub CheckNewPagePending()
@@ -754,6 +766,7 @@ End Sub
 Public Sub GoToPage(nPageNumber As Long)
     Dim iMetaDC As Long
     
+    If nPageNumber = 0 Then Exit Sub
     If mRaisingEventsStartPage Then Exit Sub
     If nPageNumber = mCurrentPage Then Exit Sub
     mNewPagePending = False
@@ -842,16 +855,16 @@ Public Property Let HandleMargins(nValue As Boolean)
             If mCurrentYPixels < (PageTopMarginInPixels - mScaleTopPixels) Then
                 mCurrentYPixels = PageTopMarginInPixels - mScaleTopPixels
             End If
-            If mPageSetupMarginsDisabledAutomatically Then
-                mPageSetupMarginsDisabledAutomatically = False
-                mPageSetupFlags = mPageSetupFlags And Not cdePSDisableMargins
+            If mDisabledPageSetupMarginsAutomatically Then
+                mDisabledPageSetupMarginsAutomatically = False
+'                mPageSetupFlags = mPageSetupFlags And Not cdePSDisableMargins
             End If
         Else
             mCurrentXPixels = mCurrentXPixels + PageLeftMarginInPixels - mNonPrintableAreaLeftInPixels
             mCurrentYPixels = mCurrentYPixels + PageTopMarginInPixels - mNonPrintableAreaTopInPixels
             If (mPageSetupFlags And cdePSDisableMargins) = 0 Then
-                mPageSetupFlags = mPageSetupFlags Or cdePSDisableMargins
-                mPageSetupMarginsDisabledAutomatically = True
+'                mPageSetupFlags = mPageSetupFlags Or cdePSDisableMargins
+                mDisabledPageSetupMarginsAutomatically = True
             End If
         End If
     End If
@@ -1358,6 +1371,7 @@ Public Property Get LeftMargin() As Single ' millimeters
 End Property
 
 Public Property Get PageLeftMargin() As Single
+    EnsureDocumentCreated2
     If mNewPagePending Then
         PageLeftMargin = ScaleX(mLeftMarginInMillimeters, vbMillimeters, mScaleMode) / mZoom * 100
     Else
@@ -1372,12 +1386,14 @@ Public Property Let LeftMargin(ByVal nValue As Single)
     If nValue < mNonPrintableAreaLeftInMillimeters Then nValue = mNonPrintableAreaLeftInMillimeters
     iChange = nValue <> mLeftMarginInMillimeters
     If mDocumentCreated Then
+        CheckNewPagePending
         iChange = iChange Or (nValue <> mPages(mCurrentPage).LeftMarginInMillimeters)
     End If
     
     If iChange Then
         mLeftMarginInMillimeters = nValue
         If mDocumentCreated Then
+            CheckNewPagePending
             mPages(mCurrentPage).LeftMarginInMillimeters = mLeftMarginInMillimeters
             mCurrentXPixels = mCurrentXPixels + mPages(mCurrentPage).LeftMarginInPixels - mPages(mCurrentPage).NonPrintableAreaLeftInPixels - mScaleLeftPixels
         Else
@@ -1392,6 +1408,7 @@ Public Property Get RightMargin() As Single ' millimeters
 End Property
 
 Public Property Get PageRightMargin() As Single
+    EnsureDocumentCreated2
     If mNewPagePending Then
         PageRightMargin = ScaleX(mRightMarginInMillimeters, vbMillimeters, mScaleMode) / mZoom * 100
     Else
@@ -1406,6 +1423,7 @@ Public Property Let RightMargin(ByVal nValue As Single)
     If nValue < mNonPrintableAreaRightInMillimeters Then nValue = mNonPrintableAreaRightInMillimeters
     iChange = nValue <> mRightMarginInMillimeters
     If mDocumentCreated Then
+        CheckNewPagePending
         iChange = iChange Or (nValue <> mPages(mCurrentPage).RightMarginInMillimeters)
     End If
     
@@ -1423,6 +1441,7 @@ Public Property Get TopMargin() As Single ' millimeters
 End Property
 
 Public Property Get PageTopMargin() As Single
+    EnsureDocumentCreated2
     If mNewPagePending Then
         PageTopMargin = ScaleY(mTopMarginInMillimeters, vbMillimeters, mScaleMode) / mZoom * 100
     Else
@@ -1437,6 +1456,7 @@ Public Property Let TopMargin(ByVal nValue As Single)
     If nValue < mNonPrintableAreaTopInMillimeters Then nValue = mNonPrintableAreaTopInMillimeters
     iChange = nValue <> mTopMarginInMillimeters
     If mDocumentCreated Then
+        CheckNewPagePending
         iChange = iChange Or (nValue <> mPages(mCurrentPage).TopMarginInMillimeters)
     End If
     
@@ -1458,6 +1478,7 @@ Public Property Get BottomMargin() As Single ' millimeters
 End Property
 
 Public Property Get PageBottomMargin() As Single
+    EnsureDocumentCreated2
     If mNewPagePending Then
         PageBottomMargin = ScaleX(mBottomMarginInMillimeters, vbMillimeters, mScaleMode) / mZoom * 100
     Else
@@ -1473,6 +1494,7 @@ Public Property Let BottomMargin(ByVal nValue As Single)
 '    nValue = nValue * 100 / mZoom
     iChange = nValue <> mBottomMarginInMillimeters
     If mDocumentCreated Then
+        CheckNewPagePending
         iChange = iChange Or (nValue <> mPages(mCurrentPage).BottomMarginInMillimeters)
     End If
     
@@ -1779,6 +1801,7 @@ End Property
 
 Private Sub Class_Initialize()
     Dim iThereIsAPrinter As Boolean
+    Dim iFont As StdFont
     
     iThereIsAPrinter = VB.Printers.Count > 0
     If iThereIsAPrinter Then
@@ -1796,6 +1819,7 @@ Private Sub Class_Initialize()
     End If
     
     mPrintPrevPageSetupButtonVisible = True
+    mPrintPrevPageNumbersButtonVisible = True
     mPrintPrevFormatButtonVisible = False
     mPrintPrevMinScalePercent = cPrintPreviewDefaultMinScale
     mPrintPrevMaxScalePercent = cPrintPreviewDefaultMaxScale
@@ -1837,7 +1861,8 @@ Private Sub Class_Initialize()
     If Not IsEmpty(gPrinterExPageNumbersFont) Then
         Set PageNumbersFont = gPrinterExPageNumbersFont
     Else
-        Set mPageNumbersFont = New StdFont: mPageNumbersFont.Name = "Arial": mPageNumbersFont.Bold = True: mPageNumbersFont.Size = 12
+        Set iFont = New StdFont: iFont.Name = "Arial": iFont.Bold = True: iFont.Size = 12
+        Set mPageNumbersFont = iFont
     End If
     If Not IsEmpty(gPrinterExPageNumbersForeColor) Then mPageNumbersForeColor = gPrinterExPageNumbersForeColor Else mPageNumbersForeColor = vbBlack
     If Not IsEmpty(gPrinterExPageNumbersPosition) Then PageNumbersPosition = gPrinterExPageNumbersPosition Else PageNumbersPosition = vxPositionBottomRight
@@ -1901,7 +1926,11 @@ Private Sub Class_Terminate()
         DeleteDC mHdcReference
     End If
     gPrinterExPrinted = mPrinted
-
+    
+    Set mPrintFnObject = Nothing
+    Set mGridReportStyle = Nothing
+    Set mGridsReportStylesCollection = Nothing
+    
 End Sub
 
 Public Function PrintText(nText As String, Optional ByVal nLeft, Optional ByVal nTop, Optional ByVal nWidth, Optional ByVal nHeight, Optional ByVal nAlignment As vbExPrintExAlignConstants, Optional nAddLineFeed As Boolean = True, Optional nWordWrap As Boolean = True, Optional nWordBreak As Boolean = True, Optional nRectMarginsX As Single, Optional nRectMarginsY As Single, Optional nStartsNewPage As Boolean, Optional nCalcSize As Boolean, Optional ByRef nRequiredWidth As Single, Optional ByRef TextExceedsWidth As Boolean, Optional ByVal CancelIfTextExceedsWidth As Boolean) As Single
@@ -3119,9 +3148,9 @@ End Property
 
 Private Property Let IPrinterEx_PageSetupFlags(RHS As cdeCommonDialogExPageSetupFlagsConstants)
     If RHS <> mPageSetupFlags Then
-        If mPageSetupMarginsDisabledAutomatically Then
+        If mDisabledPageSetupMarginsAutomatically Then
             If (RHS And cdePSDisableMargins) <> 0 Then
-                mPageSetupMarginsDisabledAutomatically = False
+                mDisabledPageSetupMarginsAutomatically = False
             End If
         End If
         mPageSetupFlags = RHS
@@ -3149,6 +3178,10 @@ Private Property Get IPrinterEx_PrinterFlags() As cdeCommonDialogExPrinterFlagsC
     IPrinterEx_PrinterFlags = mPrinterFlags
 End Property
 
+
+Private Sub IPrinterEx_PrintFlexGrid(nFlexGrid As Object, Optional Style As Variant, Optional UserCanChangeStyle As Boolean = True, Optional GridAlign As vbExGridAlignmentConstants = vxGACentered, Optional ByRef nCanceled As Boolean)
+    PrintFlexGrid nFlexGrid, Style, UserCanChangeStyle, GridAlign, nCanceled
+End Sub
 
 Private Property Set IPrinterEx_PrintPrevFormatButtonPicture(nSizeIdentifier As VBExToobarDAButtonIconSizeConstants, RHS As stdole.Picture)
     If (nSizeIdentifier < vxIZ16) Or (nSizeIdentifier > vxIZ36) Then
@@ -3225,6 +3258,18 @@ End Property
 
 Private Property Get IPrinterEx_PrintPrevPageSetupButtonVisible() As Boolean
     IPrinterEx_PrintPrevPageSetupButtonVisible = mPrintPrevPageSetupButtonVisible
+End Property
+
+
+Private Property Let IPrinterEx_PrintPrevPageNumbersButtonVisible(RHS As Boolean)
+    mPrintPrevPageNumbersButtonVisible = RHS
+    If Not mPrintFnObject Is Nothing Then
+        mPrintFnObject.PageNumbersButtonVisible = mPrintPrevPageNumbersButtonVisible
+    End If
+End Property
+
+Private Property Get IPrinterEx_PrintPrevPageNumbersButtonVisible() As Boolean
+    IPrinterEx_PrintPrevPageNumbersButtonVisible = mPrintPrevPageNumbersButtonVisible
 End Property
 
 
@@ -3707,7 +3752,13 @@ Private Sub IPrinterEx_ShowPrintPreview(Optional nObject As Object, Optional nPr
     Set mPrintFnObject.Parent = nObject
     mPrintFnObject.ParametersArray = nParametersArray
     mPrintFnObject.ProcedureName = nProcedureName
-    mPrintFnObject.FormatButtonVisible = mPrintPrevFormatButtonVisible
+    If (mPrintPrevFormatButtonVisible Or mShowFormatButtonAutomatically) Then
+        If mPrintFnObject.PageNumbersButtonVisible Then
+            mPrintFnObject.PageNumbersButtonVisible = False
+        End If
+    End If
+    mPrintFnObject.FormatButtonVisible = mPrintPrevFormatButtonVisible Or mShowFormatButtonAutomatically
+    
     If mPrintPrevFormatButtonVisible Then
         mPrintFnObject.FormatButtonToolTipText = mPrintPrevFormatButtonToolTipText
         For c = 0 To 4
@@ -3779,6 +3830,7 @@ Private Sub IPrinterEx_ShowPrintPreview(Optional nObject As Object, Optional nPr
     
     gPrinterExDoNotMakeNewPrinterExObject = False
     mShowingPrintPreview = False
+    Set mFlexGridFnCollection = Nothing
     
     If mDlg.DeviceName <> "" Then
         If mDlg.DeviceName <> iDeviceName_Prev Then mSave_DeviceName = True
@@ -4067,7 +4119,119 @@ Private Sub mPrintFnObject_BeforeShowingPrinterDialog(CancelPrint As Boolean)
 End Sub
 
 Private Sub mPrintFnObject_FormatOptionsClick(Canceled As Boolean)
+    Dim ifrmPrintGridFormatOptions As New frmPrintGridFormatOptions
+    Dim iDSPLarger As Boolean
+    Dim iDSPSmaller As Boolean
+    Dim iEAOPrev As Boolean
+    
+    Dim iScalePercent As Long
+    Dim iColorMode  As cdeColorModeConstants
+    Dim iPrintPageNumbers  As Boolean
+    Dim iPageNumbersPosition  As Long
+    Dim iPageNumbersFormatLong  As String
+    
+    Dim iPageNumbersFont  As StdFont
+    Dim iPageNumbersForeColor  As Long
+    Dim iGridReportStyle_Prev As GridReportStyle
+    Dim iGridReportStyle_New As GridReportStyle
+    
     mPrinterExEvents.RaiseEvent_FormatOptionsClick Canceled
+    If mShowFormatButtonAutomatically Then
+        If Not Canceled Then
+            
+            Set ifrmPrintGridFormatOptions.PrintFnObject = mPrintFnObject
+            
+            ifrmPrintGridFormatOptions.MinScalePercent = mPrintFnObject.MinScalePercent
+            ifrmPrintGridFormatOptions.MaxScalePercent = mPrintFnObject.MaxScalePercent
+            
+            ifrmPrintGridFormatOptions.lblGridAlign.Visible = False
+            ifrmPrintGridFormatOptions.cboGridAlign.Visible = False
+            ifrmPrintGridFormatOptions.lblHeadingFont.Visible = False
+            ifrmPrintGridFormatOptions.fpcHeading.Visible = False
+            ifrmPrintGridFormatOptions.lblSubheadingFont.Visible = False
+            ifrmPrintGridFormatOptions.fpcSubheading.Visible = False
+            ifrmPrintGridFormatOptions.lblOtherTextsFont.Visible = False
+            ifrmPrintGridFormatOptions.fpcOtherTexts.Visible = False
+            
+            If Not mPrintPrevPageNumbersButtonVisible Then
+                ifrmPrintGridFormatOptions.lblPageNumbersPosition.Visible = False
+                ifrmPrintGridFormatOptions.cboPageNumbersPosition.Visible = False
+                ifrmPrintGridFormatOptions.lblPageNumbersFormat.Visible = False
+                ifrmPrintGridFormatOptions.cboPageNumbersFormat.Visible = False
+                ifrmPrintGridFormatOptions.lblPageNumbersFont.Visible = False
+                ifrmPrintGridFormatOptions.fpcPageNumbers.Visible = False
+            End If
+            
+            iScalePercent = mPrintFnObject.ScalePercent
+
+            iColorMode = mPrintFnObject.ColorMode
+            iPrintPageNumbers = mPrintFnObject.PrintPageNumbers
+            iPageNumbersPosition = mPrintFnObject.PageNumbersPosition
+            iPageNumbersFormatLong = mPrintFnObject.PageNumbersFormatLong
+            Set iPageNumbersFont = CloneFont(mPrintFnObject.PageNumbersFont)
+            iPageNumbersForeColor = mPrintFnObject.PageNumbersForeColor
+
+            ifrmPrintGridFormatOptions.ScalePercent = mPrintFnObject.ScalePercent
+            If Not mPrintFnObject.AllowUserChangeScale Then
+                ifrmPrintGridFormatOptions.cboScalePercent.Visible = False
+                ifrmPrintGridFormatOptions.lblScalePercent.Visible = False
+            End If
+            ifrmPrintGridFormatOptions.ColorMode = mPrintFnObject.ColorMode
+            ifrmPrintGridFormatOptions.PrintPageNumbers = mPrintFnObject.PrintPageNumbers
+            ifrmPrintGridFormatOptions.PageNumbersPosition = mPrintFnObject.PageNumbersPosition
+            ifrmPrintGridFormatOptions.PageNumbersFormatLong = mPrintFnObject.PageNumbersFormatLong
+            Set ifrmPrintGridFormatOptions.PageNumbersFont = mPrintFnObject.PageNumbersFont
+            ifrmPrintGridFormatOptions.PageNumbersForeColor = mPrintFnObject.PageNumbersForeColor
+            
+            If mGridReportStyle Is Nothing Then
+                If Not mGridsReportStylesCollection Is Nothing Then
+                    If mGridsReportStylesCollection.Count > 0 Then
+                        Set iGridReportStyle_Prev = mGridsReportStylesCollection.Item(1)
+                    End If
+                End If
+                If iGridReportStyle_Prev Is Nothing Then
+                    Set iGridReportStyle_Prev = New GridReportStyle
+                End If
+            Else
+                Set iGridReportStyle_Prev = mGridReportStyle
+            End If
+            Set ifrmPrintGridFormatOptions.GridReportStyle = iGridReportStyle_Prev
+            
+            ifrmPrintGridFormatOptions.Show vbModal
+
+            If ifrmPrintGridFormatOptions.OKPressed And ifrmPrintGridFormatOptions.Changed Then
+                If mPrintFnObject.ScalePercent < ifrmPrintGridFormatOptions.ScalePercent Then
+                    iDSPLarger = True
+                End If
+                If mPrintFnObject.ScalePercent > ifrmPrintGridFormatOptions.ScalePercent Then
+                    iDSPSmaller = True
+                End If
+
+                mPrintFnObject.ScalePercent = ifrmPrintGridFormatOptions.ScalePercent
+                mPrintFnObject.ColorMode = ifrmPrintGridFormatOptions.ColorMode
+                mPrintFnObject.PrintPageNumbers = ifrmPrintGridFormatOptions.PrintPageNumbers
+                mPrintFnObject.PageNumbersPosition = ifrmPrintGridFormatOptions.PageNumbersPosition
+                mPrintFnObject.PageNumbersFormatLong = ifrmPrintGridFormatOptions.PageNumbersFormatLong
+                Set mPrintFnObject.PageNumbersFont = ifrmPrintGridFormatOptions.PageNumbersFont
+                mPrintFnObject.PageNumbersForeColor = ifrmPrintGridFormatOptions.PageNumbersForeColor
+
+                Set iGridReportStyle_New = ifrmPrintGridFormatOptions.GridReportStyle
+                If Not GridReportStylesAreEqual(iGridReportStyle_Prev, iGridReportStyle_New) Then
+                    Set mGridReportStyle = iGridReportStyle_New
+                    mSave_GridReportStyle = True
+                End If
+                mSave_ScalePercent = mSave_ScalePercent Or (iScalePercent <> mPrintFnObject.ScalePercent)
+                mSave_ColorMode = mSave_ColorMode Or (iColorMode <> mPrintFnObject.ColorMode)
+                mSave_PrintPageNumbers = mSave_PrintPageNumbers Or (iPrintPageNumbers <> mPrintFnObject.PrintPageNumbers)
+                mSave_PageNumbersPosition = mSave_PageNumbersPosition Or (iPageNumbersPosition <> mPrintFnObject.PageNumbersPosition)
+                mSave_PageNumbersFormat = mSave_PageNumbersFormat Or (iPageNumbersFormatLong <> mPrintFnObject.PageNumbersFormatLong)
+                mSave_PageNumbersFont = mSave_PageNumbersFont Or (Not FontsAreEqual(iPageNumbersFont, mPrintFnObject.PageNumbersFont))
+                mSave_PageNumbersForeColor = mSave_PageNumbersForeColor Or (iPageNumbersForeColor <> mPrintFnObject.PageNumbersForeColor)
+            Else
+                Canceled = True
+            End If
+        End If
+    End If
 End Sub
 
 Private Sub mPrintFnObject_PrepareDoc(Cancel As Boolean, ByVal DocKey As String)
@@ -5444,8 +5608,8 @@ Public Sub PaintPicture(Picture As stdole.IPictureDisp, X1 As Single, Y1 As Sing
         iHeight2 = ScaleY(CSng(Height2), Me.ScaleMode, vbPixels) - iY2
         iHeight2ScrDC = ScaleY(CSng(Height2), ScaleMode, vbTwips) / Screen.TwipsPerPixelY - iY2ScrDC
     End If
-    If (iX1 + iWidth2) > CurrentPageScaleWidthInPixels Then
-        iWidth2 = CurrentPageScaleWidthInPixels - iX1
+    If (iWidth2) > CurrentPageScaleWidthInPixels Then
+        iWidth2 = CurrentPageScaleWidthInPixels
         iWidth2ScrDC = ScaleX(CSng(iWidth2), vbPixels, vbTwips) / Screen.TwipsPerPixelX
     End If
     If (iY1 + iHeight2) > CurrentPageScaleHeightInPixels Then
@@ -5628,6 +5792,7 @@ Private Property Let TrackDefault(ByVal nValue As Boolean)
 End Property
 
 Public Sub RaiseEvent_EndDoc(FirstPageIndex As Long, LastPageIndex As Long)
+    If (FirstPageIndex = 0) Or (LastPageIndex = 0) Then Exit Sub
     If Not SomethingPrintedOnPage Then KillLastPage
     RaiseEvent_EndDoc1 FirstPageIndex, LastPageIndex
 End Sub
@@ -5681,6 +5846,31 @@ Private Sub RaiseEvent_EndDoc1(FirstPageIndex As Long, LastPageIndex As Long)
     
     If Not mDisableEvents Then
         mPrinterExEvents.RaiseEvent_EndDoc FirstPageIndex, LastPageIndex, mDocKey
+    End If
+    
+    If Not mPrintPrevFormatButtonVisible Then
+        mShowFormatButtonAutomatically = Not (mGridReportStyle Is Nothing)
+        If mFlexGridPrinted Then
+            If Not mGridsReportStylesCollection Is Nothing Then
+                If mGridsReportStylesCollection.Count = 1 Then
+                    If mPrintFnObject Is Nothing Then
+                        Set mPrintFnObject = New PrintFnObject
+                    End If
+                    mShowFormatButtonAutomatically = True
+                End If
+            End If
+        End If
+        If mShowFormatButtonAutomatically Then
+            If mPrintFnObject.PageNumbersButtonVisible Then
+                mPrintFnObject.PageNumbersButtonVisible = False
+            End If
+            mPrintFnObject.FormatButtonVisible = True
+        Else
+            If Not mPrintFnObject Is Nothing Then
+                mPrintFnObject.FormatButtonVisible = False
+                mPrintFnObject.PageNumbersButtonVisible = mPrintPageNumbers And mPrintPrevPageNumbersButtonVisible
+            End If
+        End If
     End If
     
     If mPrintPageNumbers Or (gPrinterExPageFixedText <> "") Or Not (gPrinterExPageFixedImage Is Nothing) Then PrintPageNumbers1 FirstPageIndex, LastPageIndex
@@ -5901,9 +6091,12 @@ End Property
 Private Property Let SomethingPrintedOnPage(nValue As Boolean)
     If Not mPrintingPageNumbers Then
         On Error Resume Next
+        Err.Clear
         mPages(mCurrentPage).SomethingPrintedOnPage = nValue
         If Err.Number = 0 Then
-            mSomethingPrintedOnDoc = True
+            If nValue Then
+                mSomethingPrintedOnDoc = True
+            End If
         End If
     End If
 End Property
@@ -6340,6 +6533,7 @@ Public Function GetFormattedPageNumberString(ByVal nPageNumbersFormat As String,
 End Function
 
 Private Property Get PageNonPrintableAreaLeft() As Single
+    EnsureDocumentCreated2
     If mNewPagePending Then
         PageNonPrintableAreaLeft = ScaleX(IIf(mOrientation <> vbPRORLandscape, mNonPrintableAreaLeftInPixels, mNonPrintableAreaTopInPixels), vbPixels, mScaleMode) / mZoom * 100
     Else
@@ -6348,6 +6542,7 @@ Private Property Get PageNonPrintableAreaLeft() As Single
 End Property
 
 Private Property Get PageNonPrintableAreaTop() As Single
+    EnsureDocumentCreated2
     If mNewPagePending Then
         PageNonPrintableAreaTop = ScaleY(IIf(mOrientation <> vbPRORLandscape, mNonPrintableAreaTopInPixels, mNonPrintableAreaLeftInPixels), vbPixels, mScaleMode) / mZoom * 100
     Else
@@ -6356,6 +6551,7 @@ Private Property Get PageNonPrintableAreaTop() As Single
 End Property
 
 Private Property Get PageNonPrintableAreaRight() As Single
+    EnsureDocumentCreated2
     If mNewPagePending Then
         PageNonPrintableAreaRight = ScaleX(IIf(mOrientation <> vbPRORLandscape, mNonPrintableAreaRightInPixels, mNonPrintableAreaBottomInPixels), vbPixels, mScaleMode) / mZoom * 100
     Else
@@ -6364,6 +6560,7 @@ Private Property Get PageNonPrintableAreaRight() As Single
 End Property
 
 Private Property Get PageNonPrintableAreaBottom() As Single
+    EnsureDocumentCreated2
     If mNewPagePending Then
         PageNonPrintableAreaBottom = ScaleY(IIf(mOrientation <> vbPRORLandscape, mNonPrintableAreaBottomInPixels, mNonPrintableAreaRightInPixels), vbPixels, mScaleMode) / mZoom * 100
     Else
@@ -6372,6 +6569,7 @@ Private Property Get PageNonPrintableAreaBottom() As Single
 End Property
 
 Public Property Get PageWidth() As Single
+    EnsureDocumentCreated2
     If mNewPagePending Then
         PageWidth = ScaleX(IIf(mOrientation <> vbPRORLandscape, PaperWidthInMillimeters, PaperHeightInMillimeters), vbMillimeters, mScaleMode) / mZoom * 100
     Else
@@ -6380,6 +6578,7 @@ Public Property Get PageWidth() As Single
 End Property
 
 Public Property Get PageHeight() As Single
+    EnsureDocumentCreated2
     If mNewPagePending Then
         PageHeight = ScaleY(IIf(mOrientation <> vbPRORLandscape, PaperHeightInMillimeters, PaperWidthInMillimeters), vbMillimeters, mScaleMode) / mZoom * 100
     Else
@@ -6410,11 +6609,11 @@ Public Sub PrintRichTextBox(nRTB As Object)
     
     iPPScaleMode = Printer_ScaleMode
     Printer_ScaleMode = vbPixels
-    If Printer_CurrentX = 0 Then
-        ' Start a PrintEx job to get a valid Printer_hDC
-        PrintText Space(1), , , , , , False
-        Printer_CurrentX = 0
-    End If
+'    If Printer_CurrentX = 0 Then
+'        ' Start a PrintEx job to get a valid Printer_hDC
+'        PrintText Space(1), , , , , , False
+'        Printer_CurrentX = 0
+'    End If
     Printer_ScaleMode = vbTwips
     
     ' Calculate the Left$, Top, Right$, and Bottom margins
@@ -6550,7 +6749,14 @@ Private Sub SaveUserDocPreferences()
         If mSave_BottomMargin Then
             SaveSetting AppNameForRegistry, "PrintingSettings", iContextGeneral & "_BottomMargin", Trim$(Str$(BottomMargin))
         End If
-    
+        
+        If mSave_GridReportStyle Then
+            If Not mGridReportStyle Is Nothing Then
+                SaveSetting AppNameForRegistry, "PrintingSettings", iContextGeneral & "_GridReportStyle", GetIDGridReportStyleSaved(mGridReportStyle)
+            End If
+        End If
+        SaveSetting AppNameForRegistry, "PrintingSettings", iContextGeneral & "_ShowFormatButtonAutomatically", CStr(CLng(mShowFormatButtonAutomatically))
+        
         If mSave_ScalePercent Then
             SaveSetting AppNameForRegistry, "PrintingSettings", iContextByDevice & "_ScalePercent", mPrintFnObject.ScalePercent
         End If
@@ -6593,6 +6799,7 @@ Private Sub SaveUserDocPreferences()
     mSave_RightMargin = False
     mSave_TopMargin = False
     mSave_BottomMargin = False
+    mSave_GridReportStyle = False
     
 End Sub
 
@@ -6627,7 +6834,15 @@ Private Sub LoadUserDocPreferences()
             End If
             
             ' Page numbers
-            If mPrintPageNumbers Then
+            If mShowFormatButtonAutomatically Then
+                If mPrintFnObject Is Nothing Then
+                    Set mPrintFnObject = New PrintFnObject
+                End If
+                If mPrintFnObject.PageNumbersButtonVisible Then
+                    mPrintFnObject.PageNumbersButtonVisible = False
+                End If
+                mPrintFnObject.FormatButtonVisible = True
+            ElseIf mPrintPageNumbers And mPrintPrevPageNumbersButtonVisible Then
                 If mPrintFnObject Is Nothing Then
                     Set mPrintFnObject = New PrintFnObject
                 End If
@@ -6737,6 +6952,25 @@ Private Sub LoadUserDocPreferences()
                         mLoaded_BottomMargin = True
                     End If
                     BottomMargin = Val(iStr)
+                End If
+            End If
+            
+            ' GridReportStyle
+            iStr = GetSetting(AppNameForRegistry, "PrintingSettings", iContextGeneral & "_GridReportStyle", "-")
+            If (iStr <> "") And (iStr <> "-") Then
+                Set mGridReportStyle = GetGridReportStyle(iStr)
+                If mGridReportStyle.Tag = "" Then
+                    Set mGridReportStyle = Nothing
+                Else
+                    mShowFormatButtonAutomatically = True
+                    mLoaded_GridReportStyle = True
+                End If
+            End If
+            
+            If Not mShowFormatButtonAutomatically Then
+                iStr = GetSetting(AppNameForRegistry, "PrintingSettings", iContextGeneral & "_ShowFormatButtonAutomatically", "-")
+                If (iStr <> "") And (iStr <> "-") Then
+                    mShowFormatButtonAutomatically = CBool(Val(iStr))
                 End If
             End If
             
@@ -6871,6 +7105,11 @@ Private Sub RestoreOriginalSettings()
         mLoaded_BottomMargin = False
     End If
     
+    If mLoaded_GridReportStyle Then
+        Set mGridReportStyle = Nothing
+        mLoaded_GridReportStyle = False
+    End If
+    
     If mLoaded_ColorMode Then
         ColorMode = mOriginal_ColorMode
         mLoaded_ColorMode = False
@@ -6932,3 +7171,104 @@ Private Sub DeleteSavedUserPreferences(Optional nDocKey As String)
     
     RestoreOriginalSettings
 End Sub
+
+' The optional Style parameter can have a GridReportStyle object instance defining the style or a number referring one of the predefined styles
+Public Sub PrintFlexGrid(nFlexGrid As Object, Optional Style As Variant, Optional UserCanChangeStyle As Boolean = True, Optional GridAlign As vbExGridAlignmentConstants = vxGACentered, Optional ByRef nCanceled As Boolean)
+    Dim iFlexFnObject As FlexFnObject
+    Dim iGridReportStyle As GridReportStyle
+    Dim iStyleNumber As Long
+    Dim s As Variant
+    Dim iStyle As GridReportStyle
+    Dim iFound As Boolean
+    Dim iElem As Variant
+    
+    If nCanceled Then Exit Sub
+    If mPrintFlexGridCanceled Then Exit Sub
+    
+    If Not mFlexGridFnCollection Is Nothing Then
+        For Each iElem In mFlexGridFnCollection
+            If iElem.Grid Is nFlexGrid Then
+                Set iFlexFnObject = iElem
+                Exit For
+            End If
+        Next
+    End If
+    
+    If iFlexFnObject Is Nothing Then
+        Set iFlexFnObject = New FlexFnObject
+    End If
+    
+    If (mGridReportStyle Is Nothing) Or (Not UserCanChangeStyle) Then ' if mGridReportStyle is set it means that there is only one style and that the user can change from the format options of the print preview window
+        If VarType(Style) = vbObject Then
+            If TypeOf Style Is GridReportStyle Then
+                Set iGridReportStyle = Style
+            Else
+                RaiseError 1216, "PrinterEx", "Style parameter must have a GridReportStyle object or a numeric value"
+                Exit Sub
+            End If
+            If iGridReportStyle.Tag = "" Then
+                iGridReportStyle.Tag = GetGridReportStyleID(iGridReportStyle, 0)
+            End If
+        ElseIf IsNumeric(Style) Then
+            iStyleNumber = Val(Style)
+            Set iGridReportStyle = GetGridReportStyle("GRStyle" & iStyleNumber)
+            If iGridReportStyle.Tag = "" Then
+                RaiseError 380, "PrinterEx"
+                Exit Sub
+            End If
+        ElseIf IsMissing(Style) Then
+            ' nothing
+        Else
+            RaiseError 13, "PrinterEx" ' type mismatch
+        End If
+        If iGridReportStyle Is Nothing Then
+            Set iGridReportStyle = New GridReportStyle
+        End If
+        If UserCanChangeStyle Then
+            If mGridsReportStylesCollection Is Nothing Then Set mGridsReportStylesCollection = New Collection ' the collection is to track how many styles there are (if it was printed more than one grid in the document)
+            iFound = False
+            For Each s In mGridsReportStylesCollection
+                Set iStyle = s
+                If GridReportStylesAreEqual(iStyle, iGridReportStyle) Then
+                    iFound = True
+                    Exit For
+                End If
+            Next
+            If Not iFound Then
+                mGridsReportStylesCollection.Add iGridReportStyle
+            End If
+        End If
+    Else
+        Set iGridReportStyle = mGridReportStyle
+    End If
+    
+    Set iFlexFnObject.Grid = nFlexGrid
+    Set iFlexFnObject.GridReportStyle = iGridReportStyle
+    iFlexFnObject.GridAlign = GridAlign
+    iFlexFnObject.DrawingGridFromPrinterEx = True
+    iFlexFnObject.DrawGrid nCanceled
+    mPrintFlexGridCanceled = nCanceled
+    
+    iFlexFnObject.DrawingGridFromPrinterEx = False
+    mFlexGridPrinted = True
+    
+    If mShowingPrintPreview Then
+        If mFlexGridFnCollection Is Nothing Then
+            Set mFlexGridFnCollection = New Collection
+        End If
+        mFlexGridFnCollection.Add iFlexFnObject
+    End If
+End Sub
+ 
+ 
+Friend Property Let PrintFlexGridCanceled(nValue As Boolean)
+    mPrintFlexGridCanceled = nValue
+End Property
+
+Friend Property Get PrintFlexGridCanceled() As Boolean
+    PrintFlexGridCanceled = mPrintFlexGridCanceled
+End Property
+
+Friend Property Get DisabledPageSetupMarginsAutomatically() As Boolean
+    DisabledPageSetupMarginsAutomatically = mDisabledPageSetupMarginsAutomatically
+End Property

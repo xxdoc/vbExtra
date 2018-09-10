@@ -8,7 +8,7 @@ BEGIN
 END
 Attribute VB_Name = "GridReportStyle"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
+Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
@@ -57,3 +57,27 @@ Public Function Clone() As GridReportStyle
     Clone.Tag = Tag
     
 End Function
+
+Private Sub Class_Initialize()
+    Tag = "GRStyle2"
+    
+    LineWidth = 3
+    PrintHeadersBackground = True
+    HeadersBackgroundColor = RGB(244, 249, 255)
+    PrintFixedColsBackground = False
+    PrintOtherBackgrounds = True
+    
+    PrintOuterBorder = False
+    OuterBorderColor = RGB(40, 5, 207)
+    PrintHeadersBorder = True
+    HeadersBorderColor = RGB(29, 4, 145)
+    PrintColumnsDataLines = True
+    ColumnsDataLinesColor = RGB(177, 162, 253)
+    PrintColumnsHeadersLines = True
+    ColumnsHeadersLinesColor = RGB(177, 162, 253)
+    PrintRowsLines = False
+    RowsLinesColor = RGB(230, 224, 254)
+    PrintHeadersSeparatorLine = True
+    LineWidthHeadersSeparatorLine = 3
+
+End Sub

@@ -359,6 +359,15 @@ Public Property Get PrintPrevPageSetupButtonVisible() As Boolean
 End Property
 
 
+Public Property Let PrintPrevPageNumbersButtonVisible(nValue As Boolean)
+
+End Property
+
+Public Property Get PrintPrevPageNumbersButtonVisible() As Boolean
+
+End Property
+
+
 Public Property Let PrintPrevToolBarIconsSize(nValue As vbExPrintPrevToolBarIconsSizeConstants)
 
 End Property
@@ -423,6 +432,10 @@ Public Sub PrintRichTextBox(nRTB As Object)
 
 End Sub
 
+Public Sub PrintFlexGrid(nFlexGrid As Object, Optional Style As Variant, Optional UserCanChangeStyle As Boolean = True, Optional GridAlign As vbExGridAlignmentConstants = vxGACentered, Optional ByRef nCanceled As Boolean)
+    
+End Sub
+
 Public Property Get SomethingPrintedOnPage() As Boolean
 
 End Property
@@ -440,3 +453,4 @@ End Property
 Public Sub DeleteSavedUserPreferences(Optional nDocKey As String)
     
 End Sub
+

@@ -96,6 +96,15 @@ Public Sub ShowPageSetup()
     If Not iCancelDisplay Then
         iFlags_Prev = mDlg.Flags
         mDlg.Flags = mPageSetupFlags
+        If Not PrinterExCurrentDocument Is Nothing Then
+            If PrinterExCurrentDocument.DisabledPageSetupMarginsAutomatically Then
+                If Not PrinterExCurrentDocument.HandleMargins Then
+                    mDlg.Flags = mDlg.Flags Or cdePSDisableMargins
+                Else
+                    mDlg.Flags = mDlg.Flags And Not cdePSDisableMargins
+                End If
+            End If
+        End If
         iOrientationPrev = mDlg.Orientation
         mDlg.ShowPageSetup
         mCanceled = mDlg.Canceled
@@ -961,7 +970,12 @@ Private Sub RaiseEventPrepareDoc(nCancel As Boolean)
     PrinterExCurrentDocument.DocKey = mDocKey
     
     If Not (mParent Is Nothing) And (mProcedureName <> "") Then
+        PrinterExCurrentDocument.PrintFlexGridCanceled = False
         CallByNameEx mParent, mProcedureName, VbMethod, mParametersArray
+        If PrinterExCurrentDocument.PrintFlexGridCanceled Then
+            PrinterExCurrentDocument.PrintFlexGridCanceled = False
+            iCancel = True
+        End If
     Else
         RaiseEvent PrepareDoc(iCancel, mDocKey)
     End If
@@ -974,7 +988,9 @@ Private Sub RaiseEventPrepareDoc(nCancel As Boolean)
     End If
     
     If Not PrinterExCurrentDocument Is Nothing Then
-        PrinterExCurrentDocument.RaiseEvent_EndDoc PrinterExCurrentDocument.GetDocFirstPageIndex(PrinterExCurrentDocument.PageCount), PrinterExCurrentDocument.GetDocLastPageIndex(PrinterExCurrentDocument.PageCount)
+        If PrinterExCurrentDocument.PageCount > 0 Then
+            PrinterExCurrentDocument.RaiseEvent_EndDoc PrinterExCurrentDocument.GetDocFirstPageIndex(PrinterExCurrentDocument.PageCount), PrinterExCurrentDocument.GetDocLastPageIndex(PrinterExCurrentDocument.PageCount)
+        End If
         PrinterExCurrentDocument.DocKey = iDocKey_Prev
     End If
     Set mPrinterExEvents = Nothing
@@ -1192,6 +1208,18 @@ End Function
 
 Public Property Get GetPredefinedPageNumbersFormatStringsCount() As Long
     GetPredefinedPageNumbersFormatStringsCount = UBound(mPredefinedPageNumbersFormatStrings) + 1
+End Property
+
+Friend Property Get PageNumbersFormatLong() As Long
+    PageNumbersFormatLong = GetPageNumbersFormatStringsIndex(mPageNumbersFormat)
+End Property
+
+Friend Property Let PageNumbersFormatLong(nValue As Long)
+    If nValue <= 0 Then
+        mPageNumbersFormat = "Default"
+    Else
+        mPageNumbersFormat = GetPredefinedPageNumbersFormatString(nValue)
+    End If
 End Property
 
 Public Function GetPageNumbersFormatStringsIndex(nFormatString As String) As Long
