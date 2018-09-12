@@ -362,9 +362,9 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                 Case efnGUIStr_frmPrintGridFormatOptions_VariousChangeColorCommandButtons_ToolTipText
                     GetLocalizedString = "修改颜色"
                 Case efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidth_Message
-                    GetLocalizedString = "线条的宽度值必须在1到10之间"
+                    GetLocalizedString = "线条的宽度值必须在1到80之间"
                 Case efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidthHeadersSeparatorLine_Message
-                    GetLocalizedString = "线条的宽度值必须在1到20之间"
+                    GetLocalizedString = "线条的宽度值必须在1到80之间"
                 ' frmPageNumbersOptions
                 Case efnGUIStr_frmPageNumbersOptions_Caption
                     GetLocalizedString = "页码"
@@ -775,9 +775,9 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                 Case efnGUIStr_frmPrintGridFormatOptions_VariousChangeColorCommandButtons_ToolTipText
                     GetLocalizedString = "Cambiar color"
                 Case efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidth_Message
-                    GetLocalizedString = "El valor del grosor de las l韓eas debe estar entre 1 y 10"
+                    GetLocalizedString = "El valor del grosor de las l韓eas debe estar entre 1 y 80"
                 Case efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidthHeadersSeparatorLine_Message
-                    GetLocalizedString = "El valor del grosor de las l韓eas debe estar entre 1 y 20"
+                    GetLocalizedString = "El valor del grosor de las l韓eas debe estar entre 1 y 80"
                 ' frmPageNumbersOptions
                 Case efnGUIStr_frmPageNumbersOptions_Caption
                     GetLocalizedString = "Opciones de n鷐eros de p醙ina"
@@ -1188,9 +1188,9 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                 Case efnGUIStr_frmPrintGridFormatOptions_VariousChangeColorCommandButtons_ToolTipText
                     GetLocalizedString = "Change color"
                 Case efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidth_Message
-                    GetLocalizedString = "The thickness value of the lines must be between 1 and 10"
+                    GetLocalizedString = "The thickness value of the lines must be between 1 and 80"
                 Case efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidthHeadersSeparatorLine_Message
-                    GetLocalizedString = "The thickness value of the lines must be between 1 and 20"
+                    GetLocalizedString = "The thickness value of the lines must be between 1 and 80"
                 ' frmPageNumbersOptions
                 Case efnGUIStr_frmPageNumbersOptions_Caption
                     GetLocalizedString = "Page numbers options"
