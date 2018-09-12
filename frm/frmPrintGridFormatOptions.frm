@@ -23,6 +23,15 @@ Begin VB.Form frmPrintGridFormatOptions
    ScaleHeight     =   6300
    ScaleWidth      =   5508
    ShowInTaskbar   =   0   'False
+   Begin vbExtra.ComboFn ComboFn1 
+      Height          =   408
+      Left            =   4860
+      TabIndex        =   50
+      Top             =   72
+      Width           =   408
+      _ExtentX        =   720
+      _ExtentY        =   720
+   End
    Begin VB.Timer tmrInit 
       Interval        =   1
       Left            =   1440
