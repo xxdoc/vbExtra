@@ -245,6 +245,9 @@ Private mPrintPrevToolBarIconsSize As vbExPrintPrevToolBarIconsSizeConstants
 Private mPrintPrevUseAltScaleIcons As Boolean
 Private mPrinterFlags As cdeCommonDialogExPrinterFlagsConstants
 Private mPageSetupFlags As cdeCommonDialogExPageSetupFlagsConstants
+Private mAllowUserChangeScale As Boolean
+Private mAllowUserChangeOrientation As Boolean
+Private mAllowUserChangePaper As Boolean
 
 Private mFontName_Prev As String
 Private mFontItalic_Prev As Boolean
@@ -1818,6 +1821,8 @@ Private Sub Class_Initialize()
         gPrinterExPrinted = False
     End If
     
+    mAllowUserChangeOrientation = True
+    mAllowUserChangePaper = True
     mPrintPrevPageSetupButtonVisible = True
     mPrintPrevPageNumbersButtonVisible = True
     mPrintPrevFormatButtonVisible = False
@@ -1858,6 +1863,7 @@ Private Sub Class_Initialize()
     If Not IsEmpty(gPrinterExZoom) Then mZoom = gPrinterExZoom
     If Not IsEmpty(gPrinterExHandleMargins) Then mHandleMargins = gPrinterExHandleMargins Else mHandleMargins = True
     If Not IsEmpty(gPrinterExPrintPageNumbers) Then PrintPageNumbers = gPrinterExPrintPageNumbers Else PrintPageNumbers = True
+    If Not IsEmpty(gPrinterExAllowUserChangeScale) Then mAllowUserChangeScale = gPrinterExAllowUserChangeScale Else mAllowUserChangeScale = True
     If Not IsEmpty(gPrinterExPageNumbersFont) Then
         Set PageNumbersFont = gPrinterExPageNumbersFont
     Else
@@ -3097,6 +3103,52 @@ Public Property Get Height() As Long
 End Property
 
 
+Private Sub IPrinterEx_AddGridReportStyle(ByVal nStyle As GridReportStyle)
+    AddGridReportStyle nStyle
+End Sub
+
+Private Property Let IPrinterEx_AllowUserChangeOrientation(RHS As Boolean)
+    If RHS <> mAllowUserChangeOrientation Then
+        mAllowUserChangeOrientation = RHS
+        If Not mPrintFnObject Is Nothing Then
+            mPrintFnObject.AllowUserChangeOrientation = mAllowUserChangeOrientation
+        End If
+    End If
+End Property
+
+Private Property Get IPrinterEx_AllowUserChangeOrientation() As Boolean
+    IPrinterEx_AllowUserChangeOrientation = mAllowUserChangeOrientation
+End Property
+
+
+Private Property Let IPrinterEx_AllowUserChangePaper(RHS As Boolean)
+    If RHS <> mAllowUserChangePaper Then
+        mAllowUserChangePaper = RHS
+        If Not mPrintFnObject Is Nothing Then
+            mPrintFnObject.AllowUserChangePaper = mAllowUserChangePaper
+        End If
+    End If
+End Property
+
+Private Property Get IPrinterEx_AllowUserChangePaper() As Boolean
+    IPrinterEx_AllowUserChangePaper = mAllowUserChangePaper
+End Property
+
+
+Private Property Let IPrinterEx_AllowUserChangeScale(RHS As Boolean)
+    If RHS <> mAllowUserChangeScale Then
+        mAllowUserChangeScale = RHS
+        If Not mPrintFnObject Is Nothing Then
+            mPrintFnObject.AllowUserChangeScale = mAllowUserChangeScale
+        End If
+    End If
+    gPrinterExAllowUserChangeScale = RHS
+End Property
+
+Private Property Get IPrinterEx_AllowUserChangeScale() As Boolean
+    IPrinterEx_AllowUserChangeScale = mAllowUserChangeScale
+End Property
+
 ' IPrinterEx Interface
 
 Private Sub IPrinterEx_DeleteSavedUserPreferences(Optional nDocKey As String)
@@ -3503,6 +3555,20 @@ Private Sub IPrinterEx_ShowPageSetup(Optional ByVal nFlags As cdeCommonDialogExP
         mDlg.Flags = mDlg.Flags Or nFlags
     End If
     
+    If mDisabledPageSetupMarginsAutomatically Then
+        If Not mHandleMargins Then
+            mDlg.Flags = mDlg.Flags Or cdePSDisableMargins
+        Else
+            mDlg.Flags = mDlg.Flags And Not cdePSDisableMargins
+        End If
+    End If
+    If Not mAllowUserChangeOrientation Then
+        mDlg.Flags = mDlg.Flags Or cdePSDisableOrientation
+    End If
+    If Not mAllowUserChangePaper Then
+        mDlg.Flags = mDlg.Flags Or cdePSDisablePaper
+    End If
+                
     If (LeftMargin > 0) Or (TopMargin > 0) Or (RightMargin > 0) Or (BottomMargin > 0) Then
         mDlg.LeftMargin = LeftMargin
         mDlg.TopMargin = TopMargin
@@ -3804,6 +3870,9 @@ Private Sub IPrinterEx_ShowPrintPreview(Optional nObject As Object, Optional nPr
     mPrintFnObject.PageNumbersFormat = mPageNumbersFormat
     Set mPrintFnObject.PageNumbersFont = mPageNumbersFont
     mPrintFnObject.PageNumbersForeColor = mPageNumbersForeColor
+    mPrintFnObject.AllowUserChangeScale = mAllowUserChangeScale
+    mPrintFnObject.AllowUserChangeOrientation = mAllowUserChangeOrientation
+    mPrintFnObject.AllowUserChangePaper = mAllowUserChangePaper
     
     iDeviceName_Prev = mPrintFnObject.CommonDialogExObject.DeviceName
     iPaperSize_Prev = mPrintFnObject.CommonDialogExObject.PaperBin
@@ -7202,6 +7271,7 @@ Public Sub PrintFlexGrid(nFlexGrid As Object, Optional Style As Variant, Optiona
         If VarType(Style) = vbObject Then
             If TypeOf Style Is GridReportStyle Then
                 Set iGridReportStyle = Style
+                AddGridReportStyle iGridReportStyle
             Else
                 RaiseError 1216, "PrinterEx", "Style parameter must have a GridReportStyle object or a numeric value"
                 Exit Sub
@@ -7260,6 +7330,30 @@ Public Sub PrintFlexGrid(nFlexGrid As Object, Optional Style As Variant, Optiona
     End If
 End Sub
  
+Private Sub AddGridReportStyle(nStyle As GridReportStyle)
+    Dim iSt
+    Dim iFound As Boolean
+    Dim iStr As String
+    Dim iSt2 As GridReportStyle
+    
+    iStr = GetGridReportStyleID(nStyle, 0)
+    
+    If iStr = "" Then
+        iFound = False
+        For Each iSt In gGridReportStyles
+            Set iSt2 = iSt
+            If GridReportStylesAreEqual(iSt2, nStyle) Then
+                iFound = True
+                Exit For
+            End If
+        Next
+        If Not iFound Then
+            Set iSt2 = nStyle.Clone
+            iSt2.Tag = "GRStyleAdded" & gGridReportStyles.Count + 1
+            gGridReportStyles.Add iSt2
+        End If
+    End If
+End Sub
  
 Friend Property Let PrintFlexGridCanceled(nValue As Boolean)
     mPrintFlexGridCanceled = nValue
@@ -7272,3 +7366,5 @@ End Property
 Friend Property Get DisabledPageSetupMarginsAutomatically() As Boolean
     DisabledPageSetupMarginsAutomatically = mDisabledPageSetupMarginsAutomatically
 End Property
+
+

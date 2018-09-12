@@ -454,3 +454,34 @@ Public Sub DeleteSavedUserPreferences(Optional nDocKey As String)
     
 End Sub
 
+
+Public Property Let AllowUserChangeScale(nValue As Boolean)
+    
+End Property
+
+Public Property Get AllowUserChangeScale() As Boolean
+    
+End Property
+
+
+Public Property Let AllowUserChangeOrientation(nValue As Boolean)
+    
+End Property
+
+Public Property Get AllowUserChangeOrientation() As Boolean
+    
+End Property
+
+
+Public Property Let AllowUserChangePaper(nValue As Boolean)
+    
+End Property
+
+Public Property Get AllowUserChangePaper() As Boolean
+    
+End Property
+
+
+Public Sub AddGridReportStyle(ByVal nStyle As GridReportStyle)
+
+End Sub

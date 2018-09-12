@@ -1159,7 +1159,7 @@ Again:
                 Do Until c = mCurrentGrid.Cols - 1
                     c = c + 1
                     If mCurrentGrid.ColWidth(c) <> 0 Then
-                        If InStr(LCase$(mCurrentGrid.TextMatrix(R, c)), iTextToFind) > 0 Then
+                        If InStr(LCase$(mCurrentGrid.textmatrix(R, c)), iTextToFind) > 0 Then
                             mCurrentGrid.col = c
                             sLastCol = c
                             If R > 1 Then
@@ -1417,7 +1417,7 @@ Again:
                             iBackColor = mCurrentGrid.CellBackColor
                         End If
                         If iTextColor <> iBackColor Then
-                            iTextoCelda = mCurrentGrid.TextMatrix(ContFil, ContCol)
+                            iTextoCelda = mCurrentGrid.textmatrix(ContFil, ContCol)
                             No_Hacer = False
                             
                             iMergeCols = ((mCurrentGrid.MergeCells = flexMergeFree) Or (mCurrentGrid.MergeCells = flexMergeRestrictColumns)) And mMergeCellsExcel
@@ -1431,11 +1431,11 @@ Again:
                                     iLastVisibleText = ""
                                     For c3 = ContCol - 1 To 0 Step -1
                                         If mCurrentGrid.ColWidth(c3) <> 0 Then
-                                            iLastVisibleText = mCurrentGrid.TextMatrix(ContFil, c3)
+                                            iLastVisibleText = mCurrentGrid.textmatrix(ContFil, c3)
                                             Exit For
                                         End If
                                     Next c3
-                                    If mCurrentGrid.TextMatrix(ContFil, ContCol) = iLastVisibleText Then
+                                    If mCurrentGrid.textmatrix(ContFil, ContCol) = iLastVisibleText Then
                                         No_Hacer = True
                                     End If
                                 End If
@@ -1446,17 +1446,17 @@ Again:
                                     iLastVisibleText = ""
                                     For c3 = ContFil - 1 To 0 Step -1
                                         If mCurrentGrid.RowHeight(c3) <> 0 Then
-                                            iLastVisibleText = mCurrentGrid.TextMatrix(c3, ContCol)
+                                            iLastVisibleText = mCurrentGrid.textmatrix(c3, ContCol)
                                             Exit For
                                         End If
                                     Next c3
-                                    If mCurrentGrid.TextMatrix(ContFil, ContCol) = iLastVisibleText Then
+                                    If mCurrentGrid.textmatrix(ContFil, ContCol) = iLastVisibleText Then
                                         No_Hacer = True
                                     End If
                                 End If
                             End If
                             If Not No_Hacer Then
-                                iCellsTexts(ContCol, ContFil) = mCurrentGrid.TextMatrix(ContFil, ContCol)
+                                iCellsTexts(ContCol, ContFil) = mCurrentGrid.textmatrix(ContFil, ContCol)
                             End If
                         Else
                             iCellsTexts(ContCol, ContFil) = " "
@@ -2518,11 +2518,11 @@ Private Function CopyGridTextMatrix(nGrid As Object) As Variant
                         iLastVisibleText = ""
                         For c2 = c - 1 To 0 Step -1
                             If nGrid.ColWidth(c2) <> 0 Then
-                                iLastVisibleText = nGrid.TextMatrix(R, c2)
+                                iLastVisibleText = nGrid.textmatrix(R, c2)
                                 Exit For
                             End If
                         Next c2
-                        If nGrid.TextMatrix(R, c) = iLastVisibleText Then
+                        If nGrid.textmatrix(R, c) = iLastVisibleText Then
                             iCopy = False
                         End If
                     End If
@@ -2533,18 +2533,18 @@ Private Function CopyGridTextMatrix(nGrid As Object) As Variant
                             iLastVisibleText = ""
                             For c2 = R - 1 To 0 Step -1
                                 If nGrid.RowHeight(c2) <> 0 Then
-                                    iLastVisibleText = nGrid.TextMatrix(c2, c)
+                                    iLastVisibleText = nGrid.textmatrix(c2, c)
                                     Exit For
                                 End If
                             Next c2
-                            If nGrid.TextMatrix(R, c) = iLastVisibleText Then
+                            If nGrid.textmatrix(R, c) = iLastVisibleText Then
                                 iCopy = False
                             End If
                         End If
                     End If
                 End If
                 If iCopy Then
-                    iCopyGridTextMatrix(r2, c) = nGrid.TextMatrix(R, c)
+                    iCopyGridTextMatrix(r2, c) = nGrid.textmatrix(R, c)
                 End If
             Next c
         End If
@@ -3359,13 +3359,13 @@ Part2:
                     If iGrid.MergeRow(r1) = True Then
                         iConsiderGridWordWrap = True
                         If c > 0 Then
-                            If iGrid.TextMatrix(r1, c) = iGrid.TextMatrix(r1, c - 1) Then
+                            If iGrid.textmatrix(r1, c) = iGrid.textmatrix(r1, c - 1) Then
                                 iIgnore = True
                             End If
                         End If
                         If Not iIgnore Then
                             If c < (iGridCols - 1) Then
-                                If iGrid.TextMatrix(r1, c) = iGrid.TextMatrix(r1, c + 1) Then
+                                If iGrid.textmatrix(r1, c) = iGrid.textmatrix(r1, c + 1) Then
                                     iIgnore = True
                                 End If
                             End If
@@ -3376,7 +3376,7 @@ Part2:
                 End If
                 
                 If Not iIgnore Then
-                    iLen = Len(iGrid.TextMatrix(r1, c)) * mGridPrintingData.CellFontAttibutes(r1, c).Size
+                    iLen = Len(iGrid.textmatrix(r1, c)) * mGridPrintingData.CellFontAttibutes(r1, c).Size
                     If iLen > iLongerTexts(c, 5) Then
                         If iLen > iLongerTexts(c, 1) Then
                             iLongerTexts(c, 1) = iLen
@@ -3686,7 +3686,7 @@ Part2:
                     If iColumnHeadersTextWidths(c) > iColumnDataTextWidths(c) Then
                         For r1 = 0 To iFixedRows - 1
                             If mGridPrintingData.RowIsVisible(r1) Then
-                                If InStr(iGrid.TextMatrix(r1, c), " ") > 0 Then
+                                If InStr(iGrid.textmatrix(r1, c), " ") > 0 Then
                                     iWordWrapTheColumnHeaders = True
                                 End If
                                 iGrid.col = c
@@ -3811,7 +3811,7 @@ Part2:
                         For r1 = 1 To 5
                             If mGridPrintingData.RowIsVisible(r1) Then
                                 If iLongerTexts(c, r1) <> 0 Then
-                                    If InStr(iGrid.TextMatrix(iLongerTextsRow(c, r1), c), " ") > 0 Then
+                                    If InStr(iGrid.textmatrix(iLongerTextsRow(c, r1), c), " ") > 0 Then
                                         iWordWrapTheColumnData = True
                                         iColumnDataWordWraps(c) = True
                                     End If
@@ -4158,6 +4158,13 @@ Part2:
     Dim iOuterBorderRight As Long
     Dim iOuterBorderTop As Long
     Dim iOuterBorderBottom As Long
+    Dim iHeadersSeparatorLine_Y1 As Long
+    Dim iHeadersSeparatorLine_Y2 As Long
+    Dim iHeadersSeparatorLine_BF As Boolean
+    Dim iHeadersSeparatorLine_LineWidth As Long
+    Dim iHeadersBorder_X1 As Long
+    Dim iHeadersBorder_X2 As Long
+    Dim iHeadersBorder_Y As Long
     Dim iHeadersHeight As Long
     Dim iPrintCellBackColor As Boolean
     Dim iAuxColor As Long
@@ -4244,7 +4251,7 @@ Part2:
             For c = 0 To iGridCols - 1
 '                If mGridPrintingData.ColIsVisible(c) Then
                     ci = c
-                    iText = iGrid.TextMatrix(r1, c)
+                    iText = iGrid.textmatrix(r1, c)
                     iLen = Len(iText)
                     iMergeCol = iMergeCols And iGrid.MergeCol(c)
                     iPosCellLineLeft = mGridPrintingData.ColPosLeft(c)
@@ -4277,7 +4284,7 @@ Part2:
                             iPosCellLineRight = mGridPrintingData.ColPosRight(c)
                         Else
                             c2 = c + 1
-                            Do Until iGrid.TextMatrix(r1, c2) <> iText
+                            Do Until iGrid.textmatrix(r1, c2) <> iText
                                 c2 = c2 + 1
                                 If c2 = iGridCols Then
                                     Exit Do
@@ -4301,7 +4308,7 @@ Part2:
                         Else
                             If (r1 <> (iGridRows - 1)) And (r1 <> (iFixedRows - 1)) Then
                                 r2 = r1 + 1
-                                Do Until iGrid.TextMatrix(r2, c) <> iText
+                                Do Until iGrid.textmatrix(r2, c) <> iText
                                     r2 = r2 + 1
                                     If r2 = iGridRows Then
                                         Exit Do
@@ -4400,10 +4407,13 @@ Part2:
         iOuterBorderTop = iOuterBorderTop + iHeadersHeight
     End If
     If iGridReportStyle.PrintHeadersBorder And iThereAreVisibleFixedRows Then
+        ' this is the border of the headers but only of the first page
         iCY = Printer2.CurrentY
         Printer2.Line (iOuterBorderLeft, iOuterBorderTop - iHeadersHeight)-(iOuterBorderRight, iOuterBorderTop - iHeadersHeight), iGridReportStyle.HeadersBorderColor
-        Printer2.Line (iOuterBorderLeft, iOuterBorderTop - iHeadersHeight)-(iOuterBorderLeft, iOuterBorderTop - iHeadersHeight + iHeadersHeight), iGridReportStyle.HeadersBorderColor
-        Printer2.Line (iOuterBorderRight, iOuterBorderTop - iHeadersHeight)-(iOuterBorderRight, iOuterBorderTop - iHeadersHeight + iHeadersHeight), iGridReportStyle.HeadersBorderColor
+        Printer2.Line (iOuterBorderLeft, iOuterBorderTop - iHeadersHeight)-(iOuterBorderLeft, iOuterBorderTop), iGridReportStyle.HeadersBorderColor
+        Printer2.Line (iOuterBorderRight, iOuterBorderTop - iHeadersHeight)-(iOuterBorderRight, iOuterBorderTop), iGridReportStyle.HeadersBorderColor
+        iHeadersBorder_X1 = iOuterBorderLeft: iHeadersBorder_X2 = iOuterBorderRight: iHeadersBorder_Y = iOuterBorderTop
+        
         Printer2.CurrentY = iCY
     End If
     
@@ -4570,14 +4580,31 @@ MakeNewPage:
                 
                 ' make new page
                 iOuterBorderBottom = Printer2.CurrentY
-                If iGridReportStyle.PrintOuterBorder Then
-                    If Not (iGridReportStyle.PrintHeadersBorder And iThereAreVisibleFixedRows) Then
-                        Printer2.Line (iOuterBorderLeft, iOuterBorderTop)-(iOuterBorderRight, iOuterBorderTop), iGridReportStyle.OuterBorderColor
+                If iGridReportStyle.PrintHeadersSeparatorLine Then
+                    If Not iHeadersSeparatorLine_BF Then
+                        Printer2.DrawWidth = iHeadersSeparatorLine_LineWidth
+                        Printer2.Line (iOuterBorderLeft, iHeadersSeparatorLine_Y1)-(iOuterBorderRight, iHeadersSeparatorLine_Y2), iGridReportStyle.HeadersBorderColor
+                        Printer2.DrawWidth = iGridReportStyle.LineWidth
+                    Else
+                        Printer2.DrawWidth = 1
+                        Printer2.Line (iOuterBorderLeft, iHeadersSeparatorLine_Y1)-(iOuterBorderRight, iHeadersSeparatorLine_Y2), iGridReportStyle.HeadersBorderColor, BF
+                        Printer2.DrawWidth = iGridReportStyle.LineWidth
                     End If
+                ElseIf iGridReportStyle.PrintHeadersBorder Then
+                    Printer2.Line (iHeadersBorder_X1, iHeadersBorder_Y)-(iHeadersBorder_X2, iHeadersBorder_Y), iGridReportStyle.HeadersBorderColor
+                End If
+                If iGridReportStyle.PrintOuterBorder Then
+                    ' outer border for all the pages but not the last page
+                    Printer2.Line (iOuterBorderLeft, iOuterBorderTop)-(iOuterBorderRight, iOuterBorderTop), iGridReportStyle.OuterBorderColor
                     Printer2.Line (iOuterBorderLeft, iOuterBorderTop)-(iOuterBorderLeft, iOuterBorderBottom), iGridReportStyle.OuterBorderColor
                     Printer2.Line (iOuterBorderRight, iOuterBorderTop)-(iOuterBorderRight, iOuterBorderBottom), iGridReportStyle.OuterBorderColor
                 End If
-    
+                
+                If iGridReportStyle.PrintRowsLines Then
+                    ' last line, in the same place of the outer border but when the grid does not finish in the page
+                    Printer2.Line (iOuterBorderLeft + Printer2.DrawWidth * Printer2.TwipsPerPixelX, iOuterBorderBottom)-(iOuterBorderRight - Printer2.DrawWidth * Printer2.TwipsPerPixelX, iOuterBorderBottom), iGridReportStyle.RowsLinesColor
+                End If
+                
                 Printer2.CurrentX = 0
     '            Printer2.CurrentY = Printer2.ScaleHeight - 1000
             
@@ -4631,10 +4658,12 @@ MakeNewPage:
                     GoSub PrintRow:
                 Next h
                 If iGridReportStyle.PrintHeadersBorder And iThereAreVisibleFixedRows Then
+                    ' this is the border of the headers the all the pages but not the first page
                     iCY = Printer2.CurrentY
                     Printer2.Line (iOuterBorderLeft, iOuterBorderTop - iHeadersHeight)-(iOuterBorderRight, iOuterBorderTop - iHeadersHeight), iGridReportStyle.HeadersBorderColor
-                    Printer2.Line (iOuterBorderLeft, iOuterBorderTop - iHeadersHeight)-(iOuterBorderLeft, iOuterBorderTop - iHeadersHeight + iHeadersHeight), iGridReportStyle.HeadersBorderColor
-                    Printer2.Line (iOuterBorderRight, iOuterBorderTop - iHeadersHeight)-(iOuterBorderRight, iOuterBorderTop - iHeadersHeight + iHeadersHeight), iGridReportStyle.HeadersBorderColor
+                    Printer2.Line (iOuterBorderLeft, iOuterBorderTop - iHeadersHeight)-(iOuterBorderLeft, iOuterBorderTop), iGridReportStyle.HeadersBorderColor
+                    Printer2.Line (iOuterBorderRight, iOuterBorderTop - iHeadersHeight)-(iOuterBorderRight, iOuterBorderTop), iGridReportStyle.HeadersBorderColor
+                    iHeadersBorder_X1 = iOuterBorderLeft: iHeadersBorder_X2 = iOuterBorderRight: iHeadersBorder_Y = iOuterBorderTop
                     Printer2.CurrentY = iCY
                 End If
             End If
@@ -4732,14 +4761,28 @@ MakeNewPage:
         ifrmSettingGridDataProgressShown = False
     End If
     
-    
     iOuterBorderBottom = Printer2.CurrentY
+    If iGridReportStyle.PrintHeadersSeparatorLine Then
+        If Not iHeadersSeparatorLine_BF Then
+            Printer2.DrawWidth = iHeadersSeparatorLine_LineWidth
+            Printer2.Line (iOuterBorderLeft, iHeadersSeparatorLine_Y1)-(iOuterBorderRight, iHeadersSeparatorLine_Y2), iGridReportStyle.HeadersBorderColor
+            Printer2.DrawWidth = iGridReportStyle.LineWidth
+        Else
+            Printer2.DrawWidth = 1
+            Printer2.Line (iOuterBorderLeft, iHeadersSeparatorLine_Y1)-(iOuterBorderRight, iHeadersSeparatorLine_Y2), iGridReportStyle.HeadersBorderColor, BF
+            Printer2.DrawWidth = iGridReportStyle.LineWidth
+        End If
+    ElseIf iGridReportStyle.PrintHeadersBorder Then
+        Printer2.Line (iHeadersBorder_X1, iHeadersBorder_Y)-(iHeadersBorder_X2, iHeadersBorder_Y), iGridReportStyle.HeadersBorderColor
+    End If
     If iGridReportStyle.PrintOuterBorder Then
+        ' outer border but only the last page
         Printer2.Line (iOuterBorderLeft, iOuterBorderTop)-(iOuterBorderRight, iOuterBorderTop), iGridReportStyle.OuterBorderColor
         Printer2.Line (iOuterBorderLeft, iOuterBorderTop)-(iOuterBorderLeft, iOuterBorderBottom), iGridReportStyle.OuterBorderColor
         Printer2.Line (iOuterBorderRight, iOuterBorderTop)-(iOuterBorderRight, iOuterBorderBottom), iGridReportStyle.OuterBorderColor
         Printer2.Line (iOuterBorderLeft, iOuterBorderBottom)-(iOuterBorderRight, iOuterBorderBottom), iGridReportStyle.OuterBorderColor
     End If
+    Printer2.CurrentY = iOuterBorderBottom
     
     If mFinalText <> "" Then
         Set Printer2.Font = mPrintGridFormatSettings.OtherTextsFont
@@ -4896,7 +4939,9 @@ PrintRow:
                 End If
                 If iAuxColor <> vbWhite Then
                     iAuxLng2 = Printer2.CurrentY
-                    Printer2.Line (iGridLeftPos + mGridPrintingData.ColPosLeft(c) + Printer2.TwipsPerPixelX * Printer2.DrawWidth, iCY + Printer2.TwipsPerPixelY * Printer2.DrawWidth)-(iGridLeftPos + mGridPrintingData.ColPosLeft(c) + mGridPrintingData.CellWidth(iRow, c), iCY + iRh2), iAuxColor, BF
+'                    Printer2.Line (iGridLeftPos + mGridPrintingData.ColPosLeft(c) + Printer2.TwipsPerPixelX * Printer2.DrawWidth, iCY + Printer2.TwipsPerPixelY * Printer2.DrawWidth)-(iGridLeftPos + mGridPrintingData.ColPosLeft(c) + mGridPrintingData.CellWidth(iRow, c), iCY + iRh2), iAuxColor, BF
+'                    Printer2.Line (iGridLeftPos + mGridPrintingData.ColPosLeft(c), iCY + Printer2.TwipsPerPixelY * Printer2.DrawWidth)-(iGridLeftPos + mGridPrintingData.ColPosLeft(c) + mGridPrintingData.CellWidth(iRow, c), iCY + iRh2), iAuxColor, BF
+                    Printer2.Line (iGridLeftPos + mGridPrintingData.ColPosLeft(c) + Printer2.TwipsPerPixelX * Printer2.DrawWidth / IIf(c = mGridPrintingData.FirstVisibleCol, 2, 1), iCY + Printer2.TwipsPerPixelY * Printer2.DrawWidth)-(iGridLeftPos + mGridPrintingData.ColPosLeft(c) + mGridPrintingData.CellWidth(iRow, c) - Printer2.TwipsPerPixelX * Printer2.DrawWidth / 2, iCY + iRh2), iAuxColor, BF
                     Printer2.CurrentY = iAuxLng2
                 End If
             End If
@@ -4999,7 +5044,9 @@ PrintRow:
                 If iRow <> (iFixedRows - 1) Then
                     iAuxLng = iGridLeftPos + mGridPrintingData.ColPosLeft(c)
                     iAuxLng2 = Printer2.CurrentY
-                    Printer2.Line (iAuxLng + Printer2.TwipsPerPixelX * Printer2.DrawWidth, iCY + iRh2)-(iAuxLng + Printer2.TwipsPerPixelX * Printer2.DrawWidth + mGridPrintingData.CellWidth(iRow, c), iCY + iRh2), iGridReportStyle.RowsLinesColor
+'                    Printer2.Line (iAuxLng + Printer2.TwipsPerPixelX * Printer2.DrawWidth, iCY + iRh2)-(iAuxLng + Printer2.TwipsPerPixelX * Printer2.DrawWidth + mGridPrintingData.CellWidth(iRow, c), iCY + iRh2), iGridReportStyle.RowsLinesColor
+'                    Printer2.Line (iAuxLng - IIf(c = mGridPrintingData.FirstVisibleCol, 0, Printer2.TwipsPerPixelX * Printer2.DrawWidth), iCY + iRh2)-(iAuxLng + mGridPrintingData.CellWidth(iRow, c), iCY + iRh2), iGridReportStyle.RowsLinesColor
+                    Printer2.Line (iAuxLng, iCY + iRh2)-(iAuxLng + mGridPrintingData.CellWidth(iRow, c), iCY + iRh2), iGridReportStyle.RowsLinesColor
                     Printer2.CurrentY = iAuxLng2
                 End If
             Else
@@ -5029,7 +5076,8 @@ PrintRow:
                     If mGridPrintingData.CellPrintRightLine(iRow, c) Then
                         iAuxLng = iGridLeftPos + mGridPrintingData.ColPosLeft(c) + mGridPrintingData.CellWidth(iRow, c)
                         iAuxLng2 = Printer2.CurrentY
-                        Printer2.Line (iAuxLng, iCY + Printer2.TwipsPerPixelY * Printer2.DrawWidth)-(iAuxLng, iCY + iRh2), iGridReportStyle.ColumnsHeadersLinesColor
+'                        Printer2.Line (iAuxLng, iCY + Printer2.TwipsPerPixelY * Printer2.DrawWidth)-(iAuxLng, iCY + iRh2), iGridReportStyle.ColumnsHeadersLinesColor
+                        Printer2.Line (iAuxLng, iCY)-(iAuxLng, iCY + iRh2), iGridReportStyle.ColumnsHeadersLinesColor
                         Printer2.CurrentY = iAuxLng2
                     End If
                 End If
@@ -5038,7 +5086,9 @@ PrintRow:
                     If mGridPrintingData.CellPrintRightLine(iRow, c) Then
                         iAuxLng = iGridLeftPos + mGridPrintingData.ColPosLeft(c) + mGridPrintingData.CellWidth(iRow, c)
                         iAuxLng2 = Printer2.CurrentY
-                        Printer2.Line (iAuxLng, iCY + Printer2.TwipsPerPixelY * Printer2.DrawWidth)-(iAuxLng, iCY + iRh2), iGridReportStyle.ColumnsDataLinesColor
+'                        Printer2.Line (iAuxLng, iCY + Printer2.TwipsPerPixelY * Printer2.DrawWidth)-(iAuxLng, iCY + iRh2), iGridReportStyle.ColumnsDataLinesColor
+'                        Printer2.Line (iAuxLng, iCY)-(iAuxLng, iCY + iRh2), iGridReportStyle.ColumnsDataLinesColor
+                        Printer2.Line (iAuxLng, iCY - IIf(iRowInPage < 1 Or iRow <= iFixedRows, 0, (Printer2.TwipsPerPixelY * Printer2.DrawWidth / 2)))-(iAuxLng, iCY + iRh2), iGridReportStyle.ColumnsDataLinesColor
                         Printer2.CurrentY = iAuxLng2
                     End If
                 End If
@@ -5046,19 +5096,27 @@ PrintRow:
             If iThereAreVisibleFixedRows Then
                 If iGridReportStyle.PrintHeadersSeparatorLine Then
                     If iRow = (iFixedRows - 1) Then
-                        If iGridReportStyle.LineWidthHeadersSeparatorLine < 4 Then
-                            Printer2.DrawWidth = iGridReportStyle.LineWidthHeadersSeparatorLine
+                        iHeadersSeparatorLine_LineWidth = iGridReportStyle.LineWidthHeadersSeparatorLine
+                        If iGridReportStyle.PrintHeadersBorder Then
+                            If iGridReportStyle.LineWidth > iHeadersSeparatorLine_LineWidth Then
+                                iHeadersSeparatorLine_LineWidth = iGridReportStyle.LineWidth
+                            End If
+                        End If
+                        If iHeadersSeparatorLine_LineWidth < 4 Then
+                            Printer2.DrawWidth = iHeadersSeparatorLine_LineWidth
                         Else
                             Printer2.DrawWidth = 1
                         End If
                         iAuxLng = iGridLeftPos + mGridPrintingData.ColPosLeft(c)
                         iAuxLng2 = Printer2.CurrentY
-                        If iGridReportStyle.LineWidthHeadersSeparatorLine < 4 Then
-                            Printer2.Line (iAuxLng, iCY + iRh2)-(iAuxLng + mGridPrintingData.CellWidth(iRow, c), iCY + iRh2), iGridReportStyle.HeadersBorderColor
+                        If iHeadersSeparatorLine_LineWidth < 4 Then
+                            Printer2.Line (iAuxLng, iCY + iRh2)-(iAuxLng + mGridPrintingData.CellWidth(iFixedRows - 1, c), iCY + iRh2), iGridReportStyle.HeadersBorderColor
+                            iHeadersSeparatorLine_Y1 = iCY + iRh2: iHeadersSeparatorLine_Y2 = iCY + iRh2: iHeadersSeparatorLine_BF = False
                         Else
-                            iAuxLng3 = (iGridReportStyle.LineWidthHeadersSeparatorLine - 1) * Printer2.TwipsPerPixelY
+                            iAuxLng3 = (iHeadersSeparatorLine_LineWidth - 1) * Printer2.TwipsPerPixelY
                             iAuxLng4 = iAuxLng3 / 2
-                            Printer2.Line (iAuxLng, iCY + iRh2 - iAuxLng3 + iAuxLng4)-(iAuxLng + mGridPrintingData.CellWidth(iRow, c), iCY + iRh2 + iAuxLng4), iGridReportStyle.HeadersBorderColor, BF
+                            Printer2.Line (iAuxLng, iCY + iRh2 - iAuxLng3 + iAuxLng4)-(iAuxLng + mGridPrintingData.CellWidth(iFixedRows - 1, c), iCY + iRh2 + iAuxLng4), iGridReportStyle.HeadersBorderColor, BF
+                            iHeadersSeparatorLine_Y1 = iCY + iRh2 - iAuxLng3 + iAuxLng4: iHeadersSeparatorLine_Y2 = iCY + iRh2 + iAuxLng4: iHeadersSeparatorLine_BF = True
                         End If
                         Printer2.CurrentY = iAuxLng2
                         Printer2.DrawWidth = iGridReportStyle.LineWidth

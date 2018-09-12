@@ -22,8 +22,8 @@ Public PrintHeadersSeparatorLine As Boolean
 Public PrintHeadersBackground As Boolean
 Public PrintFixedColsBackground As Boolean
 Public PrintOtherBackgrounds As Boolean
-Public LineWidth As Long
-Public LineWidthHeadersSeparatorLine As Long
+Private mLineWidth As Long
+Private mLineWidthHeadersSeparatorLine As Long
 
 Public OuterBorderColor As Long
 Public ColumnsDataLinesColor As Long
@@ -59,7 +59,7 @@ Public Function Clone() As GridReportStyle
 End Function
 
 Private Sub Class_Initialize()
-    Tag = "GRStyle2"
+'    Tag = "GRStyle2"
     
     LineWidth = 3
     PrintHeadersBackground = True
@@ -81,3 +81,30 @@ Private Sub Class_Initialize()
     LineWidthHeadersSeparatorLine = 3
 
 End Sub
+
+
+Public Property Let LineWidth(ByVal nValue As Long)
+    If (nValue < 1) Or (nValue > 80) Then
+        RaiseError 380, TypeName(Me), "The thickness value of the lines must be between 1 and 80"
+        Exit Property
+    End If
+    mLineWidth = nValue
+End Property
+
+Public Property Get LineWidth() As Long
+    LineWidth = mLineWidth
+End Property
+
+
+Public Property Let LineWidthHeadersSeparatorLine(ByVal nValue As Long)
+    If (nValue < 1) Or (nValue > 80) Then
+        RaiseError 380, TypeName(Me), "The thickness value of the lines must be between 1 and 80"
+        Exit Property
+    End If
+    mLineWidthHeadersSeparatorLine = nValue
+End Property
+
+Public Property Get LineWidthHeadersSeparatorLine() As Long
+    LineWidthHeadersSeparatorLine = mLineWidthHeadersSeparatorLine
+End Property
+

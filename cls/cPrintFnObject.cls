@@ -66,6 +66,8 @@ Private mFormatButtonPicture(4) As Object
 Private mPageNumbersButtonVisible As Boolean
 Private mPageNumbersButtonHiddenAutomatically As Long ' 0: normal, 1: hidden automatically, 2: show or hidden by code
 Private mAllowUserChangeScale As Boolean
+Private mAllowUserChangeOrientation As Boolean
+Private mAllowUserChangePaper As Boolean
 Private mScalePercent As Long
 Private mMinScalePercent As Long
 Private mMaxScalePercent As Long
@@ -103,6 +105,12 @@ Public Sub ShowPageSetup()
                 Else
                     mDlg.Flags = mDlg.Flags And Not cdePSDisableMargins
                 End If
+            End If
+            If Not mAllowUserChangeOrientation Then
+                mDlg.Flags = mDlg.Flags Or cdePSDisableOrientation
+            End If
+            If Not mAllowUserChangePaper Then
+                mDlg.Flags = mDlg.Flags Or cdePSDisablePaper
             End If
         End If
         iOrientationPrev = mDlg.Orientation
@@ -306,6 +314,7 @@ Public Sub ShowPrintPreview(Optional DocKey As String)
         mfrmPrintPreview.PageSetupButtonVisible = mPageSetupButtonVisible
         mfrmPrintPreview.PageNumbersButtonVisible = mPageNumbersButtonVisible
         mfrmPrintPreview.AllowUserChangeScale = mAllowUserChangeScale And Not (mMinScalePercent = mMaxScalePercent)
+        mfrmPrintPreview.AllowUserChangeOrientation = mAllowUserChangeOrientation
         
         mfrmPrintPreview.ScalePercent = mScalePercent
         
@@ -342,6 +351,8 @@ Private Sub Class_Initialize()
     mPageSetupButtonVisible = True
     mFormatButtonToolTipText = ""
     mAllowUserChangeScale = True
+    mAllowUserChangeOrientation = True
+    mAllowUserChangePaper = True
     mMinScalePercent = cPrintPreviewDefaultMinScale
     mMaxScalePercent = cPrintPreviewDefaultMaxScale
     mScalePercent = 100
@@ -861,6 +872,34 @@ End Property
 Public Property Let AllowUserChangeScale(ByVal nValue As Boolean)
     If mAllowUserChangeScale <> nValue Then
         mAllowUserChangeScale = nValue
+        If Not mfrmPrintPreview Is Nothing Then
+            mfrmPrintPreview.AllowUserChangeScale = mAllowUserChangeScale
+        End If
+    End If
+End Property
+
+
+Public Property Get AllowUserChangeOrientation() As Boolean
+    AllowUserChangeOrientation = mAllowUserChangeOrientation
+End Property
+
+Public Property Let AllowUserChangeOrientation(ByVal nValue As Boolean)
+    If mAllowUserChangeOrientation <> nValue Then
+        mAllowUserChangeOrientation = nValue
+        If Not mfrmPrintPreview Is Nothing Then
+            mfrmPrintPreview.AllowUserChangeOrientation = mAllowUserChangeOrientation
+        End If
+    End If
+End Property
+
+
+Public Property Get AllowUserChangePaper() As Boolean
+    AllowUserChangePaper = mAllowUserChangePaper
+End Property
+
+Public Property Let AllowUserChangePaper(ByVal nValue As Boolean)
+    If mAllowUserChangePaper <> nValue Then
+        mAllowUserChangePaper = nValue
     End If
 End Property
 
