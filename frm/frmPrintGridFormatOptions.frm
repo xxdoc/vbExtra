@@ -823,7 +823,7 @@ Private Sub chkPrintHeadersBorder_Click()
     mGridReportStyle.PrintHeadersBorder = (chkPrintHeadersBorder.Value = 1)
     DrawSample
     StyleChanged = True
-    picPrintHeadersSeparatorLine.Enabled = (chkPrintRowsLines.Value = 0) And ((chkPrintHeadersBorder.Value = 0) Or Not chkPrintHeadersBorder.Enabled)
+    picPrintHeadersSeparatorLine.Enabled = True ' (chkPrintRowsLines.Value = 0) And ((chkPrintHeadersBorder.Value = 0) Or Not chkPrintHeadersBorder.Enabled)
     If Not picPrintHeadersSeparatorLine.Enabled Then
         chkPrintHeadersSeparatorLine.Tag = chkPrintHeadersSeparatorLine.Value
         chkPrintHeadersSeparatorLine.Value = 2
@@ -874,7 +874,7 @@ Private Sub chkPrintRowsLines_Click()
     mGridReportStyle.PrintRowsLines = (chkPrintRowsLines.Value = 1)
     DrawSample
     StyleChanged = True
-    picPrintHeadersSeparatorLine.Enabled = (chkPrintRowsLines.Value = 0) And ((chkPrintHeadersBorder.Value = 0) Or Not chkPrintHeadersBorder.Enabled)
+    picPrintHeadersSeparatorLine.Enabled = True ' (chkPrintRowsLines.Value = 0) And ((chkPrintHeadersBorder.Value = 0) Or Not chkPrintHeadersBorder.Enabled)
     If Not picPrintHeadersSeparatorLine.Enabled Then
         chkPrintHeadersSeparatorLine.Tag = chkPrintHeadersSeparatorLine.Value
         chkPrintHeadersSeparatorLine.Value = 2
@@ -1153,11 +1153,6 @@ Private Sub DrawSample()
     End If
     
     ' lines
-    If mGridReportStyle.PrintColumnsDataLines Then
-        picSample.Line (1900, 800)-(1900, 2700), iColumnsDataLinesColor
-        picSample.Line (3100, 800)-(3100, 2700), iColumnsDataLinesColor
-    End If
-    
     If mGridReportStyle.PrintColumnsHeadersLines Then
         picSample.Line (1900, 250)-(1900, 800), iColumnsHeadersLinesColor
         picSample.Line (3100, 250)-(3100, 800), iColumnsHeadersLinesColor
@@ -1168,6 +1163,12 @@ Private Sub DrawSample()
         picSample.Line (700, 1900)-(4400, 1900), iRowsLinesColor
         picSample.Line (700, 2450)-(4400, 2450), iRowsLinesColor
     End If
+    
+    If mGridReportStyle.PrintColumnsDataLines Then
+        picSample.Line (1900, 800)-(1900, 2700), iColumnsDataLinesColor
+        picSample.Line (3100, 800)-(3100, 2700), iColumnsDataLinesColor
+    End If
+    
     If mGridReportStyle.PrintHeadersSeparatorLine Then
         iLng = Round(mGridReportStyle.LineWidthHeadersSeparatorLine / 4)
         If iLng = 0 Then iLng = 1
@@ -1191,7 +1192,7 @@ Private Sub DrawSample()
     If mGridReportStyle.PrintOuterBorder Then
         If mGridReportStyle.PrintHeadersBorder Then
             picSample.Line (700, 800)-(4400, 2700), iOuterBorderColor, B
-            picSample.Line (700, 800)-(4400, 800), iHeadersBorderColor
+            picSample.Line (700, 800)-(4400, 800), iOuterBorderColor
         Else
             picSample.Line (700, 250)-(4400, 2700), iOuterBorderColor, B
         End If
@@ -1729,6 +1730,7 @@ Private Sub LoadStyles()
     Dim c As Long
     Dim iGridReportStyle As GridReportStyle
     Dim iCount As Long
+    Dim iSt
     
     ReDim mStylesIDs(0)
     cboStyle.Clear
@@ -1743,6 +1745,15 @@ Private Sub LoadStyles()
         c = c + 1
         Set iGridReportStyle = GetGridReportStyle("GRStyle" & c)
     Loop
+    
+    For Each iSt In gGridReportStyles
+        iCount = iCount + 1
+        ReDim Preserve mStylesIDs(iCount)
+        mStylesIDs(iCount) = iSt.Tag
+        cboStyle.AddItem GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_Style) & " " & c
+        c = c + 1
+    Next
+    
     c = 1
     Set iGridReportStyle = GetGridReportStyle("Custom" & c)
     Do Until iGridReportStyle.Tag = ""
@@ -1801,9 +1812,9 @@ Private Sub ValidateLineWidth()
         iSM = True
         txtLineWidth.Text = "1"
     Else
-        If iVal > 10 Then
+        If iVal > 80 Then
             iSM = True
-            txtLineWidth.Text = "10"
+            txtLineWidth.Text = "80"
         End If
     End If
     mGridReportStyle.LineWidth = Val(txtLineWidth.Text)
@@ -1811,9 +1822,8 @@ Private Sub ValidateLineWidth()
         MsgBox GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidth_Message), vbExclamation, ClientProductName
         txtLineWidth.SelStart = 0
         txtLineWidth.SelLength = Len(txtLineWidth.Text)
-        txtLineWidth.SetFocus
+        SetFocusTo txtLineWidth
     End If
-    
 End Sub
 
 Private Sub ValidateLineWidthHeadersSeparatorLine()
@@ -1826,16 +1836,16 @@ Private Sub ValidateLineWidthHeadersSeparatorLine()
         iSM = True
         txtLineWidthHeadersSeparatorLine.Text = "1"
     Else
-        If iVal > 20 Then
+        If iVal > 80 Then
             iSM = True
-            txtLineWidthHeadersSeparatorLine.Text = "20"
+            txtLineWidthHeadersSeparatorLine.Text = "80"
         End If
     End If
     If iSM Then
         MsgBox GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidthHeadersSeparatorLine_Message), vbExclamation, ClientProductName
         txtLineWidthHeadersSeparatorLine.SelStart = 0
         txtLineWidthHeadersSeparatorLine.SelLength = Len(txtLineWidthHeadersSeparatorLine.Text)
-        txtLineWidthHeadersSeparatorLine.SetFocus
+        SetFocusTo txtLineWidthHeadersSeparatorLine
     End If
     mGridReportStyle.LineWidthHeadersSeparatorLine = Val(txtLineWidthHeadersSeparatorLine.Text)
 
