@@ -129,6 +129,8 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mPrintFnObject.Duplex = PropBag.ReadProperty("Duplex", vbPRDPPrinterDefault)
     mPrintFnObject.DocumentName = PropBag.ReadProperty("DocumentName", "")
     mPrintFnObject.AllowUserChangeScale = PropBag.ReadProperty("AllowUserChangeScale", True)
+    mPrintFnObject.AllowUserChangeOrientation = PropBag.ReadProperty("AllowUserChangeOrientation", True)
+    mPrintFnObject.AllowUserChangePaper = PropBag.ReadProperty("AllowUserChangePaper", True)
     mPrintFnObject.MinScalePercent = PropBag.ReadProperty("MinScalePercent", cPrintPreviewDefaultMinScale)
     mPrintFnObject.MaxScalePercent = PropBag.ReadProperty("MaxScalePercent", cPrintPreviewDefaultMaxScale)
     mPrintFnObject.FormatButtonVisible = PropBag.ReadProperty("FormatButtonVisible", False)
@@ -523,6 +525,30 @@ Public Property Let AllowUserChangeScale(nValue As Boolean)
 End Property
 
 
+Public Property Get AllowUserChangeOrientation() As Boolean
+    AllowUserChangeOrientation = mPrintFnObject.AllowUserChangeOrientation
+End Property
+
+Public Property Let AllowUserChangeOrientation(nValue As Boolean)
+    If nValue <> mPrintFnObject.AllowUserChangeOrientation Then
+        mPrintFnObject.AllowUserChangeOrientation = nValue
+        PropertyChanged "AllowUserChangeOrientation"
+    End If
+End Property
+
+
+Public Property Get AllowUserChangePaper() As Boolean
+    AllowUserChangePaper = mPrintFnObject.AllowUserChangePaper
+End Property
+
+Public Property Let AllowUserChangePaper(nValue As Boolean)
+    If nValue <> mPrintFnObject.AllowUserChangePaper Then
+        mPrintFnObject.AllowUserChangePaper = nValue
+        PropertyChanged "AllowUserChangePaper"
+    End If
+End Property
+
+
 Public Property Get MinScalePercent() As Long
     MinScalePercent = mPrintFnObject.MinScalePercent
 End Property
@@ -590,6 +616,8 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     PropBag.WriteProperty "DocumentName", mPrintFnObject.DocumentName, ""
     PropBag.WriteProperty "Duplex", mPrintFnObject.Duplex, vbPRDPPrinterDefault
     PropBag.WriteProperty "AllowUserChangeScale", mPrintFnObject.AllowUserChangeScale, True
+    PropBag.WriteProperty "AllowUserChangeOrientation", mPrintFnObject.AllowUserChangeOrientation, True
+    PropBag.WriteProperty "AllowUserChangePaper", mPrintFnObject.AllowUserChangePaper, True
     PropBag.WriteProperty "MinScalePercent", mPrintFnObject.MinScalePercent, cPrintPreviewDefaultMinScale
     PropBag.WriteProperty "MaxScalePercent", mPrintFnObject.MaxScalePercent, cPrintPreviewDefaultMaxScale
     PropBag.WriteProperty "FormatButtonVisible", mPrintFnObject.FormatButtonVisible, False

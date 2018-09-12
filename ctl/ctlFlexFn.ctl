@@ -1156,6 +1156,8 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     End If
     mFlexFnObject.PrintFnObject.PageNumbersForeColor = PropBag.ReadProperty("PageNumbersForeColor", vbWindowText)
     mFlexFnObject.PrintFnObject.AllowUserChangeScale = PropBag.ReadProperty("AllowUserChangeScale", True)
+    mFlexFnObject.PrintFnObject.AllowUserChangeOrientation = PropBag.ReadProperty("AllowUserChangeOrientation", True)
+    mFlexFnObject.PrintFnObject.AllowUserChangePaper = PropBag.ReadProperty("AllowUserChangePaper", True)
     mFlexFnObject.PrintFnObject.PrintPrevToolBarIconsSize = PropBag.ReadProperty("PrintPrevToolBarIconsSize", vxPPTIconsAuto)
     mFlexFnObject.PrintFnObject.PageSetupButtonVisible = PropBag.ReadProperty("PageSetupButtonVisible", True)
     mFlexFnObject.PrintFnObject.FormatButtonVisible = PropBag.ReadProperty("FormatButtonVisible", True)
@@ -1353,7 +1355,8 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     PropBag.WriteProperty "PageNumbersFont", mFlexFnObject.PrintFnObject.PageNumbersFont, Nothing
     Call PropBag.WriteProperty("PageNumbersForeColor", mFlexFnObject.PrintFnObject.PageNumbersForeColor, vbWindowText)
     Call PropBag.WriteProperty("AllowUserChangeScale", mFlexFnObject.PrintFnObject.AllowUserChangeScale, True)
-    Call PropBag.WriteProperty("AllowUserChangeScale", mFlexFnObject.PrintFnObject.AllowUserChangeScale, True)
+    Call PropBag.WriteProperty("AllowUserChangeOrientation", mFlexFnObject.PrintFnObject.AllowUserChangeOrientation, True)
+    Call PropBag.WriteProperty("AllowUserChangePaper", mFlexFnObject.PrintFnObject.AllowUserChangePaper, True)
     Call PropBag.WriteProperty("PrintPrevToolBarIconsSize", mFlexFnObject.PrintFnObject.PrintPrevToolBarIconsSize, vxPPTIconsAuto)
     Call PropBag.WriteProperty("PageSetupButtonVisible", mFlexFnObject.PrintFnObject.PageSetupButtonVisible, True)
     Call PropBag.WriteProperty("FormatButtonVisible", mFlexFnObject.PrintFnObject.FormatButtonVisible, True)
@@ -2124,19 +2127,19 @@ Private Function GridHasData(nGrid As Object) As Boolean
     If nGrid.Rows = nGrid.FixedRows Then Exit Function
     
     R = nGrid.FixedRows
-    If Trim$(nGrid.TextMatrix(R, 0)) <> "" Then
+    If Trim$(nGrid.textmatrix(R, 0)) <> "" Then
         GridHasData = True
     Else
-        If Trim$(nGrid.TextMatrix(R, nGrid.Cols - 1)) <> "" Then
+        If Trim$(nGrid.textmatrix(R, nGrid.Cols - 1)) <> "" Then
             GridHasData = True
         End If
     End If
     If Not GridHasData Then
         R = nGrid.Rows - 1
-        If Trim$(nGrid.TextMatrix(R, 0)) <> "" Then
+        If Trim$(nGrid.textmatrix(R, 0)) <> "" Then
             GridHasData = True
         Else
-            If Trim$(nGrid.TextMatrix(R, nGrid.Cols - 1)) <> "" Then
+            If Trim$(nGrid.textmatrix(R, nGrid.Cols - 1)) <> "" Then
                 GridHasData = True
             End If
         End If
@@ -2144,10 +2147,10 @@ Private Function GridHasData(nGrid As Object) As Boolean
     If Not GridHasData Then
         R = (nGrid.Rows - 1) / 2
         If R > nGrid.FixedRows Then
-            If Trim$(nGrid.TextMatrix(R, 0)) <> "" Then
+            If Trim$(nGrid.textmatrix(R, 0)) <> "" Then
                 GridHasData = True
             Else
-                If Trim$(nGrid.TextMatrix(R, nGrid.Cols - 1)) <> "" Then
+                If Trim$(nGrid.textmatrix(R, nGrid.Cols - 1)) <> "" Then
                     GridHasData = True
                 End If
             End If
@@ -2156,7 +2159,7 @@ Private Function GridHasData(nGrid As Object) As Boolean
     If Not GridHasData Then
         R = nGrid.FixedRows
         For c = 1 To nGrid.Cols - 1
-            If Trim$(nGrid.TextMatrix(R, c)) <> "" Then
+            If Trim$(nGrid.textmatrix(R, c)) <> "" Then
                 GridHasData = True
             End If
             If GridHasData Then Exit For
@@ -2164,7 +2167,7 @@ Private Function GridHasData(nGrid As Object) As Boolean
         If Not GridHasData Then
             For c = 1 To nGrid.Cols - 1
                 R = nGrid.Rows - 1
-                If Trim$(nGrid.TextMatrix(R, c)) <> "" Then
+                If Trim$(nGrid.textmatrix(R, c)) <> "" Then
                     GridHasData = True
                 End If
                 If GridHasData Then Exit For
@@ -2189,7 +2192,7 @@ Private Function BuildPopupMenu(nGrid As Object) As Boolean
     Dim ca As Long
     
     On Error Resume Next
-    iCellText = Trim2(nGrid.TextMatrix(nGrid.MouseRow, nGrid.MouseCol))
+    iCellText = Trim2(nGrid.textmatrix(nGrid.MouseRow, nGrid.MouseCol))
     On Error GoTo 0
     If iCellText <> "" Then
         mCellTextToCopy = iCellText
@@ -2242,7 +2245,7 @@ Private Function BuildPopupMenu(nGrid As Object) As Boolean
         If nGrid.ColIsVisible(c) Then
             If nGrid.ColWidth(c) <> 0 Then
                 If iStr <> "" Then iStr = iStr & vbTab
-                iStr = iStr & nGrid.TextMatrix(iMo, c)
+                iStr = iStr & nGrid.textmatrix(iMo, c)
             End If
         End If
     Next c
@@ -2258,7 +2261,7 @@ Private Function BuildPopupMenu(nGrid As Object) As Boolean
     On Error GoTo 0
     iStr = ""
     For c = 0 To nGrid.Rows - 1
-        iStr = iStr & nGrid.TextMatrix(c, iMo)
+        iStr = iStr & nGrid.textmatrix(c, iMo)
         If c < (nGrid.Rows - 1) Then
             iStr = iStr & vbCrLf
         End If
@@ -3264,6 +3267,30 @@ Public Property Let AllowUserChangeScale(nValue As Boolean)
     If nValue <> mFlexFnObject.PrintFnObject.AllowUserChangeScale Then
         mFlexFnObject.PrintFnObject.AllowUserChangeScale = nValue
         PropertyChanged "AllowUserChangeScale"
+    End If
+End Property
+
+
+Public Property Get AllowUserChangeOrientation() As Boolean
+    AllowUserChangeOrientation = mFlexFnObject.PrintFnObject.AllowUserChangeOrientation
+End Property
+
+Public Property Let AllowUserChangeOrientation(nValue As Boolean)
+    If nValue <> mFlexFnObject.PrintFnObject.AllowUserChangeOrientation Then
+        mFlexFnObject.PrintFnObject.AllowUserChangeOrientation = nValue
+        PropertyChanged "AllowUserChangeOrientation"
+    End If
+End Property
+
+
+Public Property Get AllowUserChangePaper() As Boolean
+    AllowUserChangePaper = mFlexFnObject.PrintFnObject.AllowUserChangePaper
+End Property
+
+Public Property Let AllowUserChangePaper(nValue As Boolean)
+    If nValue <> mFlexFnObject.PrintFnObject.AllowUserChangePaper Then
+        mFlexFnObject.PrintFnObject.AllowUserChangePaper = nValue
+        PropertyChanged "AllowUserChangePaper"
     End If
 End Property
 
