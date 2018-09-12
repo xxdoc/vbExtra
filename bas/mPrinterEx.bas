@@ -34,6 +34,7 @@ Public gPrinterExMinBottomMargin As Variant
 Public gPrinterExUnits As Variant
 Public gPrinterExUnitsForUser As Variant
 Public gPrinterExDoNotMakeNewPrinterExObject As Boolean
+Public gPrinterExDocsStoredZoom As New Collection
 ' to remember but reset on setting new printer
 Public gPrinterExZoom As Variant
 Public gPrinterExPaperSize As Variant
