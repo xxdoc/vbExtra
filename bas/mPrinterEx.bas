@@ -20,6 +20,7 @@ Public gPrinterExPageNumbersFont As Variant
 Public gPrinterExPageNumbersForeColor As Variant
 Public gPrinterExPageNumbersPosition As Variant
 Public gPrinterExPageNumbersFormat As Variant
+Public gPrinterExAllowUserChangeScale As Variant
 Public gPrinterExEvents As Variant
 ' Page setup and printer options
 Public gPrinterExLeftMargin As Variant
@@ -45,7 +46,6 @@ Public Const cLeftMarginDefault As Single = 20
 Public Const cRightMarginDefault As Single = 15
 Public Const cTopMarginDefault As Single = 20
 Public Const cBottomMarginDefault As Single = 20
-
 
 Public Property Get Printer2() As Printer
     If mPrinterExCurrentDocument Is Nothing Then

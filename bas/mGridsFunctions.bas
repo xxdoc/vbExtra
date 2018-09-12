@@ -15,6 +15,7 @@ End Enum
 
 Private mGridsArrowUpImageCollection As New Collection
 Private mGridsArrowDownImageCollection As New Collection
+Public gGridReportStyles As New Collection
 
 Public Function GetGridArrowUpImage(nGrid As Object) As StdPicture
     On Error Resume Next
@@ -82,6 +83,7 @@ Public Function GetGridReportStyleID(nGridReportStyle As GridReportStyle, nNumbe
     Dim c As Long
     Dim iGridReportStyle As GridReportStyle
     Dim iStyleID As String
+    Dim iSt
     
     c = 1
     Set iGridReportStyle = GetGridReportStyle("GRStyle" & c)
@@ -93,6 +95,16 @@ Public Function GetGridReportStyleID(nGridReportStyle As GridReportStyle, nNumbe
         c = c + 1
         Set iGridReportStyle = GetGridReportStyle("GRStyle" & c)
     Loop
+    
+    If iStyleID = "" Then
+        For Each iSt In gGridReportStyles
+            Set iGridReportStyle = iSt
+            If GridReportStylesAreEqual(iGridReportStyle, nGridReportStyle) Then
+                iStyleID = iGridReportStyle.Tag
+                Exit For
+            End If
+        Next
+    End If
     
     If iStyleID = "" Then
         c = 1
@@ -154,6 +166,8 @@ Public Function GridReportStylesAreEqual(nGridReportStyle1 As GridReportStyle, n
 End Function
 
 Public Function GetGridReportStyle(nStyleID As String) As GridReportStyle
+    Dim iSt
+    
     Set GetGridReportStyle = New GridReportStyle
     
     Select Case nStyleID
@@ -312,6 +326,16 @@ Public Function GetGridReportStyle(nStyleID As String) As GridReportStyle
             GetGridReportStyle.LineWidthHeadersSeparatorLine = 3
         
         Case Else
+            If Left(nStyleID, 12) = "GRStyleAdded" Then
+'                Set GetGridReportStyle = gGridReportStyles(Val(Mid(nStyleID, 13))).Clone
+                
+                For Each iSt In gGridReportStyles
+                    If iSt.Tag = nStyleID Then
+                        Set GetGridReportStyle = iSt.Clone
+                        Exit For
+                    End If
+                Next
+            End If
             If Val(GetSetting(AppNameForRegistry, "PrintingSettings", "GridReportStyle:" & nStyleID & "_PrintOuterBorder", -44)) <> -44 Then
                 GetGridReportStyle.Tag = nStyleID
                 
