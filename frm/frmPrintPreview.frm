@@ -934,6 +934,8 @@ Private Sub Form_Load()
     
     If mPrintFnObject Is Nothing Then Set mPrintFnObject = New PrintFnObject
     
+    mAllowUserChangeOrientation = True
+    
     If (mPrintFnObject.PageSetupFlags And cdePSDisableOrientation) <> 0 Then
         AllowUserChangeOrientation = False
     End If
@@ -1456,8 +1458,8 @@ Private Sub ShowPages()
     End If
     Select Case iView
         Case efnViewNormal
-            picPage(0).Width = iPagesWidth(0) / 100 * PrinterExCurrentDocument.Zoom
-            picPage(0).Height = iPagesHeight(0) / 100 * PrinterExCurrentDocument.Zoom
+            picPage(0).Width = iPagesWidth(0) '/ 100 * PrinterExCurrentDocument.Zoom
+            picPage(0).Height = iPagesHeight(0) ' / 100 * PrinterExCurrentDocument.Zoom
             picPagesContainer.Move picPagesContainer.Left, picPagesContainer.Top, picPage(0).Width + 600, picPage(0).Height + 600
             If Not PrinterExCurrentDocument Is Nothing Then
                 AuxPaintPage mCurrentPageNumber, iPagesWidth(0), iPagesHeight(0), picPage(0), PrinterExCurrentDocument.ColorMode = vbPRCMMonochrome
@@ -2180,10 +2182,19 @@ Public Property Get AllowUserChangeOrientation() As Boolean
 End Property
 
 Public Property Let AllowUserChangeOrientation(nValue As Boolean)
-    mAllowUserChangeOrientation = nValue
-    tbrTop.Buttons("OrientationLabelSpace").Visible = mAllowUserChangeOrientation
-    tbrTop.Buttons("OrientationPortrait").Visible = mAllowUserChangeOrientation
-    tbrTop.Buttons("OrientationLandscape").Visible = mAllowUserChangeOrientation
+    If nValue <> mAllowUserChangeOrientation Then
+        tbrTop.Visible = False
+        mAllowUserChangeOrientation = nValue
+        tbrTop.Buttons("OrientationLabelSpace").Visible = mAllowUserChangeOrientation
+        lblPageOrientation.Visible = mAllowUserChangeOrientation
+        tbrTop.Buttons("OrientationPortrait").Visible = mAllowUserChangeOrientation
+        tbrTop.Buttons("OrientationLandscape").Visible = mAllowUserChangeOrientation
+        lblView.Left = tbrTop.Buttons("ViewNormalSize").Left - lblView.Width - 60
+        picScalePercent.Left = tbrTop.Buttons("DecreaseScale").Left - picScalePercent.Width - 30
+        tbrTop.Visible = True
+        tbrTop.Refresh
+        Me.Refresh
+    End If
 End Property
 
 
@@ -2558,6 +2569,5 @@ Public Property Let ToolBarIconsSize(nValue As Long)
         SetToolBarIconsSize CLng(GetSetting(AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", efnISAuto))
     End If
 End Property
-
 
 
