@@ -755,7 +755,7 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                 Case efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_CustomStyle
                     GetLocalizedString = "Estilo personal"
                 Case efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_Customize
-                    GetLocalizedString = "Personalizado"
+                    GetLocalizedString = "Personalizar"
                 Case efnGUIStr_frmPrintGridFormatOptions_lblSample_Caption
                     GetLocalizedString = "Ejemplo:"
                 Case efnGUIStr_frmPrintGridFormatOptions_DrawSample_Column
@@ -1168,7 +1168,7 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                 Case efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_CustomStyle
                     GetLocalizedString = "Custom style"
                 Case efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_Customize
-                    GetLocalizedString = "Customized"
+                    GetLocalizedString = "Customize"
                 Case efnGUIStr_frmPrintGridFormatOptions_lblSample_Caption
                     GetLocalizedString = "Sample:"
                 Case efnGUIStr_frmPrintGridFormatOptions_DrawSample_Column
