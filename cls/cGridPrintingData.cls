@@ -35,6 +35,7 @@ Private mFontsAttributes() As cFontAttributes
 Private mGrid As Object
 Private mVisibleFixedRows As Long
 Private mLastVisibleCol As Long
+Private mFirstVisibleCol As Long
 Private mGridType As efnGridType
 Private mCellBackColorIsExplicitelySet() As Boolean
 Private mColOriginalWidth() As Long
@@ -142,9 +143,13 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
     
     iAuxMergeRow0 = mGrid.MergeRow(0)
     mGrid.MergeRow(0) = False
+    mFirstVisibleCol = -1
     For c = 0 To mGrid.Cols - 1
         If mGrid.ColWidth(c) <> 0 Then
             mLastVisibleCol = c
+            If mFirstVisibleCol = -1 Then
+                mFirstVisibleCol = c
+            End If
         End If
         
         If mGridType = efnGridTypeMSFlex Then
@@ -168,7 +173,7 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
     mLastRowWithData = -1
     For R = mGrid.Rows - 1 To mGrid.FixedRows Step -1
         For c = 0 To mGrid.Cols - 1
-            If mGrid.TextMatrix(R, c) <> "" Then
+            If mGrid.textmatrix(R, c) <> "" Then
                 mLastRowWithData = R
                 Exit For
             End If
@@ -451,6 +456,10 @@ End Property
 
 Public Property Get LastVisibleCol() As Long
     LastVisibleCol = mLastVisibleCol
+End Property
+
+Public Property Get FirstVisibleCol() As Long
+    FirstVisibleCol = mFirstVisibleCol
 End Property
 
 Public Property Get LastRowWithData() As Long
