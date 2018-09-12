@@ -1339,12 +1339,19 @@ Private Sub ShowPages()
     Dim iTotalPagesRow(3) As Long
     Dim iAux As Long
     Dim iView As efnViewPagesConstants
+    Dim iPageCount As String
+    
     'Static sFirst As Boolean
     
     'If Not sFirst Then
     
     If Not PrinterExCurrentDocument Is Nothing Then
-        lblPageCount.Caption = GetLocalizedString(efnGUIStr_frmPrintPreview_lblPageCount_Caption) & " " & PrinterExCurrentDocument.PageCount
+        If PrinterExCurrentDocument.PageCount = 0 Then
+            iPageCount = "..."
+        Else
+            iPageCount = " " & PrinterExCurrentDocument.PageCount
+        End If
+        lblPageCount.Caption = GetLocalizedString(efnGUIStr_frmPrintPreview_lblPageCount_Caption) & iPageCount
         If PrinterExCurrentDocument.PageCount = 1 Then
             tbrTop.Buttons("ViewSeveralPages").Enabled = False
         Else
