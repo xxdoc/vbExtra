@@ -304,7 +304,6 @@ Private mFlexGridPrinted As Boolean ' if there was any FlexGrid printed in the d
 Private mShowFormatButtonAutomatically As Boolean
 Private mFlexGridFnCollection As Collection ' when the grids are printed by calling PrintFlexGrid method of PrinterEx and from the ShowPrintPreview method, it stores the FlexGridFn objects corresponding to each grid that was printed in this collection, so the FlexGridFn objects are not destroyed and the cGridPrintingData is hold and not loaded avery time the print preview window redraws the document
 Private mPrintFlexGridCanceled As Boolean
-Private mZoomDocsCache As New Collection
 
 Private mSave_ScalePercent As Boolean
 Private mSave_PrintPageNumbers  As Boolean
@@ -1937,7 +1936,6 @@ Private Sub Class_Terminate()
     Set mPrintFnObject = Nothing
     Set mGridReportStyle = Nothing
     Set mGridsReportStylesCollection = Nothing
-    Set mZoomDocsCache = Nothing
     
 End Sub
 
@@ -3940,8 +3938,8 @@ Private Sub IPrinterEx_ShowPrintPreview(Optional nObject As Object, Optional nPr
     
     If mDocKey <> "" Then
         On Error Resume Next
-        mZoomDocsCache.Remove mDocKey
-        mZoomDocsCache.Add Zoom, mDocKey
+        gPrinterExDocsStoredZoom.Remove mDeviceName & "_" & mDocKey
+        gPrinterExDocsStoredZoom.Add Zoom, mDeviceName & "_" & mDocKey
         On Error GoTo 0
     End If
     Zoom = iZoom_Prev
@@ -6790,7 +6788,7 @@ Friend Property Let DocKey(ByVal nDocKey As String)
             End If
             If mDocKey <> "" Then
                 On Error Resume Next
-                iZoom = mZoomDocsCache(mDocKey)
+                iZoom = gPrinterExDocsStoredZoom(mDeviceName & "_" & mDocKey)
                 On Error GoTo 0
             End If
             If iZoom <> 0 Then
