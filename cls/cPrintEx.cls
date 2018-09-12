@@ -304,6 +304,7 @@ Private mFlexGridPrinted As Boolean ' if there was any FlexGrid printed in the d
 Private mShowFormatButtonAutomatically As Boolean
 Private mFlexGridFnCollection As Collection ' when the grids are printed by calling PrintFlexGrid method of PrinterEx and from the ShowPrintPreview method, it stores the FlexGridFn objects corresponding to each grid that was printed in this collection, so the FlexGridFn objects are not destroyed and the cGridPrintingData is hold and not loaded avery time the print preview window redraws the document
 Private mPrintFlexGridCanceled As Boolean
+Private mZoomDocsCache As New Collection
 
 Private mSave_ScalePercent As Boolean
 Private mSave_PrintPageNumbers  As Boolean
@@ -1936,6 +1937,7 @@ Private Sub Class_Terminate()
     Set mPrintFnObject = Nothing
     Set mGridReportStyle = Nothing
     Set mGridsReportStylesCollection = Nothing
+    Set mZoomDocsCache = Nothing
     
 End Sub
 
@@ -3778,6 +3780,7 @@ End Sub
 Private Sub IPrinterEx_ShowPrintPreview(Optional nObject As Object, Optional nProcedureName As String, Optional nDocKey As String, Optional nParametersArray As Variant)
     Dim c As Long
     Dim iDocKey_Prev As String
+    Dim iZoom_Prev As Long
     
     Dim iDeviceName_Prev As String
     Dim iPaperSize_Prev As Long
@@ -3810,6 +3813,7 @@ Private Sub IPrinterEx_ShowPrintPreview(Optional nObject As Object, Optional nPr
     gPrinterExDoNotMakeNewPrinterExObject = True
     
     iDocKey_Prev = mDocKey
+    iZoom_Prev = Zoom
     If nDocKey <> "" Then DocKey = nDocKey
     
     If mPrintFnObject Is Nothing Then
@@ -3930,6 +3934,17 @@ Private Sub IPrinterEx_ShowPrintPreview(Optional nObject As Object, Optional nPr
         SaveUserDocPreferences
     End If
     
+    'mPrintFnObject.ScalePercent = iScalePercent_Prev
+'    If mDocumentCreated And (Not mNewPagePending) Then
+'        If mPages(mCurrentPage).SomethingPrintedOnPage Then
+    
+    If mDocKey <> "" Then
+        On Error Resume Next
+        mZoomDocsCache.Remove mDocKey
+        mZoomDocsCache.Add Zoom, mDocKey
+        On Error GoTo 0
+    End If
+    Zoom = iZoom_Prev
     DocKey = iDocKey_Prev
 End Sub
 
@@ -6764,9 +6779,24 @@ End Property
 
 
 Friend Property Let DocKey(ByVal nDocKey As String)
+    Dim iZoom As Long
+    
     If nDocKey <> mDocKey Then
         mDocKey = nDocKey
         LoadUserDocPreferences
+        If Not mPrintFnObject Is Nothing Then
+            If Not mLoaded_ScalePercent Then
+                iZoom = Zoom
+            End If
+            If mDocKey <> "" Then
+                On Error Resume Next
+                iZoom = mZoomDocsCache(mDocKey)
+                On Error GoTo 0
+            End If
+            If iZoom <> 0 Then
+                mPrintFnObject.ScalePercent = iZoom
+            End If
+        End If
     End If
 End Property
 
