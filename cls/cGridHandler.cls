@@ -164,6 +164,8 @@ Private mEditCellRow As Long
 Private mEditCellHighLight As Long
 Private mEditCellTopRow As Long
 Private mEditCellLeftCol As Long
+Private mAuxTextBoxFromFlexFnOldParent As Long
+Private mAuxTextBoxFromFlexFn As Object
 Private mLastOrderChanged As Boolean
 Private mCountNoRedraw As Long
 Private mError As Boolean
@@ -843,7 +845,7 @@ Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, By
                         If mLast_RowEdited > -1 Then
                             If mLast_RowEdited < mGrid.Rows Then
                                 If mLast_ColEdited < mGrid.Cols Then
-                                    mGrid.textmatrix(mLast_RowEdited, mLast_ColEdited) = mLast_CellText
+                                    mGrid.TextMatrix(mLast_RowEdited, mLast_ColEdited) = mLast_CellText
                                     mLast_RowEdited = -1
                                 End If
                             End If
@@ -897,13 +899,21 @@ Private Sub mEditCellTextBox_KeyDown(KeyCode As Integer, Shift As Integer)
     If KeyCode = vbKeyEscape Then
         mEditCellTextBox.Text = mLast_CellText
         RemoveEditCell
+    ElseIf KeyCode = vbKeyReturn Then
+        If (Shift And vbCtrlMask) = vbCtrlMask Then
+            RemoveEditCell
+            KeyCode = 0
+        End If
     End If
+
 End Sub
 
 Private Sub mEditCellTextBox_KeyPress(KeyAscii As Integer)
     If KeyAscii = vbKeyReturn Then
-        RemoveEditCell
-        KeyAscii = 0
+        If Not mEditCellTextBox.MultiLine Then
+            RemoveEditCell
+            KeyAscii = 0
+        End If
     End If
 End Sub
 
@@ -1147,6 +1157,7 @@ Private Sub Finish()
         mTimerSetFlatAppearance.Interval = 0
         Set mTimerSetFlatAppearance = Nothing
     End If
+    Set mAuxTextBoxFromFlexFn = Nothing
     Set mForm = Nothing
     Set mGridParent = Nothing
 End Sub
@@ -1167,10 +1178,10 @@ Private Sub StoreGridValuesFromClient()
     End If
     
     If (mGrid.FixedCols > mGrid.Cols) And (mGrid.FixedRows > mGrid.Rows) Then
-        mData00 = mGrid.textmatrix(mGrid.FixedRows, mGrid.FixedCols)
-        mData01 = mGrid.textmatrix(mGrid.FixedRows, mGrid.Cols - 1)
-        mData10 = mGrid.textmatrix(mGrid.Rows - 1, mGrid.FixedCols)
-        mData11 = mGrid.textmatrix(mGrid.Rows - 1, mGrid.Cols - 1)
+        mData00 = mGrid.TextMatrix(mGrid.FixedRows, mGrid.FixedCols)
+        mData01 = mGrid.TextMatrix(mGrid.FixedRows, mGrid.Cols - 1)
+        mData10 = mGrid.TextMatrix(mGrid.Rows - 1, mGrid.FixedCols)
+        mData11 = mGrid.TextMatrix(mGrid.Rows - 1, mGrid.Cols - 1)
     End If
     
     ReDim Preserve mColumnsWidthsFromClient(mGridCols - 1)
@@ -1352,7 +1363,7 @@ Private Sub SetAuxGridColumsHeaders(Optional nIncludeForOrder As Boolean)
     For c = 0 To mGrid.Cols - 1
         iStr = ""
         For R = 0 To mGrid.FixedRows - 1
-            iStr = iStr & mGrid.textmatrix(R, c) & " "
+            iStr = iStr & mGrid.TextMatrix(R, c) & " "
         Next R
         If Len(iStr) > 0 Then
             iStr = Left$(iStr, Len(iStr) - 1)
@@ -1578,21 +1589,21 @@ Private Function GridNeedsToBeUpdated() As Boolean
                     mNeedToUpdateOrderByColumns = True
                 Else
                     If (mGrid.FixedCols < mGrid.Cols) And (mGrid.FixedRows < mGrid.Rows) Then
-                        If mGrid.textmatrix(mGrid.FixedRows, mGrid.FixedCols) <> mData00 Then
+                        If mGrid.TextMatrix(mGrid.FixedRows, mGrid.FixedCols) <> mData00 Then
                             mNeedToUpdateOrderByColumns = True
-                        ElseIf mGrid.textmatrix(mGrid.FixedRows, mGrid.Cols - 1) <> mData01 Then
+                        ElseIf mGrid.TextMatrix(mGrid.FixedRows, mGrid.Cols - 1) <> mData01 Then
                             mNeedToUpdateOrderByColumns = True
-                        ElseIf mGrid.textmatrix(mGrid.Rows - 1, mGrid.FixedCols) <> mData10 Then
+                        ElseIf mGrid.TextMatrix(mGrid.Rows - 1, mGrid.FixedCols) <> mData10 Then
                             mNeedToUpdateOrderByColumns = True
-                        ElseIf mGrid.textmatrix(mGrid.Rows - 1, mGrid.Cols - 1) <> mData11 Then
+                        ElseIf mGrid.TextMatrix(mGrid.Rows - 1, mGrid.Cols - 1) <> mData11 Then
                             mNeedToUpdateOrderByColumns = True
                         End If
                     End If
                     If mNeedToUpdateOrderByColumns Then
-                        mData00 = mGrid.textmatrix(mGrid.FixedRows, mGrid.FixedCols)
-                        mData01 = mGrid.textmatrix(mGrid.FixedRows, mGrid.Cols - 1)
-                        mData10 = mGrid.textmatrix(mGrid.Rows - 1, mGrid.FixedCols)
-                        mData11 = mGrid.textmatrix(mGrid.Rows - 1, mGrid.Cols - 1)
+                        mData00 = mGrid.TextMatrix(mGrid.FixedRows, mGrid.FixedCols)
+                        mData01 = mGrid.TextMatrix(mGrid.FixedRows, mGrid.Cols - 1)
+                        mData10 = mGrid.TextMatrix(mGrid.Rows - 1, mGrid.FixedCols)
+                        mData11 = mGrid.TextMatrix(mGrid.Rows - 1, mGrid.Cols - 1)
                     End If
                 End If
                 mGridRows = mGrid.Rows
@@ -1968,8 +1979,8 @@ Public Sub OrderGridByColumn(Optional nOrderByColumn As Long = -1, Optional nOrd
         mGrid.Redraw = False
         mGrid.Cols = mGrid.Cols + 1
         mGrid.ColWidth(mGrid.Cols - 1) = 0
-        mGrid.textmatrix(iPrevRow, mGrid.Cols - 1) = "1"
-        mGrid.textmatrix(iPrevRowSel, mGrid.Cols - 1) = Val(mGrid.textmatrix(iPrevRowSel, mGrid.Cols - 1)) + 2
+        mGrid.TextMatrix(iPrevRow, mGrid.Cols - 1) = "1"
+        mGrid.TextMatrix(iPrevRowSel, mGrid.Cols - 1) = Val(mGrid.TextMatrix(iPrevRowSel, mGrid.Cols - 1)) + 2
         
         mGrid.Row = 0
         For c = 0 To mGrid.Cols - 1
@@ -2046,8 +2057,8 @@ Private Sub RestoreSelection(nPrevCol As Long, nPrevColSel As Long)
     iR = mGrid.Row
     iCol = mGrid.Cols - 1
     For R = mGrid.FixedRows To mGrid.Rows - 1
-        If mGrid.textmatrix(R, iCol) <> "" Then
-            Select Case mGrid.textmatrix(R, iCol)
+        If mGrid.TextMatrix(R, iCol) <> "" Then
+            Select Case mGrid.TextMatrix(R, iCol)
                 Case "1"
                     mGrid.Row = R
                     iSel1 = True
@@ -2112,7 +2123,7 @@ Private Function RemoveEmptyRowsAtTheEnd() As Long
     Do
         iEmpty = True
         For c = 0 To mGrid.Cols - 1
-            If mGrid.textmatrix(R, c) <> "" Then
+            If mGrid.TextMatrix(R, c) <> "" Then
                 iEmpty = False
             End If
         Next c
@@ -2221,6 +2232,8 @@ End Property
 
 
 Private Sub SetFlatAppearance()
+    Dim iBorderColor As Long
+    
     If mGridsFlatAppearance Then
         If Not mGridOriginalBorderStyleSet Then
             mGridOriginalBorderStyleSet = True
@@ -2233,8 +2246,11 @@ Private Sub SetFlatAppearance()
         mpicGridFlatRight_Name = "picBorderRight_" & mGridName
         mpicGridFlatTop_Name = "picBorderTop_" & mGridName
         mpicGridFlatBottom_Name = "picBorderBottom_" & mGridName
-
         
+        iBorderColor = mBorderColor
+        If iBorderColor = -1 Then
+            iBorderColor = mGrid.GridColor
+        End If
         If Not mTimerSetFlatAppearance Is Nothing Then
             mTimerSetFlatAppearance.Interval = 0
             Set mTimerSetFlatAppearance = Nothing
@@ -2250,10 +2266,11 @@ Private Sub SetFlatAppearance()
             mTimerSetFlatAppearance.Interval = 1
             Exit Sub
         End If
-        mpicGridFlatLeft.BackColor = mBorderColor
+        mpicGridFlatLeft.BackColor = iBorderColor
         mpicGridFlatLeft.Width = mGrid.Parent.ScaleX(mBorderWidth, vbPixels, mGrid.Parent.ScaleMode)
         Set mpicGridFlatLeft.Container = mGrid.Container
         mpicGridFlatLeft.TabStop = False
+        mpicGridFlatLeft.BorderStyle = 0
         mpicGridFlatLeft.ZOrder
         
         Err.Clear
@@ -2261,10 +2278,11 @@ Private Sub SetFlatAppearance()
         If Err.Number = 727 Then
             Set mpicGridFlatRight = mGrid.Parent.Controls(mpicGridFlatRight_Name)
         End If
-        mpicGridFlatRight.BackColor = mBorderColor
+        mpicGridFlatRight.BackColor = iBorderColor
         mpicGridFlatRight.Width = mGrid.Parent.ScaleX(mBorderWidth, vbPixels, mGrid.Parent.ScaleMode)
         Set mpicGridFlatRight.Container = mGrid.Container
         mpicGridFlatRight.TabStop = False
+        mpicGridFlatRight.BorderStyle = 0
         mpicGridFlatRight.ZOrder
         
         Err.Clear
@@ -2272,10 +2290,11 @@ Private Sub SetFlatAppearance()
         If Err.Number = 727 Then
             Set mpicGridFlatTop = mGrid.Parent.Controls(mpicGridFlatTop_Name)
         End If
-        mpicGridFlatTop.BackColor = mBorderColor
+        mpicGridFlatTop.BackColor = iBorderColor
         mpicGridFlatTop.Height = mGrid.Parent.ScaleY(mBorderWidth, vbPixels, mGrid.Parent.ScaleMode)
         Set mpicGridFlatTop.Container = mGrid.Container
         mpicGridFlatTop.TabStop = False
+        mpicGridFlatTop.BorderStyle = 0
         mpicGridFlatTop.ZOrder
         
         Err.Clear
@@ -2283,10 +2302,11 @@ Private Sub SetFlatAppearance()
         If Err.Number = 727 Then
             Set mpicGridFlatBottom = mGrid.Parent.Controls(mpicGridFlatBottom_Name)
         End If
-        mpicGridFlatBottom.BackColor = mBorderColor
+        mpicGridFlatBottom.BackColor = iBorderColor
         mpicGridFlatBottom.Height = mGrid.Parent.ScaleY(mBorderWidth, vbPixels, mGrid.Parent.ScaleMode)
         Set mpicGridFlatBottom.Container = mGrid.Container
         mpicGridFlatBottom.TabStop = False
+        mpicGridFlatBottom.BorderStyle = 0
         mpicGridFlatBottom.ZOrder
         
         On Error GoTo 0
@@ -2650,7 +2670,7 @@ Private Sub TestWhetherToShowToolTip()
     
     On Error GoTo errorHandler:
     
-    iText = mGrid.textmatrix(mRowUnderMouse, mColUnderMouse)
+    iText = mGrid.TextMatrix(mRowUnderMouse, mColUnderMouse)
     
     If Trim$(iText) = "" Then Exit Sub
     
@@ -2898,6 +2918,14 @@ Private Sub EditCell()
     Dim iCancel As Long
     Dim iStr As String
     Dim iAuxWW As Boolean
+    Dim iHasBorder As Boolean
+    Dim iGridLeft As Long
+    Dim iGridTop As Long
+    Dim iTop As Single
+    Dim iLeft As Single
+    Dim iWidth As Single
+    Dim iHeight As Single
+    Dim iCellAlignment As Long
     
     ParentFlexFnObject.EventRaise "BeforeTextEdit", mGrid.Name, iCancel, 0&
     If iCancel <> 0 Then
@@ -2913,6 +2941,8 @@ Private Sub EditCell()
     Else
         iWordWrap = (iLng And 1) = 1
     End If
+    
+    iHasBorder = mGrid.BorderStyle <> 0
     
     iAuxRedraw = mGrid.Redraw
     mGrid.Redraw = False
@@ -2951,7 +2981,14 @@ Private Sub EditCell()
     iCtl.MultiLine = iWordWrap
     Set mEditCellTextBox = iCtl
     
-    mEditCellTextBox.Alignment = FilterAlignment(mGrid.CellAlignment, efnFilterAligmentHorizontal)
+    iCellAlignment = mGrid.CellAlignment
+    If iCellAlignment = 0 Then
+        If TypeName(mGrid) = "MSFlexGrid" Then
+            iCellAlignment = mGrid.ColAlignment(mEditCellCol)
+        End If
+    End If
+    
+    mEditCellTextBox.Alignment = FilterAlignment(iCellAlignment, efnFilterAligmentHorizontal)
     mEditCellTextBox.Visible = False
     mEditCellTextBox.Locked = mTextEditionLocked
     mEditCellTextBox.Appearance = 0
@@ -2964,21 +3001,27 @@ Private Sub EditCell()
     mEditCellTextBox.Font.Underline = mGrid.CellFontUnderline
     mEditCellTextBox.Font.Strikethrough = mGrid.CellFontStrikeThrough
     mEditCellTextBox.ForeColor = mGrid.CellForeColor
-'    Debug.Print mGrid.Row, mGrid.col, "&H" & Hex(mGrid.CellBackColor)
     iLng = mGrid.CellBackColor
     If iLng = 0 Then iLng = mGrid.BackColor
     mEditCellTextBox.BackColor = iLng
     
-    iAuxLeft = (mGrid.GridLineWidth - 1) + 7
-    iAuxTop = mGrid.GridLineWidth + 4
-    mEditCellTextBox.Text = mGrid.textmatrix(mEditCellRow, mEditCellCol)
+    iAuxLeft = mGrid.GridLineWidth + 1
+    iAuxTop = mGrid.GridLineWidth '+ 1
     
-    mLast_CellText = mGrid.textmatrix(mEditCellRow, mEditCellCol)
+    iGridLeft = mGrid.Left
+    iGridTop = mGrid.Top
+    If iHasBorder Then
+        iGridLeft = iGridLeft + mGrid.Parent.ScaleX(3 * Screen.TwipsPerPixelX, vbTwips, mGrid.Parent.ScaleMode)
+        iGridTop = iGridTop + mGrid.Parent.ScaleY(3 * Screen.TwipsPerPixelY, vbTwips, mGrid.Parent.ScaleMode)
+    End If
+    mEditCellTextBox.Text = mGrid.TextMatrix(mEditCellRow, mEditCellCol)
+    
+    mLast_CellText = mGrid.TextMatrix(mEditCellRow, mEditCellCol)
     mLast_RowEdited = mEditCellRow
     mLast_ColEdited = mEditCellCol
     
     iStr = mEditCellTextBox.Text
-    If (InStr(mEditCellTextBox.Text, "?") > 0) And (mGrid.textmatrix(mEditCellRow, mEditCellCol) = 0) Then
+    If (InStr(mEditCellTextBox.Text, "?") > 0) And (mGrid.TextMatrix(mEditCellRow, mEditCellCol) = 0) Then
         iStr = Replace(iStr, "?", "")
     End If
     iStr = Replace(iStr, " ", "")
@@ -2989,28 +3032,75 @@ Private Sub EditCell()
     
     iAuxWW = False
     If iWordWrap Then
-        iAuxWW = SendMessageLong(mEditCellTextBox.hWnd, EM_GETLINECOUNT, 0&, 0&) > 1
-        'Debug.Print SendMessageLong(mEditCellTextBox.hWnd, EM_GETLINECOUNT, 0&, 0&)
+        iAuxWW = True
+        Set mAuxTextBoxFromFlexFn = ParentFlexFnObject.GetAuxTextBox
+        If mAuxTextBoxFromFlexFn Is Nothing Then
+            iAuxWW = False
+        Else
+            mAuxTextBoxFromFlexFn.Alignment = mEditCellTextBox.Alignment
+            mAuxTextBoxFromFlexFn.Visible = False
+            mAuxTextBoxFromFlexFnOldParent = SetParent(mAuxTextBoxFromFlexFn.hWnd, mGrid.Container.hWnd)
+            If mAuxTextBoxFromFlexFnOldParent = 0 Then
+                iAuxWW = False
+            Else
+                mAuxTextBoxFromFlexFn.Locked = mTextEditionLocked
+                mAuxTextBoxFromFlexFn.Appearance = 0
+                mAuxTextBoxFromFlexFn.BorderStyle = 0
+                mAuxTextBoxFromFlexFn.Font.Bold = mGrid.CellFontBold
+                mAuxTextBoxFromFlexFn.Font.Name = mGrid.CellFontName
+                mAuxTextBoxFromFlexFn.Font.Size = mGrid.CellFontSize
+                mAuxTextBoxFromFlexFn.Font.Bold = mGrid.CellFontBold
+                mAuxTextBoxFromFlexFn.Font.Italic = mGrid.CellFontItalic
+                mAuxTextBoxFromFlexFn.Font.Underline = mGrid.CellFontUnderline
+                mAuxTextBoxFromFlexFn.Font.Strikethrough = mGrid.CellFontStrikeThrough
+                mAuxTextBoxFromFlexFn.ForeColor = mEditCellTextBox.ForeColor
+                mAuxTextBoxFromFlexFn.BackColor = mEditCellTextBox.BackColor
+                
+                mAuxTextBoxFromFlexFn.Width = mGrid.ColWidth(mEditCellCol) - (iAuxLeft * 2) * Screen.TwipsPerPixelX
+                mAuxTextBoxFromFlexFn.Height = mGrid.RowHeight(mEditCellRow) - (iAuxTop * 2 + 1) * Screen.TwipsPerPixelY
+                mAuxTextBoxFromFlexFn.Text = mEditCellTextBox.Text
+                
+'                iAuxWW = SendMessageLong(mAuxTextBoxFromFlexFn.hWnd, EM_GETLINECOUNT, 0&, 0&) > 1
+                
+                If iAuxWW Then
+                    Set mEditCellTextBox = mAuxTextBoxFromFlexFn
+                End If
+            End If
+        End If
     End If
     If iAuxWW Then
-        mEditCellTextBox.Move mGrid.Left + mGrid.ColPos(mEditCellCol) + iAuxLeft * Screen.TwipsPerPixelX, mGrid.Top + mGrid.RowPos(mEditCellRow) + iAuxTop * Screen.TwipsPerPixelY, mGrid.ColWidth(mEditCellCol) - (iAuxLeft * 2) * Screen.TwipsPerPixelX, mGrid.RowHeight(mEditCellRow) - (iAuxTop * 2) * Screen.TwipsPerPixelY
+        iAuxHeight = mAuxTextBoxFromFlexFn.Height
     Else
         Set iAuxFont = mGrid.Parent.Font
         Set mGrid.Parent.Font = mEditCellTextBox.Font
-        iAuxHeight = mGrid.Parent.TextHeight(mGrid.textmatrix(mEditCellRow, mEditCellCol)) + 2 * Screen.TwipsPerPixelY
-        If iAuxHeight > mGrid.RowHeight(mEditCellRow) Then
-            iAuxHeight = mGrid.RowHeight(mEditCellRow)
-        End If
+        iAuxHeight = mGrid.Parent.ScaleY(mGrid.Parent.TextHeight(mGrid.TextMatrix(mEditCellRow, mEditCellCol)), mGrid.Parent.ScaleMode, vbTwips) + Screen.TwipsPerPixelY
         Set mGrid.Parent.Font = iAuxFont
-        
-        Select Case FilterAlignment(mGrid.CellAlignment, efnFilterAligmentVertical)
-            Case 0 ' top
-                mEditCellTextBox.Move mGrid.Left + mGrid.ColPos(mEditCellCol) + iAuxLeft * Screen.TwipsPerPixelX, mGrid.Top + mGrid.RowPos(mEditCellRow) + iAuxTop * Screen.TwipsPerPixelY, mGrid.ColWidth(mEditCellCol) - (iAuxLeft * 2) * Screen.TwipsPerPixelX, iAuxHeight - (iAuxTop * 2) * Screen.TwipsPerPixelY
-            Case 1 ' Center
-                mEditCellTextBox.Move mGrid.Left + mGrid.ColPos(mEditCellCol) + iAuxLeft * Screen.TwipsPerPixelX, mGrid.Top + mGrid.RowPos(mEditCellRow) + (mGrid.RowHeight(mEditCellRow) - iAuxHeight) / 2, mGrid.ColWidth(mEditCellCol) - (iAuxLeft * 2) * Screen.TwipsPerPixelX, iAuxHeight - (iAuxTop * 2) * Screen.TwipsPerPixelY
-            Case 2 ' Bottom
-                mEditCellTextBox.Move mGrid.Left + mGrid.ColPos(mEditCellCol) + iAuxLeft * Screen.TwipsPerPixelX, mGrid.Top + mGrid.RowPos(mEditCellRow) + iAuxTop * Screen.TwipsPerPixelY + (mGrid.RowHeight(mEditCellRow) - iAuxHeight) - 2 * Screen.TwipsPerPixelY, mGrid.ColWidth(mEditCellCol) - (iAuxLeft * 2) * Screen.TwipsPerPixelX, iAuxHeight - (iAuxTop * 2) * Screen.TwipsPerPixelY
-        End Select
+    End If
+    If iAuxHeight > mGrid.RowHeight(mEditCellRow) - 3 * Screen.TwipsPerPixelY Then
+        iAuxHeight = mGrid.RowHeight(mEditCellRow) - 3 * Screen.TwipsPerPixelY
+    End If
+    Select Case FilterAlignment(iCellAlignment, efnFilterAligmentVertical)
+        Case 0 ' top
+            iLeft = iGridLeft + mGrid.Parent.ScaleX(mGrid.ColPos(mEditCellCol) + iAuxLeft * Screen.TwipsPerPixelX, vbTwips, mGrid.Parent.ScaleMode)
+            iTop = iGridTop + mGrid.Parent.ScaleY(mGrid.RowPos(mEditCellRow) + iAuxTop * Screen.TwipsPerPixelY, vbTwips, mGrid.Parent.ScaleMode)
+            iWidth = mGrid.Parent.ScaleX(mGrid.ColWidth(mEditCellCol) - (iAuxLeft * 2) * Screen.TwipsPerPixelX, vbTwips, mGrid.Parent.ScaleMode)
+            iHeight = mGrid.Parent.ScaleY(iAuxHeight, vbTwips, mGrid.Parent.ScaleMode)
+        Case 1 ' Center
+            iLeft = iGridLeft + mGrid.Parent.ScaleX(mGrid.ColPos(mEditCellCol) + iAuxLeft * Screen.TwipsPerPixelX, vbTwips, mGrid.Parent.ScaleMode)
+            iTop = iGridTop + mGrid.Parent.ScaleY(mGrid.RowPos(mEditCellRow) + (mGrid.RowHeight(mEditCellRow) - iAuxHeight) / 2, vbTwips, mGrid.Parent.ScaleMode)
+            iWidth = mGrid.Parent.ScaleX(mGrid.ColWidth(mEditCellCol) - (iAuxLeft * 2) * Screen.TwipsPerPixelX, vbTwips, mGrid.Parent.ScaleMode)
+            iHeight = mGrid.Parent.ScaleY(iAuxHeight, vbTwips, mGrid.Parent.ScaleMode)
+        Case 2 ' Bottom
+            iLeft = iGridLeft + mGrid.Parent.ScaleX(mGrid.ColPos(mEditCellCol) + iAuxLeft * Screen.TwipsPerPixelX, vbTwips, mGrid.Parent.ScaleMode)
+            iTop = iGridTop + mGrid.Parent.ScaleY(mGrid.RowPos(mEditCellRow) + mGrid.RowHeight(mEditCellRow) - iAuxHeight + (iAuxTop - 2) * Screen.TwipsPerPixelY, vbTwips, mGrid.Parent.ScaleMode)
+            iWidth = mGrid.Parent.ScaleX(mGrid.ColWidth(mEditCellCol) - (iAuxLeft * 2) * Screen.TwipsPerPixelX, vbTwips, mGrid.Parent.ScaleMode)
+            iHeight = mGrid.Parent.ScaleY(iAuxHeight, vbTwips, mGrid.Parent.ScaleMode)
+    End Select
+    
+    If iAuxWW Then
+        mEditCellTextBox.Move mGrid.Parent.ScaleX(iLeft, mGrid.Parent.ScaleMode, vbTwips), mGrid.Parent.ScaleY(iTop, mGrid.Parent.ScaleMode, vbTwips), mGrid.Parent.ScaleX(iWidth, mGrid.Parent.ScaleMode, vbTwips)
+    Else
+        mEditCellTextBox.Move iLeft, iTop, iWidth, iHeight
     End If
     mEditCellTextBox.Visible = True
     mEditCellTextBox.ZOrder
@@ -3043,9 +3133,17 @@ Private Sub RemoveEditCell()
     SetFocusAPI mGrid.hWnd
     mEditCellTextBox.Visible = False
 '    End If
+    
+    If mAuxTextBoxFromFlexFnOldParent <> 0 Then
+        If Not mAuxTextBoxFromFlexFn Is Nothing Then
+            SetParent mAuxTextBoxFromFlexFn.hWnd, mAuxTextBoxFromFlexFnOldParent
+            mAuxTextBoxFromFlexFnOldParent = 0
+        End If
+    End If
+    
     If Not mTextEditionLocked Then
-        If mEditCellTextBox.Text <> mGrid.textmatrix(mEditCellRow, mEditCellCol) Then
-            mGrid.textmatrix(mEditCellRow, mEditCellCol) = mEditCellTextBox.Text
+        If mEditCellTextBox.Text <> mGrid.TextMatrix(mEditCellRow, mEditCellCol) Then
+            mGrid.TextMatrix(mEditCellRow, mEditCellCol) = mEditCellTextBox.Text
             ParentFlexFnObject.EventRaise "CellTextChange", mGrid.Name, mEditCellRow, mEditCellCol
             mGrid.HighLight = Val(mEditCellTextBox.Tag)
             Set mEditCellTextBox = Nothing
@@ -3062,6 +3160,11 @@ Private Sub RemoveEditCell()
     If Not mTimerEditCell Is Nothing Then
         mTimerEditCell.Interval = 0
         Set mTimerEditCell = Nothing
+    End If
+
+    If Not mAuxTextBoxFromFlexFn Is Nothing Then
+        mAuxTextBoxFromFlexFn.Text = ""
+        Set mAuxTextBoxFromFlexFn = Nothing
     End If
 End Sub
 
