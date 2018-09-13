@@ -1,3 +1,4 @@
+09/13/2018 fixed bugs in FlexFn
 09/12/2018 fixed bugs and added functions to GridReportStyle's management
 09/10/2018 fixed a bug in PaintPicture related to right margin
 09/10/2018 added PrintFlexGrid method to PrinterEx

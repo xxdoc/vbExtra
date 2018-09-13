@@ -61,7 +61,6 @@ UserControl=ctl\ctlPopupList.ctl
 Class=cSendKeys; cls\cSendKeys.cls
 Class=cSSTabColorsHandler; cls\cSSTabColorsHandler.cls
 Class=cMemPictureBox; cls\cMemPictureBox.cls
-UserControl=ctl\ctlTextBox.ctl
 Module=MPicStretch; bas\mPicStretch.bas
 Class=ToolBarDAButton; cls\cToolbarDAButton.cls
 PropertyPage=ptp\ptpToolBarDAButtons.pag
