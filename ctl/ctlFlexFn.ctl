@@ -9,6 +9,16 @@ Begin VB.UserControl FlexFn
    ScaleHeight     =   3600
    ScaleWidth      =   4800
    ToolboxBitmap   =   "ctlFlexFn.ctx":00C3
+   Begin VB.TextBox txtAux 
+      BorderStyle     =   0  'None
+      Height          =   588
+      Left            =   1224
+      MultiLine       =   -1  'True
+      TabIndex        =   0
+      Top             =   2808
+      Visible         =   0   'False
+      Width           =   1740
+   End
    Begin VB.Timer tmrFirstResize 
       Interval        =   1
       Left            =   60
@@ -713,6 +723,10 @@ End Sub
 
 Private Sub mFlexFnObject_DocPrinted()
     RaiseEvent DocPrinted
+End Sub
+
+Private Sub mFlexFnObject_GetAuxTextBox(nTB As Object)
+    Set nTB = txtAux
 End Sub
 
 Private Sub mFlexFnObject_OrientationChange(ByVal NewOrientation As Long)
@@ -2127,19 +2141,19 @@ Private Function GridHasData(nGrid As Object) As Boolean
     If nGrid.Rows = nGrid.FixedRows Then Exit Function
     
     R = nGrid.FixedRows
-    If Trim$(nGrid.textmatrix(R, 0)) <> "" Then
+    If Trim$(nGrid.TextMatrix(R, 0)) <> "" Then
         GridHasData = True
     Else
-        If Trim$(nGrid.textmatrix(R, nGrid.Cols - 1)) <> "" Then
+        If Trim$(nGrid.TextMatrix(R, nGrid.Cols - 1)) <> "" Then
             GridHasData = True
         End If
     End If
     If Not GridHasData Then
         R = nGrid.Rows - 1
-        If Trim$(nGrid.textmatrix(R, 0)) <> "" Then
+        If Trim$(nGrid.TextMatrix(R, 0)) <> "" Then
             GridHasData = True
         Else
-            If Trim$(nGrid.textmatrix(R, nGrid.Cols - 1)) <> "" Then
+            If Trim$(nGrid.TextMatrix(R, nGrid.Cols - 1)) <> "" Then
                 GridHasData = True
             End If
         End If
@@ -2147,10 +2161,10 @@ Private Function GridHasData(nGrid As Object) As Boolean
     If Not GridHasData Then
         R = (nGrid.Rows - 1) / 2
         If R > nGrid.FixedRows Then
-            If Trim$(nGrid.textmatrix(R, 0)) <> "" Then
+            If Trim$(nGrid.TextMatrix(R, 0)) <> "" Then
                 GridHasData = True
             Else
-                If Trim$(nGrid.textmatrix(R, nGrid.Cols - 1)) <> "" Then
+                If Trim$(nGrid.TextMatrix(R, nGrid.Cols - 1)) <> "" Then
                     GridHasData = True
                 End If
             End If
@@ -2159,7 +2173,7 @@ Private Function GridHasData(nGrid As Object) As Boolean
     If Not GridHasData Then
         R = nGrid.FixedRows
         For c = 1 To nGrid.Cols - 1
-            If Trim$(nGrid.textmatrix(R, c)) <> "" Then
+            If Trim$(nGrid.TextMatrix(R, c)) <> "" Then
                 GridHasData = True
             End If
             If GridHasData Then Exit For
@@ -2167,7 +2181,7 @@ Private Function GridHasData(nGrid As Object) As Boolean
         If Not GridHasData Then
             For c = 1 To nGrid.Cols - 1
                 R = nGrid.Rows - 1
-                If Trim$(nGrid.textmatrix(R, c)) <> "" Then
+                If Trim$(nGrid.TextMatrix(R, c)) <> "" Then
                     GridHasData = True
                 End If
                 If GridHasData Then Exit For
@@ -2192,7 +2206,7 @@ Private Function BuildPopupMenu(nGrid As Object) As Boolean
     Dim ca As Long
     
     On Error Resume Next
-    iCellText = Trim2(nGrid.textmatrix(nGrid.MouseRow, nGrid.MouseCol))
+    iCellText = Trim2(nGrid.TextMatrix(nGrid.MouseRow, nGrid.MouseCol))
     On Error GoTo 0
     If iCellText <> "" Then
         mCellTextToCopy = iCellText
@@ -2245,7 +2259,7 @@ Private Function BuildPopupMenu(nGrid As Object) As Boolean
         If nGrid.ColIsVisible(c) Then
             If nGrid.ColWidth(c) <> 0 Then
                 If iStr <> "" Then iStr = iStr & vbTab
-                iStr = iStr & nGrid.textmatrix(iMo, c)
+                iStr = iStr & nGrid.TextMatrix(iMo, c)
             End If
         End If
     Next c
@@ -2261,7 +2275,7 @@ Private Function BuildPopupMenu(nGrid As Object) As Boolean
     On Error GoTo 0
     iStr = ""
     For c = 0 To nGrid.Rows - 1
-        iStr = iStr & nGrid.textmatrix(c, iMo)
+        iStr = iStr & nGrid.TextMatrix(c, iMo)
         If c < (nGrid.Rows - 1) Then
             iStr = iStr & vbCrLf
         End If
