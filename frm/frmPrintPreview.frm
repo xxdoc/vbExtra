@@ -1441,9 +1441,9 @@ Private Sub ShowPages()
     
     If Not PrinterExCurrentDocument Is Nothing Then
         If PrinterExCurrentDocument.PageCount = 0 Then
-            PrinterExCurrentDocument.DisableEvents = True
-            PrinterExCurrentDocument.PrintText " "
-            PrinterExCurrentDocument.DisableEvents = False
+'            PrinterExCurrentDocument.DisableEvents = True
+'            PrinterExCurrentDocument.PrintText " "
+'            PrinterExCurrentDocument.DisableEvents = False
             mCurrentPageNumber = 1
         End If
         If (mCurrentPageNumber + mPagesOnScreen - 1) > PrinterExCurrentDocument.PageCount Then
