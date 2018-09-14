@@ -1108,6 +1108,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mFlexFnObject.AllowTextEdition = PropBag.ReadProperty("AllowTextEdition", False)
     mFlexFnObject.TextEditionLocked = PropBag.ReadProperty("TextEditionLocked", False)
     mFlexFnObject.PrintPrevUseAltScaleIcons = PropBag.ReadProperty("PrintPrevUseAltScaleIcons", True)
+    mFlexFnObject.PrintCellColors = PropBag.ReadProperty("PrintCellColors", True)
     
     tbrButtons.IconsSize = mIconsSize
     LoadButtons
@@ -1336,6 +1337,7 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     Call PropBag.WriteProperty("AllowTextEdition", mFlexFnObject.AllowTextEdition, False)
     Call PropBag.WriteProperty("TextEditionLocked", mFlexFnObject.TextEditionLocked, False)
     Call PropBag.WriteProperty("PrintPrevUseAltScaleIcons", mFlexFnObject.PrintPrevUseAltScaleIcons, True)
+    Call PropBag.WriteProperty("PrintCellColors", mFlexFnObject.PrintCellColors, True)
     
     ' PrintFnObject properties
     Call PropBag.WriteProperty("PaperSize", mFlexFnObject.PrintFnObject.PaperSize, vbPRPSPrinterDefault)
@@ -3014,6 +3016,9 @@ Public Property Get GridMouseColAtPopupMenuPoint() As Long
     GridMouseColAtPopupMenuPoint = mGridMouseColAtPopupMenuPoint
 End Property
 
+
+' PrintFnObject properties
+
 Public Property Let MinScalePercent(nValue As Long)
     If nValue <> mFlexFnObject.MinScalePercent Then
         mFlexFnObject.MinScalePercent = nValue
@@ -3048,11 +3053,18 @@ Public Property Get PrintPrevUseAltScaleIcons() As Boolean
 End Property
 
 
+Public Property Let PrintCellColors(nValue As Boolean)
+    If nValue <> mFlexFnObject.PrintCellColors Then
+        mFlexFnObject.PrintCellColors = nValue
+        PropertyChanged "PrintCellColors"
+    End If
+End Property
+
+Public Property Get PrintCellColors() As Boolean
+    PrintCellColors = mFlexFnObject.PrintCellColors
+End Property
 
 
-
-
-' PrintFnObject properties
 Public Property Let PaperSize(nValue As cdePaperSizeConstants)
     If nValue <> mFlexFnObject.PrintFnObject.PaperSize Then
         mFlexFnObject.PrintFnObject.PaperSize = nValue
