@@ -18,9 +18,9 @@ Implements ISubclass
 Private Declare Function CLSIDFromProgID Lib "ole32.dll" (ByVal lpszProgID As Long, pCLSID As Any) As Long
 Private Declare Function StringFromCLSID Lib "ole32.dll" (pCLSID As Any, lpszProgID As Long) As Long
 Private Declare Sub CoTaskMemFree Lib "ole32.dll" (ByVal pv As Long)
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
+Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
 
-Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+Private Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
 
 Private Const SW_SHOWMAXIMIZED = 3
 
@@ -128,6 +128,7 @@ Private mTextEditionLocked As Boolean
 Private mShowCopyConfirmationMessage As Boolean
 Private mCopyConfirmationMessage As String
 Private mAutoSelect125PercentScaleOnSmallGrids As Boolean
+Private mPrintCellColors As Boolean
 
 Private WithEvents mForm As Form
 Attribute mForm.VB_VarHelpID = -1
@@ -309,6 +310,7 @@ Private Sub Class_Initialize()
     mShowToolTipsForOrderColumns = True
     mAllowTextEdition = False
     mTextEditionLocked = False
+    mPrintCellColors = True
     
     mMinScalePercent = cPrintPreviewDefaultMinScale
     mMaxScalePercent = cPrintPreviewDefaultMaxScale
@@ -3180,7 +3182,7 @@ Friend Sub DrawGrid(nCanceled As Boolean)
     Set iDefAuxFont = Printer2.Font
     
     Dim iT1 As Double
-    iT1 = timer
+    iT1 = Timer
     
     iGridStatus_Row = iGrid.Row
     iGridStatus_RowSel = iGrid.RowSel
@@ -3193,7 +3195,7 @@ Friend Sub DrawGrid(nCanceled As Boolean)
 Start:
     If mGridPrintingData Is Nothing Then
         Set mGridPrintingData = New cGridPrintingData
-        mGridPrintingData.SetGrid mCurrentGrid, mGridReportStyle.HeadersBackgroundColor
+        mGridPrintingData.SetGrid mCurrentGrid, mGridReportStyle.HeadersBackgroundColor, mPrintCellColors
         If mGridPrintingData.Canceled Then
             nCanceled = True
             iGrid.Redraw = iGridReDraw
@@ -3201,7 +3203,7 @@ Start:
         End If
     Else
         If mGridPrintingData.SizeStrStoredGrid <> mGridPrintingData.GetGridSizeStr(mCurrentGrid) Then
-            mGridPrintingData.SetGrid mCurrentGrid, mGridReportStyle.HeadersBackgroundColor
+            mGridPrintingData.SetGrid mCurrentGrid, mGridReportStyle.HeadersBackgroundColor, mPrintCellColors
             If mGridPrintingData.Canceled Then
                 nCanceled = True
                 iGrid.Redraw = iGridReDraw
@@ -6308,3 +6310,13 @@ Friend Function GetAuxTextBox() As Object
     Set GetAuxTextBox = iTb
 End Function
 
+
+Public Property Let PrintCellColors(nValue As Boolean)
+    If nValue <> mPrintCellColors Then
+        mPrintCellColors = nValue
+    End If
+End Property
+
+Public Property Get PrintCellColors() As Boolean
+    PrintCellColors = mPrintCellColors
+End Property

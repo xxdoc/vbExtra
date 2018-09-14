@@ -660,6 +660,9 @@ Private Sub AddNewPage()
     If Not mDisableEvents Then
         If (mCurrentPage = 1) Or (sLast_PaperWidthInMillimeters <> mPaperWidthInMillimeters) Or (sLast_PaperHeightInMillimeters <> mPaperHeightInMillimeters) Or (sLast_Orientation <> mOrientation) Or (sLast_LeftMarginInMillimeters <> mLeftMarginInMillimeters) Or (sLast_TopMarginInMillimeters <> mTopMarginInMillimeters) Or (sLast_RightMarginInMillimeters <> mRightMarginInMillimeters) Or (sLast_BottomMarginInMillimeters <> mBottomMarginInMillimeters) Then
             CheckMarginsLimits
+            If Not mDocumentCreated Then
+                Exit Sub
+            End If
             mPages(mCurrentPage).FixedImageScale = mFixedImageScale
             sLast_PaperWidthInMillimeters = mPaperWidthInMillimeters
             sLast_PaperHeightInMillimeters = mPaperHeightInMillimeters
@@ -776,6 +779,7 @@ Public Sub GoToPage(nPageNumber As Long)
     If (nPageNumber < 1) Or (nPageNumber > PageCount) Then
         If nPageNumber = (PageCount + 1) Then
             AddNewPage
+            If Not mDocumentCreated Then Exit Sub
         Else
             RaiseError 9, "PrinterEx"
             Exit Sub
@@ -1849,6 +1853,8 @@ Private Sub Class_Initialize()
     mPaperBin = vbPRBNAuto
     mZoom = 100
     
+    KillDoc
+
     If gPrinterExDeviceName = "" Then
         If iThereIsAPrinter Then
             DeviceName = VB.Printer.DeviceName
@@ -3231,8 +3237,8 @@ Private Property Get IPrinterEx_PrinterFlags() As cdeCommonDialogExPrinterFlagsC
 End Property
 
 
-Private Sub IPrinterEx_PrintFlexGrid(nFlexGrid As Object, Optional Style As Variant, Optional UserCanChangeStyle As Boolean = True, Optional GridAlign As vbExGridAlignmentConstants = vxGACentered, Optional ByRef nCanceled As Boolean)
-    PrintFlexGrid nFlexGrid, Style, UserCanChangeStyle, GridAlign, nCanceled
+Private Sub IPrinterEx_PrintFlexGrid(nFlexGrid As Object, Optional Style As Variant, Optional UserCanChangeStyle As Boolean = True, Optional GridAlign As vbExGridAlignmentConstants = vxGACentered, Optional nPrintCellColors As Boolean = True, Optional ByRef nCanceled As Boolean)
+    PrintFlexGrid nFlexGrid, Style, UserCanChangeStyle, GridAlign, nPrintCellColors, nCanceled
 End Sub
 
 Private Property Set IPrinterEx_PrintPrevFormatButtonPicture(nSizeIdentifier As VBExToobarDAButtonIconSizeConstants, RHS As stdole.Picture)
@@ -5680,15 +5686,15 @@ Public Sub PaintPicture(Picture As stdole.IPictureDisp, X1 As Single, Y1 As Sing
         iWidth2 = ScaleX(iPic.Width, vbHimetric, vbPixels) - iX2
         iWidth2ScrDC = iPic.Width / 2540 * 1440 / Screen.TwipsPerPixelX - iX2ScrDC
     Else
-        iWidth2 = ScaleX(CSng(Width2), Me.ScaleMode, vbPixels) - iX2
-        iWidth2ScrDC = ScaleX(CSng(Width2), ScaleMode, vbTwips) / Screen.TwipsPerPixelX - iX2ScrDC
+        iWidth2 = ScaleX(CSng(Width2), Me.ScaleMode, vbPixels) '- iX2
+        iWidth2ScrDC = ScaleX(CSng(Width2), ScaleMode, vbTwips) / Screen.TwipsPerPixelX '- iX2ScrDC
     End If
     If IsMissing(Height2) Then
         iHeight2 = ScaleY(iPic.Height, vbHimetric, vbPixels) - iY2
         iHeight2ScrDC = iPic.Height / 2540 * 1440 / Screen.TwipsPerPixelY - iY2ScrDC
     Else
-        iHeight2 = ScaleY(CSng(Height2), Me.ScaleMode, vbPixels) - iY2
-        iHeight2ScrDC = ScaleY(CSng(Height2), ScaleMode, vbTwips) / Screen.TwipsPerPixelY - iY2ScrDC
+        iHeight2 = ScaleY(CSng(Height2), Me.ScaleMode, vbPixels) '- iY2
+        iHeight2ScrDC = ScaleY(CSng(Height2), ScaleMode, vbTwips) / Screen.TwipsPerPixelY '- iY2ScrDC
     End If
     If (iWidth2) > CurrentPageScaleWidthInPixels Then
         iWidth2 = CurrentPageScaleWidthInPixels
@@ -7270,7 +7276,7 @@ Private Sub DeleteSavedUserPreferences(Optional nDocKey As String)
 End Sub
 
 ' The optional Style parameter can have a GridReportStyle object instance defining the style or a number referring one of the predefined styles
-Public Sub PrintFlexGrid(nFlexGrid As Object, Optional Style As Variant, Optional UserCanChangeStyle As Boolean = True, Optional GridAlign As vbExGridAlignmentConstants = vxGACentered, Optional ByRef nCanceled As Boolean)
+Public Sub PrintFlexGrid(nFlexGrid As Object, Optional Style As Variant, Optional UserCanChangeStyle As Boolean = True, Optional GridAlign As vbExGridAlignmentConstants = vxGACentered, Optional nPrintCellColors As Boolean = True, Optional ByRef nCanceled As Boolean)
     Dim iFlexFnObject As FlexFnObject
     Dim iGridReportStyle As GridReportStyle
     Dim iStyleNumber As Long
@@ -7343,6 +7349,7 @@ Public Sub PrintFlexGrid(nFlexGrid As Object, Optional Style As Variant, Optiona
     Set iFlexFnObject.Grid = nFlexGrid
     Set iFlexFnObject.GridReportStyle = iGridReportStyle
     iFlexFnObject.GridAlign = GridAlign
+    iFlexFnObject.PrintCellColors = nPrintCellColors
     iFlexFnObject.DrawingGridFromPrinterEx = True
     iFlexFnObject.DrawGrid nCanceled
     mPrintFlexGridCanceled = nCanceled

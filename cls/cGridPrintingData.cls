@@ -64,10 +64,12 @@ Private mTextHeightRow() As Long
 Private mRowFinalPosYForTop() As Long
 Private mColWidthsAreSet As Boolean
 Private mSizeStrStoredGrid As String
+Private mPrintCellColors As Boolean
+
 Public Canceled As Boolean
 Public mfrmSettingGridDataProgressShown As Boolean
 
-Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
+Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1, Optional nPrintCellColors As Boolean = True)
     Dim c As Long
     Dim R As Long
     Dim iFontChanged As Boolean
@@ -96,6 +98,8 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
     Dim iBackColorFixed As Long
     Dim iGrid_CellFontStrikeThrough As Boolean
     Dim iLng2 As Long
+    
+    mPrintCellColors = nPrintCellColors
     
     ReDim mFontsAttributes(0)
     ReDim mCellAlignment(mGrid.Rows - 1, mGrid.Cols - 1)
@@ -173,7 +177,7 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
     mLastRowWithData = -1
     For R = mGrid.Rows - 1 To mGrid.FixedRows Step -1
         For c = 0 To mGrid.Cols - 1
-            If mGrid.textmatrix(R, c) <> "" Then
+            If mGrid.TextMatrix(R, c) <> "" Then
                 mLastRowWithData = R
                 Exit For
             End If
@@ -246,8 +250,12 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
                         mCellBackColor(R, c) = iBackColor
                     End If
                 Else
-                    mCellBackColor(R, c) = iLng
-                    mCellBackColorIsExplicitelySet(R, c) = True
+                    If mPrintCellColors Then
+                        mCellBackColor(R, c) = iLng
+                        mCellBackColorIsExplicitelySet(R, c) = True
+                    Else
+                        mCellBackColor(R, c) = iBackColor
+                    End If
                 End If
                 
                 TranslateColor mGrid.CellForeColor, 0, iLng
@@ -258,7 +266,11 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
                         mCellForeColor(R, c) = iForeColor
                     End If
                 Else
-                    mCellForeColor(R, c) = iLng
+                    If mPrintCellColors Then
+                        mCellForeColor(R, c) = iLng
+                    Else
+                        mCellForeColor(R, c) = iForeColor
+                    End If
                 End If
                 
             Else
@@ -277,12 +289,16 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
                         mCellBackColorIsExplicitelySet(R, c) = True
                     End If
                 Else
-                    iLng = mGrid.CellBackColor
-                    If iLng = 0 Then
-                        TranslateColor mGrid.CellForeColor, 0, iLng2
-                        If iLng2 = 0 Then
-                            iLng = vbWhite
+                    If mPrintCellColors Then
+                        iLng = mGrid.CellBackColor
+                        If iLng = 0 Then
+                            TranslateColor mGrid.CellForeColor, 0, iLng2
+                            If iLng2 = 0 Then
+                                iLng = vbWhite
+                            End If
                         End If
+                    Else
+                        iLng = iBackColor
                     End If
                     If iLng = iBackColorFixed Then
                         If nBackColorFixed <> -1 Then
@@ -297,10 +313,13 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1)
                     TranslateColor mGrid.CellForeColor, 0, iLng
                     mCellForeColor(R, c) = iLng
                 Else
-                    TranslateColor mGrid.CellForeColor, 0, iLng
+                    If mPrintCellColors Then
+                        TranslateColor mGrid.CellForeColor, 0, iLng
+                    Else
+                        iLng = iForeColor
+                    End If
                     mCellForeColor(R, c) = iLng
                 End If
-            
             End If
             
             On Error Resume Next
