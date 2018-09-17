@@ -3400,7 +3400,6 @@ Public Property Let PageNumbersForeColor(ByVal nValue As OLE_COLOR)
 End Property
 
 
-
 Public Function GetPredefinedPageNumbersFormatString(nIndex As Long) As String
     GetPredefinedPageNumbersFormatString = mFlexFnObject.PrintFnObject.GetPredefinedPageNumbersFormatString(nIndex)
 End Function
@@ -3409,8 +3408,6 @@ Public Property Get GetPredefinedPageNumbersFormatStringsCount() As Long
     GetPredefinedPageNumbersFormatStringsCount = mFlexFnObject.PrintFnObject.GetPredefinedPageNumbersFormatStringsCount
 End Property
 
-' End PrintFnObject properties
-
 
 Public Property Let RememberUserPrintingPreferences(nValue As gfnRememberUserPrintingPreferences)
     If nValue <> mFlexFnObject.RememberUserPrintingPreferences Then
@@ -3418,6 +3415,9 @@ Public Property Let RememberUserPrintingPreferences(nValue As gfnRememberUserPri
         PropertyChanged "RememberUserPrintingPreferences"
     End If
 End Property
+
+' End PrintFnObject properties
+
 
 Public Property Get RememberUserPrintingPreferences() As gfnRememberUserPrintingPreferences
     RememberUserPrintingPreferences = mFlexFnObject.RememberUserPrintingPreferences
