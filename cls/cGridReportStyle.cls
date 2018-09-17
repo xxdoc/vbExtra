@@ -108,3 +108,48 @@ Public Property Get LineWidthHeadersSeparatorLine() As Long
     LineWidthHeadersSeparatorLine = mLineWidthHeadersSeparatorLine
 End Property
 
+Public Sub Load(nStyleID)
+    Dim iStr As String
+    Dim iSt As GridReportStyle
+    
+    If IsNumeric(nStyleID) Then
+        iStr = "GRStyle" & Val(nStyleID)
+    Else
+        If VarType(nStyleID) = vbString Then
+            iStr = CStr(nStyleID)
+        ElseIf VarType(nStyleID) = vbObject Then
+            If TypeOf nStyleID Is GridReportStyle Then
+                Set iSt = nStyleID
+            Else
+                RaiseError 380, TypeName(Me)
+            End If
+        Else
+            RaiseError 380, TypeName(Me)
+            Exit Sub
+        End If
+    End If
+    
+    If iSt Is Nothing Then
+        Set iSt = GetGridReportStyle(iStr)
+    End If
+    
+    PrintOuterBorder = iSt.PrintOuterBorder
+    PrintHeadersBorder = iSt.PrintHeadersBorder
+    PrintColumnsDataLines = iSt.PrintColumnsDataLines
+    PrintColumnsHeadersLines = iSt.PrintColumnsHeadersLines
+    PrintRowsLines = iSt.PrintRowsLines
+    PrintHeadersSeparatorLine = iSt.PrintHeadersSeparatorLine
+    PrintHeadersBackground = iSt.PrintHeadersBackground
+    PrintFixedColsBackground = iSt.PrintFixedColsBackground
+    PrintOtherBackgrounds = iSt.PrintOtherBackgrounds
+    LineWidth = iSt.LineWidth
+    LineWidthHeadersSeparatorLine = iSt.LineWidthHeadersSeparatorLine
+    OuterBorderColor = iSt.OuterBorderColor
+    ColumnsDataLinesColor = iSt.ColumnsDataLinesColor
+    ColumnsHeadersLinesColor = iSt.ColumnsHeadersLinesColor
+    RowsLinesColor = iSt.RowsLinesColor
+    HeadersBorderColor = iSt.HeadersBorderColor
+    HeadersBackgroundColor = iSt.HeadersBackgroundColor
+    Tag = iSt.Tag
+    
+End Sub

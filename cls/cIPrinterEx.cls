@@ -432,7 +432,7 @@ Public Sub PrintRichTextBox(nRTB As Object)
 
 End Sub
 
-Public Sub PrintFlexGrid(nFlexGrid As Object, Optional Style As Variant, Optional UserCanChangeStyle As Boolean = True, Optional GridAlign As vbExGridAlignmentConstants = vxGACentered, Optional nPrintCellColors As Boolean = True, Optional ByRef nCanceled As Boolean)
+Public Sub PrintFlexGrid(nFlexGrid As Object, Optional Style As Variant, Optional UserCanChangeStyle As Boolean = True, Optional GridAlign As vbExGridAlignmentConstants = vxGACentered, Optional UserCanChangeGridAlign As Boolean = True, Optional PrintCellColors As Boolean = True, Optional ByRef Canceled As Boolean)
     
 End Sub
 
