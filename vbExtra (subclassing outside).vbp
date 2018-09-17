@@ -1,5 +1,5 @@
 Type=Control
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#F:\WINDOWS\system32\stdole2.tlb#OLE Automation
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#F:\WINDOWS\system32\STDOLE2.TLB#OLE Automation
 Reference=*\G{4EBFF089-1C52-4789-842F-B974169704FC}#1.0#0#lib\vbExTyp.tlb#:) vbExtra Types
 Reference=*\G{CF9E3B8E-6B7C-46A5-9565-9BFA62B55364}#1.1#0#lib\vbExSc1.dll#:) vbExtra Subclass
 Module=mGlobals; bas\mGlobals.bas
