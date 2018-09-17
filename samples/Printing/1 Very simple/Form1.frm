@@ -5,6 +5,15 @@ Begin VB.Form Form1
    ClientLeft      =   2268
    ClientTop       =   2016
    ClientWidth     =   5448
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
    LinkTopic       =   "Form1"
    ScaleHeight     =   3276
    ScaleWidth      =   5448
@@ -25,8 +34,10 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Command1_Click()
-    PrinterEx.PrintPrevPageSetupButtonVisible = False
-    PrinterEx.HandleMargins = False ' in existing projects it is neccesary to change it to False because I decided to default that propery to True. It could be better to have it to True for new projects, but for existing projects that are already handling margins on their codes it must be set to false (or to remove the magin handling code from it).
+    ' This project shows how to use this Printer object as a replacement of the original VB's Printer object in an existent project
+    ' But if you are programming a new project, then you may want to remove or comment the following two lines and let the object to automatically handle the margins and page numbers
+    PrinterEx.PrintPageNumbers = False
+    PrinterEx.HandleMargins = False ' in existing projects it is necessary to change this property to False because it defaults to True. Existing projects must be already handling the margins with their code.
     PrinterEx.ShowPrintPreview Me, "MyPrintingRoutine"
 End Sub
 

@@ -359,6 +359,15 @@ Public Property Get PrintPrevPageSetupButtonVisible() As Boolean
 End Property
 
 
+Public Property Let PrintPrevPageNumbersButtonVisible(nValue As Boolean)
+
+End Property
+
+Public Property Get PrintPrevPageNumbersButtonVisible() As Boolean
+
+End Property
+
+
 Public Property Let PrintPrevToolBarIconsSize(nValue As vbExPrintPrevToolBarIconsSizeConstants)
 
 End Property
@@ -378,19 +387,9 @@ End Property
 
 
 
-Public Sub ShowPrintPreview(Optional nObject As Object, Optional nProcedureName As String, Optional DocKey As String)
+Public Sub ShowPrintPreview(Optional nObject As Object, Optional nProcedureName As String, Optional nDocKey As String, Optional nParametersArray As Variant)
     
 End Sub
-
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Property Let CommonDialogFlags(nValue As Long)
-    
-End Property
-
-Public Property Get CommonDialogFlags() As Long
-Attribute CommonDialogFlags.VB_MemberFlags = "40"
-    
-End Property
 
 
 Public Property Let PrinterFlags(nValue As cdeCommonDialogExPrinterFlagsConstants)
@@ -433,6 +432,56 @@ Public Sub PrintRichTextBox(nRTB As Object)
 
 End Sub
 
+Public Sub PrintFlexGrid(nFlexGrid As Object, Optional Style As Variant, Optional UserCanChangeStyle As Boolean = True, Optional GridAlign As vbExGridAlignmentConstants = vxGACentered, Optional UserCanChangeGridAlign As Boolean = True, Optional PrintCellColors As Boolean = True, Optional ByRef Canceled As Boolean)
+    
+End Sub
+
 Public Property Get SomethingPrintedOnPage() As Boolean
 
 End Property
+
+
+Public Property Get DocKey() As String
+    
+End Property
+
+Public Property Let DocKey(nValue As String)
+    
+End Property
+
+
+Public Sub DeleteSavedUserPreferences(Optional nDocKey As String)
+    
+End Sub
+
+
+Public Property Let AllowUserChangeScale(nValue As Boolean)
+    
+End Property
+
+Public Property Get AllowUserChangeScale() As Boolean
+    
+End Property
+
+
+Public Property Let AllowUserChangeOrientation(nValue As Boolean)
+    
+End Property
+
+Public Property Get AllowUserChangeOrientation() As Boolean
+    
+End Property
+
+
+Public Property Let AllowUserChangePaper(nValue As Boolean)
+    
+End Property
+
+Public Property Get AllowUserChangePaper() As Boolean
+    
+End Property
+
+
+Public Sub AddGridReportStyle(ByVal nStyle As GridReportStyle)
+
+End Sub

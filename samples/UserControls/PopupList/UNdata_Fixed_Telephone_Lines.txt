@@ -1,0 +1,3126 @@
+﻿Country or Area|Year|Value
+Afghanistan|2014|101931
+Afghanistan|2013|95769
+Afghanistan|2012|90017
+Afghanistan|2011|13509
+Afghanistan|2010|16620
+Afghanistan|2009|5130
+Afghanistan|2003|36700
+Afghanistan|2002|33050
+Afghanistan|2001|29000
+Afghanistan|2000|29000
+Albania|2014|235734
+Albania|2013|281200
+Albania|2012|312000
+Albania|2011|338844
+Albania|2010|333066
+Albania|2009|363000
+Albania|2008|343591
+Albania|2007|300000
+Albania|2006|256000
+Albania|2005|278973
+Albania|2004|274557
+Albania|2003|255000
+Albania|2002|220000
+Albania|2001|197496
+Albania|2000|152687
+Algeria|2014|3098787
+Algeria|2013|3132829
+Algeria|2012|3289363
+Algeria|2011|3059336
+Algeria|2010|2922731
+Algeria|2009|2576165
+Algeria|2008|3069140
+Algeria|2007|3068409
+Algeria|2006|2841297
+Algeria|2005|2572000
+Algeria|2004|2486720
+Algeria|2003|2079464
+Algeria|2002|1950000
+Algeria|2001|1880000
+Algeria|2000|1761327
+American Samoa|2014|9900
+American Samoa|2013|10000
+American Samoa|2012|10000
+American Samoa|2010|10400
+American Samoa|2009|10400
+American Samoa|2008|10400
+American Samoa|2007|10400
+American Samoa|2006|10400
+American Samoa|2005|10400
+American Samoa|2004|10354
+American Samoa|2003|10713
+American Samoa|2002|14053
+American Samoa|2001|12587
+American Samoa|2000|10252
+Andorra|2014|38237
+Andorra|2013|38572
+Andorra|2012|38320
+Andorra|2011|38401
+Andorra|2010|38171
+Andorra|2009|37882
+Andorra|2008|37375
+Andorra|2007|37153
+Andorra|2006|36507
+Andorra|2005|35444
+Andorra|2004|35040
+Andorra|2003|35171
+Andorra|2002|34922
+Andorra|2001|34505
+Andorra|2000|34215
+Angola|2014|281327
+Angola|2013|214950
+Angola|2012|208345
+Angola|2011|159485
+Angola|2010|281122
+Angola|2009|303179
+Angola|2008|114296
+Angola|2007|94294
+Angola|2006|98165
+Angola|2005|96760
+Angola|2004|94280
+Angola|2003|85043
+Angola|2002|80200
+Angola|2001|76800
+Angola|2000|64900
+Antigua and Barbuda|2014|19915
+Antigua and Barbuda|2013|33133
+Antigua and Barbuda|2012|33159
+Antigua and Barbuda|2011|35484
+Antigua and Barbuda|2010|36322
+Antigua and Barbuda|2009|37350
+Antigua and Barbuda|2008|38000
+Antigua and Barbuda|2007|37900
+Antigua and Barbuda|2006|37500
+Antigua and Barbuda|2005|36480
+Antigua and Barbuda|2004|38000
+Antigua and Barbuda|2003|38000
+Antigua and Barbuda|2002|38046
+Antigua and Barbuda|2001|37264
+Antigua and Barbuda|2000|38300
+Argentina|2014|9602605
+Argentina|2013|9662084
+Argentina|2012|9455639
+Argentina|2011|9722525
+Argentina|2010|9914208
+Argentina|2009|9768135
+Argentina|2008|9742833
+Argentina|2007|9500000
+Argentina|2006|9459794
+Argentina|2005|9441673
+Argentina|2004|8760566
+Argentina|2003|8603869
+Argentina|2002|7708568
+Argentina|2001|8131435
+Argentina|2000|7894205
+Armenia|2014|572772
+Armenia|2013|578450
+Armenia|2012|583685
+Armenia|2011|586943
+Armenia|2010|592300
+Armenia|2009|599900
+Armenia|2008|626600
+Armenia|2007|624700
+Armenia|2006|603900
+Armenia|2005|594404
+Armenia|2004|578973
+Armenia|2003|563679
+Armenia|2002|542846
+Armenia|2001|531456
+Armenia|2000|533387
+Aruba|2014|35000
+Aruba|2013|35000
+Aruba|2012|36000
+Aruba|2010|35040
+Aruba|2009|36700
+Aruba|2008|38461
+Aruba|2007|38609
+Aruba|2006|38651
+Aruba|2005|38259
+Aruba|2004|38003
+Aruba|2003|37390
+Aruba|2002|37132
+Aruba|2001|37132
+Aruba|2000|38100
+Australia|2014|9190000
+Australia|2013|10350000
+Australia|2012|10471000
+Australia|2011|10573000
+Australia|2010|10625000
+Australia|2009|10709000
+Australia|2008|9370000
+Australia|2007|9760000
+Australia|2006|9940000
+Australia|2005|10120000
+Australia|2004|10370000
+Australia|2003|10460000
+Australia|2002|10400000
+Australia|2001|10060000
+Australia|2000|10050000
+Austria|2014|3254700
+Austria|2013|3334000
+Austria|2012|3380000
+Austria|2011|3388000
+Austria|2010|3398000
+Austria|2009|3253000
+Austria|2008|3285000
+Austria|2007|3407000
+Austria|2006|3605000
+Austria|2005|3739000
+Austria|2004|3821000
+Austria|2003|3877000
+Austria|2002|3883000
+Austria|2001|3997000
+Austria|2000|3997000
+Azerbaijan|2014|1795448
+Azerbaijan|2013|1757855
+Azerbaijan|2012|1724004
+Azerbaijan|2011|1683876
+Azerbaijan|2010|1506585
+Azerbaijan|2009|1401100
+Azerbaijan|2008|1310500
+Azerbaijan|2007|1253300
+Azerbaijan|2006|1176976
+Azerbaijan|2005|1094200
+Azerbaijan|2004|1013400
+Azerbaijan|2003|941366
+Azerbaijan|2002|926000
+Azerbaijan|2001|864800
+Azerbaijan|2000|801200
+Bahamas|2014|125658
+Bahamas|2013|136000
+Bahamas|2012|135000
+Bahamas|2011|132995
+Bahamas|2010|129314
+Bahamas|2009|128964
+Bahamas|2008|132756
+Bahamas|2007|132854
+Bahamas|2006|131564
+Bahamas|2005|133074
+Bahamas|2004|139936
+Bahamas|2003|131856
+Bahamas|2002|126556
+Bahamas|2001|123302
+Bahamas|2000|114347
+Bahrain|2014|284684
+Bahrain|2013|291499
+Bahrain|2012|299416
+Bahrain|2011|276523
+Bahrain|2010|228000
+Bahrain|2009|238000
+Bahrain|2008|220386
+Bahrain|2007|203541
+Bahrain|2006|194196
+Bahrain|2005|193520
+Bahrain|2004|191553
+Bahrain|2003|185756
+Bahrain|2002|175446
+Bahrain|2001|173855
+Bahrain|2000|170976
+Bangladesh|2014|974181
+Bangladesh|2013|1082348
+Bangladesh|2012|961589
+Bangladesh|2011|977700
+Bangladesh|2010|1280782
+Bangladesh|2009|1234895
+Bangladesh|2008|1344456
+Bangladesh|2007|1186919
+Bangladesh|2006|1134000
+Bangladesh|2005|1070000
+Bangladesh|2004|830950
+Bangladesh|2003|742048
+Bangladesh|2002|605931
+Bangladesh|2001|564880
+Bangladesh|2000|491303
+Barbados|2014|151394
+Barbados|2013|148735
+Barbados|2012|143358
+Barbados|2011|140668
+Barbados|2010|137486
+Barbados|2009|135700
+Barbados|2008|135000
+Barbados|2007|134261
+Barbados|2006|134261
+Barbados|2005|134878
+Barbados|2004|135732
+Barbados|2003|134000
+Barbados|2002|133000
+Barbados|2001|128956
+Barbados|2000|123832
+Belarus|2014|4514315
+Belarus|2013|4468600
+Belarus|2012|4407040
+Belarus|2011|4207978
+Belarus|2010|4138600
+Belarus|2009|3983178
+Belarus|2008|3718094
+Belarus|2007|3671850
+Belarus|2006|3367950
+Belarus|2005|3284272
+Belarus|2004|3175886
+Belarus|2003|3071342
+Belarus|2002|2967163
+Belarus|2001|2862376
+Belarus|2000|2751905
+Belgium|2014|4532475
+Belgium|2013|4586500
+Belgium|2012|4634782
+Belgium|2011|4634252
+Belgium|2010|4639780
+Belgium|2009|4636079
+Belgium|2008|4734517
+Belgium|2007|4847263
+Belgium|2006|4727800
+Belgium|2005|4794583
+Belgium|2004|4801000
+Belgium|2003|4875000
+Belgium|2002|4931600
+Belgium|2001|5131694
+Belgium|2000|5036422
+Belize|2014|22700
+Belize|2013|24051
+Belize|2012|25415
+Belize|2011|28844
+Belize|2010|30288
+Belize|2009|31168
+Belize|2008|31124
+Belize|2007|33905
+Belize|2006|34325
+Belize|2005|33770
+Belize|2004|33716
+Belize|2003|33278
+Belize|2002|31300
+Belize|2001|35237
+Belize|2000|35754
+Benin|2014|195662
+Benin|2013|159443
+Benin|2012|156715
+Benin|2011|152715
+Benin|2010|133427
+Benin|2009|127149
+Benin|2008|115289
+Benin|2007|110765
+Benin|2006|77342
+Benin|2005|76267
+Benin|2004|72789
+Benin|2003|66511
+Benin|2002|62669
+Benin|2001|59298
+Benin|2000|51644
+Bermuda|2014|29234
+Bermuda|2013|72000
+Bermuda|2012|69000
+Bermuda|2010|57800
+Bermuda|2009|57700
+Bermuda|2008|57600
+Bermuda|2007|57600
+Bermuda|2006|57654
+Bermuda|2005|52471
+Bermuda|2004|53850
+Bermuda|2003|54000
+Bermuda|2002|56000
+Bermuda|2001|56151
+Bermuda|2000|56073
+Bhutan|2014|23823
+Bhutan|2013|26485
+Bhutan|2012|27005
+Bhutan|2011|27490
+Bhutan|2010|26292
+Bhutan|2009|26348
+Bhutan|2008|27475
+Bhutan|2007|29857
+Bhutan|2006|31526
+Bhutan|2005|33000
+Bhutan|2004|30285
+Bhutan|2003|23657
+Bhutan|2002|19615
+Bhutan|2001|17553
+Bhutan|2000|14145
+Bolivia|2014|876111
+Bolivia|2013|874381
+Bolivia|2012|880371
+Bolivia|2011|878483
+Bolivia|2010|851203
+Bolivia|2009|804217
+Bolivia|2008|788972
+Bolivia|2007|678198
+Bolivia|2006|666553
+Bolivia|2005|646291
+Bolivia|2004|625428
+Bolivia|2003|610261
+Bolivia|2002|590638
+Bolivia|2001|524391
+Bolivia|2000|510755
+Bosnia and Herzegovina|2014|847694
+Bosnia and Herzegovina|2013|846484
+Bosnia and Herzegovina|2012|886313
+Bosnia and Herzegovina|2011|955937
+Bosnia and Herzegovina|2010|998615
+Bosnia and Herzegovina|2009|998644
+Bosnia and Herzegovina|2008|1031355
+Bosnia and Herzegovina|2007|1064452
+Bosnia and Herzegovina|2006|989000
+Bosnia and Herzegovina|2005|968857
+Bosnia and Herzegovina|2004|951526
+Bosnia and Herzegovina|2003|938019
+Bosnia and Herzegovina|2002|902836
+Bosnia and Herzegovina|2001|847026
+Bosnia and Herzegovina|2000|780000
+Botswana|2014|169236
+Botswana|2013|174165
+Botswana|2012|160488
+Botswana|2011|149578
+Botswana|2010|137422
+Botswana|2009|137422
+Botswana|2008|142282
+Botswana|2007|136946
+Botswana|2006|132034
+Botswana|2005|136463
+Botswana|2004|131774
+Botswana|2003|131399
+Botswana|2002|148155
+Botswana|2001|148155
+Botswana|2000|135900
+Brazil|2014|44128188
+Brazil|2013|45038117
+Brazil|2012|44305294
+Brazil|2011|43025835
+Brazil|2010|42141418
+Brazil|2009|41496998
+Brazil|2008|41235247
+Brazil|2007|39399622
+Brazil|2006|38800200
+Brazil|2005|39852600
+Brazil|2004|39578903
+Brazil|2003|39205000
+Brazil|2002|38810685
+Brazil|2001|37430779
+Brazil|2000|30926272
+Brunei Darussalam|2014|48249
+Brunei Darussalam|2013|56715
+Brunei Darussalam|2012|70933
+Brunei Darussalam|2011|79839
+Brunei Darussalam|2010|79901
+Brunei Darussalam|2009|80549
+Brunei Darussalam|2008|80786
+Brunei Darussalam|2007|79554
+Brunei Darussalam|2006|80176
+Brunei Darussalam|2005|83890
+Brunei Darussalam|2004|83100
+Brunei Darussalam|2003|81925
+Brunei Darussalam|2002|81280
+Brunei Darussalam|2001|88440
+Brunei Darussalam|2000|80500
+Bulgaria|2014|1816974
+Bulgaria|2013|1942424
+Bulgaria|2012|2132905
+Bulgaria|2011|2272834
+Bulgaria|2010|2164258
+Bulgaria|2009|2205394
+Bulgaria|2008|2189773
+Bulgaria|2007|2300355
+Bulgaria|2006|2399424
+Bulgaria|2005|2490022
+Bulgaria|2004|2726800
+Bulgaria|2003|2817512
+Bulgaria|2002|2871801
+Bulgaria|2001|2887000
+Bulgaria|2000|2881786
+Burkina Faso|2014|124595
+Burkina Faso|2013|137421
+Burkina Faso|2012|141358
+Burkina Faso|2011|141529
+Burkina Faso|2010|143963
+Burkina Faso|2009|152461
+Burkina Faso|2008|148157
+Burkina Faso|2007|116746
+Burkina Faso|2006|94758
+Burkina Faso|2005|91191
+Burkina Faso|2004|85225
+Burkina Faso|2003|66639
+Burkina Faso|2002|61908
+Burkina Faso|2001|58036
+Burkina Faso|2000|53217
+Burundi|2014|21669
+Burundi|2013|21253
+Burundi|2012|17394
+Burundi|2011|30010
+Burundi|2010|34972
+Burundi|2009|31121
+Burundi|2008|30411
+Burundi|2007|28500
+Burundi|2006|27886
+Burundi|2005|27800
+Burundi|2004|27744
+Burundi|2003|23895
+Burundi|2002|22084
+Burundi|2001|20543
+Burundi|2000|20000
+Cambodia|2014|361056
+Cambodia|2013|420942
+Cambodia|2012|584475
+Cambodia|2011|530000
+Cambodia|2010|358850
+Cambodia|2009|54200
+Cambodia|2008|43100
+Cambodia|2007|37529
+Cambodia|2006|25648
+Cambodia|2005|32971
+Cambodia|2004|32180
+Cambodia|2003|31379
+Cambodia|2002|35419
+Cambodia|2001|33494
+Cambodia|2000|30880
+Cameroon|2014|1051356
+Cameroon|2013|799016
+Cameroon|2012|737445
+Cameroon|2011|668965
+Cameroon|2010|539504
+Cameroon|2009|435413
+Cameroon|2008|255306
+Cameroon|2007|188874
+Cameroon|2006|130694
+Cameroon|2005|100331
+Cameroon|2004|99439
+Cameroon|2003|97393
+Cameroon|2002|110881
+Cameroon|2001|106287
+Cameroon|2000|95000
+Canada|2014|16403600
+Canada|2013|16921000
+Canada|2012|17726000
+Canada|2011|18274000
+Canada|2010|18394000
+Canada|2009|18708000
+Canada|2008|18250000
+Canada|2007|18282026
+Canada|2006|18236000
+Canada|2005|18148000
+Canada|2004|20563000
+Canada|2003|20612000
+Canada|2002|20622000
+Canada|2001|21126000
+Canada|2000|20840000
+Cape Verde|2014|58534
+Cape Verde|2013|66177
+Cape Verde|2012|70220
+Cape Verde|2011|74503
+Cape Verde|2010|71971
+Cape Verde|2009|71874
+Cape Verde|2008|71860
+Cape Verde|2007|71764
+Cape Verde|2006|71578
+Cape Verde|2005|71600
+Cape Verde|2004|71700
+Cape Verde|2003|71716
+Cape Verde|2002|70187
+Cape Verde|2001|64132
+Cape Verde|2000|54644
+Cayman Islands|2014|32903
+Cayman Islands|2013|36717
+Cayman Islands|2012|37392
+Cayman Islands|2011|37229
+Cayman Islands|2010|37351
+Cayman Islands|2009|36151
+Cayman Islands|2008|35766
+Cayman Islands|2007|35050
+Cayman Islands|2006|38000
+Cayman Islands|2005|38000
+Cayman Islands|2004|38000
+Cayman Islands|2003|38000
+Cayman Islands|2002|38000
+Cayman Islands|2001|38000
+Cayman Islands|2000|35000
+Central African Rep.|2014|800
+Central African Rep.|2013|800
+Central African Rep.|2012|823
+Central African Rep.|2011|815
+Central African Rep.|2010|929
+Central African Rep.|2009|3561
+Central African Rep.|2005|10000
+Central African Rep.|2004|10000
+Central African Rep.|2003|9500
+Central African Rep.|2002|9000
+Central African Rep.|2001|8917
+Central African Rep.|2000|9468
+Chad|2014|23580
+Chad|2013|31323
+Chad|2012|27937
+Chad|2011|31839
+Chad|2010|51227
+Chad|2009|58267
+Chad|2008|45000
+Chad|2007|32000
+Chad|2006|20000
+Chad|2005|13000
+Chad|2004|13000
+Chad|2003|12450
+Chad|2002|11835
+Chad|2001|10689
+Chad|2000|10261
+Chile|2014|3407534
+Chile|2013|3203258
+Chile|2012|3280533
+Chile|2011|3366325
+Chile|2010|3457506
+Chile|2009|3564351
+Chile|2008|3529645
+Chile|2007|3459611
+Chile|2006|3383597
+Chile|2005|3435888
+Chile|2004|3318260
+Chile|2003|3252063
+Chile|2002|3467013
+Chile|2001|3467013
+Chile|2000|3302506
+China|2014|249430000
+China|2013|266985000
+China|2012|278153000
+China|2011|285115000
+China|2010|294383000
+China|2009|313732000
+China|2008|340359000
+China|2007|365637000
+China|2006|367786000
+China|2005|350445000
+China|2004|311756000
+China|2003|262747000
+China|2002|214222000
+China|2001|180368000
+China|2000|144829000
+Colombia|2014|7180937
+Colombia|2013|7141461
+Colombia|2012|7066130
+Colombia|2011|7126730
+Colombia|2010|7186165
+Colombia|2009|7473867
+Colombia|2008|7928944
+Colombia|2007|7924098
+Colombia|2006|7860205
+Colombia|2005|7678804
+Colombia|2004|7588676
+Colombia|2003|7848266
+Colombia|2002|7766000
+Colombia|2001|7371545
+Colombia|2000|7192778
+Comoros|2014|23500
+Comoros|2013|23000
+Comoros|2012|24000
+Comoros|2011|23146
+Comoros|2010|21210
+Comoros|2009|30787
+Comoros|2008|28809
+Comoros|2007|26025
+Comoros|2006|19061
+Comoros|2005|16939
+Comoros|2004|15083
+Comoros|2003|13245
+Comoros|2002|10258
+Comoros|2001|8876
+Comoros|2000|6773
+Congo|2014|16300
+Congo|2013|15679
+Congo|2012|14932
+Congo|2011|14200
+Congo|2010|13400
+Congo|2009|11600
+Congo|2008|9050
+Congo|2007|13404
+Congo|2006|13754
+Congo|2005|15907
+Congo|2004|13820
+Congo|2003|7000
+Congo|2002|22000
+Congo|2001|22000
+Congo|2000|22000
+Congo (Democratic Republic of the)|2014|0
+Congo (Democratic Republic of the)|2013|0
+Congo (Democratic Republic of the)|2012|59534
+Congo (Democratic Republic of the)|2011|56970
+Congo (Democratic Republic of the)|2010|41990
+Congo (Democratic Republic of the)|2009|42320
+Congo (Democratic Republic of the)|2008|37320
+Congo (Democratic Republic of the)|2007|3500
+Congo (Democratic Republic of the)|2006|9700
+Congo (Democratic Republic of the)|2005|10579
+Congo (Democratic Republic of the)|2004|10524
+Congo (Democratic Republic of the)|2003|9733
+Congo (Democratic Republic of the)|2002|10000
+Congo (Democratic Republic of the)|2001|9980
+Congo (Democratic Republic of the)|2000|9810
+Costa Rica|2014|881217
+Costa Rica|2013|968459
+Costa Rica|2012|995089
+Costa Rica|2011|1031719
+Costa Rica|2010|1060384
+Costa Rica|2009|1499601
+Costa Rica|2008|1437733
+Costa Rica|2007|1436695
+Costa Rica|2006|1329505
+Costa Rica|2005|1388503
+Costa Rica|2004|1343193
+Costa Rica|2003|1159223
+Costa Rica|2002|1037986
+Costa Rica|2001|944950
+Costa Rica|2000|898734
+Cote d'Ivoire|2014|242684
+Cote d'Ivoire|2013|272145
+Cote d'Ivoire|2012|276135
+Cote d'Ivoire|2011|276494
+Cote d'Ivoire|2010|283343
+Cote d'Ivoire|2009|282070
+Cote d'Ivoire|2008|356502
+Cote d'Ivoire|2007|247573
+Cote d'Ivoire|2006|270573
+Cote d'Ivoire|2005|258515
+Cote d'Ivoire|2004|257932
+Cote d'Ivoire|2003|238000
+Cote d'Ivoire|2002|324839
+Cote d'Ivoire|2001|293568
+Cote d'Ivoire|2000|263667
+Croatia|2014|1568981
+Croatia|2013|1668265
+Croatia|2012|1743540
+Croatia|2011|1848031
+Croatia|2010|1865729
+Croatia|2009|1859190
+Croatia|2008|1878080
+Croatia|2007|1846700
+Croatia|2006|1831050
+Croatia|2005|1882500
+Croatia|2004|1887600
+Croatia|2003|1871300
+Croatia|2002|1825000
+Croatia|2001|1781000
+Croatia|2000|1721139
+Cuba|2014|1264817
+Cuba|2013|1237276
+Cuba|2012|1216522
+Cuba|2011|1193415
+Cuba|2010|1163625
+Cuba|2009|1119786
+Cuba|2008|1088089
+Cuba|2007|1055118
+Cuba|2006|961573
+Cuba|2005|855958
+Cuba|2004|768196
+Cuba|2003|724261
+Cuba|2002|665639
+Cuba|2001|574415
+Cuba|2000|488606
+Curacao|2014|63000
+Curacao|2013|56500
+Curacao|2012|63868
+Curacao|2011|68070
+Curacao|2010|78846
+Curacao|2009|83080
+Cyprus|2014|327874
+Cyprus|2013|349108
+Cyprus|2012|373196
+Cyprus|2011|405024
+Cyprus|2010|413192
+Cyprus|2009|414512
+Cyprus|2008|413323
+Cyprus|2007|409279
+Cyprus|2006|408319
+Cyprus|2005|420030
+Cyprus|2004|418365
+Cyprus|2003|424104
+Cyprus|2002|427427
+Cyprus|2001|434978
+Cyprus|2000|440091
+Czech Republic|2014|2001900
+Czech Republic|2013|2001000
+Czech Republic|2012|2117400
+Czech Republic|2011|2203900
+Czech Republic|2010|2367400
+Czech Republic|2009|2526857
+Czech Republic|2008|2477927
+Czech Republic|2007|2402774
+Czech Republic|2006|2887583
+Czech Republic|2005|3217340
+Czech Republic|2004|3427666
+Czech Republic|2003|3626294
+Czech Republic|2002|3675470
+Czech Republic|2001|3860843
+Czech Republic|2000|3871651
+Dem. People's Rep. of Korea|2014|1180000
+Dem. People's Rep. of Korea|2013|1180000
+Dem. People's Rep. of Korea|2012|1180000
+Dem. People's Rep. of Korea|2011|1180000
+Dem. People's Rep. of Korea|2010|1180000
+Dem. People's Rep. of Korea|2009|1180000
+Dem. People's Rep. of Korea|2008|1180000
+Dem. People's Rep. of Korea|2007|1180000
+Dem. People's Rep. of Korea|2006|1000000
+Dem. People's Rep. of Korea|2005|1000000
+Dem. People's Rep. of Korea|2004|1000000
+Dem. People's Rep. of Korea|2003|980000
+Dem. People's Rep. of Korea|2002|916000
+Dem. People's Rep. of Korea|2001|860000
+Dem. People's Rep. of Korea|2000|500000
+Denmark|2014|1873404
+Denmark|2013|2094553
+Denmark|2012|2299308
+Denmark|2011|2481469
+Denmark|2010|2613759
+Denmark|2009|2774313
+Denmark|2008|2975049
+Denmark|2007|2825095
+Denmark|2006|3098580
+Denmark|2005|3348177
+Denmark|2004|3491307
+Denmark|2003|3614249
+Denmark|2002|3700867
+Denmark|2001|3864839
+Denmark|2000|3835000
+Djibouti|2014|21912
+Djibouti|2013|20686
+Djibouti|2012|19955
+Djibouti|2011|18442
+Djibouti|2010|18474
+Djibouti|2009|16842
+Djibouti|2008|14910
+Djibouti|2007|14113
+Djibouti|2006|11301
+Djibouti|2005|10578
+Djibouti|2004|11103
+Djibouti|2003|10169
+Djibouti|2002|10125
+Djibouti|2001|9932
+Djibouti|2000|9704
+Dominica|2014|17600
+Dominica|2013|17144
+Dominica|2012|16237
+Dominica|2011|14992
+Dominica|2010|15484
+Dominica|2009|16500
+Dominica|2008|17500
+Dominica|2007|17450
+Dominica|2006|17500
+Dominica|2005|19000
+Dominica|2004|20963
+Dominica|2003|22468
+Dominica|2002|23708
+Dominica|2001|23250
+Dominica|2000|22700
+Dominican Rep.|2014|1226109
+Dominican Rep.|2013|1171049
+Dominican Rep.|2012|1128947
+Dominican Rep.|2011|1099790
+Dominican Rep.|2010|1012912
+Dominican Rep.|2009|965423
+Dominican Rep.|2008|985711
+Dominican Rep.|2007|906485
+Dominican Rep.|2006|897026
+Dominican Rep.|2005|896252
+Dominican Rep.|2004|902258
+Dominican Rep.|2003|908809
+Dominican Rep.|2002|908957
+Dominican Rep.|2001|955145
+Dominican Rep.|2000|894164
+Ecuador|2014|2441690
+Ecuador|2013|2394771
+Ecuador|2012|2308672
+Ecuador|2011|2210608
+Ecuador|2010|2085659
+Ecuador|2009|2013223
+Ecuador|2008|1906478
+Ecuador|2007|1823120
+Ecuador|2006|1775232
+Ecuador|2005|1679568
+Ecuador|2004|1590755
+Ecuador|2003|1530700
+Ecuador|2002|1411055
+Ecuador|2001|1335772
+Ecuador|2000|1224431
+Egypt|2014|6315915
+Egypt|2013|6820892
+Egypt|2012|8557497
+Egypt|2011|8714286
+Egypt|2010|9618123
+Egypt|2009|10312559
+Egypt|2008|11852539
+Egypt|2007|11228849
+Egypt|2006|10807678
+Egypt|2005|10396148
+Egypt|2004|9464147
+Egypt|2003|8735653
+Egypt|2002|7794763
+Egypt|2001|6694894
+Egypt|2000|5483601
+El Salvador|2014|953773
+El Salvador|2013|960535
+El Salvador|2012|1059000
+El Salvador|2011|1029742
+El Salvador|2010|1000901
+El Salvador|2009|1099128
+El Salvador|2008|1077179
+El Salvador|2007|1080083
+El Salvador|2006|1036777
+El Salvador|2005|971455
+El Salvador|2004|887816
+El Salvador|2003|752645
+El Salvador|2002|667699
+El Salvador|2001|649879
+El Salvador|2000|625285
+Equatorial Guinea|2014|15110
+Equatorial Guinea|2013|14873
+Equatorial Guinea|2012|14868
+Equatorial Guinea|2011|14520
+Equatorial Guinea|2010|13537
+Equatorial Guinea|2009|10000
+Equatorial Guinea|2008|10000
+Equatorial Guinea|2007|10000
+Equatorial Guinea|2006|10000
+Equatorial Guinea|2005|10000
+Equatorial Guinea|2004|10500
+Equatorial Guinea|2003|9600
+Equatorial Guinea|2002|8800
+Equatorial Guinea|2001|6900
+Equatorial Guinea|2000|6100
+Eritrea|2014|64000
+Eritrea|2013|61935
+Eritrea|2012|60090
+Eritrea|2011|58473
+Eritrea|2010|54232
+Eritrea|2009|48473
+Eritrea|2008|40415
+Eritrea|2007|37412
+Eritrea|2006|37541
+Eritrea|2005|37712
+Eritrea|2004|39271
+Eritrea|2003|38078
+Eritrea|2002|35897
+Eritrea|2001|31249
+Eritrea|2000|30554
+Estonia|2014|407289
+Estonia|2013|426490
+Estonia|2012|448212
+Estonia|2011|471908
+Estonia|2010|482211
+Estonia|2009|492759
+Estonia|2008|498129
+Estonia|2007|495492
+Estonia|2006|451912
+Estonia|2005|442045
+Estonia|2004|444031
+Estonia|2003|461000
+Estonia|2002|475000
+Estonia|2001|506292
+Estonia|2000|522816
+Ethiopia|2014|820000
+Ethiopia|2013|761450
+Ethiopia|2012|797501
+Ethiopia|2011|829008
+Ethiopia|2010|908882
+Ethiopia|2009|915058
+Ethiopia|2008|897287
+Ethiopia|2007|880088
+Ethiopia|2006|725046
+Ethiopia|2005|610347
+Ethiopia|2004|484368
+Ethiopia|2003|404790
+Ethiopia|2002|353816
+Ethiopia|2001|283683
+Ethiopia|2000|231945
+Faroe Islands|2014|17308
+Faroe Islands|2013|18000
+Faroe Islands|2012|18685
+Faroe Islands|2011|19561
+Faroe Islands|2010|20175
+Faroe Islands|2009|20924
+Faroe Islands|2008|21822
+Faroe Islands|2007|22459
+Faroe Islands|2006|23043
+Faroe Islands|2005|23823
+Faroe Islands|2004|23958
+Faroe Islands|2003|24292
+Faroe Islands|2002|24408
+Faroe Islands|2001|23156
+Faroe Islands|2000|24952
+Fiji|2014|75750
+Fiji|2013|70225
+Fiji|2012|88417
+Fiji|2011|129845
+Fiji|2010|129845
+Fiji|2009|136782
+Fiji|2008|129100
+Fiji|2007|121845
+Fiji|2006|115000
+Fiji|2005|112493
+Fiji|2004|105000
+Fiji|2003|102023
+Fiji|2002|97515
+Fiji|2001|92222
+Fiji|2000|86400
+Finland|2014|638800
+Finland|2013|752200
+Finland|2012|889500
+Finland|2011|1080000
+Finland|2010|1250000
+Finland|2009|1430000
+Finland|2008|1650000
+Finland|2007|1740000
+Finland|2006|1910000
+Finland|2005|2120000
+Finland|2004|2368000
+Finland|2003|2567592
+Finland|2002|2725607
+Finland|2001|2806172
+Finland|2000|2848809
+France|2014|38805000
+France|2013|39080000
+France|2012|39710000
+France|2011|40370000
+France|2010|40622000
+France|2009|40934000
+France|2008|35100000
+France|2007|34800000
+France|2006|34125000
+France|2005|33707000
+France|2004|33703000
+France|2003|33913000
+France|2002|34124175
+France|2001|34083938
+France|2000|33987106
+French Guiana|2010|45500
+French Guiana|2009|48157
+French Guiana|2008|51000
+French Guiana|2007|51000
+French Guiana|2006|51000
+French Guiana|2005|51000
+French Guiana|2004|51000
+French Guiana|2003|51000
+French Guiana|2002|51000
+French Guiana|2001|51000
+French Guiana|2000|50000
+French Polynesia|2014|60945
+French Polynesia|2013|61793
+French Polynesia|2012|62549
+French Polynesia|2011|55000
+French Polynesia|2010|54942
+French Polynesia|2009|54320
+French Polynesia|2008|54553
+French Polynesia|2007|54099
+French Polynesia|2006|53650
+French Polynesia|2005|53389
+French Polynesia|2004|53275
+French Polynesia|2003|53518
+French Polynesia|2002|53166
+French Polynesia|2001|53350
+French Polynesia|2000|53689
+Gabon|2014|18498
+Gabon|2013|19252
+Gabon|2012|22611
+Gabon|2011|22499
+Gabon|2010|30381
+Gabon|2009|36460
+Gabon|2008|33165
+Gabon|2007|26497
+Gabon|2006|36476
+Gabon|2005|39128
+Gabon|2004|38654
+Gabon|2003|38415
+Gabon|2002|32075
+Gabon|2001|37233
+Gabon|2000|38974
+Gambia|2014|55841
+Gambia|2013|64196
+Gambia|2012|64196
+Gambia|2011|50450
+Gambia|2010|48777
+Gambia|2009|48451
+Gambia|2008|48868
+Gambia|2007|48700
+Gambia|2006|46302
+Gambia|2005|44000
+Gambia|2004|42993
+Gambia|2003|41986
+Gambia|2002|38350
+Gambia|2001|35029
+Gambia|2000|33300
+Georgia|2014|1097364
+Georgia|2013|1200286
+Georgia|2012|1275850
+Georgia|2011|1340488
+Georgia|2010|1111897
+Georgia|2009|620000
+Georgia|2008|618028
+Georgia|2007|556100
+Georgia|2006|553105
+Georgia|2005|570200
+Georgia|2004|683230
+Georgia|2003|667120
+Georgia|2002|640400
+Georgia|2001|569040
+Georgia|2000|508750
+Germany|2014|47021000
+Germany|2013|48700000
+Germany|2012|50100000
+Germany|2011|51400000
+Germany|2010|52900000
+Germany|2009|53700000
+Germany|2008|50300000
+Germany|2007|53100000
+Germany|2006|54400000
+Germany|2005|54791000
+Germany|2004|54526000
+Germany|2003|54233000
+Germany|2002|53670000
+Germany|2001|52330000
+Germany|2000|50220000
+Ghana|2014|260407
+Ghana|2013|270422
+Ghana|2012|284981
+Ghana|2011|284721
+Ghana|2010|277897
+Ghana|2009|267389
+Ghana|2008|143900
+Ghana|2007|376509
+Ghana|2006|356355
+Ghana|2005|321526
+Ghana|2004|313326
+Ghana|2003|291030
+Ghana|2002|275039
+Ghana|2001|244632
+Ghana|2000|212548
+Gibraltar|2014|23400
+Gibraltar|2012|23108
+Gibraltar|2011|24000
+Gibraltar|2010|24000
+Gibraltar|2009|24000
+Gibraltar|2008|24000
+Gibraltar|2007|24000
+Gibraltar|2006|24000
+Gibraltar|2005|25000
+Gibraltar|2004|25354
+Gibraltar|2003|25000
+Gibraltar|2002|24552
+Gibraltar|2001|24512
+Gibraltar|2000|23541
+Greece|2014|5219341
+Greece|2013|5332521
+Greece|2012|5461193
+Greece|2011|5744955
+Greece|2010|5898097
+Greece|2009|6000361
+Greece|2008|5253695
+Greece|2007|5469425
+Greece|2006|6170455
+Greece|2005|6311656
+Greece|2004|6352302
+Greece|2003|6300432
+Greece|2002|6293806
+Greece|2001|5607779
+Greece|2000|5659274
+Greenland|2014|17200
+Greenland|2013|18000
+Greenland|2012|18910
+Greenland|2011|19896
+Greenland|2010|21822
+Greenland|2009|22040
+Greenland|2008|22818
+Greenland|2007|23159
+Greenland|2006|35983
+Greenland|2005|32151
+Greenland|2004|25128
+Greenland|2003|25248
+Greenland|2002|25330
+Greenland|2001|24217
+Greenland|2000|26180
+Grenada|2014|27279
+Grenada|2013|28585
+Grenada|2012|27727
+Grenada|2011|28072
+Grenada|2010|28369
+Grenada|2009|28332
+Grenada|2008|28579
+Grenada|2007|28530
+Grenada|2006|27702
+Grenada|2005|27426
+Grenada|2004|32705
+Grenada|2003|32644
+Grenada|2002|33544
+Grenada|2001|32750
+Grenada|2000|31355
+Guam|2014|67400
+Guam|2013|67000
+Guam|2012|67000
+Guam|2010|65500
+Guam|2009|65500
+Guam|2008|65500
+Guam|2007|65500
+Guam|2006|65500
+Guam|2005|65500
+Guam|2004|65500
+Guam|2003|65531
+Guam|2002|70000
+Guam|2001|80000
+Guam|2000|74367
+Guatemala|2014|1718298
+Guatemala|2013|1863052
+Guatemala|2012|1743842
+Guatemala|2011|1626341
+Guatemala|2010|1498604
+Guatemala|2009|1413234
+Guatemala|2008|1448891
+Guatemala|2007|1413695
+Guatemala|2006|1354926
+Guatemala|2005|1248161
+Guatemala|2004|1132121
+Guatemala|2003|944140
+Guatemala|2002|845968
+Guatemala|2001|756085
+Guatemala|2000|676631
+Guernsey|2010|45100
+Guernsey|2009|45100
+Guernsey|2008|45100
+Guernsey|2007|45100
+Guernsey|2006|45100
+Guernsey|2005|45100
+Guernsey|2004|45134
+Guernsey|2003|45679
+Guernsey|2002|55718
+Guernsey|2001|54951
+Guernsey|2000|53077
+Guinea|2014|0
+Guinea|2013|0
+Guinea|2012|0
+Guinea|2011|18000
+Guinea|2010|18000
+Guinea|2009|22000
+Guinea|2008|27000
+Guinea|2007|22000
+Guinea|2006|23000
+Guinea|2005|25000
+Guinea|2004|26200
+Guinea|2003|26165
+Guinea|2002|25989
+Guinea|2001|25490
+Guinea|2000|24311
+Guinea-Bissau|2014|5000
+Guinea-Bissau|2013|5000
+Guinea-Bissau|2012|5000
+Guinea-Bissau|2011|5000
+Guinea-Bissau|2010|5000
+Guinea-Bissau|2009|4844
+Guinea-Bissau|2008|4647
+Guinea-Bissau|2007|4574
+Guinea-Bissau|2006|6784
+Guinea-Bissau|2005|9614
+Guinea-Bissau|2004|9719
+Guinea-Bissau|2003|10558
+Guinea-Bissau|2002|11197
+Guinea-Bissau|2001|9901
+Guinea-Bissau|2000|11123
+Guyana|2014|159729
+Guyana|2013|156805
+Guyana|2012|154207
+Guyana|2011|152299
+Guyana|2010|149857
+Guyana|2009|147042
+Guyana|2008|138822
+Guyana|2007|128394
+Guyana|2006|118000
+Guyana|2005|110136
+Guyana|2004|102688
+Guyana|2003|92332
+Guyana|2002|80441
+Guyana|2001|79913
+Guyana|2000|68400
+Haiti|2014|41000
+Haiti|2013|41000
+Haiti|2012|50000
+Haiti|2011|50000
+Haiti|2010|50000
+Haiti|2009|107000
+Haiti|2008|108000
+Haiti|2007|108340
+Haiti|2006|150000
+Haiti|2005|145300
+Haiti|2004|140000
+Haiti|2003|140000
+Haiti|2002|130000
+Haiti|2001|80000
+Haiti|2000|72500
+Honduras|2014|527339
+Honduras|2013|619095
+Honduras|2012|610506
+Honduras|2011|614281
+Honduras|2010|673399
+Honduras|2009|716335
+Honduras|2008|825769
+Honduras|2007|821245
+Honduras|2006|715106
+Honduras|2005|493680
+Honduras|2004|387314
+Honduras|2003|334400
+Honduras|2002|322497
+Honduras|2001|309702
+Honduras|2000|298713
+Hong Kong, China|2014|4417856
+Hong Kong, China|2013|4419423
+Hong Kong, China|2012|4381555
+Hong Kong, China|2011|4342230
+Hong Kong, China|2010|4361669
+Hong Kong, China|2009|4277297
+Hong Kong, China|2008|4183017
+Hong Kong, China|2007|4209125
+Hong Kong, China|2006|3835936
+Hong Kong, China|2005|3792912
+Hong Kong, China|2004|3763350
+Hong Kong, China|2003|3806444
+Hong Kong, China|2002|3831829
+Hong Kong, China|2001|3897558
+Hong Kong, China|2000|3925843
+Hungary|2014|3011253
+Hungary|2013|2978018
+Hungary|2012|2960633
+Hungary|2011|2933313
+Hungary|2010|2977234
+Hungary|2009|3068685
+Hungary|2008|3093996
+Hungary|2007|3250635
+Hungary|2006|3360371
+Hungary|2005|3415715
+Hungary|2004|3564000
+Hungary|2003|3602912
+Hungary|2002|3669200
+Hungary|2001|3742152
+Hungary|2000|3798254
+Iceland|2014|171535
+Iceland|2013|168023
+Iceland|2012|180004
+Iceland|2011|191118
+Iceland|2010|193614
+Iceland|2009|190165
+Iceland|2008|199503
+Iceland|2007|186668
+Iceland|2006|188575
+Iceland|2005|193852
+Iceland|2004|190478
+Iceland|2003|192552
+Iceland|2002|187999
+Iceland|2001|196528
+Iceland|2000|196336
+India|2014|27000105
+India|2013|29032974
+India|2012|30940618
+India|2011|32835261
+India|2010|35090000
+India|2009|37060000
+India|2008|37900000
+India|2007|39250000
+India|2006|40770000
+India|2005|50176509
+India|2004|46198025
+India|2003|42000000
+India|2002|41420000
+India|2001|38536187
+India|2000|32436134
+Indonesia|2014|26224974
+Indonesia|2013|30722651
+Indonesia|2012|37982855
+Indonesia|2011|38617480
+Indonesia|2010|40931063
+Indonesia|2009|34809627
+Indonesia|2008|30378071
+Indonesia|2007|19529507
+Indonesia|2006|14820733
+Indonesia|2005|13507830
+Indonesia|2004|10376381
+Indonesia|2003|8058139
+Indonesia|2002|7750035
+Indonesia|2001|7218938
+Indonesia|2000|6662605
+Iran (Islamic Rep. of)|2014|30653690
+Iran (Islamic Rep. of)|2013|29688558
+Iran (Islamic Rep. of)|2012|28758465
+Iran (Islamic Rep. of)|2011|27766931
+Iran (Islamic Rep. of)|2010|25815161
+Iran (Islamic Rep. of)|2009|25804100
+Iran (Islamic Rep. of)|2008|24800000
+Iran (Islamic Rep. of)|2007|23835000
+Iran (Islamic Rep. of)|2006|22626944
+Iran (Islamic Rep. of)|2005|20339000
+Iran (Islamic Rep. of)|2004|16342050
+Iran (Islamic Rep. of)|2003|15340805
+Iran (Islamic Rep. of)|2002|12887525
+Iran (Islamic Rep. of)|2001|10896572
+Iran (Islamic Rep. of)|2000|9486260
+Iraq|2014|1947700
+Iraq|2013|1900000
+Iraq|2012|1871000
+Iraq|2011|1794000
+Iraq|2010|1720591
+Iraq|2009|1650136
+Iraq|2008|1082300
+Iraq|2007|1364512
+Iraq|2006|1247512
+Iraq|2005|1115000
+Iraq|2004|1034240
+Iraq|2003|1183300
+Iraq|2002|1128300
+Iraq|2001|675000
+Iraq|2000|675000
+Ireland|2014|2022522
+Ireland|2013|2034473
+Ireland|2012|2007746
+Ireland|2011|2046567
+Ireland|2010|2077978
+Ireland|2009|2131901
+Ireland|2008|2222651
+Ireland|2007|2258626
+Ireland|2006|2176646
+Ireland|2005|2052000
+Ireland|2004|2015000
+Ireland|2003|1955000
+Ireland|2002|1975000
+Ireland|2001|1860000
+Ireland|2000|1832000
+Israel|2014|2900000
+Israel|2013|2900000
+Israel|2012|3594000
+Israel|2011|3500000
+Israel|2010|3408000
+Israel|2009|3316000
+Israel|2008|3224000
+Israel|2007|3074602
+Israel|2006|3004653
+Israel|2005|2936295
+Israel|2004|2896000
+Israel|2003|2913000
+Israel|2002|3006000
+Israel|2001|3033000
+Israel|2000|2974000
+Italy|2014|20570000
+Italy|2013|21098033
+Italy|2012|21748814
+Italy|2011|22105471
+Italy|2010|22536367
+Italy|2009|22642679
+Italy|2008|22039000
+Italy|2007|22417000
+Italy|2006|26890339
+Italy|2005|25049000
+Italy|2004|25957000
+Italy|2003|26596000
+Italy|2002|27142000
+Italy|2001|27353000
+Italy|2000|27153000
+Jamaica|2014|254500
+Jamaica|2013|250340
+Jamaica|2012|253143
+Jamaica|2011|270068
+Jamaica|2010|263055
+Jamaica|2009|302451
+Jamaica|2008|316591
+Jamaica|2007|369656
+Jamaica|2006|342692
+Jamaica|2005|319000
+Jamaica|2004|423000
+Jamaica|2003|458675
+Jamaica|2002|434772
+Jamaica|2001|511302
+Jamaica|2000|493523
+Japan|2014|63610245
+Japan|2013|61018939
+Japan|2012|64225254
+Japan|2011|64668524
+Japan|2010|65618748
+Japan|2009|66794250
+Japan|2008|48426826
+Japan|2007|51235000
+Japan|2006|56029000
+Japan|2005|58053000
+Japan|2004|59608000
+Japan|2003|60219000
+Japan|2002|60772460
+Japan|2001|61325782
+Japan|2000|61957097
+Jersey|2010|73800
+Jersey|2009|73900
+Jersey|2008|74000
+Jersey|2007|74000
+Jersey|2006|74000
+Jersey|2005|74000
+Jersey|2004|74000
+Jersey|2003|74000
+Jersey|2002|74000
+Jersey|2001|73929
+Jersey|2000|72993
+Jordan|2014|375483
+Jordan|2013|378411
+Jordan|2012|434437
+Jordan|2011|465388
+Jordan|2010|485529
+Jordan|2009|501238
+Jordan|2008|518990
+Jordan|2007|559000
+Jordan|2006|614000
+Jordan|2005|628000
+Jordan|2004|637811
+Jordan|2003|622572
+Jordan|2002|674511
+Jordan|2001|660000
+Jordan|2000|620000
+Kazakhstan|2014|4353400
+Kazakhstan|2013|4392000
+Kazakhstan|2012|4361400
+Kazakhstan|2011|4265800
+Kazakhstan|2010|4057600
+Kazakhstan|2009|3856500
+Kazakhstan|2008|3458440
+Kazakhstan|2007|3236900
+Kazakhstan|2006|2928400
+Kazakhstan|2005|2708000
+Kazakhstan|2004|2550000
+Kazakhstan|2003|2228400
+Kazakhstan|2002|2081858
+Kazakhstan|2001|1939628
+Kazakhstan|2000|1834226
+Kenya|2014|179990
+Kenya|2013|204354
+Kenya|2012|251567
+Kenya|2011|283546
+Kenya|2010|380748
+Kenya|2009|664099
+Kenya|2008|646356
+Kenya|2007|463766
+Kenya|2006|293364
+Kenya|2005|286729
+Kenya|2004|299255
+Kenya|2003|328358
+Kenya|2002|321482
+Kenya|2001|309379
+Kenya|2000|291706
+Kiribati|2014|9200
+Kiribati|2013|9000
+Kiribati|2012|9000
+Kiribati|2011|8461
+Kiribati|2010|8397
+Kiribati|2009|8297
+Kiribati|2008|4000
+Kiribati|2007|4000
+Kiribati|2006|4000
+Kiribati|2005|4200
+Kiribati|2004|4300
+Kiribati|2003|4400
+Kiribati|2002|4474
+Kiribati|2001|3628
+Kiribati|2000|3353
+Korea (Rep. of)|2014|29481226
+Korea (Rep. of)|2013|30333077
+Korea (Rep. of)|2012|30099175
+Korea (Rep. of)|2011|29468502
+Korea (Rep. of)|2010|28543173
+Korea (Rep. of)|2009|26893831
+Korea (Rep. of)|2008|24357581
+Korea (Rep. of)|2007|23006667
+Korea (Rep. of)|2006|22431484
+Korea (Rep. of)|2005|23905152
+Korea (Rep. of)|2004|23567741
+Korea (Rep. of)|2003|25127610
+Korea (Rep. of)|2002|25735043
+Korea (Rep. of)|2001|25775000
+Korea (Rep. of)|2000|25863000
+Kuwait|2014|494000
+Kuwait|2013|508000
+Kuwait|2012|510000
+Kuwait|2011|514696
+Kuwait|2010|519418
+Kuwait|2009|528497
+Kuwait|2008|519966
+Kuwait|2007|538219
+Kuwait|2006|516982
+Kuwait|2005|504806
+Kuwait|2004|496973
+Kuwait|2003|486904
+Kuwait|2002|481891
+Kuwait|2001|472414
+Kuwait|2000|467067
+Kyrgyzstan|2014|443184
+Kyrgyzstan|2013|461277
+Kyrgyzstan|2012|488853
+Kyrgyzstan|2011|502020
+Kyrgyzstan|2010|489052
+Kyrgyzstan|2009|498328
+Kyrgyzstan|2008|494503
+Kyrgyzstan|2007|482005
+Kyrgyzstan|2006|458876
+Kyrgyzstan|2005|440383
+Kyrgyzstan|2004|416430
+Kyrgyzstan|2003|396168
+Kyrgyzstan|2002|394770
+Kyrgyzstan|2001|388222
+Kyrgyzstan|2000|376092
+Lao P.D.R.|2014|920756
+Lao P.D.R.|2013|701712
+Lao P.D.R.|2012|450000
+Lao P.D.R.|2011|107643
+Lao P.D.R.|2010|103102
+Lao P.D.R.|2009|100228
+Lao P.D.R.|2008|127799
+Lao P.D.R.|2007|94828
+Lao P.D.R.|2006|92151
+Lao P.D.R.|2005|90806
+Lao P.D.R.|2004|75000
+Lao P.D.R.|2003|69760
+Lao P.D.R.|2002|61910
+Lao P.D.R.|2001|52625
+Lao P.D.R.|2000|40876
+Latvia|2014|400000
+Latvia|2013|423000
+Latvia|2012|476141
+Latvia|2011|516344
+Latvia|2010|532100
+Latvia|2009|561650
+Latvia|2008|592850
+Latvia|2007|644043
+Latvia|2006|657380
+Latvia|2005|731094
+Latvia|2004|650455
+Latvia|2003|653853
+Latvia|2002|701211
+Latvia|2001|721752
+Latvia|2000|734693
+Lebanon|2014|965723
+Lebanon|2013|870000
+Lebanon|2012|867000
+Lebanon|2011|855000
+Lebanon|2010|838000
+Lebanon|2009|803740
+Lebanon|2008|750000
+Lebanon|2007|697540
+Lebanon|2006|681381
+Lebanon|2005|634740
+Lebanon|2004|630000
+Lebanon|2003|700000
+Lebanon|2002|678840
+Lebanon|2001|626000
+Lebanon|2000|576000
+Lesotho|2014|41071
+Lesotho|2013|50345
+Lesotho|2012|50769
+Lesotho|2011|38579
+Lesotho|2010|38612
+Lesotho|2009|40000
+Lesotho|2008|41190
+Lesotho|2007|47582
+Lesotho|2006|53136
+Lesotho|2005|47964
+Lesotho|2004|37230
+Lesotho|2003|35101
+Lesotho|2002|28603
+Lesotho|2001|21382
+Lesotho|2000|22200
+Liberia|2014|10040
+Liberia|2013|11000
+Liberia|2012|13734
+Liberia|2011|9289
+Liberia|2010|5806
+Liberia|2009|2374
+Liberia|2008|2000
+Liberia|2007|2048
+Liberia|2002|6900
+Liberia|2001|6800
+Liberia|2000|6700
+Libya|2014|706400
+Libya|2013|789000
+Libya|2012|814000
+Libya|2011|1000000
+Libya|2010|1228300
+Libya|2009|1063265
+Libya|2008|920416
+Libya|2007|969000
+Libya|2006|909000
+Libya|2005|852300
+Libya|2004|799500
+Libya|2003|750000
+Libya|2002|720000
+Libya|2001|660000
+Libya|2000|605000
+Liechtenstein|2014|18043
+Liechtenstein|2013|18300
+Liechtenstein|2012|18470
+Liechtenstein|2011|19600
+Liechtenstein|2010|19600
+Liechtenstein|2009|19600
+Liechtenstein|2008|19600
+Liechtenstein|2007|19578
+Liechtenstein|2006|19755
+Liechtenstein|2005|20010
+Liechtenstein|2004|19981
+Liechtenstein|2003|19900
+Liechtenstein|2002|19923
+Liechtenstein|2001|20100
+Liechtenstein|2000|20072
+Lithuania|2014|585515
+Lithuania|2013|625990
+Lithuania|2012|675394
+Lithuania|2011|711909
+Lithuania|2010|753439
+Lithuania|2009|747412
+Lithuania|2008|784935
+Lithuania|2007|799436
+Lithuania|2006|792357
+Lithuania|2005|801110
+Lithuania|2004|820039
+Lithuania|2003|824219
+Lithuania|2002|935899
+Lithuania|2001|1151673
+Lithuania|2000|1187657
+Luxembourg|2014|271100
+Luxembourg|2013|267600
+Luxembourg|2012|266700
+Luxembourg|2011|279130
+Luxembourg|2010|272400
+Luxembourg|2009|263600
+Luxembourg|2008|260600
+Luxembourg|2007|248200
+Luxembourg|2006|248400
+Luxembourg|2005|244500
+Luxembourg|2004|245000
+Luxembourg|2003|245000
+Luxembourg|2002|248514
+Luxembourg|2001|256656
+Luxembourg|2000|248880
+Macao, China|2014|153587
+Macao, China|2013|158414
+Macao, China|2012|162533
+Macao, China|2011|166310
+Macao, China|2010|168374
+Macao, China|2009|170486
+Macao, China|2008|175920
+Macao, China|2007|178013
+Macao, China|2006|176665
+Macao, China|2005|174389
+Macao, China|2004|173928
+Macao, China|2003|174621
+Macao, China|2002|176106
+Macao, China|2001|176450
+Macao, China|2000|176837
+Madagascar|2014|249080
+Madagascar|2013|245603
+Madagascar|2012|242963
+Madagascar|2011|236863
+Madagascar|2010|142065
+Madagascar|2009|186150
+Madagascar|2008|164851
+Madagascar|2007|133894
+Madagascar|2006|129809
+Madagascar|2005|92366
+Madagascar|2004|58702
+Madagascar|2003|59598
+Madagascar|2002|59491
+Madagascar|2001|58399
+Madagascar|2000|54995
+Malawi|2014|64247
+Malawi|2013|33569
+Malawi|2012|227295
+Malawi|2011|173481
+Malawi|2010|152108
+Malawi|2009|111333
+Malawi|2008|111333
+Malawi|2007|175209
+Malawi|2006|130000
+Malawi|2005|102724
+Malawi|2004|93000
+Malawi|2003|85000
+Malawi|2002|73100
+Malawi|2001|54607
+Malawi|2000|46444
+Malaysia|2014|4410200
+Malaysia|2013|4535800
+Malaysia|2012|4588900
+Malaysia|2011|4522900
+Malaysia|2010|4609800
+Malaysia|2009|4524000
+Malaysia|2008|4514000
+Malaysia|2007|4350000
+Malaysia|2006|4342100
+Malaysia|2005|4365647
+Malaysia|2004|4446265
+Malaysia|2003|4571561
+Malaysia|2002|4669903
+Malaysia|2001|4709564
+Malaysia|2000|4628000
+Maldives|2014|21478
+Maldives|2013|22557
+Maldives|2012|23140
+Maldives|2011|24084
+Maldives|2010|28376
+Maldives|2009|30490
+Maldives|2008|46925
+Maldives|2007|33063
+Maldives|2006|32181
+Maldives|2005|32296
+Maldives|2004|31503
+Maldives|2003|30056
+Maldives|2002|28651
+Maldives|2001|27242
+Maldives|2000|24432
+Mali|2014|154417
+Mali|2013|126362
+Mali|2012|111979
+Mali|2011|104696
+Mali|2010|114546
+Mali|2009|84796
+Mali|2008|81076
+Mali|2007|80005
+Mali|2006|82521
+Mali|2005|75904
+Mali|2004|65834
+Mali|2003|60925
+Mali|2002|56603
+Mali|2001|51071
+Mali|2000|39223
+Malta|2014|230361
+Malta|2013|231331
+Malta|2012|229740
+Malta|2011|232203
+Malta|2010|247635
+Malta|2009|246890
+Malta|2008|241115
+Malta|2007|230433
+Malta|2006|208361
+Malta|2005|202116
+Malta|2004|206529
+Malta|2003|208271
+Malta|2002|207269
+Malta|2001|207745
+Malta|2000|204193
+Marshall Islands|2014|2361
+Marshall Islands|2004|5510
+Marshall Islands|2003|4461
+Marshall Islands|2002|4379
+Marshall Islands|2001|4186
+Marshall Islands|2000|3999
+Mauritania|2014|51432
+Mauritania|2013|53993
+Mauritania|2012|65069
+Mauritania|2011|72294
+Mauritania|2010|71572
+Mauritania|2009|74464
+Mauritania|2008|76354
+Mauritania|2007|40267
+Mauritania|2006|34870
+Mauritania|2005|41000
+Mauritania|2004|39000
+Mauritania|2003|38178
+Mauritania|2002|31529
+Mauritania|2001|24856
+Mauritania|2000|18969
+Mauritius|2014|372200
+Mauritius|2013|363000
+Mauritius|2012|349100
+Mauritius|2011|374600
+Mauritius|2010|387700
+Mauritius|2009|375160
+Mauritius|2008|363600
+Mauritius|2007|360762
+Mauritius|2006|357340
+Mauritius|2005|357490
+Mauritius|2004|353808
+Mauritius|2003|348202
+Mauritius|2002|317792
+Mauritius|2001|306773
+Mauritius|2000|280885
+Mexico|2014|22002552
+Mexico|2013|21673619
+Mexico|2012|20587800
+Mexico|2011|19996800
+Mexico|2010|19918643
+Mexico|2009|19505573
+Mexico|2008|20491430
+Mexico|2007|19997903
+Mexico|2006|19861299
+Mexico|2005|19512024
+Mexico|2004|18073238
+Mexico|2003|16330066
+Mexico|2002|14975085
+Mexico|2001|13774146
+Mexico|2000|12331676
+Micronesia (Fed. States of)|2014|7025
+Micronesia (Fed. States of)|2013|10047
+Micronesia (Fed. States of)|2012|8400
+Micronesia (Fed. States of)|2011|8400
+Micronesia (Fed. States of)|2010|8453
+Micronesia (Fed. States of)|2009|8700
+Micronesia (Fed. States of)|2008|8700
+Micronesia (Fed. States of)|2007|8697
+Micronesia (Fed. States of)|2006|8917
+Micronesia (Fed. States of)|2005|12449
+Micronesia (Fed. States of)|2004|11999
+Micronesia (Fed. States of)|2003|11144
+Micronesia (Fed. States of)|2002|10106
+Micronesia (Fed. States of)|2001|10078
+Micronesia (Fed. States of)|2000|9647
+Moldova|2014|1218274
+Moldova|2013|1221474
+Moldova|2012|1205768
+Moldova|2011|1179953
+Moldova|2010|1161148
+Moldova|2009|1138729
+Moldova|2008|1114564
+Moldova|2007|1079874
+Moldova|2006|1018072
+Moldova|2005|929400
+Moldova|2004|863374
+Moldova|2003|791131
+Moldova|2002|719286
+Moldova|2001|639165
+Moldova|2000|583811
+Monaco|2014|50610
+Monaco|2013|46850
+Monaco|2012|45743
+Monaco|2011|44495
+Monaco|2010|42910
+Monaco|2009|43179
+Monaco|2008|35000
+Monaco|2007|34700
+Monaco|2006|34347
+Monaco|2005|33986
+Monaco|2004|33845
+Monaco|2003|33499
+Monaco|2002|33711
+Monaco|2001|29656
+Monaco|2000|29969
+Mongolia|2014|228327
+Mongolia|2013|175698
+Mongolia|2012|176706
+Mongolia|2011|187561
+Mongolia|2010|193239
+Mongolia|2009|188875
+Mongolia|2008|200494
+Mongolia|2007|183440
+Mongolia|2006|195122
+Mongolia|2005|156045
+Mongolia|2004|145981
+Mongolia|2003|138137
+Mongolia|2002|128000
+Mongolia|2001|124315
+Mongolia|2000|117500
+Montenegro|2014|164671
+Montenegro|2013|169032
+Montenegro|2012|169803
+Montenegro|2011|170856
+Montenegro|2010|170553
+Montenegro|2009|171749
+Montenegro|2008|174046
+Montenegro|2007|176289
+Montenegro|2006|168233
+Montenegro|2005|170933
+Morocco|2014|2487738
+Morocco|2013|2924861
+Morocco|2012|3279054
+Morocco|2011|3566076
+Morocco|2010|3749364
+Morocco|2009|3516281
+Morocco|2008|2991158
+Morocco|2007|2393767
+Morocco|2006|1266119
+Morocco|2005|1341156
+Morocco|2004|1308569
+Morocco|2003|1219213
+Morocco|2002|1127447
+Morocco|2001|1191335
+Morocco|2000|1425000
+Mozambique|2014|86856
+Mozambique|2013|77568
+Mozambique|2012|88140
+Mozambique|2011|88120
+Mozambique|2010|88062
+Mozambique|2009|82447
+Mozambique|2008|78324
+Mozambique|2007|78000
+Mozambique|2006|70313
+Mozambique|2005|65992
+Mozambique|2004|75256
+Mozambique|2003|77576
+Mozambique|2002|87367
+Mozambique|2001|87291
+Mozambique|2000|85714
+Myanmar|2014|526792
+Myanmar|2013|534810
+Myanmar|2012|524225
+Myanmar|2011|523865
+Myanmar|2010|493314
+Myanmar|2009|444265
+Myanmar|2008|504445
+Myanmar|2007|464090
+Myanmar|2006|571293
+Myanmar|2005|503930
+Myanmar|2004|424871
+Myanmar|2003|362976
+Myanmar|2002|342317
+Myanmar|2001|295234
+Myanmar|2000|271356
+Namibia|2014|182593
+Namibia|2013|183532
+Namibia|2012|171249
+Namibia|2011|159059
+Namibia|2010|157063
+Namibia|2009|148672
+Namibia|2008|145360
+Namibia|2007|138171
+Namibia|2006|136163
+Namibia|2005|138997
+Namibia|2004|127935
+Namibia|2003|127380
+Namibia|2002|121413
+Namibia|2001|117398
+Namibia|2000|110176
+Nauru|2014|0
+Nauru|2013|0
+Nauru|2012|0
+Nauru|2011|0
+Nauru|2010|0
+Nauru|2009|1900
+Nauru|2008|1800
+Nauru|2007|1800
+Nauru|2006|1800
+Nauru|2005|1800
+Nauru|2004|1800
+Nauru|2003|1800
+Nauru|2002|1800
+Nauru|2001|1850
+Nauru|2000|1800
+Nepal|2014|837266
+Nepal|2013|829097
+Nepal|2012|831703
+Nepal|2011|845542
+Nepal|2010|841698
+Nepal|2009|812615
+Nepal|2008|805061
+Nepal|2007|701126
+Nepal|2006|611544
+Nepal|2005|484640
+Nepal|2004|417944
+Nepal|2003|371816
+Nepal|2002|327673
+Nepal|2001|298062
+Nepal|2000|266890
+Netherlands|2014|6946000
+Netherlands|2013|7125486
+Netherlands|2012|7182000
+Netherlands|2011|7133000
+Netherlands|2010|7232000
+Netherlands|2009|7256000
+Netherlands|2008|7317200
+Netherlands|2007|7404300
+Netherlands|2006|7450000
+Netherlands|2005|7600000
+Netherlands|2004|7861000
+Netherlands|2003|7846000
+Netherlands|2002|8026000
+Netherlands|2001|8158000
+Netherlands|2000|9889000
+Netherlands Antilles|2010|90000
+Netherlands Antilles|2009|89000
+Netherlands Antilles|2008|88000
+Netherlands Antilles|2007|87000
+Netherlands Antilles|2006|86000
+Netherlands Antilles|2005|85000
+Netherlands Antilles|2004|84000
+Netherlands Antilles|2003|83000
+Netherlands Antilles|2002|82000
+Netherlands Antilles|2001|81000
+Netherlands Antilles|2000|80000
+New Caledonia|2014|88500
+New Caledonia|2013|85000
+New Caledonia|2012|80000
+New Caledonia|2011|76196
+New Caledonia|2010|72200
+New Caledonia|2009|67426
+New Caledonia|2008|63006
+New Caledonia|2007|60209
+New Caledonia|2006|57800
+New Caledonia|2005|55310
+New Caledonia|2004|53306
+New Caledonia|2003|51928
+New Caledonia|2002|52000
+New Caledonia|2001|50709
+New Caledonia|2000|51005
+New Zealand|2014|1850000
+New Zealand|2013|1850000
+New Zealand|2012|1880000
+New Zealand|2011|1880000
+New Zealand|2010|1880000
+New Zealand|2009|1870000
+New Zealand|2008|1750000
+New Zealand|2007|1746874
+New Zealand|2006|1761645
+New Zealand|2005|1729000
+New Zealand|2004|1800500
+New Zealand|2003|1798000
+New Zealand|2002|1765000
+New Zealand|2001|1823000
+New Zealand|2000|1831000
+Nicaragua|2014|339629
+Nicaragua|2013|324971
+Nicaragua|2012|299123
+Nicaragua|2011|287618
+Nicaragua|2010|258325
+Nicaragua|2009|254686
+Nicaragua|2008|254438
+Nicaragua|2007|249000
+Nicaragua|2006|247862
+Nicaragua|2005|220869
+Nicaragua|2004|214480
+Nicaragua|2003|205004
+Nicaragua|2002|171632
+Nicaragua|2001|157753
+Nicaragua|2000|164484
+Niger|2014|105300
+Niger|2013|100500
+Niger|2012|100537
+Niger|2011|85354
+Niger|2010|83383
+Niger|2009|76336
+Niger|2008|64738
+Niger|2007|41686
+Niger|2006|29925
+Niger|2005|23954
+Niger|2004|24040
+Niger|2003|22975
+Niger|2002|22399
+Niger|2001|21669
+Niger|2000|19991
+Nigeria|2014|183290
+Nigeria|2013|360537
+Nigeria|2012|418166
+Nigeria|2011|719406
+Nigeria|2010|1050237
+Nigeria|2009|1482000
+Nigeria|2008|1307625
+Nigeria|2007|1579664
+Nigeria|2006|1687972
+Nigeria|2005|1223258
+Nigeria|2004|1027519
+Nigeria|2003|888534
+Nigeria|2002|702000
+Nigeria|2001|600321
+Nigeria|2000|553374
+Northern Marianas Islands|2014|22400
+Northern Marianas Islands|2013|23000
+Northern Marianas Islands|2012|23000
+Northern Marianas Islands|2010|25500
+Northern Marianas Islands|2009|25100
+Northern Marianas Islands|2008|24700
+Northern Marianas Islands|2007|24200
+Northern Marianas Islands|2006|23800
+Northern Marianas Islands|2005|23300
+Northern Marianas Islands|2004|22800
+Northern Marianas Islands|2003|22400
+Northern Marianas Islands|2002|21900
+Northern Marianas Islands|2001|21400
+Northern Marianas Islands|2000|20990
+Norway|2014|1080869
+Norway|2013|1236698
+Norway|2012|1396016
+Norway|2011|1522207
+Norway|2010|1647400
+Norway|2009|1770923
+Norway|2008|1899519
+Norway|2007|1988166
+Norway|2006|2055057
+Norway|2005|2108628
+Norway|2004|2180429
+Norway|2003|2236113
+Norway|2002|2316919
+Norway|2001|2337856
+Norway|2000|2401000
+Oman|2014|375196
+Oman|2013|351411
+Oman|2012|304545
+Oman|2011|287323
+Oman|2010|283941
+Oman|2009|300139
+Oman|2008|301010
+Oman|2007|294921
+Oman|2006|269700
+Oman|2005|265237
+Oman|2004|242745
+Oman|2003|236178
+Oman|2002|227625
+Oman|2001|230507
+Oman|2000|221807
+Pakistan|2014|4897814
+Pakistan|2013|6370860
+Pakistan|2012|5861915
+Pakistan|2011|5721725
+Pakistan|2010|6079095
+Pakistan|2009|6144250
+Pakistan|2008|4416737
+Pakistan|2007|4806206
+Pakistan|2006|5240012
+Pakistan|2005|5227831
+Pakistan|2004|4502230
+Pakistan|2003|4047423
+Pakistan|2002|3655474
+Pakistan|2001|3252000
+Pakistan|2000|3053460
+Palau|2014|7125
+Palau|2013|7263
+Palau|2012|7325
+Palau|2011|6916
+Palau|2010|6976
+Palau|2009|7137
+Palau|2008|7386
+Palau|2007|7474
+Palau|2006|7326
+Palau|2005|7977
+Palau|2004|7751
+Palau|2003|7370
+Palau|2002|6928
+Palestine|2014|403118
+Palestine|2013|403025
+Palestine|2012|393880
+Palestine|2011|382700
+Palestine|2010|360402
+Palestine|2009|368216
+Palestine|2008|354804
+Palestine|2007|348788
+Palestine|2006|321999
+Palestine|2005|337025
+Palestine|2004|271458
+Palestine|2003|243494
+Palestine|2002|241894
+Palestine|2001|255218
+Palestine|2000|272211
+Panama|2014|588397
+Panama|2013|577028
+Panama|2012|569880
+Panama|2011|560184
+Panama|2010|539317
+Panama|2009|536356
+Panama|2008|523999
+Panama|2007|495250
+Panama|2006|488308
+Panama|2005|470453
+Panama|2004|424811
+Panama|2003|381421
+Panama|2002|386904
+Panama|2001|381912
+Panama|2000|429135
+Papua New Guinea|2014|145100
+Papua New Guinea|2013|140000
+Papua New Guinea|2012|139000
+Papua New Guinea|2011|130000
+Papua New Guinea|2010|121172
+Papua New Guinea|2009|91125
+Papua New Guinea|2008|66846
+Papua New Guinea|2007|60000
+Papua New Guinea|2006|61500
+Papua New Guinea|2005|63720
+Papua New Guinea|2004|63456
+Papua New Guinea|2003|62885
+Papua New Guinea|2002|62059
+Papua New Guinea|2001|61610
+Papua New Guinea|2000|64835
+Paraguay|2014|371902
+Paraguay|2013|437643
+Paraguay|2012|410988
+Paraguay|2011|368846
+Paraguay|2010|362934
+Paraguay|2009|387318
+Paraguay|2008|370381
+Paraguay|2007|394416
+Paraguay|2006|331061
+Paraguay|2005|320294
+Paraguay|2004|303425
+Paraguay|2003|280790
+Paraguay|2002|273218
+Paraguay|2001|288818
+Paraguay|2000|282909
+Peru|2014|3032556
+Peru|2013|3205894
+Peru|2012|3415478
+Peru|2011|3250444
+Peru|2010|3159884
+Peru|2009|3548609
+Peru|2008|3075428
+Peru|2007|2844309
+Peru|2006|2559232
+Peru|2005|2402626
+Peru|2004|2193599
+Peru|2003|1839165
+Peru|2002|1656624
+Peru|2001|1570956
+Peru|2000|1717117
+Philippines|2014|3093236
+Philippines|2013|3148835
+Philippines|2012|3493164
+Philippines|2011|3555951
+Philippines|2010|3335398
+Philippines|2009|4100000
+Philippines|2008|4076140
+Philippines|2007|3940082
+Philippines|2006|3633188
+Philippines|2005|3367252
+Philippines|2004|3437491
+Philippines|2003|3340000
+Philippines|2002|3310933
+Philippines|2001|3315091
+Philippines|2000|3061387
+Poland|2014|4822233
+Poland|2013|5477447
+Poland|2012|5950896
+Poland|2011|6852599
+Poland|2010|7667085
+Poland|2009|8493453
+Poland|2008|9453928
+Poland|2007|10490569
+Poland|2006|11475613
+Poland|2005|11836243
+Poland|2004|12553477
+Poland|2003|12292450
+Poland|2002|11861266
+Poland|2001|11400000
+Poland|2000|10945567
+Portugal|2014|4588563
+Portugal|2013|4529794
+Portugal|2012|4558075
+Portugal|2011|4542561
+Portugal|2010|4486211
+Portugal|2009|4328295
+Portugal|2008|4160159
+Portugal|2007|4203800
+Portugal|2006|4241779
+Portugal|2005|4233701
+Portugal|2004|4238270
+Portugal|2003|4281119
+Portugal|2002|4350528
+Portugal|2001|4385454
+Portugal|2000|4321000
+Puerto Rico|2014|823527
+Puerto Rico|2013|660838
+Puerto Rico|2012|706274
+Puerto Rico|2011|826145
+Puerto Rico|2010|890820
+Puerto Rico|2009|905735
+Puerto Rico|2008|949377
+Puerto Rico|2007|1012909
+Puerto Rico|2006|1038000
+Puerto Rico|2005|1037700
+Puerto Rico|2004|1111894
+Puerto Rico|2003|1212779
+Puerto Rico|2002|1276493
+Puerto Rico|2001|1288439
+Puerto Rico|2000|1299291
+Qatar|2014|417589
+Qatar|2013|412584
+Qatar|2012|394407
+Qatar|2011|309000
+Qatar|2010|270000
+Qatar|2009|287942
+Qatar|2008|265865
+Qatar|2007|237368
+Qatar|2006|228327
+Qatar|2005|205386
+Qatar|2004|190876
+Qatar|2003|184508
+Qatar|2002|176519
+Qatar|2001|167446
+Qatar|2000|160191
+Romania|2014|4560000
+Romania|2013|4720000
+Romania|2012|4650000
+Romania|2011|4680000
+Romania|2010|4500000
+Romania|2009|4730000
+Romania|2008|4750000
+Romania|2007|4416000
+Romania|2006|4198000
+Romania|2005|4383000
+Romania|2004|4388000
+Romania|2003|4331564
+Romania|2002|4215235
+Romania|2001|4116000
+Romania|2000|3899206
+Russia|2014|38212576
+Russia|2013|40473148
+Russia|2012|42168388
+Russia|2011|44151461
+Russia|2010|44915829
+Russia|2009|45379601
+Russia|2008|45539288
+Russia|2007|45218214
+Russia|2006|43900000
+Russia|2005|40100000
+Russia|2004|38500000
+Russia|2003|36100000
+Russia|2002|35500000
+Russia|2001|33278200
+Russia|2000|32070000
+Rwanda|2014|49612
+Rwanda|2013|45338
+Rwanda|2012|44363
+Rwanda|2011|38901
+Rwanda|2010|39664
+Rwanda|2009|33451
+Rwanda|2008|16770
+Rwanda|2007|23123
+Rwanda|2006|23362
+Rwanda|2005|23601
+Rwanda|2004|22972
+Rwanda|2003|25565
+Rwanda|2002|25105
+Rwanda|2001|21500
+Rwanda|2000|17568
+Saint Kitts and Nevis|2014|19400
+Saint Kitts and Nevis|2013|19200
+Saint Kitts and Nevis|2012|20000
+Saint Kitts and Nevis|2011|19800
+Saint Kitts and Nevis|2010|19800
+Saint Kitts and Nevis|2009|20500
+Saint Kitts and Nevis|2008|20400
+Saint Kitts and Nevis|2007|20450
+Saint Kitts and Nevis|2006|20650
+Saint Kitts and Nevis|2005|20300
+Saint Kitts and Nevis|2004|20350
+Saint Kitts and Nevis|2003|23500
+Saint Kitts and Nevis|2002|23500
+Saint Kitts and Nevis|2001|22500
+Saint Kitts and Nevis|2000|21910
+Saint Lucia|2014|32832
+Saint Lucia|2013|33500
+Saint Lucia|2012|36842
+Saint Lucia|2011|35904
+Saint Lucia|2010|37450
+Saint Lucia|2009|38561
+Saint Lucia|2008|40940
+Saint Lucia|2007|39688
+Saint Lucia|2006|39357
+Saint Lucia|2005|39000
+Saint Lucia|2004|42000
+Saint Lucia|2003|49000
+Saint Lucia|2002|51121
+Saint Lucia|2001|50000
+Saint Lucia|2000|48900
+Samoa|2014|11778
+Samoa|2013|8382
+Samoa|2012|8270
+Samoa|2010|8000
+Samoa|2005|19500
+Samoa|2004|16393.5
+Samoa|2003|13287
+Samoa|2002|11786
+Samoa|2001|9670
+Samoa|2000|8520
+San Marino|2014|18600
+San Marino|2013|18752
+San Marino|2012|18700
+San Marino|2011|18685
+San Marino|2010|19556
+San Marino|2009|20428
+San Marino|2008|21300
+San Marino|2007|21080
+San Marino|2006|21000
+San Marino|2005|20849
+San Marino|2004|20754
+San Marino|2003|20689
+San Marino|2002|20601
+San Marino|2001|20501
+San Marino|2000|20302
+Sao Tome and Principe|2014|6800
+Sao Tome and Principe|2013|6976
+Sao Tome and Principe|2012|8035
+Sao Tome and Principe|2011|7960
+Sao Tome and Principe|2010|7804
+Sao Tome and Principe|2009|7694
+Sao Tome and Principe|2008|7643
+Sao Tome and Principe|2007|7654
+Sao Tome and Principe|2006|7593
+Sao Tome and Principe|2005|7112
+Sao Tome and Principe|2004|7050
+Sao Tome and Principe|2003|6970
+Sao Tome and Principe|2002|6366
+Sao Tome and Principe|2001|5441
+Sao Tome and Principe|2000|4614
+Saudi Arabia|2014|3622262
+Saudi Arabia|2013|4939715
+Saudi Arabia|2012|4801824
+Saudi Arabia|2011|4633158
+Saudi Arabia|2010|4165750
+Saudi Arabia|2009|4171000
+Saudi Arabia|2008|4100000
+Saudi Arabia|2007|3996000
+Saudi Arabia|2006|3951000
+Saudi Arabia|2005|3844000
+Saudi Arabia|2004|3695133
+Saudi Arabia|2003|3502629
+Saudi Arabia|2002|3417000
+Saudi Arabia|2001|3232925
+Saudi Arabia|2000|2964730
+Senegal|2014|311945
+Senegal|2013|343718
+Senegal|2012|340019
+Senegal|2011|346406
+Senegal|2010|341857
+Senegal|2009|278788
+Senegal|2008|237752
+Senegal|2007|269088
+Senegal|2006|282573
+Senegal|2005|266612
+Senegal|2004|244948
+Senegal|2003|228844
+Senegal|2002|224623
+Senegal|2001|237160
+Senegal|2000|205888
+Serbia|2014|2856134
+Serbia|2013|3031657
+Serbia|2012|2976849
+Serbia|2011|3030432
+Serbia|2010|3110339
+Serbia|2009|3105728
+Serbia|2008|3084872
+Serbia|2007|2993403
+Serbia|2006|2719402
+Serbia|2005|2527328
+Serbia|2004|2685419
+Seychelles|2014|21208
+Seychelles|2013|21752
+Seychelles|2012|20948
+Seychelles|2011|27912
+Seychelles|2010|22045
+Seychelles|2009|26078
+Seychelles|2008|22322
+Seychelles|2007|22722
+Seychelles|2006|20679
+Seychelles|2005|21404
+Seychelles|2004|21268
+Seychelles|2003|21191
+Seychelles|2002|21249
+Seychelles|2001|21247
+Seychelles|2000|20621
+Sierra Leone|2014|16500
+Sierra Leone|2013|16000
+Sierra Leone|2012|18000
+Sierra Leone|2011|16000
+Sierra Leone|2010|14000
+Sierra Leone|2009|32800
+Sierra Leone|2008|31500
+Sierra Leone|2007|30300
+Sierra Leone|2006|29000
+Sierra Leone|2005|27800
+Sierra Leone|2004|26500
+Sierra Leone|2003|25300
+Sierra Leone|2002|24000
+Sierra Leone|2001|22745
+Sierra Leone|2000|18980
+Singapore|2014|1996700
+Singapore|2013|1967000
+Singapore|2012|1987600
+Singapore|2011|2018100
+Singapore|2010|1996100
+Singapore|2009|1930900
+Singapore|2008|1876000
+Singapore|2007|1861800
+Singapore|2006|1853500
+Singapore|2005|1844400
+Singapore|2004|1857000
+Singapore|2003|1889500
+Singapore|2002|1927200
+Singapore|2001|1947500
+Singapore|2000|1946000
+Slovak Republic|2014|918662
+Slovak Republic|2013|967106
+Slovak Republic|2012|974762
+Slovak Republic|2011|1056025
+Slovak Republic|2010|1098821
+Slovak Republic|2009|1219645
+Slovak Republic|2008|1288661
+Slovak Republic|2007|1310027
+Slovak Republic|2006|1167390
+Slovak Republic|2005|1197044
+Slovak Republic|2004|1250415
+Slovak Republic|2003|1294673
+Slovak Republic|2002|1402725
+Slovak Republic|2001|1556254
+Slovak Republic|2000|1697982
+Slovenia|2014|769682
+Slovenia|2013|798356
+Slovenia|2012|835255
+Slovenia|2011|881239
+Slovenia|2010|910833
+Slovenia|2009|939107
+Slovenia|2008|978267
+Slovenia|2007|1005654
+Slovenia|2006|1029055
+Slovenia|2005|1019436
+Slovenia|2004|994444
+Slovenia|2003|812322
+Slovenia|2002|807787
+Slovenia|2001|801877
+Slovenia|2000|785399
+Solomon Islands|2014|7525
+Solomon Islands|2013|7618
+Solomon Islands|2012|8060
+Solomon Islands|2011|8391
+Solomon Islands|2010|8400
+Solomon Islands|2009|8200
+Solomon Islands|2008|8000
+Solomon Islands|2007|7800
+Solomon Islands|2006|7600
+Solomon Islands|2005|7407
+Solomon Islands|2004|6962
+Solomon Islands|2003|6238
+Solomon Islands|2002|6601
+Solomon Islands|2001|7389
+Solomon Islands|2000|7689
+Somalia|2014|57200
+Somalia|2013|64000
+Somalia|2012|70000
+Somalia|2011|90000
+Somalia|2010|100000
+Somalia|2009|100000
+Somalia|2008|100000
+Somalia|2007|100000
+Somalia|2006|100000
+Somalia|2005|100000
+Somalia|2004|100000
+Somalia|2003|100000
+Somalia|2002|35000
+Somalia|2001|35000
+Somalia|2000|25000
+South Africa|2014|3647770
+South Africa|2013|3875582
+South Africa|2012|4847000
+South Africa|2011|4854000
+South Africa|2010|4861000
+South Africa|2009|4868000
+South Africa|2008|4875000
+South Africa|2007|4882000
+South Africa|2006|4889000
+South Africa|2005|4896000
+South Africa|2004|4903000
+South Africa|2003|4910000
+South Africa|2002|4917000
+South Africa|2001|4924458
+South Africa|2000|4961743
+South Sudan|2014|0
+South Sudan|2013|0
+South Sudan|2012|150
+South Sudan|2011|2200
+South Sudan|2010|2400
+Spain|2014|19089024
+Spain|2013|19384245
+Spain|2012|19574626
+Spain|2011|19889038
+Spain|2010|20181424
+Spain|2009|20244312
+Spain|2008|20576070
+Spain|2007|20192505
+Spain|2006|19865037
+Spain|2005|19460832
+Spain|2004|17934477
+Spain|2003|17759164
+Spain|2002|17640745
+Spain|2001|17531000
+Spain|2000|17104000
+Sri Lanka|2014|2678739
+Sri Lanka|2013|2706787
+Sri Lanka|2012|3449391
+Sri Lanka|2011|3608392
+Sri Lanka|2010|3578463
+Sri Lanka|2009|3435958
+Sri Lanka|2008|3446411
+Sri Lanka|2007|2742059
+Sri Lanka|2006|1884078
+Sri Lanka|2005|1243994
+Sri Lanka|2004|991239
+Sri Lanka|2003|939013
+Sri Lanka|2002|883108
+Sri Lanka|2001|827195
+Sri Lanka|2000|767411
+St. Vincent and the Grenadines|2014|23903
+St. Vincent and the Grenadines|2013|19069
+St. Vincent and the Grenadines|2012|19379
+St. Vincent and the Grenadines|2011|22723
+St. Vincent and the Grenadines|2010|21703
+St. Vincent and the Grenadines|2009|23019
+St. Vincent and the Grenadines|2008|22777
+St. Vincent and the Grenadines|2007|22927
+St. Vincent and the Grenadines|2006|22640
+St. Vincent and the Grenadines|2005|22505
+St. Vincent and the Grenadines|2004|19022
+St. Vincent and the Grenadines|2003|21190
+St. Vincent and the Grenadines|2002|27323
+St. Vincent and the Grenadines|2001|26078
+St. Vincent and the Grenadines|2000|24906
+Sudan|2014|415106
+Sudan|2013|415571
+Sudan|2012|424586
+Sudan|2011|483617
+Sudan|2010|544984
+Sudan|2009|370423
+Sudan|2008|366200
+Sudan|2007|345194
+Sudan|2006|499000
+Sudan|2005|570000
+Sudan|2004|1028899
+Sudan|2003|936756
+Sudan|2002|671842
+Sudan|2001|448000
+Sudan|2000|386775
+Suriname|2014|84900
+Suriname|2013|84941
+Suriname|2012|86449
+Suriname|2011|83985
+Suriname|2010|84957
+Suriname|2009|83747
+Suriname|2008|83000
+Suriname|2007|82000
+Suriname|2006|81500
+Suriname|2005|81056
+Suriname|2004|81709
+Suriname|2003|79815
+Suriname|2002|78680
+Suriname|2001|77366
+Suriname|2000|75308
+Swaziland|2014|44400
+Swaziland|2013|46000
+Swaziland|2012|45565
+Swaziland|2011|75825
+Swaziland|2010|52966
+Swaziland|2009|45162
+Swaziland|2008|45162
+Swaziland|2007|44849
+Swaziland|2006|44287
+Swaziland|2005|44091
+Swaziland|2004|44507
+Swaziland|2003|46199
+Swaziland|2002|35060
+Swaziland|2001|33739
+Swaziland|2000|31858
+Sweden|2014|3778569
+Sweden|2013|3928425
+Sweden|2012|4169083
+Sweden|2011|4482202
+Sweden|2010|4734480
+Sweden|2009|5140000
+Sweden|2008|5338000
+Sweden|2007|5500000
+Sweden|2006|5547000
+Sweden|2005|5635000
+Sweden|2004|5688000
+Sweden|2003|5780000
+Sweden|2002|5849000
+Sweden|2001|5954000
+Sweden|2000|6056000
+Switzerland|2014|4374700
+Switzerland|2013|4593321
+Switzerland|2012|4721981
+Switzerland|2011|4898770
+Switzerland|2010|4907773
+Switzerland|2009|5131810
+Switzerland|2008|4827882
+Switzerland|2007|4927184
+Switzerland|2006|5021743
+Switzerland|2005|5149736
+Switzerland|2004|5253450
+Switzerland|2003|5323452
+Switzerland|2002|5387568
+Switzerland|2001|5383483
+Switzerland|2000|5235733
+Syria|2014|3629047
+Syria|2013|4428774
+Syria|2012|4254047
+Syria|2011|4289000
+Syria|2010|4069041
+Syria|2009|3871114
+Syria|2008|3633443
+Syria|2007|3452000
+Syria|2006|3243000
+Syria|2005|2903139
+Syria|2004|2658000
+Syria|2003|2411000
+Syria|2002|2095000
+Syria|2001|1816991
+Syria|2000|1675246
+T.F.Y.R. Macedonia|2014|383590
+T.F.Y.R. Macedonia|2013|396523
+T.F.Y.R. Macedonia|2012|408318
+T.F.Y.R. Macedonia|2011|422053
+T.F.Y.R. Macedonia|2010|413091
+T.F.Y.R. Macedonia|2009|437301
+T.F.Y.R. Macedonia|2008|457122
+T.F.Y.R. Macedonia|2007|463638
+T.F.Y.R. Macedonia|2006|490887
+T.F.Y.R. Macedonia|2005|533656
+T.F.Y.R. Macedonia|2004|537000
+T.F.Y.R. Macedonia|2003|525000
+T.F.Y.R. Macedonia|2002|560026
+T.F.Y.R. Macedonia|2001|538507
+T.F.Y.R. Macedonia|2000|507316
+Tajikistan|2014|440700
+Tajikistan|2013|425000
+Tajikistan|2012|393000
+Tajikistan|2011|380000
+Tajikistan|2010|367693
+Tajikistan|2009|347260
+Tajikistan|2008|286940
+Tajikistan|2007|292730
+Tajikistan|2005|280200
+Tajikistan|2004|273400
+Tajikistan|2003|245192
+Tajikistan|2002|237600
+Tajikistan|2001|226851
+Tajikistan|2000|218516
+Tanzania|2014|151274
+Tanzania|2013|164999
+Tanzania|2012|176367
+Tanzania|2011|161063
+Tanzania|2010|174511
+Tanzania|2009|172922
+Tanzania|2008|123809
+Tanzania|2007|163269
+Tanzania|2006|152000
+Tanzania|2005|154360
+Tanzania|2004|148360
+Tanzania|2003|147006
+Tanzania|2002|161590
+Tanzania|2001|177802
+Tanzania|2000|173591
+Thailand|2014|5690000
+Thailand|2013|6056000
+Thailand|2012|6377000
+Thailand|2011|6661000
+Thailand|2010|6835146
+Thailand|2009|7204936
+Thailand|2008|7394349
+Thailand|2007|7024049
+Thailand|2006|7071633
+Thailand|2005|7034662
+Thailand|2004|6811615
+Thailand|2003|6632409
+Thailand|2002|6557023
+Thailand|2001|6049129
+Thailand|2000|5591084
+Timor-Leste|2014|3557
+Timor-Leste|2013|3000
+Timor-Leste|2012|3000
+Timor-Leste|2011|3054
+Timor-Leste|2010|2907
+Timor-Leste|2009|2907
+Timor-Leste|2008|2641
+Timor-Leste|2007|2440
+Timor-Leste|2006|2504
+Timor-Leste|2005|2334
+Timor-Leste|2004|2098
+Timor-Leste|2003|1970
+Togo|2014|53311
+Togo|2013|62537
+Togo|2012|61590
+Togo|2011|60273
+Togo|2010|60011
+Togo|2009|178713
+Togo|2008|140919
+Togo|2007|99483
+Togo|2006|82057
+Togo|2005|62831
+Togo|2004|65949
+Togo|2003|61099
+Togo|2002|51156
+Togo|2001|48384
+Togo|2000|42763
+Tonga|2014|12000
+Tonga|2013|31000
+Tonga|2012|30000
+Tonga|2011|30000
+Tonga|2010|31000
+Tonga|2009|31000
+Tonga|2008|25536
+Tonga|2007|21034
+Tonga|2006|18447
+Tonga|2005|13746
+Tonga|2004|13000
+Tonga|2003|12000
+Tonga|2002|11201
+Tonga|2001|10800
+Tonga|2000|9700
+Trinidad and Tobago|2014|288747
+Trinidad and Tobago|2013|291291
+Trinidad and Tobago|2012|286605
+Trinidad and Tobago|2011|292036
+Trinidad and Tobago|2010|293315
+Trinidad and Tobago|2009|303227
+Trinidad and Tobago|2008|314792
+Trinidad and Tobago|2007|307301
+Trinidad and Tobago|2006|325500
+Trinidad and Tobago|2005|322300
+Trinidad and Tobago|2004|322338
+Trinidad and Tobago|2003|318879
+Trinidad and Tobago|2002|318189
+Trinidad and Tobago|2001|311842
+Trinidad and Tobago|2000|316767
+Tunisia|2014|949395
+Tunisia|2013|1021979
+Tunisia|2012|1098893
+Tunisia|2011|1217781
+Tunisia|2010|1289585
+Tunisia|2009|1278548
+Tunisia|2008|1239074
+Tunisia|2007|1273332
+Tunisia|2006|1268462
+Tunisia|2005|1257479
+Tunisia|2004|1203530
+Tunisia|2003|1163849
+Tunisia|2002|1148586
+Tunisia|2001|1056209
+Tunisia|2000|955131
+Turkey|2014|12528865
+Turkey|2013|13551705
+Turkey|2012|13859672
+Turkey|2011|15210846
+Turkey|2010|16201466
+Turkey|2009|16534356
+Turkey|2008|17502205
+Turkey|2007|18201006
+Turkey|2006|18831616
+Turkey|2005|18978223
+Turkey|2004|19125163
+Turkey|2003|18916721
+Turkey|2002|18890000
+Turkey|2001|18904486
+Turkey|2000|18395171
+Turkmenistan|2014|624400
+Turkmenistan|2013|602000
+Turkmenistan|2012|575000
+Turkmenistan|2011|547000
+Turkmenistan|2010|520002
+Turkmenistan|2009|494312
+Turkmenistan|2008|477670
+Turkmenistan|2007|458180
+Turkmenistan|2006|423810
+Turkmenistan|2005|398100
+Turkmenistan|2004|388000
+Turkmenistan|2003|376100
+Turkmenistan|2002|374000
+Turkmenistan|2001|387620
+Turkmenistan|2000|364400
+Tuvalu|2014|1500
+Tuvalu|2013|1450
+Tuvalu|2012|1450
+Tuvalu|2011|1450
+Tuvalu|2010|1200
+Tuvalu|2009|800
+Tuvalu|2008|1000
+Tuvalu|2007|1300
+Tuvalu|2006|1100
+Tuvalu|2005|890
+Tuvalu|2004|750
+Tuvalu|2003|700
+Tuvalu|2002|660
+Tuvalu|2001|650
+Tuvalu|2000|660
+Uganda|2014|324442
+Uganda|2013|272844
+Uganda|2012|314956
+Uganda|2011|464849
+Uganda|2010|327114
+Uganda|2009|233533
+Uganda|2008|168481
+Uganda|2007|165788
+Uganda|2006|108140
+Uganda|2005|87513
+Uganda|2004|71568
+Uganda|2003|60995
+Uganda|2002|54976
+Uganda|2001|56149
+Uganda|2000|61678
+Ukraine|2014|10461083
+Ukraine|2013|11830969
+Ukraine|2012|12182142
+Ukraine|2011|12680881
+Ukraine|2010|12941346
+Ukraine|2009|13026293
+Ukraine|2008|13176871
+Ukraine|2007|12905864
+Ukraine|2006|12397133
+Ukraine|2005|11666600
+Ukraine|2004|12141956
+Ukraine|2003|11109500
+Ukraine|2002|10833300
+Ukraine|2001|10669600
+Ukraine|2000|10417000
+United Arab Emirates|2014|2103036
+United Arab Emirates|2013|2086015
+United Arab Emirates|2012|1967486
+United Arab Emirates|2011|1825496
+United Arab Emirates|2010|1479485
+United Arab Emirates|2009|1580148
+United Arab Emirates|2008|1595991
+United Arab Emirates|2007|1385523
+United Arab Emirates|2006|1309683
+United Arab Emirates|2005|1236860
+United Arab Emirates|2004|1187734
+United Arab Emirates|2003|1135758
+United Arab Emirates|2002|1093654
+United Arab Emirates|2001|1052930
+United Arab Emirates|2000|1020097
+United Kingdom|2014|33238083
+United Kingdom|2013|33383853
+United Kingdom|2012|33197391
+United Kingdom|2011|33252352
+United Kingdom|2010|33409000
+United Kingdom|2009|33506000
+United Kingdom|2008|34191893
+United Kingdom|2007|33462200
+United Kingdom|2006|33848510
+United Kingdom|2005|34068428
+United Kingdom|2004|34576487
+United Kingdom|2003|34550320
+United Kingdom|2002|34737600
+United Kingdom|2001|34579000
+United Kingdom|2000|35228000
+United States|2014|128495000
+United States|2013|133233000
+United States|2012|138595000
+United States|2011|143319000
+United States|2010|149652000
+United States|2009|152873000
+United States|2008|162763000
+United States|2007|158418151
+United States|2006|167459899
+United States|2005|175160940
+United States|2004|177690711
+United States|2003|182933281
+United States|2002|189250143
+United States|2001|191570800
+United States|2000|192513000
+Uruguay|2014|1082903
+Uruguay|2013|1048445
+Uruguay|2012|1010953
+Uruguay|2011|964859
+Uruguay|2010|962187
+Uruguay|2009|953655
+Uruguay|2008|959286
+Uruguay|2007|965216
+Uruguay|2006|986867
+Uruguay|2005|1006001
+Uruguay|2004|996701
+Uruguay|2003|938186
+Uruguay|2002|946533
+Uruguay|2001|950866
+Uruguay|2000|929141
+Uzbekistan|2014|2507711
+Uzbekistan|2013|2000000
+Uzbekistan|2012|1980038
+Uzbekistan|2011|1927735
+Uzbekistan|2010|1892164
+Uzbekistan|2009|1856592
+Uzbekistan|2008|1849563
+Uzbekistan|2007|1822146
+Uzbekistan|2006|1841870
+Uzbekistan|2005|1793500
+Uzbekistan|2004|1750400
+Uzbekistan|2003|1717068
+Uzbekistan|2002|1681127
+Uzbekistan|2001|1662963
+Uzbekistan|2000|1655044
+Vanuatu|2014|5727
+Vanuatu|2013|5497
+Vanuatu|2012|4848
+Vanuatu|2011|5873
+Vanuatu|2010|7111
+Vanuatu|2009|7219
+Vanuatu|2008|10400
+Vanuatu|2007|8820
+Vanuatu|2006|7500
+Vanuatu|2005|6964
+Vanuatu|2004|6759
+Vanuatu|2003|6540
+Vanuatu|2002|6611
+Vanuatu|2001|6762
+Vanuatu|2000|6640
+Venezuela|2014|7808524
+Venezuela|2013|7773777
+Venezuela|2012|7648753
+Venezuela|2011|7332413
+Venezuela|2010|7082888
+Venezuela|2009|6866686
+Venezuela|2008|6417775
+Venezuela|2007|5195071
+Venezuela|2006|4216794
+Venezuela|2005|3650501
+Venezuela|2004|3346462
+Venezuela|2003|2956185
+Venezuela|2002|2841771
+Venezuela|2001|2704921
+Venezuela|2000|2535966
+Viet Nam|2014|5562200
+Viet Nam|2013|6725329
+Viet Nam|2012|9556089
+Viet Nam|2011|10174849
+Viet Nam|2010|14374438
+Viet Nam|2009|17427365
+Viet Nam|2008|14767629
+Viet Nam|2007|11165617
+Viet Nam|2006|8567520
+Viet Nam|2004|10124899
+Viet Nam|2003|4402000
+Viet Nam|2002|3929140
+Viet Nam|2001|3049925
+Viet Nam|2000|2542718
+Virgin Islands (U.S.)|2014|76100
+Virgin Islands (U.S.)|2013|76000
+Virgin Islands (U.S.)|2010|75800
+Virgin Islands (U.S.)|2009|75000
+Virgin Islands (U.S.)|2008|74200
+Virgin Islands (U.S.)|2007|73400
+Virgin Islands (U.S.)|2006|72500
+Virgin Islands (U.S.)|2005|71700
+Virgin Islands (U.S.)|2004|70888
+Virgin Islands (U.S.)|2003|69691
+Virgin Islands (U.S.)|2002|69369
+Virgin Islands (U.S.)|2001|69400
+Virgin Islands (U.S.)|2000|68283
+Yemen|2014|1168600
+Yemen|2013|1143000
+Yemen|2012|1104000
+Yemen|2011|1075000
+Yemen|2010|1046263
+Yemen|2009|997000
+Yemen|2008|961000
+Yemen|2007|1022000
+Yemen|2006|968328
+Yemen|2005|901385
+Yemen|2004|798000
+Yemen|2003|693884
+Yemen|2002|542204
+Yemen|2001|422228
+Yemen|2000|346709
+Zambia|2014|114420
+Zambia|2013|115762
+Zambia|2012|82542
+Zambia|2011|85727
+Zambia|2010|118388
+Zambia|2009|90341
+Zambia|2008|90600
+Zambia|2007|91789
+Zambia|2006|93427
+Zambia|2005|94665
+Zambia|2004|91719
+Zambia|2003|88426
+Zambia|2002|87674
+Zambia|2001|85662
+Zambia|2000|83326
+Zimbabwe|2014|329475
+Zimbabwe|2013|304162
+Zimbabwe|2012|301650
+Zimbabwe|2011|356000
+Zimbabwe|2010|379000
+Zimbabwe|2009|385116
+Zimbabwe|2008|348000
+Zimbabwe|2007|345000
+Zimbabwe|2006|335561
+Zimbabwe|2005|328000
+Zimbabwe|2004|317000
+Zimbabwe|2003|300921
+Zimbabwe|2002|287854
+Zimbabwe|2001|253738
+Zimbabwe|2000|249400

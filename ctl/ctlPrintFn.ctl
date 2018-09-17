@@ -119,6 +119,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     Dim c As Long
     Dim iFont As StdFont
     Dim iLng As Long
+    Dim iBool As Boolean
     
     mPrintFnObject.AmbientUserMode = Ambient.UserMode
     
@@ -128,9 +129,15 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mPrintFnObject.Duplex = PropBag.ReadProperty("Duplex", vbPRDPPrinterDefault)
     mPrintFnObject.DocumentName = PropBag.ReadProperty("DocumentName", "")
     mPrintFnObject.AllowUserChangeScale = PropBag.ReadProperty("AllowUserChangeScale", True)
+    mPrintFnObject.AllowUserChangeOrientation = PropBag.ReadProperty("AllowUserChangeOrientation", True)
+    mPrintFnObject.AllowUserChangePaper = PropBag.ReadProperty("AllowUserChangePaper", True)
     mPrintFnObject.MinScalePercent = PropBag.ReadProperty("MinScalePercent", cPrintPreviewDefaultMinScale)
     mPrintFnObject.MaxScalePercent = PropBag.ReadProperty("MaxScalePercent", cPrintPreviewDefaultMaxScale)
     mPrintFnObject.FormatButtonVisible = PropBag.ReadProperty("FormatButtonVisible", False)
+    iBool = PropBag.ReadProperty("PageNumbersButtonVisible", True)
+    If iBool <> mPrintFnObject.PageNumbersButtonVisible Then
+        mPrintFnObject.PageNumbersButtonVisible = iBool
+    End If
     mPrintFnObject.FormatButtonToolTipText = PropBag.ReadProperty("FormatButtonToolTipText", "")
     For c = 0 To 4
         Set mPrintFnObject.FormatButtonPicture(c) = PropBag.ReadProperty("FormatButtonPicture_" & CStr(c), Nothing)
@@ -456,6 +463,18 @@ Public Property Let FormatButtonVisible(nValue As Boolean)
 End Property
 
 
+Public Property Get PageNumbersButtonVisible() As Boolean
+    PageNumbersButtonVisible = mPrintFnObject.PageNumbersButtonVisible
+End Property
+
+Public Property Let PageNumbersButtonVisible(nValue As Boolean)
+    If nValue <> mPrintFnObject.PageNumbersButtonVisible Then
+        mPrintFnObject.PageNumbersButtonVisible = nValue
+        PropertyChanged "PageNumbersButtonVisible"
+    End If
+End Property
+
+
 Public Property Get PageSetupButtonVisible() As Boolean
     PageSetupButtonVisible = mPrintFnObject.PageSetupButtonVisible
 End Property
@@ -502,6 +521,30 @@ Public Property Let AllowUserChangeScale(nValue As Boolean)
     If nValue <> mPrintFnObject.AllowUserChangeScale Then
         mPrintFnObject.AllowUserChangeScale = nValue
         PropertyChanged "AllowUserChangeScale"
+    End If
+End Property
+
+
+Public Property Get AllowUserChangeOrientation() As Boolean
+    AllowUserChangeOrientation = mPrintFnObject.AllowUserChangeOrientation
+End Property
+
+Public Property Let AllowUserChangeOrientation(nValue As Boolean)
+    If nValue <> mPrintFnObject.AllowUserChangeOrientation Then
+        mPrintFnObject.AllowUserChangeOrientation = nValue
+        PropertyChanged "AllowUserChangeOrientation"
+    End If
+End Property
+
+
+Public Property Get AllowUserChangePaper() As Boolean
+    AllowUserChangePaper = mPrintFnObject.AllowUserChangePaper
+End Property
+
+Public Property Let AllowUserChangePaper(nValue As Boolean)
+    If nValue <> mPrintFnObject.AllowUserChangePaper Then
+        mPrintFnObject.AllowUserChangePaper = nValue
+        PropertyChanged "AllowUserChangePaper"
     End If
 End Property
 
@@ -573,9 +616,12 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     PropBag.WriteProperty "DocumentName", mPrintFnObject.DocumentName, ""
     PropBag.WriteProperty "Duplex", mPrintFnObject.Duplex, vbPRDPPrinterDefault
     PropBag.WriteProperty "AllowUserChangeScale", mPrintFnObject.AllowUserChangeScale, True
+    PropBag.WriteProperty "AllowUserChangeOrientation", mPrintFnObject.AllowUserChangeOrientation, True
+    PropBag.WriteProperty "AllowUserChangePaper", mPrintFnObject.AllowUserChangePaper, True
     PropBag.WriteProperty "MinScalePercent", mPrintFnObject.MinScalePercent, cPrintPreviewDefaultMinScale
     PropBag.WriteProperty "MaxScalePercent", mPrintFnObject.MaxScalePercent, cPrintPreviewDefaultMaxScale
     PropBag.WriteProperty "FormatButtonVisible", mPrintFnObject.FormatButtonVisible, False
+    PropBag.WriteProperty "PageNumbersButtonVisible", mPrintFnObject.PageNumbersButtonVisible, True
     iStr = mPrintFnObject.FormatButtonToolTipText
     If iStr = GetLocalizedString(efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_Format) Then
         iStr = ""
@@ -663,6 +709,15 @@ Attribute ProcedureName.VB_MemberFlags = "200"
 End Property
 
 
+Public Property Let ParametersArray(ByVal nParametersArray As Variant)
+    mPrintFnObject.ParametersArray = nParametersArray
+End Property
+
+Public Property Get ParametersArray() As Variant
+    ParametersArray = mPrintFnObject.ParametersArray
+End Property
+
+
 Public Property Get Printed() As Boolean
     Printed = mPrintFnObject.Printed
 End Property
@@ -703,16 +758,6 @@ End Property
 
 Public Property Get Copies() As Long
     Copies = mPrintFnObject.Copies
-End Property
-
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Property Let CommonDialogFlags(nValue As Long)
-    
-End Property
-
-Public Property Get CommonDialogFlags() As Long
-Attribute CommonDialogFlags.VB_MemberFlags = "40"
-    
 End Property
 
 

@@ -2983,7 +2983,7 @@ Private Sub Draw()
     Dim iRowsStretchRatio() As Single
     Dim iRowsStretchRatio_StartingRow As Long
     Dim iRowsStretchRatio_AccumulatedTabWidth As Long
-    Dim r As Long
+    Dim R As Long
     Dim iAccumulatedAdditionalFixedTabSpace As Long
     Dim iRowsStretchRatio_AccumulatedAdditionalFixedTabWidth As Long
     Dim iSng As Single
@@ -3227,9 +3227,9 @@ Private Sub Draw()
                                 iDoNotDecreaseStretchRatio = True
                                 iSng = 1
                             End If
-                            For r = iRowsStretchRatio_StartingRow To iRow - 1
-                                iRowsStretchRatio(r) = iSng
-                            Next r
+                            For R = iRowsStretchRatio_StartingRow To iRow - 1
+                                iRowsStretchRatio(R) = iSng
+                            Next R
                             iRowsStretchRatio(iRow) = 1
                             iRow = iRow + 1
                             iRowsStretchRatio_StartingRow = iRow
@@ -3263,9 +3263,9 @@ Private Sub Draw()
                     iDoNotDecreaseStretchRatio = True
                     iSng = 1
                 End If
-                For r = iRowsStretchRatio_StartingRow To iRow
-                    iRowsStretchRatio(r) = iSng
-                Next r
+                For R = iRowsStretchRatio_StartingRow To iRow
+                    iRowsStretchRatio(R) = iSng
+                Next R
             End If
             mRows = iRow + 1
             iARPSTmp = (mRows - 1) * iRowPerspectiveSpace
@@ -3284,15 +3284,15 @@ Private Sub Draw()
             iRow = 0
             ctv = 0
             If iDecreaseStretchRatio Then
-                For r = 0 To mRows - 1
-                    iRowsStretchRatio(r) = iRowsStretchRatio(r) * 0.95
-                    If iRowsStretchRatio(r) < 1 Then iRowsStretchRatio(r) = 1
-                Next r
+                For R = 0 To mRows - 1
+                    iRowsStretchRatio(R) = iRowsStretchRatio(R) * 0.95
+                    If iRowsStretchRatio(R) < 1 Then iRowsStretchRatio(R) = 1
+                Next R
                 iDecreaseStretchRatio = False
             ElseIf iIncreaseStretchRatio Then
-                For r = 0 To mRows - 1
-                    iRowsStretchRatio(r) = iRowsStretchRatio(r) * 1.05
-                Next r
+                For R = 0 To mRows - 1
+                    iRowsStretchRatio(R) = iRowsStretchRatio(R) * 1.05
+                Next R
                 iIncreaseStretchRatio = False
             End If
             iLastVisibleTab_Prev = -1

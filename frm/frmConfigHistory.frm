@@ -212,11 +212,13 @@ Private Sub cmdEraseContext_Click()
     Dim iSetting As Variant
     
     iCol = GetAllSettings(AppNameForRegistry, "History")
-    For Each iSetting In iCol
-        If Base64Decode(CStr(iSetting)) Like Context & "*" Then
-            DeleteSetting AppNameForRegistry, "History", iSetting
-        End If
-    Next
+    If Not IsEmpty(iCol) Then
+        For Each iSetting In iCol
+            If Base64Decode(CStr(iSetting)) Like Context & "*" Then
+                DeleteSetting AppNameForRegistry, "History", iSetting
+            End If
+        Next
+    End If
     On Error Resume Next
     DeleteSetting AppNameForRegistry, "History", Base64Encode(Context)
     On Error GoTo 0

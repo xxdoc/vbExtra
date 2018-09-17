@@ -2151,10 +2151,10 @@ Public Property Let DeviceName(ByVal nValue As String)
                 End If
                 GlobalUnlock mhDevNames
             End If
-            mhDevMode = GlobalAlloc(GHND, LenB(iDm))
+            mhDevMode = GlobalAlloc(GHND, Len(iDm))
             mhDevModeToFree = mhDevMode
             mDevModePtr = GlobalLock(mhDevMode)
-            CopyMemory ByVal mDevModePtr, iDm, LenB(iDm)
+            CopyMemory ByVal mDevModePtr, iDm, Len(iDm)
             CopyMemory mDevMode, ByVal mDevModePtr, Len(mDevMode)
             mhDevNames = 0
             
@@ -2368,10 +2368,11 @@ Public Sub ShowPageSetup(Optional ByVal nFlags As cdeCommonDialogExPageSetupFlag
     Dim iCopies_Prev As Long
     Dim iCollate_Prev As Long
     
-    On Error GoTo ShowPageSetupError
+'    On Error GoTo ShowPageSetupError
     mChanged = False
     
     iHwndOwner = GetActiveWindowHwnd
+    
     iFlags = mFlags
     If nFlags <> -1 Then
         iFlags = iFlags Or nFlags
@@ -2385,7 +2386,6 @@ Public Sub ShowPageSetup(Optional ByVal nFlags As cdeCommonDialogExPageSetupFlag
     iPsd.lStructSize = Len(iPsd)
     
     iPsd.Flags = iFlags And Not (PSD_ENABLEPAGEPAINTHOOK Or PSD_ENABLEPAGESETUPHOOK Or PSD_ENABLEPAGESETUPTEMPLATE)
-    
     Select Case mUnitsForUser
         Case cdeMUInches
             iPsd.Flags = iPsd.Flags Or PSD_INTHOUSANDTHSOFINCHES
@@ -2404,6 +2404,7 @@ Public Sub ShowPageSetup(Optional ByVal nFlags As cdeCommonDialogExPageSetupFlag
     Else
         iUnitsMultiplier = 100
     End If
+    
     Select Case True
         Case (Units = vbInches) And ((iPsd.Flags And PSD_INTHOUSANDTHSOFINCHES) = 0)
             iUnitsMultiplier = iUnitsMultiplier * 25.4
@@ -2414,7 +2415,6 @@ Public Sub ShowPageSetup(Optional ByVal nFlags As cdeCommonDialogExPageSetupFlag
         Case (Units = vbMillimeters) And ((iPsd.Flags And PSD_INTHOUSANDTHSOFINCHES) <> 0)
             iUnitsMultiplier = iUnitsMultiplier / 25.4
     End Select
-    
     
     iPsd.Flags = iPsd.Flags Or PSD_MARGINS
     If (mMinTopMargin <> 0) Or (mMinLeftMargin <> 0) Or (mMinBottomMargin <> 0) Or (mMinRightMargin <> 0) Then
@@ -2574,7 +2574,7 @@ Public Sub ShowPageSetup(Optional ByVal nFlags As cdeCommonDialogExPageSetupFlag
 '        End If
 '    End If
     
-ShowPageSetupError:
+'ShowPageSetupError:
 End Sub
 
 Private Function GetDevNameString( _
@@ -2583,14 +2583,14 @@ Private Function GetDevNameString( _
    )
    Dim Ptr As Long
    Dim lSize As Long
-   Dim b() As Byte
+   Dim B() As Byte
       
    Ptr = UnsignedAdd(ptrDevNames, ptrOffset)
    lSize = lstrlenPtr(Ptr)
    If (lSize > 0) Then
-      ReDim b(0 To lSize - 1) As Byte
-      CopyMemory b(0), ByVal Ptr, lSize
-      GetDevNameString = StrConv(b, vbUnicode)
+      ReDim B(0 To lSize - 1) As Byte
+      CopyMemory B(0), ByVal Ptr, lSize
+      GetDevNameString = StrConv(B, vbUnicode)
    End If
 End Function
 
@@ -2862,7 +2862,6 @@ Friend Sub UpdateDevModeWithCurrentSettings()
     mDevMode.dmCollate = Abs(CLng(mCollate))
     
     CopyMemory ByVal mDevModePtr, mDevMode, Len(mDevMode)
-    
 End Sub
 
 Private Sub ConvertMarginValues()

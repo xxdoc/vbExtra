@@ -53,7 +53,7 @@ Private mPic36Alt As StdPicture
 Private mUseAltPic As Boolean
 Private mIconSize As vbExToolbarDAIconsSizeConstants
 Private mOrderToHide As Long
-Private mHided As Boolean
+Private mHidden As Boolean
 
 Private mButtonControlPtr As Long
 Private mParentTBPtr As Long
@@ -302,12 +302,12 @@ Public Property Get IconSize() As vbExToolbarDAIconsSizeConstants
 End Property
 
 
-Public Property Get Hided() As Boolean
-    Hided = mHided
+Public Property Get Hidden() As Boolean
+    Hidden = mHidden
 End Property
 
-Public Property Let Hided(ByVal bHided As Boolean)
-    mHided = bHided
+Public Property Let Hidden(ByVal bHidden As Boolean)
+    mHidden = bHidden
 End Property
 
 

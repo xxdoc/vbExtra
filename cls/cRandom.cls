@@ -25,7 +25,7 @@ Private Const a As Long = 48271
 Private Const M As Long = 2147483647
 Private Const Max As Long = 2147483645
 Private Const Q As Long = (M / a)
-Private Const r As Long = (M Mod a)
+Private Const R As Long = (M Mod a)
 Private Const rT As Single = 1# / Max
 
 ' VB6 verions includes fixes suggested by Lynn Torkelson
@@ -79,7 +79,7 @@ Public Function Random(Optional ByVal iMin As Long = 0, _
     iHi = iLast / Q
     iLo = iLast Mod Q
   
-    iT = (a * iLo) - (r * iHi)
+    iT = (a * iLo) - (R * iHi)
     If iT >= 0 Then
         iLast = iT
     Else

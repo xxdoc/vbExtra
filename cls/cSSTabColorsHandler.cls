@@ -145,13 +145,13 @@ Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, By
             bConsume = True
             'CallWindowProc oldSSTabProc, hWnd, wMsg, origDC, lParam
     
-            ' This helps our mask to correctly calculate the b & w pixels of
+            ' This helps our mask to correctly calculate the B & w pixels of
             '  our mask. Only really works in Win98 and greater... and even then
             '  it is sometimes flakey... may need to loop thru x & y and use
             '  GetPixel/SetPixel to create mask if it is not generated properly.
             origColor = SetBkColor(destDC, GetSysColor(15))
             SetBkColor origDC, GetSysColor(15&)
-            ' create a b&w pixel mask - background color is white, everything else
+            ' create a B&w pixel mask - background color is white, everything else
             '  is black.
             BitBlt maskDC, 0, 0, wid, hgt, origDC, 0, 0, vbSrcCopy
             

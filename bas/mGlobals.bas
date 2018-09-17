@@ -1,6 +1,9 @@
 Attribute VB_Name = "mGlobals"
 Option Explicit
 
+Private Declare Function rtcCallByName Lib "msvbvm60" (ByRef vRet As Variant, ByVal cObj As Object, ByVal sMethod As Long, ByVal eCallType As VbCallType, ByRef pArgs() As Variant, ByVal LCID As Long) As Long
+Private Declare Function rtcCallByNameIDE Lib "vba6" Alias "rtcCallByName" (ByRef vRet As Variant, ByVal cObj As Object, ByVal sMethod As Long, ByVal eCallType As VbCallType, ByRef pArgs() As Variant, ByVal LCID As Long) As Long
+
 Public Const LF_FACESIZE = 32
 
 Public Type LOGFONTW
@@ -620,7 +623,6 @@ Private Const gstrSEP_DIRALT$ = "/"                      ' Alternate directory s
 'Private Const gstrSEP_EXT$ = "."                         ' Filename extension separator character
 Private Const gstrSEP_URLDIR$ = "/"                      ' Separator for dividing directories in URL addresses.
 
-' FlexGrid constants that are not in TLB:
 Public Const flexSelectionFree = 0
 Public Const flexHighlightNever = 0
 Public Const flexSelectionByRow = 1
@@ -2567,7 +2569,7 @@ Private Sub DoubleTo2Longs(ByVal dbl As Double, nLongLOW As Long, nLongHigh As L
     
     'use a constant to avoid the
     'slow "2^31" below (2147483648)
-    Const G2 = 2# * &H40000000
+    Const g2 = 2# * &H40000000
     
     If dbl < 0 Then
         IsNegative = True
@@ -2577,13 +2579,13 @@ Private Sub DoubleTo2Longs(ByVal dbl As Double, nLongLOW As Long, nLongHigh As L
     End If
     
     '(2 ^ 31)) = 2147483648
-    temp = Int(dblTemp# / G2)
+    temp = Int(dblTemp# / g2)
     
     '(2 ^ 31))
-    nLongLOW = dblTemp# - (temp * G2)
+    nLongLOW = dblTemp# - (temp * g2)
     
     '(2 ^ 31)
-    If temp And 1 Then nLongLOW = nLongLOW Or -G2
+    If temp And 1 Then nLongLOW = nLongLOW Or -g2
     
     nLongHigh = Int(temp / 2)
     
@@ -4281,4 +4283,32 @@ Public Function DecimalSignAsc() As Long
         sValue = Asc(Left$(iBuff, iPos - 1))
     End If
     DecimalSignAsc = sValue
+End Function
+
+Public Function CallByNameEx(nObject As Object, nProcedureName As String, nCallType As VbCallType, nParametersArray As Variant)
+    If IsArray(nParametersArray) Then
+        CallByNameEx = CallByName2(nObject, nProcedureName, nCallType, nParametersArray)
+    Else
+        CallByNameEx = CallByName(nObject, nProcedureName, nCallType)
+    End If
+End Function
+
+' Author: The trick: http://www.vbforums.com/showthread.php?866039&p=5315395&viewfull=1#post5315395
+Private Function CallByName2(ByVal cObject As Object, ByRef sProcName As String, ByVal eCallType As VbCallType, vArgs As Variant) As Variant
+    Dim hr      As Long
+    Dim vLoc()
+    
+    vLoc = vArgs
+    
+    If InIDE Then
+        hr = rtcCallByNameIDE(CallByName2, cObject, StrPtr(sProcName), eCallType, vLoc, &H409)
+    Else
+        hr = rtcCallByName(CallByName2, cObject, StrPtr(sProcName), eCallType, vLoc, &H409)
+    End If
+    
+    
+    If hr < 0 Then
+        Err.Raise hr
+    End If
+    
 End Function

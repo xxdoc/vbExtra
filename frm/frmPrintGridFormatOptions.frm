@@ -23,6 +23,15 @@ Begin VB.Form frmPrintGridFormatOptions
    ScaleHeight     =   6300
    ScaleWidth      =   5508
    ShowInTaskbar   =   0   'False
+   Begin vbExtra.ComboFn ComboFn1 
+      Height          =   408
+      Left            =   4860
+      TabIndex        =   50
+      Top             =   72
+      Width           =   408
+      _ExtentX        =   720
+      _ExtentY        =   720
+   End
    Begin VB.Timer tmrInit 
       Interval        =   1
       Left            =   1440
@@ -97,7 +106,7 @@ Begin VB.Form frmPrintGridFormatOptions
       EndProperty
       TabsPerRow      =   4
       Tab             =   2
-      TabHeight       =   520,347
+      TabHeight       =   520
       Themed          =   -1  'True
       TabCaption(0)   =   "# Options"
       Tab(0).ControlCount=   1
@@ -645,7 +654,7 @@ Begin VB.Form frmPrintGridFormatOptions
       Caption         =   "# Cancel"
       Height          =   435
       Left            =   3690
-      TabIndex        =   0
+      TabIndex        =   1
       Top             =   5700
       Width           =   1515
    End
@@ -653,7 +662,7 @@ Begin VB.Form frmPrintGridFormatOptions
       Caption         =   "# OK"
       Height          =   435
       Left            =   1920
-      TabIndex        =   1
+      TabIndex        =   0
       Top             =   5700
       Width           =   1515
    End
@@ -679,10 +688,7 @@ End Enum
 
 Private mOKPressed As Boolean
 Private mChanged As Boolean
-Private mGrid As Control
 Private mPrintFnObject As PrintFnObject
-Attribute mPrintFnObject.VB_VarHelpID = -1
-Private mFlexFnObject As FlexFnObject
 
 Private mScalePercent As Long
 Private mMinScalePercent As Long
@@ -719,9 +725,10 @@ Private mStylesIDs() As String
 Private mSampleTop As Long
 Private mStyleChanged As Boolean
 Private mRgn As Long
+Private mFromFlexFnObject As Boolean
 
 Private Sub cboColor_Click()
-    mColorMode = cboColor.ListIndex
+    mColorMode = cboColor.ItemData(cboColor.ListIndex)
     DrawSample
     mChanged = True
 End Sub
@@ -793,7 +800,7 @@ Private Sub cboStyle_Click()
     End If
     If Not mPuttingControlsToStyle And Not mSelectingProperStyle Then
         If cboStyle.ListIndex < cboStyle.ListCount - 1 Then
-            Set mGridReportStyle = mFlexFnObject.GetGridReportStyle(mStylesIDs(cboStyle.ListIndex))
+            Set mGridReportStyle = GetGridReportStyle(mStylesIDs(cboStyle.ListIndex))
             StyleChanged = True
             PutControlsToStyle
         End If
@@ -825,7 +832,7 @@ Private Sub chkPrintHeadersBorder_Click()
     mGridReportStyle.PrintHeadersBorder = (chkPrintHeadersBorder.Value = 1)
     DrawSample
     StyleChanged = True
-    picPrintHeadersSeparatorLine.Enabled = (chkPrintRowsLines.Value = 0) And ((chkPrintHeadersBorder.Value = 0) Or Not chkPrintHeadersBorder.Enabled)
+    picPrintHeadersSeparatorLine.Enabled = True ' (chkPrintRowsLines.Value = 0) And ((chkPrintHeadersBorder.Value = 0) Or Not chkPrintHeadersBorder.Enabled)
     If Not picPrintHeadersSeparatorLine.Enabled Then
         chkPrintHeadersSeparatorLine.Tag = chkPrintHeadersSeparatorLine.Value
         chkPrintHeadersSeparatorLine.Value = 2
@@ -876,7 +883,7 @@ Private Sub chkPrintRowsLines_Click()
     mGridReportStyle.PrintRowsLines = (chkPrintRowsLines.Value = 1)
     DrawSample
     StyleChanged = True
-    picPrintHeadersSeparatorLine.Enabled = (chkPrintRowsLines.Value = 0) And ((chkPrintHeadersBorder.Value = 0) Or Not chkPrintHeadersBorder.Enabled)
+    picPrintHeadersSeparatorLine.Enabled = True ' (chkPrintRowsLines.Value = 0) And ((chkPrintHeadersBorder.Value = 0) Or Not chkPrintHeadersBorder.Enabled)
     If Not picPrintHeadersSeparatorLine.Enabled Then
         chkPrintHeadersSeparatorLine.Tag = chkPrintHeadersSeparatorLine.Value
         chkPrintHeadersSeparatorLine.Value = 2
@@ -957,7 +964,13 @@ Private Sub cmdOK_Click()
     
     iVal = Val(cboScalePercent.Text)
     
-    If (iVal > 30) And (iVal < 300) Then
+    If iVal > 0 Then
+        If iVal < mMinScalePercent Then
+            iVal = mMinScalePercent
+        End If
+        If iVal > mMaxScalePercent Then
+            iVal = mMaxScalePercent
+        End If
         mScalePercent = iVal
     End If
     
@@ -1019,6 +1032,14 @@ Private Sub fpcPageNumbers_Change()
 End Sub
 
 Private Sub Form_Load()
+    Dim iPt As POINTAPI
+    
+    GetCursorPos iPt
+    iPt.x = iPt.x - 15
+    If iPt.x < 10 Then iPt.x = 10
+    iPt.y = iPt.y + 20
+    Me.Move ScaleX(iPt.x, vbPixels, ScaleMode), ScaleY(iPt.y, vbPixels, ScaleMode)
+    
     mLoading = True
     LoadGUICaptions
     
@@ -1062,7 +1083,7 @@ End Sub
 
 Private Sub DrawSample()
     Dim c As Long
-    Dim r As Long
+    Dim R As Long
     Dim d As Long
     Dim iHeadersBackgroundColor As Long
     Dim iOtherBackgroundColor As Long
@@ -1141,11 +1162,6 @@ Private Sub DrawSample()
     End If
     
     ' lines
-    If mGridReportStyle.PrintColumnsDataLines Then
-        picSample.Line (1900, 800)-(1900, 2700), iColumnsDataLinesColor
-        picSample.Line (3100, 800)-(3100, 2700), iColumnsDataLinesColor
-    End If
-    
     If mGridReportStyle.PrintColumnsHeadersLines Then
         picSample.Line (1900, 250)-(1900, 800), iColumnsHeadersLinesColor
         picSample.Line (3100, 250)-(3100, 800), iColumnsHeadersLinesColor
@@ -1156,6 +1172,12 @@ Private Sub DrawSample()
         picSample.Line (700, 1900)-(4400, 1900), iRowsLinesColor
         picSample.Line (700, 2450)-(4400, 2450), iRowsLinesColor
     End If
+    
+    If mGridReportStyle.PrintColumnsDataLines Then
+        picSample.Line (1900, 800)-(1900, 2700), iColumnsDataLinesColor
+        picSample.Line (3100, 800)-(3100, 2700), iColumnsDataLinesColor
+    End If
+    
     If mGridReportStyle.PrintHeadersSeparatorLine Then
         iLng = Round(mGridReportStyle.LineWidthHeadersSeparatorLine / 4)
         If iLng = 0 Then iLng = 1
@@ -1179,7 +1201,7 @@ Private Sub DrawSample()
     If mGridReportStyle.PrintOuterBorder Then
         If mGridReportStyle.PrintHeadersBorder Then
             picSample.Line (700, 800)-(4400, 2700), iOuterBorderColor, B
-            picSample.Line (700, 800)-(4400, 800), iHeadersBorderColor
+            picSample.Line (700, 800)-(4400, 800), iOuterBorderColor
         Else
             picSample.Line (700, 250)-(4400, 2700), iOuterBorderColor, B
         End If
@@ -1202,27 +1224,27 @@ Private Sub DrawSample()
     d = 0
     picSample.FontBold = False
     For c = 1 To 3
-        For r = 1 To 3
+        For R = 1 To 3
             d = d + 1
             If iColorMode Then
                 picSample.ForeColor = vbBlack
                 If c = 3 Then
-                    If r = 2 Then
+                    If R = 2 Then
                         picSample.ForeColor = vbRed
-                    ElseIf r = 3 Then
+                    ElseIf R = 3 Then
                         picSample.ForeColor = vbBlue
                     End If
                 End If
             End If
-            picSample.CurrentY = 430 + 550 * r
+            picSample.CurrentY = 430 + 550 * R
             If c = 1 Then
                 picSample.CurrentX = 880 + 1200 * (c - 1)
-                picSample.Print GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_DrawSample_Element) & " " & r
+                picSample.Print GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_DrawSample_Element) & " " & R
             Else
                 picSample.CurrentX = 1080 + 1200 * (c - 1)
                 picSample.Print GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_DrawSample_Data) & " " & c - 1
             End If
-        Next r
+        Next R
     Next c
     
     Set iPic = picSample.Image
@@ -1269,18 +1291,9 @@ Public Property Get Changed() As Boolean
     Changed = mChanged
 End Property
 
-Public Property Set Grid(nGrid As Control)
-    Set mGrid = nGrid
-End Property
 
-
-Public Property Set PrintFnObject(nPrintFnObject As Object)
+Public Property Set PrintFnObject(nPrintFnObject As PrintFnObject)
     Set mPrintFnObject = nPrintFnObject
-End Property
-
-
-Public Property Set FlexFnObject(nFlexFnObject As FlexFnObject)
-    Set mFlexFnObject = nFlexFnObject
 End Property
 
 
@@ -1316,7 +1329,7 @@ Public Property Let ColorMode(nValue As cdeColorModeConstants)
     If (nValue < vbPRCMPrinterDefault) Or (nValue > vbPRCMColor) Then Exit Property
     
     mColorMode = nValue
-    cboColor.ListIndex = mColorMode
+    SelectInComboByItemData cboColor, mColorMode
 End Property
 
 Public Property Get ColorMode() As cdeColorModeConstants
@@ -1591,7 +1604,19 @@ End Sub
 
 Private Sub LoadDefaultSettings()
     cboScalePercent.ListIndex = 1
-    cboColor.ListIndex = 0
+    If mFromFlexFnObject Then
+        cboColor.ListIndex = 0
+    Else
+        If Not PrinterExCurrentDocument Is Nothing Then
+            SelectInComboByItemData cboColor, PrinterExCurrentDocument.ColorMode
+        Else
+            If VB.Printers.Count < 0 Then
+                SelectInComboByItemData cboColor, Printer.ColorMode
+            Else
+                cboColor.ListIndex = 2
+            End If
+        End If
+    End If
     cboGridAlign.ListIndex = 0
     cboPageNumbersPosition.ListIndex = 0
     cboPageNumbersFormat.ListIndex = 0
@@ -1646,8 +1671,8 @@ Private Sub LoadPageNumbersFormatStrings()
     Dim c As Long
     
     cboPageNumbersFormat.Clear
-    For c = 0 To mFlexFnObject.GetPredefinedPageNumbersFormatStringsCount - 1
-        cboPageNumbersFormat.AddItem PrinterExCurrentDocument.GetFormattedPageNumberString(mFlexFnObject.GetPredefinedPageNumbersFormatString(c), 10, 30)
+    For c = 0 To mPrintFnObject.GetPredefinedPageNumbersFormatStringsCount - 1
+        cboPageNumbersFormat.AddItem PrinterExCurrentDocument.GetFormattedPageNumberString(mPrintFnObject.GetPredefinedPageNumbersFormatString(c), 10, 30)
     Next c
 End Sub
 
@@ -1655,7 +1680,7 @@ Private Sub SelectProperStyle()
     Dim iStyleID As String
     Dim c As Long
 
-    iStyleID = mFlexFnObject.GetStyleID(mGridReportStyle, 0)
+    iStyleID = GetGridReportStyleID(mGridReportStyle, 0)
     For c = 0 To UBound(mStylesIDs)
         If mStylesIDs(c) = iStyleID Then
             cboStyle.ListIndex = c
@@ -1714,29 +1739,39 @@ Private Sub LoadStyles()
     Dim c As Long
     Dim iGridReportStyle As GridReportStyle
     Dim iCount As Long
+    Dim iSt
     
     ReDim mStylesIDs(0)
     cboStyle.Clear
     iCount = -1
     c = 1
-    Set iGridReportStyle = mFlexFnObject.GetGridReportStyle("Default" & c)
+    Set iGridReportStyle = GetGridReportStyle("GRStyle" & c)
     Do Until iGridReportStyle.Tag = ""
         iCount = iCount + 1
         ReDim Preserve mStylesIDs(iCount)
-        mStylesIDs(iCount) = "Default" & c
+        mStylesIDs(iCount) = "GRStyle" & c
         cboStyle.AddItem GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_Style) & " " & c
         c = c + 1
-        Set iGridReportStyle = mFlexFnObject.GetGridReportStyle("Default" & c)
+        Set iGridReportStyle = GetGridReportStyle("GRStyle" & c)
     Loop
+    
+    For Each iSt In gGridReportStyles
+        iCount = iCount + 1
+        ReDim Preserve mStylesIDs(iCount)
+        mStylesIDs(iCount) = iSt.Tag
+        cboStyle.AddItem GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_Style) & " " & c
+        c = c + 1
+    Next
+    
     c = 1
-    Set iGridReportStyle = mFlexFnObject.GetGridReportStyle("Custom" & c)
+    Set iGridReportStyle = GetGridReportStyle("Custom" & c)
     Do Until iGridReportStyle.Tag = ""
         iCount = iCount + 1
         ReDim Preserve mStylesIDs(iCount)
         mStylesIDs(iCount) = "Custom" & c
         cboStyle.AddItem GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_CustomStyle) & " " & c
         c = c + 1
-        Set iGridReportStyle = mFlexFnObject.GetGridReportStyle("Custom" & c)
+        Set iGridReportStyle = GetGridReportStyle("Custom" & c)
     Loop
     
     cboStyle.AddItem GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_Customize)
@@ -1786,9 +1821,9 @@ Private Sub ValidateLineWidth()
         iSM = True
         txtLineWidth.Text = "1"
     Else
-        If iVal > 10 Then
+        If iVal > 80 Then
             iSM = True
-            txtLineWidth.Text = "10"
+            txtLineWidth.Text = "80"
         End If
     End If
     mGridReportStyle.LineWidth = Val(txtLineWidth.Text)
@@ -1796,9 +1831,8 @@ Private Sub ValidateLineWidth()
         MsgBox GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidth_Message), vbExclamation, ClientProductName
         txtLineWidth.SelStart = 0
         txtLineWidth.SelLength = Len(txtLineWidth.Text)
-        txtLineWidth.SetFocus
+        SetFocusTo txtLineWidth
     End If
-    
 End Sub
 
 Private Sub ValidateLineWidthHeadersSeparatorLine()
@@ -1811,16 +1845,16 @@ Private Sub ValidateLineWidthHeadersSeparatorLine()
         iSM = True
         txtLineWidthHeadersSeparatorLine.Text = "1"
     Else
-        If iVal > 20 Then
+        If iVal > 80 Then
             iSM = True
-            txtLineWidthHeadersSeparatorLine.Text = "20"
+            txtLineWidthHeadersSeparatorLine.Text = "80"
         End If
     End If
     If iSM Then
         MsgBox GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidthHeadersSeparatorLine_Message), vbExclamation, ClientProductName
         txtLineWidthHeadersSeparatorLine.SelStart = 0
         txtLineWidthHeadersSeparatorLine.SelLength = Len(txtLineWidthHeadersSeparatorLine.Text)
-        txtLineWidthHeadersSeparatorLine.SetFocus
+        SetFocusTo txtLineWidthHeadersSeparatorLine
     End If
     mGridReportStyle.LineWidthHeadersSeparatorLine = Val(txtLineWidthHeadersSeparatorLine.Text)
 
@@ -1866,9 +1900,9 @@ Private Sub LoadGUICaptions()
     lblOtherTextsFont.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblOtherTextsFont_Caption)
     lblSubheadingFont.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblSubheadingFont_Caption)
     lblHeadingFont.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblHeadingFont_Caption)
-    lblPageNumbersFont.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersFont_Caption)
-    lblPageNumbersFormat.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersFormat_Caption)
-    lblPageNumbersPosition.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersPosition_Caption)
+    lblPageNumbersFont.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersFont_Caption)
+    lblPageNumbersFormat.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersFormat_Caption)
+    lblPageNumbersPosition.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersPosition_Caption)
     lblGridAlign.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblGridAlign_Caption)
     lblColor.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblColor_Caption)
     lblScalePercent.Caption = GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_lblScalePercent_Caption)
@@ -1887,8 +1921,9 @@ Private Sub LoadGUICaptions()
     cmdHeadersBorderColor2.ToolTipText = cmdOuterBorderColor.ToolTipText
     
     cboColor.Clear
-    For c = 0 To 2
+    For c = IIf(mFromFlexFnObject, 0, 1) To 2
         cboColor.AddItem GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_cboColor_List, c)
+        cboColor.ItemData(cboColor.NewIndex) = c
     Next c
     
     cboPageNumbersPosition.Clear
@@ -1908,7 +1943,7 @@ Private Sub LoadGUICaptions()
             End If
         End If
         If Not iSkip Then
-            cboPageNumbersPosition.AddItem GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_cboPageNumbersPosition_List, c)
+            cboPageNumbersPosition.AddItem GetLocalizedString(efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_cboPageNumbersPosition_List, c)
             cboPageNumbersPosition.ItemData(cboPageNumbersPosition.NewIndex) = c
         End If
     Next c
@@ -1945,3 +1980,7 @@ Private Sub UpdatecboScalePercentList()
     End If
     
 End Sub
+
+Public Property Let FromFlexFnObject(nValue As Boolean)
+    mFromFlexFnObject = nValue
+End Property

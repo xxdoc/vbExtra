@@ -9,6 +9,16 @@ Begin VB.UserControl FlexFn
    ScaleHeight     =   3600
    ScaleWidth      =   4800
    ToolboxBitmap   =   "ctlFlexFn.ctx":00C3
+   Begin VB.TextBox txtAux 
+      BorderStyle     =   0  'None
+      Height          =   588
+      Left            =   1224
+      MultiLine       =   -1  'True
+      TabIndex        =   0
+      Top             =   2808
+      Visible         =   0   'False
+      Width           =   1740
+   End
    Begin VB.Timer tmrFirstResize 
       Interval        =   1
       Left            =   60
@@ -715,6 +725,10 @@ Private Sub mFlexFnObject_DocPrinted()
     RaiseEvent DocPrinted
 End Sub
 
+Private Sub mFlexFnObject_GetAuxTextBox(nTB As Object)
+    Set nTB = txtAux
+End Sub
+
 Private Sub mFlexFnObject_OrientationChange(ByVal NewOrientation As Long)
     RaiseEvent OrientationChange(NewOrientation)
 End Sub
@@ -754,10 +768,6 @@ End Sub
 
 Private Sub mFlexFnObject_CellTextChange(ByVal GridName As String, Row As Long, col As Long)
     RaiseEvent CellTextChange(GridName, Row, col)
-End Sub
-
-Private Sub mFlexFnObject_GetUCControls(nUCC As Object)
-    Set nUCC = UserControl.Controls
 End Sub
 
 Private Sub mFlexFnObject_PersonalizeDefaultReportStyle(GridName As String, nRS As GridReportStyle)
@@ -1096,8 +1106,9 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mFlexFnObject.DoNotRememberOrder = PropBag.ReadProperty("DoNotRememberOrder", False)
     mFlexFnObject.ShowToolTipsForOrderColumns = PropBag.ReadProperty("ShowToolTipsForOrderColumns", True)
     mFlexFnObject.AllowTextEdition = PropBag.ReadProperty("AllowTextEdition", False)
-    mFlexFnObject.TextEditionLocked = PropBag.ReadProperty("TextEditionLocked", True)
+    mFlexFnObject.TextEditionLocked = PropBag.ReadProperty("TextEditionLocked", False)
     mFlexFnObject.PrintPrevUseAltScaleIcons = PropBag.ReadProperty("PrintPrevUseAltScaleIcons", True)
+    mFlexFnObject.PrintCellColors = PropBag.ReadProperty("PrintCellColors", True)
     
     tbrButtons.IconsSize = mIconsSize
     LoadButtons
@@ -1160,6 +1171,8 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     End If
     mFlexFnObject.PrintFnObject.PageNumbersForeColor = PropBag.ReadProperty("PageNumbersForeColor", vbWindowText)
     mFlexFnObject.PrintFnObject.AllowUserChangeScale = PropBag.ReadProperty("AllowUserChangeScale", True)
+    mFlexFnObject.PrintFnObject.AllowUserChangeOrientation = PropBag.ReadProperty("AllowUserChangeOrientation", True)
+    mFlexFnObject.PrintFnObject.AllowUserChangePaper = PropBag.ReadProperty("AllowUserChangePaper", True)
     mFlexFnObject.PrintFnObject.PrintPrevToolBarIconsSize = PropBag.ReadProperty("PrintPrevToolBarIconsSize", vxPPTIconsAuto)
     mFlexFnObject.PrintFnObject.PageSetupButtonVisible = PropBag.ReadProperty("PageSetupButtonVisible", True)
     mFlexFnObject.PrintFnObject.FormatButtonVisible = PropBag.ReadProperty("FormatButtonVisible", True)
@@ -1221,7 +1234,7 @@ Private Sub UserControl_Show()
         End If
         
         If mGroupDataButtonVisible Then
-            mFlexFnObject.SameDataGroupedInColumns = CBool(GetSetting(AppNameForRegistry, "Preferences", mFlexFnObject.Keyname & "_DataGrouped", CLng(mFlexFnObject.SameDataGroupedInColumns)))
+            mFlexFnObject.SameDataGroupedInColumns = CBool(GetSetting(AppNameForRegistry, "Preferences", mFlexFnObject.Context & "_DataGrouped", CLng(mFlexFnObject.SameDataGroupedInColumns)))
         End If
 
         RaiseEvent PersonalizeDefaultPrintGridFormatSettings(mFlexFnObject.PrintGridFormatSettings)
@@ -1322,8 +1335,9 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     Call PropBag.WriteProperty("DoNotRememberOrder", mFlexFnObject.DoNotRememberOrder, False)
     Call PropBag.WriteProperty("ShowToolTipsForOrderColumns", mFlexFnObject.ShowToolTipsForOrderColumns, True)
     Call PropBag.WriteProperty("AllowTextEdition", mFlexFnObject.AllowTextEdition, False)
-    Call PropBag.WriteProperty("TextEditionLocked", mFlexFnObject.TextEditionLocked, True)
+    Call PropBag.WriteProperty("TextEditionLocked", mFlexFnObject.TextEditionLocked, False)
     Call PropBag.WriteProperty("PrintPrevUseAltScaleIcons", mFlexFnObject.PrintPrevUseAltScaleIcons, True)
+    Call PropBag.WriteProperty("PrintCellColors", mFlexFnObject.PrintCellColors, True)
     
     ' PrintFnObject properties
     Call PropBag.WriteProperty("PaperSize", mFlexFnObject.PrintFnObject.PaperSize, vbPRPSPrinterDefault)
@@ -1357,7 +1371,8 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     PropBag.WriteProperty "PageNumbersFont", mFlexFnObject.PrintFnObject.PageNumbersFont, Nothing
     Call PropBag.WriteProperty("PageNumbersForeColor", mFlexFnObject.PrintFnObject.PageNumbersForeColor, vbWindowText)
     Call PropBag.WriteProperty("AllowUserChangeScale", mFlexFnObject.PrintFnObject.AllowUserChangeScale, True)
-    Call PropBag.WriteProperty("AllowUserChangeScale", mFlexFnObject.PrintFnObject.AllowUserChangeScale, True)
+    Call PropBag.WriteProperty("AllowUserChangeOrientation", mFlexFnObject.PrintFnObject.AllowUserChangeOrientation, True)
+    Call PropBag.WriteProperty("AllowUserChangePaper", mFlexFnObject.PrintFnObject.AllowUserChangePaper, True)
     Call PropBag.WriteProperty("PrintPrevToolBarIconsSize", mFlexFnObject.PrintFnObject.PrintPrevToolBarIconsSize, vxPPTIconsAuto)
     Call PropBag.WriteProperty("PageSetupButtonVisible", mFlexFnObject.PrintFnObject.PageSetupButtonVisible, True)
     Call PropBag.WriteProperty("FormatButtonVisible", mFlexFnObject.PrintFnObject.FormatButtonVisible, True)
@@ -2122,53 +2137,53 @@ TheExit:
 End Sub
 
 Private Function GridHasData(nGrid As Object) As Boolean
-    Dim r As Long
+    Dim R As Long
     Dim c As Long
     
     If nGrid.Rows = nGrid.FixedRows Then Exit Function
     
-    r = nGrid.FixedRows
-    If Trim$(nGrid.TextMatrix(r, 0)) <> "" Then
+    R = nGrid.FixedRows
+    If Trim$(nGrid.TextMatrix(R, 0)) <> "" Then
         GridHasData = True
     Else
-        If Trim$(nGrid.TextMatrix(r, nGrid.Cols - 1)) <> "" Then
+        If Trim$(nGrid.TextMatrix(R, nGrid.Cols - 1)) <> "" Then
             GridHasData = True
         End If
     End If
     If Not GridHasData Then
-        r = nGrid.Rows - 1
-        If Trim$(nGrid.TextMatrix(r, 0)) <> "" Then
+        R = nGrid.Rows - 1
+        If Trim$(nGrid.TextMatrix(R, 0)) <> "" Then
             GridHasData = True
         Else
-            If Trim$(nGrid.TextMatrix(r, nGrid.Cols - 1)) <> "" Then
+            If Trim$(nGrid.TextMatrix(R, nGrid.Cols - 1)) <> "" Then
                 GridHasData = True
             End If
         End If
     End If
     If Not GridHasData Then
-        r = (nGrid.Rows - 1) / 2
-        If r > nGrid.FixedRows Then
-            If Trim$(nGrid.TextMatrix(r, 0)) <> "" Then
+        R = (nGrid.Rows - 1) / 2
+        If R > nGrid.FixedRows Then
+            If Trim$(nGrid.TextMatrix(R, 0)) <> "" Then
                 GridHasData = True
             Else
-                If Trim$(nGrid.TextMatrix(r, nGrid.Cols - 1)) <> "" Then
+                If Trim$(nGrid.TextMatrix(R, nGrid.Cols - 1)) <> "" Then
                     GridHasData = True
                 End If
             End If
         End If
     End If
     If Not GridHasData Then
-        r = nGrid.FixedRows
+        R = nGrid.FixedRows
         For c = 1 To nGrid.Cols - 1
-            If Trim$(nGrid.TextMatrix(r, c)) <> "" Then
+            If Trim$(nGrid.TextMatrix(R, c)) <> "" Then
                 GridHasData = True
             End If
             If GridHasData Then Exit For
         Next c
         If Not GridHasData Then
             For c = 1 To nGrid.Cols - 1
-                r = nGrid.Rows - 1
-                If Trim$(nGrid.TextMatrix(r, c)) <> "" Then
+                R = nGrid.Rows - 1
+                If Trim$(nGrid.TextMatrix(R, c)) <> "" Then
                     GridHasData = True
                 End If
                 If GridHasData Then Exit For
@@ -2543,7 +2558,7 @@ Public Property Let SameDataGroupedInColumns(Optional nGrid As Object, nValue As
         RaiseEvent BeforeAction("GroupData", iGridName, iLng, iCancel)
         If Not iCancel Then
             mFlexFnObject.SameDataGroupedInColumns(nGrid) = CBool(iLng)
-            SaveSetting AppNameForRegistry, "Preferences", mFlexFnObject.Keyname & "_DataGrouped", iLng
+            SaveSetting AppNameForRegistry, "Preferences", mFlexFnObject.Context & "_DataGrouped", iLng
             RaiseEvent AfterAction("GroupData", iGridName, iLng)
         End If
         
@@ -3001,6 +3016,9 @@ Public Property Get GridMouseColAtPopupMenuPoint() As Long
     GridMouseColAtPopupMenuPoint = mGridMouseColAtPopupMenuPoint
 End Property
 
+
+' PrintFnObject properties
+
 Public Property Let MinScalePercent(nValue As Long)
     If nValue <> mFlexFnObject.MinScalePercent Then
         mFlexFnObject.MinScalePercent = nValue
@@ -3035,11 +3053,18 @@ Public Property Get PrintPrevUseAltScaleIcons() As Boolean
 End Property
 
 
+Public Property Let PrintCellColors(nValue As Boolean)
+    If nValue <> mFlexFnObject.PrintCellColors Then
+        mFlexFnObject.PrintCellColors = nValue
+        PropertyChanged "PrintCellColors"
+    End If
+End Property
+
+Public Property Get PrintCellColors() As Boolean
+    PrintCellColors = mFlexFnObject.PrintCellColors
+End Property
 
 
-
-
-' PrintFnObject properties
 Public Property Let PaperSize(nValue As cdePaperSizeConstants)
     If nValue <> mFlexFnObject.PrintFnObject.PaperSize Then
         mFlexFnObject.PrintFnObject.PaperSize = nValue
@@ -3272,6 +3297,30 @@ Public Property Let AllowUserChangeScale(nValue As Boolean)
 End Property
 
 
+Public Property Get AllowUserChangeOrientation() As Boolean
+    AllowUserChangeOrientation = mFlexFnObject.PrintFnObject.AllowUserChangeOrientation
+End Property
+
+Public Property Let AllowUserChangeOrientation(nValue As Boolean)
+    If nValue <> mFlexFnObject.PrintFnObject.AllowUserChangeOrientation Then
+        mFlexFnObject.PrintFnObject.AllowUserChangeOrientation = nValue
+        PropertyChanged "AllowUserChangeOrientation"
+    End If
+End Property
+
+
+Public Property Get AllowUserChangePaper() As Boolean
+    AllowUserChangePaper = mFlexFnObject.PrintFnObject.AllowUserChangePaper
+End Property
+
+Public Property Let AllowUserChangePaper(nValue As Boolean)
+    If nValue <> mFlexFnObject.PrintFnObject.AllowUserChangePaper Then
+        mFlexFnObject.PrintFnObject.AllowUserChangePaper = nValue
+        PropertyChanged "AllowUserChangePaper"
+    End If
+End Property
+
+
 Public Property Let DocumentName(nDocName As String)
     If nDocName <> mFlexFnObject.PrintFnObject.DocumentName Then
         mFlexFnObject.PrintFnObject.DocumentName = nDocName
@@ -3351,7 +3400,6 @@ Public Property Let PageNumbersForeColor(ByVal nValue As OLE_COLOR)
 End Property
 
 
-
 Public Function GetPredefinedPageNumbersFormatString(nIndex As Long) As String
     GetPredefinedPageNumbersFormatString = mFlexFnObject.PrintFnObject.GetPredefinedPageNumbersFormatString(nIndex)
 End Function
@@ -3360,8 +3408,6 @@ Public Property Get GetPredefinedPageNumbersFormatStringsCount() As Long
     GetPredefinedPageNumbersFormatStringsCount = mFlexFnObject.PrintFnObject.GetPredefinedPageNumbersFormatStringsCount
 End Property
 
-' End PrintFnObject properties
-
 
 Public Property Let RememberUserPrintingPreferences(nValue As gfnRememberUserPrintingPreferences)
     If nValue <> mFlexFnObject.RememberUserPrintingPreferences Then
@@ -3369,6 +3415,9 @@ Public Property Let RememberUserPrintingPreferences(nValue As gfnRememberUserPri
         PropertyChanged "RememberUserPrintingPreferences"
     End If
 End Property
+
+' End PrintFnObject properties
+
 
 Public Property Get RememberUserPrintingPreferences() As gfnRememberUserPrintingPreferences
     RememberUserPrintingPreferences = mFlexFnObject.RememberUserPrintingPreferences

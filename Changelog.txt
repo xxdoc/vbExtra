@@ -1,3 +1,16 @@
+09/17/2018 fixed a bug in PrinterEx related to Tab positions and some other small fixes.
+09/13/2018 fixed a bug in the PaintPicture method of Printer object
+09/13/2018 fixed bugs in FlexFn
+09/12/2018 fixed bugs and added functions to GridReportStyle's management
+09/10/2018 fixed a bug in PaintPicture related to right margin
+09/10/2018 added PrintFlexGrid method to PrinterEx
+09/06/2018 added a feature that broke the binary compatibility so there is a version change. Now the call to PrinterEx.ShowPrintPreview can have parameters to send to the printing procedure.
+09/04/2018 important update to PrinterEx object
+08/31/2018 updated TrayIcon control
+08/31/2018 updated DateEnter control
+08/31/2018 updated SizeGrip control
+08/31/2018 updated MouseWheelEnabler control
+08/30/2018 updated PopupList control
 08/29/2018 cGridHandler, FlexFn and FlexFnObject updated
 08/28/2018 FlexFn: ptpFlexFnOtherFunctions was not configured
 08/28/2018 cGridHandler: fixed a bug in Sub UpdateGridColumnsWidthsStretched

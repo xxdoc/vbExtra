@@ -4,16 +4,42 @@ Begin VB.UserControl PopupList
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   6432
-   LockControls    =   -1  'True
+   PropertyPages   =   "ctlPopupList.ctx":0000
    ScaleHeight     =   8916
    ScaleWidth      =   6432
-   ToolboxBitmap   =   "ctlPopupList.ctx":0000
+   ToolboxBitmap   =   "ctlPopupList.ctx":0023
+   Begin VB.PictureBox picBackSelectedItem_Default 
+      AutoRedraw      =   -1  'True
+      BorderStyle     =   0  'None
+      Height          =   372
+      Left            =   3600
+      Picture         =   "ctlPopupList.ctx":0335
+      ScaleHeight     =   372
+      ScaleWidth      =   1812
+      TabIndex        =   18
+      Top             =   1440
+      Visible         =   0   'False
+      Width           =   1812
+   End
+   Begin VB.PictureBox picBackground_Default 
+      AutoRedraw      =   -1  'True
+      BorderStyle     =   0  'None
+      Height          =   372
+      Left            =   3564
+      Picture         =   "ctlPopupList.ctx":50CF
+      ScaleHeight     =   372
+      ScaleWidth      =   1812
+      TabIndex        =   17
+      Top             =   504
+      Visible         =   0   'False
+      Width           =   1812
+   End
    Begin VB.PictureBox picAux_picMouseOver 
       AutoRedraw      =   -1  'True
       BorderStyle     =   0  'None
       Height          =   372
       Left            =   4200
-      Picture         =   "ctlPopupList.ctx":0312
+      Picture         =   "ctlPopupList.ctx":8951
       ScaleHeight     =   372
       ScaleWidth      =   1812
       TabIndex        =   16
@@ -26,7 +52,7 @@ Begin VB.UserControl PopupList
       BorderStyle     =   0  'None
       Height          =   372
       Left            =   4200
-      Picture         =   "ctlPopupList.ctx":50AC
+      Picture         =   "ctlPopupList.ctx":D6EB
       ScaleHeight     =   372
       ScaleWidth      =   1812
       TabIndex        =   15
@@ -34,12 +60,11 @@ Begin VB.UserControl PopupList
       Visible         =   0   'False
       Width           =   1812
    End
-   Begin VB.PictureBox picAux_picSelectedItem 
+   Begin VB.PictureBox picBackSelectedItem 
       AutoRedraw      =   -1  'True
       BorderStyle     =   0  'None
       Height          =   372
       Left            =   3600
-      Picture         =   "ctlPopupList.ctx":9E46
       ScaleHeight     =   372
       ScaleWidth      =   1812
       TabIndex        =   14
@@ -47,16 +72,15 @@ Begin VB.UserControl PopupList
       Visible         =   0   'False
       Width           =   1812
    End
-   Begin VB.PictureBox picAux_PicText 
+   Begin VB.PictureBox picBackground 
       AutoRedraw      =   -1  'True
       BorderStyle     =   0  'None
       Height          =   372
-      Left            =   3360
-      Picture         =   "ctlPopupList.ctx":EBE0
+      Left            =   3564
       ScaleHeight     =   372
       ScaleWidth      =   1812
       TabIndex        =   13
-      Top             =   0
+      Top             =   36
       Visible         =   0   'False
       Width           =   1812
    End
@@ -151,7 +175,7 @@ Begin VB.UserControl PopupList
                Visible         =   0   'False
                Width           =   135
             End
-            Begin VB.Label lblSelectedItemItem 
+            Begin VB.Label lblSelectedItem 
                BackStyle       =   0  'Transparent
                Caption         =   "# Selected item"
                BeginProperty Font 
@@ -163,11 +187,11 @@ Begin VB.UserControl PopupList
                   Italic          =   0   'False
                   Strikethrough   =   0   'False
                EndProperty
-               Height          =   225
+               Height          =   264
                Left            =   240
                TabIndex        =   7
                Top             =   120
-               Width           =   2895
+               Width           =   2892
             End
          End
          Begin VB.PictureBox picItem 
@@ -260,11 +284,11 @@ Begin VB.UserControl PopupList
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   225
+         Height          =   264
          Left            =   240
          TabIndex        =   1
          Top             =   60
-         Width           =   2895
+         Width           =   2892
       End
    End
 End
@@ -277,6 +301,7 @@ Option Explicit
 
 Implements ISubclass
 
+Private Declare Function ColorRGBToHLS Lib "shlwapi.dll" (ByVal clrRGB As Long, pwHue As Long, pwLuminance As Long, pwSaturation As Long) As Long
 Private Declare Function CombineRgn Lib "gdi32" (ByVal hDestRgn As Long, ByVal hSrcRgn1 As Long, ByVal hSrcRgn2 As Long, ByVal nCombineMode As Long) As Long
 Private Declare Function GetPixel Lib "gdi32" (ByVal hDC As Long, ByVal x As Long, ByVal y As Long) As Long
 Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hWnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
@@ -285,10 +310,7 @@ Private Const WS_EX_LAYERED = &H80000
 Private Const GWL_HWNDPARENT As Long = (-8)
 Private Declare Function OffsetRgn Lib "gdi32" (ByVal hRgn As Long, ByVal x As Long, ByVal y As Long) As Long
 Private Const WM_WINDOWPOSCHANGED = &H47&
-'Private Const RGN_COPY = 5&
-'Private Const RGN_AND = 1&
 Private Const RGN_OR = 2&
-'Private Const RGN_XOR = 3&
 Private Const RGN_DIFF = 4&
 
 Private Declare Function MoveWindow Lib "user32" (ByVal hWnd As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal bRepaint As Long) As Long
@@ -297,7 +319,7 @@ Private Declare Function IsIconic Lib "user32" (ByVal hWnd As Long) As Long
 Public Event DropDown()
 Public Event Click()
 Attribute Click.VB_MemberFlags = "200"
-Public Event ListHided()
+Public Event ListHide()
 Public Event ItemClick()
 
 Private mText As String
@@ -312,11 +334,19 @@ Private mOldPopupOwnerHwnd As Long
 Private mIndexBefore As Long
 Private mMaxPopupItems As Long
 Private mPopupListHeight As Long
+Private mBackColor As Long
+Private mForeColor As Long
+Private WithEvents mFont As StdFont
+Attribute mFont.VB_VarHelpID = -1
+
 Private mPopupWindowRgn As Long
 Private mPopupLayered As Long
 Private mEIV As Boolean
 Private mMR As Boolean
 Private mVScroll1Visible As Boolean
+Private mLoadingFont As Boolean
+
+Private Const cBackColor_Default As Long = 15853257
 
 Private Sub btnDropDown_Click()
     If btnDropDown.Value Then
@@ -339,7 +369,7 @@ Private Sub lblItem_Click(Index As Integer)
     btnDropDown.Value = False
 End Sub
 
-Private Sub lblSelectedItemItem_Click()
+Private Sub lblSelectedItem_Click()
     RaiseEvent ItemClick
     RaiseEvent Click
     btnDropDown.Value = False
@@ -347,6 +377,10 @@ End Sub
 
 Private Sub lblText_Click()
     btnDropDown.Value = Not btnDropDown.Value
+End Sub
+
+Private Sub mFont_FontChanged(ByVal PropertyName As String)
+    SetFont
 End Sub
 
 Private Sub picItem_Click(Index As Integer)
@@ -469,17 +503,35 @@ End Sub
 Private Sub UserControl_InitProperties()
     Text = Ambient.DisplayName
     mMaxPopupItems = 10
+    mBackColor = cBackColor_Default
+    mForeColor = vbWindowText
+    mLoadingFont = True
+    Set mFont = New StdFont
+    mFont.Name = "Arial"
+    mFont.Size = 10
+    mLoadingFont = False
+    SetFont
     PlaceBackPictures
 End Sub
 
 Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mText = PropBag.ReadProperty("Text", "")
     mMaxPopupItems = PropBag.ReadProperty("MaxPopupItems", 10)
-    
+    mBackColor = PropBag.ReadProperty("BackColor", cBackColor_Default)
+    mForeColor = PropBag.ReadProperty("ForeColor", vbWindowText)
+    mLoadingFont = True
+    Set mFont = PropBag.ReadProperty("Font", Nothing)
+    If mFont Is Nothing Then
+        Set mFont = New StdFont
+        mFont.Name = "Arial"
+        mFont.Size = 10
+    End If
+    mLoadingFont = False
     If Ambient.UserMode Then
         mParentFormHwnd = GetParentFormHwnd(UserControl.Parent.hWnd)
     End If
     lblText.Caption = Text
+    SetFont
     PlaceBackPictures
 End Sub
 
@@ -538,8 +590,11 @@ Private Sub UserControl_Terminate()
 End Sub
 
 Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
-    Call PropBag.WriteProperty("Text", mText, "")
-    Call PropBag.WriteProperty("MaxPopupItems", mMaxPopupItems, 10)
+    PropBag.WriteProperty "Text", mText, ""
+    PropBag.WriteProperty "MaxPopupItems", mMaxPopupItems, 10
+    PropBag.WriteProperty "BackColor", mBackColor, cBackColor_Default
+    PropBag.WriteProperty "ForeColor", mForeColor, vbWindowText
+    PropBag.WriteProperty "Font", mFont, Nothing
 End Sub
 
 Public Sub AddItem(nItem As String)
@@ -710,7 +765,7 @@ Public Sub HideList(Optional nRaiseEvent As Boolean = True)
         tmrTransparency.Enabled = False
         mListDropped = False
         If nRaiseEvent Then
-            RaiseEvent ListHided
+            RaiseEvent ListHide
         End If
     End If
     btnDropDown.Value = False
@@ -767,7 +822,7 @@ Private Sub BuildPopupList()
 '        picItem(c).Width =picPopupList.ScaleWidth -
 '        If c = mListIndex Then
 '            picSelectedItem.Top = picItem(mListIndex).Top
-'            lblSelectedItemItem.Caption = lblItem(mListIndex).Caption
+'            lblSelectedItem.Caption = lblItem(mListIndex).Caption
 '            picSelectedItem.ZOrder
 '            If picPopupList.Visible Then SetWindowRedraw picPopupList.hWnd, True
 '            If picPopupList.Visible Then picPopupList.Refresh
@@ -790,7 +845,7 @@ Private Sub BuildPopupList()
         picItem(c).Visible = (c <> mListIndex)
         If c = mListIndex Then
             picSelectedItem.Top = picItem(mListIndex).Top
-            lblSelectedItemItem.Caption = lblItem(mListIndex).Caption
+            lblSelectedItem.Caption = lblItem(mListIndex).Caption
             picSelectedItem.ZOrder
             If picPopupList.Visible Then SetWindowRedraw picPopupList.hWnd, True
             If picPopupList.Visible Then picPopupList.Refresh
@@ -799,7 +854,7 @@ Private Sub BuildPopupList()
     
     If mListIndex > -1 Then
         picSelectedItem.Top = picItem(mListIndex).Top
-        lblSelectedItemItem.Caption = lblItem(mListIndex).Caption
+        lblSelectedItem.Caption = lblItem(mListIndex).Caption
         picSelectedItem.ZOrder
         picSelectedItem.Visible = True
     Else
@@ -834,7 +889,7 @@ Private Sub UpdateList()
     
     If mListIndex > -1 Then
         picSelectedItem.Top = picItem(mListIndex).Top
-        lblSelectedItemItem.Caption = lblItem(mListIndex).Caption
+        lblSelectedItem.Caption = lblItem(mListIndex).Caption
         picSelectedItem.Visible = True
         EnsureItemVisible mListIndex
     Else
@@ -1099,26 +1154,80 @@ End Function
 Private Sub PlaceBackPictures()
     Dim iSng As Single
     Dim iHeight As Long
+    Dim iBackColor As Long
+    
+    Dim r1 As Long
+    Dim g1 As Long
+    Dim b1 As Long
+    Dim H1 As Long
+    Dim L1 As Long
+    Dim S1 As Long
+    
+    Dim r2 As Long
+    Dim g2 As Long
+    Dim b2 As Long
+    Dim H2 As Long
+    Dim L2 As Long
+    Dim S2 As Long
+    
+    Dim H3 As Long
+    Dim L3 As Long
+    Dim S3 As Long
+    
+    TranslateColor mBackColor, 0, iBackColor
+    
+    r1 = cBackColor_Default And 255 ' R
+    g1 = (cBackColor_Default \ 256) And 255 ' G
+    b1 = (cBackColor_Default \ 65536) And 255 ' B
+    
+    ColorRGBToHLS RGB(r1, g1, b1), H1, L1, S1
+    
+    r2 = iBackColor And 255 ' R
+    g2 = (iBackColor \ 256) And 255 ' G
+    b2 = (iBackColor \ 65536) And 255 ' B
+    
+    ColorRGBToHLS RGB(r2, g2, b2), H2, L2, S2
+    
+    H3 = H2 - H1
+    
+    If H3 > 120 Then
+        H3 = H3 - 240
+    End If
+    If H3 < -120 Then
+        H3 = H3 + 240
+    End If
+    
+    L3 = L2 - L1
+    S3 = S2 - S1
+   
+    ' some limits:
+    If L3 > 50 Then L3 = 50
+    If S3 > 50 Then S3 = 50
+    
+    Set picBackground.Picture = AdjustPictureWithHLS(picBackground_Default.Picture, H3, L3, S3)
+    Set picBackSelectedItem.Picture = AdjustPictureWithHLS(picBackSelectedItem_Default.Picture, H3, L3, S3)
+    btnDropDown.BackColor = AdjustColorWithHLS(&HE3D8BD, H3, L3, S3)
+    shpSelectedItem.BackColor = AdjustColorWithHLS(&HD9BB45, H3, L3, S3)
     
     picItem(0).Height = Int(picItem(0).Height / Screen.TwipsPerPixelY) * Screen.TwipsPerPixelY
     picItem(0).Width = picPopupList.ScaleWidth - picItem(0).Left
     picSelectedItem.Width = picPopupList.ScaleWidth - picSelectedItem.Left
     
-    picAux_PicText.Width = picText.Width
-    picAux_PicText.Height = picText.Height
-    picAux_PicText.PaintPicture picAux_PicText.Picture, 0, 0, picText.Width, picText.Height
-    Set picText.Picture = picAux_PicText.Image
-    picAux_PicText.Cls
+    picBackground.Width = picText.Width
+    picBackground.Height = picText.Height
+    picBackground.PaintPicture picBackground.Picture, 0, 0, picText.Width, picText.Height
+    Set picText.Picture = picBackground.Image
+    picBackground.Cls
     
     iSng = picItem(0).Height / picAux_picNormal.Picture.Height
     iHeight = picAux_picNormal.Picture.Height * iSng
     
-    picAux_picSelectedItem.Width = picSelectedItem.Width
-    picAux_picSelectedItem.Height = iHeight
-    picAux_picSelectedItem.PaintPicture picAux_picSelectedItem.Picture, 0, 0, , iHeight
-    picAux_picSelectedItem.PaintPicture picAux_picSelectedItem.Picture, UserControl.ScaleX(15, vbPixels, vbTwips), 0, picItem(0).Width - UserControl.ScaleX(15, vbPixels, vbTwips), iHeight, UserControl.ScaleX(15, vbPixels, vbTwips)
-    Set picSelectedItem.Picture = picAux_picSelectedItem.Image
-    picAux_picSelectedItem.Cls
+    picBackSelectedItem.Width = picSelectedItem.Width
+    picBackSelectedItem.Height = iHeight
+    picBackSelectedItem.PaintPicture picBackSelectedItem.Picture, 0, 0, , iHeight
+    picBackSelectedItem.PaintPicture picBackSelectedItem.Picture, UserControl.ScaleX(15, vbPixels, vbTwips), 0, picItem(0).Width - UserControl.ScaleX(15, vbPixels, vbTwips), iHeight, UserControl.ScaleX(15, vbPixels, vbTwips)
+    Set picSelectedItem.Picture = picBackSelectedItem.Image
+    picBackSelectedItem.Cls
     
     picNormal.Width = picItem(0).Width
     picMouseOver.Width = picItem(0).Width
@@ -1145,4 +1254,72 @@ Private Sub PlaceBackPictures()
     
     picRegion.PaintPicture picNormal.Picture, 0, 0, , , , , UserControl.ScaleX(15, vbPixels, vbTwips)
     
+    lblText.ForeColor = mForeColor
+    lblSelectedItem.ForeColor = mForeColor
+    btnDropDown.ForeColor = mForeColor
+End Sub
+
+Public Property Let BackColor(nColor As OLE_COLOR)
+    If nColor <> mBackColor Then
+        mBackColor = nColor
+        PropertyChanged "BackColor"
+        PlaceBackPictures
+    End If
+End Property
+
+Public Property Get BackColor() As OLE_COLOR
+    BackColor = mBackColor
+End Property
+
+
+Public Property Let ForeColor(nColor As OLE_COLOR)
+    If nColor <> mForeColor Then
+        mForeColor = nColor
+        PropertyChanged "ForeColor"
+        lblText.ForeColor = mForeColor
+        lblSelectedItem.ForeColor = mForeColor
+        btnDropDown.ForeColor = mForeColor
+    End If
+End Property
+
+Public Property Get ForeColor() As OLE_COLOR
+    ForeColor = mForeColor
+End Property
+
+
+Public Property Get Font() As StdFont
+    Set Font = mFont
+End Property
+
+Public Property Set Font(ByVal nFont As StdFont)
+    If Not mFont Is nFont Then
+        Set mFont = nFont
+        SetFont
+        PropertyChanged "Font"
+    End If
+End Property
+
+Public Property Let Font(ByVal nFont As StdFont)
+    Set Font = nFont
+End Property
+
+Private Sub SetFont()
+    Dim iNormal As StdFont
+    Dim iBold As StdFont
+    Dim c As Long
+    
+    If mFont Is Nothing Then Exit Sub
+    If mLoadingFont Then Exit Sub
+    
+    Set iNormal = CloneFont(mFont)
+    Set iBold = CloneFont(mFont)
+    
+    iNormal.Bold = False
+    iBold.Bold = True
+    
+    For c = lblItem.LBound To lblItem.UBound
+        Set lblItem(c).Font = iNormal
+    Next
+    Set lblText.Font = iBold
+    Set lblSelectedItem.Font = iBold
 End Sub

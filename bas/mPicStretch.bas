@@ -68,6 +68,14 @@ Private Type PicBmp
    Reserved As Long
 End Type
 
+Private Const DIB_RGB_COLORS As Long = 0
+
+Private Declare Function GetDIBits Lib "gdi32" (ByVal aHDC As Long, ByVal hBitmap As Long, ByVal nStartScan As Long, ByVal nNumScans As Long, lpBits As Any, lpBI As BITMAPINFOHEADER, ByVal wUsage As Long) As Long
+Private Declare Function GetObject Lib "gdi32" Alias "GetObjectA" (ByVal hObject As Long, ByVal nCount As Long, lpObject As Any) As Long
+Private Declare Function ColorRGBToHLS Lib "shlwapi.dll" (ByVal clrRGB As Long, pwHue As Long, pwLuminance As Long, pwSaturation As Long) As Long
+Private Declare Function ColorHLSToRGB Lib "shlwapi.dll" (ByVal wHue As Long, ByVal wLuminance As Long, ByVal wSaturation As Long) As Long
+Private Declare Function SetDIBitsToDevice Lib "gdi32" (ByVal hDC As Long, ByVal x As Long, ByVal y As Long, ByVal dx As Long, ByVal dy As Long, ByVal SrcX As Long, ByVal SrcY As Long, ByVal Scan As Long, ByVal NumScans As Long, Bits As Any, BitsInfo As BITMAPINFOHEADER, ByVal wUsage As Long) As Long
+
 Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 Private Declare Function GetObjectAPI Lib "gdi32" Alias "GetObjectA" (ByVal hObject As Long, ByVal nCount As Long, lpObject As Any) As Long
 Private Declare Function VarPtrArray Lib "msvbvm60" Alias "VarPtr" (Ptr() As Any) As Long
@@ -240,12 +248,12 @@ End Sub
 ' and that the reconstruction error for synthetic examples is proportional to the square of the sampling distance.
 ' Two new filters were proposed, the first with B=3/2 and C=1/3 suppresses post-aliasing but is unnecessarily blurring,
 ' the second with B=1/3 and C=1/3 turns out to be a satisfactory compromise between ringing, blurring, and anisotropy.
-Private Function Cubic_BCSpline(ByVal x As Double, cubic_b As Double, cubic_c As Double) As Double
+Private Function Cubic_BCSpline(ByVal x As Double, cubic_B As Double, cubic_c As Double) As Double
     x = Abs(x)
     If x < 1 Then
-        Cubic_BCSpline = ((12 - 9 * cubic_b - 6 * cubic_c) * x * x * x + (-18 + 12 * cubic_b + 6 * cubic_c) * x * x + 6 - 2 * cubic_b) / 6
+        Cubic_BCSpline = ((12 - 9 * cubic_B - 6 * cubic_c) * x * x * x + (-18 + 12 * cubic_B + 6 * cubic_c) * x * x + 6 - 2 * cubic_B) / 6
     ElseIf x < 2 Then
-        Cubic_BCSpline = ((-cubic_b - 6 * cubic_c) * x * x * x + (6 * cubic_b + 30 * cubic_c) * x * x + (-12 * cubic_b - 48 * cubic_c) * x + (8 * cubic_b + 24 * cubic_c)) / 6
+        Cubic_BCSpline = ((-cubic_B - 6 * cubic_c) * x * x * x + (6 * cubic_B + 30 * cubic_c) * x * x + (-12 * cubic_B - 48 * cubic_c) * x + (8 * cubic_B + 24 * cubic_c)) / 6
     End If
 End Function
 
@@ -354,4 +362,232 @@ Function Gaussian_Func(ByVal x#, nGaussianExtent As Long) As Double
         o = nGaussianExtent / pi ' standard deviation - could be changed
         Gaussian_Func = 0.398942280401433 / o * Exp(-x * x / (o * o * 2))
     End If
+End Function
+
+Public Function AdjustPictureWithHLS(nSourcePic As StdPicture, Optional HAddition As Long, Optional LAddition As Long, Optional SAddition As Long, Optional LFactor As Single = 1, Optional SFactor As Single = 1, Optional ColorToPreserve As Long = -1) As StdPicture
+    Dim iBMP As BITMAP
+    Dim iBMPiH As BITMAPINFOHEADER
+    Dim iBits() As Byte
+    
+    Dim iTmpDC As Long
+    Dim x As Long
+    Dim iMax As Long
+    Dim iColor As Long
+    Dim iPicWidth As Long
+    Dim iPicHeight As Long
+    Dim iBitMap As Long
+    Dim iOldObj As Long
+    
+    Dim iPicBmp As PicBmp
+    Dim IID_IDispatch As GUID
+    Dim iPic As IPicture
+    Dim iBMPInfo As BITMAPINFO
+    
+    Dim r1 As Long
+    Dim g1 As Long
+    Dim b1 As Long
+    Dim H1 As Long
+    Dim L1 As Long
+    Dim S1 As Long
+    Dim iPreservePixel As Boolean
+    Dim iPixelColor As Long
+    Dim iLastH As Long
+    
+    If (HAddition < -120) Or (HAddition > 120) Then
+        RaiseError 2195, "AdjustPictureWithHLS function", "HAddition must be between -120 and 120)"
+        Exit Function
+    End If
+    If (LAddition < -240) Or (LAddition > 240) Then
+        RaiseError 2195, "AdjustPictureWithHLS function", "LAddition and SAddition must be between -240 and 240)"
+        Exit Function
+    End If
+    If (SAddition < -240) Or (SAddition > 240) Then
+        RaiseError 2195, "AdjustPictureWithHLS function", "LAddition and SAddition must be between -240 and 240)"
+        Exit Function
+    End If
+    If nSourcePic Is Nothing Then Exit Function
+    If nSourcePic.Handle = 0 Then Exit Function
+    
+    GetObject nSourcePic.Handle, Len(iBMP), iBMP
+    
+    If iBMP.bmBitsPixel <> 24 Then
+        RaiseError 2196, "AdjustPictureWithHLS function", "AdjustPictureWithHLS function only works with 24 bits bitmaps"
+        Exit Function
+    End If
+    
+    With iBMPiH
+        .biSize = Len(iBMPiH) '40
+        .biPlanes = 1
+        .biBitCount = 24
+        .biWidth = iBMP.bmWidth
+        .biHeight = iBMP.bmHeight
+        .biSizeImage = ((.biWidth * 3 + 3) And &HFFFFFFFC) * .biHeight
+        iPicWidth = .biWidth
+        iPicHeight = .biHeight
+    End With
+    
+    ReDim iBits(Len(iBMPiH) + iBMPiH.biSizeImage)
+    
+    iTmpDC = CreateCompatibleDC(0)
+    
+    GetDIBits iTmpDC, nSourcePic.Handle, 0, iBMP.bmHeight, iBits(0), iBMPiH, DIB_RGB_COLORS
+    
+    iMax = iBMPiH.biSizeImage - 1
+    
+    For x = 0 To iMax - 3 Step 3
+        b1 = iBits(x)
+        g1 = iBits(x + 1)
+        r1 = iBits(x + 2)
+        
+        iPreservePixel = False
+        If ColorToPreserve > -1 Then
+            iPixelColor = RGB(r1, g1, b1)
+            If iPixelColor = ColorToPreserve Then
+                iPreservePixel = True
+            End If
+        End If
+        
+        If Not iPreservePixel Then
+            ColorRGBToHLS RGB(r1, g1, b1), H1, L1, S1
+            
+            If (r1 = 255) And (g1 = 255) And (b1 = 255) Then
+                If iLastH <> 0 Then
+                    H1 = iLastH
+                    S1 = 240
+                End If
+            Else
+                iLastH = H1
+            End If
+            
+            H1 = H1 + HAddition
+            If H1 > 240 Then H1 = H1 - 240
+            If H1 < 0 Then H1 = H1 + 240
+            
+            L1 = L1 * LFactor
+            L1 = L1 + LAddition
+            If L1 < 0 Then L1 = 0
+            If L1 > 240 Then L1 = 240
+            
+            S1 = S1 * LFactor
+            S1 = S1 + SAddition
+            If S1 < 1 Then S1 = 1
+            If S1 > 240 Then S1 = 240
+            
+            iColor = ColorHLSToRGB(H1, L1, S1)
+            
+            If ColorToPreserve > -1 Then ' we don't want to make a color equal to this one
+                If iColor = ColorToPreserve Then
+                    If iColor = &HFFFFFF Then
+                        iColor = iColor - &H10101
+                    Else
+                        iColor = iColor + &H10101
+                    End If
+                End If
+            End If
+            
+            iBits(x) = (iColor \ 65536) And 255 ' B
+            iBits(x + 1) = (iColor \ 256) And 255 ' G
+            iBits(x + 2) = iColor And 255 ' R
+        End If
+    Next x
+    
+    'DeleteDC iTmpDC
+    
+    'iTmpDC = CreateCompatibleDC(0)
+    
+    iBMPInfo.bmiHeader = iBMPiH
+    iBitMap = CreateDIBSection(iTmpDC, iBMPInfo, 0, 0, 0, 0)   ' Create a temp blank image
+    iOldObj = SelectObject(iTmpDC, iBitMap)
+    SetDIBitsToDevice iTmpDC, 0, 0, iPicWidth, iPicHeight, 0, 0, 0, iBMP.bmHeight, iBits(0), iBMPiH, DIB_RGB_COLORS
+    'StretchDIBits iTmpDC, 0, 0, iPicWidth, iPicHeight, 0, 0, iBMP.bmWidth, iBMP.bmHeight, iBits(0), iBMPiH, DIB_RGB_COLORS, vbSrcCopy
+    
+    SelectObject iTmpDC, iOldObj
+'    DeleteObject iBitMap
+    DeleteDC iTmpDC
+    
+    With IID_IDispatch
+       .Data1 = &H20400
+       .Data4(0) = &HC0
+       .Data4(7) = &H46
+    End With
+    
+    With iPicBmp
+       .Size = Len(iPicBmp)         'Length of structure
+       .Type = vbPicTypeBitmap  'Type of Picture (bitmap)
+       .hBmp = iBitMap          'Handle to bitmap
+       .hPal = 0&               'Handle to palette (may be null)
+     End With
+    
+    Call OleCreatePictureIndirect(iPicBmp, IID_IDispatch, 1, iPic)
+    
+    Set AdjustPictureWithHLS = iPic
+
+End Function
+
+Public Function AdjustColorWithHLS(nColor As Long, Optional HAddition As Long, Optional LAddition As Long, Optional SAddition As Long, Optional LFactor As Single = 1, Optional SFactor As Single = 1) As Long
+    Dim r1 As Long
+    Dim g1 As Long
+    Dim b1 As Long
+    Dim H1 As Long
+    Dim L1 As Long
+    Dim S1 As Long
+    
+    r1 = nColor And 255 ' R
+    g1 = (nColor \ 256) And 255 ' G
+    b1 = (nColor \ 65536) And 255 ' B
+    
+    ColorRGBToHLS RGB(r1, g1, b1), H1, L1, S1
+    
+    H1 = H1 + HAddition
+    If H1 > 240 Then H1 = H1 - 240
+    If H1 < 0 Then H1 = H1 + 240
+    
+    L1 = L1 * LFactor
+    L1 = L1 + LAddition
+    If L1 < 0 Then L1 = 0
+    If L1 > 240 Then L1 = 240
+    
+    S1 = S1 * LFactor
+    S1 = S1 + SAddition
+    If S1 < 1 Then S1 = 1
+    If S1 > 240 Then S1 = 240
+    
+    AdjustColorWithHLS = ColorHLSToRGB(H1, L1, S1)
+    
+End Function
+
+Public Function SetColorToSameHue(nColor As Long, nReferenceColor As Long) As Long
+    Dim iColor As Long
+    Dim iReferenceColor As Long
+    
+    Dim r1 As Long
+    Dim g1 As Long
+    Dim b1 As Long
+    Dim H1 As Long
+    Dim L1 As Long
+    Dim S1 As Long
+    
+    Dim r2 As Long
+    Dim g2 As Long
+    Dim b2 As Long
+    Dim H2 As Long
+    Dim L2 As Long
+    Dim S2 As Long
+    
+    TranslateColor nColor, 0, iColor
+    TranslateColor nReferenceColor, 0, iReferenceColor
+
+    r1 = iColor And 255 ' R
+    g1 = (iColor \ 256) And 255 ' G
+    b1 = (iColor \ 65536) And 255 ' B
+    
+    ColorRGBToHLS RGB(r1, g1, b1), H1, L1, S1
+    
+    r2 = iReferenceColor And 255 ' R
+    g2 = (iReferenceColor \ 256) And 255 ' G
+    b2 = (iReferenceColor \ 65536) And 255 ' B
+    
+    ColorRGBToHLS RGB(r2, g2, b2), H2, L2, S2
+    
+    SetColorToSameHue = ColorHLSToRGB(H2, L1, S1)
 End Function

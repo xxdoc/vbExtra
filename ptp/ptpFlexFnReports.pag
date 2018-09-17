@@ -18,14 +18,6 @@ Begin VB.PropertyPage ptpFlexFnReports
    PaletteMode     =   0  'Halftone
    ScaleHeight     =   5220
    ScaleWidth      =   9336
-   Begin VB.CheckBox chkPrintPrevUseAltScaleIcons 
-      Caption         =   "PrintPrevUseAltScaleIcons"
-      Height          =   250
-      Left            =   2412
-      TabIndex        =   14
-      Top             =   2628
-      Width           =   2748
-   End
    Begin VB.CheckBox chkAutoSelect125PercentScaleOnSmallGrids 
       Caption         =   "AutoSelect125PercentScaleOnSmallGrids"
       Height          =   250
@@ -38,7 +30,7 @@ Begin VB.PropertyPage ptpFlexFnReports
       Height          =   300
       Left            =   2412
       MultiLine       =   -1  'True
-      TabIndex        =   26
+      TabIndex        =   25
       Top             =   4752
       Width           =   3792
    End
@@ -46,7 +38,7 @@ Begin VB.PropertyPage ptpFlexFnReports
       Caption         =   "ShowCopyConfirmationMessage"
       Height          =   250
       Left            =   2412
-      TabIndex        =   24
+      TabIndex        =   23
       Top             =   4500
       Width           =   2748
    End
@@ -71,7 +63,7 @@ Begin VB.PropertyPage ptpFlexFnReports
       Left            =   7596
       ScaleHeight     =   324
       ScaleWidth      =   972
-      TabIndex        =   27
+      TabIndex        =   26
       TabStop         =   0   'False
       Top             =   4572
       Visible         =   0   'False
@@ -81,7 +73,7 @@ Begin VB.PropertyPage ptpFlexFnReports
       Caption         =   "MergeCellsExcel"
       Height          =   250
       Left            =   2412
-      TabIndex        =   17
+      TabIndex        =   16
       Top             =   3240
       Width           =   2748
    End
@@ -89,7 +81,7 @@ Begin VB.PropertyPage ptpFlexFnReports
       Height          =   288
       Left            =   2412
       Style           =   2  'Dropdown List
-      TabIndex        =   19
+      TabIndex        =   18
       Top             =   3492
       Width           =   3792
    End
@@ -98,20 +90,20 @@ Begin VB.PropertyPage ptpFlexFnReports
       Height          =   250
       Left            =   2412
       TabIndex        =   13
-      Top             =   2376
+      Top             =   2592
       Width           =   2748
    End
    Begin VB.TextBox txtSpecialSeparatorCharacters 
       Height          =   300
       Left            =   2412
-      TabIndex        =   23
+      TabIndex        =   22
       Top             =   4140
       Width           =   588
    End
    Begin VB.TextBox txtFileName 
       Height          =   300
       Left            =   2412
-      TabIndex        =   16
+      TabIndex        =   15
       Top             =   2880
       Width           =   3792
    End
@@ -150,7 +142,7 @@ Begin VB.PropertyPage ptpFlexFnReports
       Height          =   288
       Left            =   2412
       Style           =   2  'Dropdown List
-      TabIndex        =   21
+      TabIndex        =   20
       Top             =   3816
       Width           =   3792
    End
@@ -159,7 +151,7 @@ Begin VB.PropertyPage ptpFlexFnReports
       Caption         =   "CopyConfirmationMessage:"
       Height          =   336
       Left            =   180
-      TabIndex        =   25
+      TabIndex        =   24
       Top             =   4788
       Width           =   2208
    End
@@ -186,7 +178,7 @@ Begin VB.PropertyPage ptpFlexFnReports
       Caption         =   "AfterSaveAction:"
       Height          =   336
       Left            =   972
-      TabIndex        =   18
+      TabIndex        =   17
       Top             =   3528
       Width           =   1416
    End
@@ -205,7 +197,7 @@ Begin VB.PropertyPage ptpFlexFnReports
       Caption         =   "SpecialSeparatorCharacters:"
       Height          =   372
       Left            =   108
-      TabIndex        =   22
+      TabIndex        =   21
       Top             =   4176
       Width           =   2244
    End
@@ -214,7 +206,7 @@ Begin VB.PropertyPage ptpFlexFnReports
       Caption         =   "FileName:"
       Height          =   336
       Left            =   1116
-      TabIndex        =   15
+      TabIndex        =   14
       Top             =   2916
       Width           =   1272
    End
@@ -250,7 +242,7 @@ Begin VB.PropertyPage ptpFlexFnReports
       Caption         =   "CopyToClipboardMode:"
       Height          =   372
       Left            =   144
-      TabIndex        =   20
+      TabIndex        =   19
       Top             =   3852
       Width           =   2208
    End
@@ -276,10 +268,6 @@ Private Sub chkIgnoreEmptyRowsAtTheEnd_Click()
     If Not mLoading Then Changed = True
 End Sub
 
-Private Sub chkPrintPrevUseAltScaleIcons_Click()
-    If Not mLoading Then Changed = True
-End Sub
-
 Private Sub chkShowCopyConfirmationMessage_Click()
     If Not mLoading Then Changed = True
 End Sub
@@ -298,7 +286,6 @@ Private Sub PropertyPage_ApplyChanges()
     SelectedControls(0).AutoSelect125PercentScaleOnSmallGrids = CBool(chkAutoSelect125PercentScaleOnSmallGrids.Value)
     SelectedControls(0).FileName = txtFileName.Text
     SelectedControls(0).IgnoreEmptyRowsAtTheEnd = CBool(chkIgnoreEmptyRowsAtTheEnd.Value)
-    SelectedControls(0).PrintPrevUseAltScaleIcons = CBool(chkPrintPrevUseAltScaleIcons.Value)
     SelectedControls(0).AfterSaveAction = cboAfterSaveAction.ListIndex
     SelectedControls(0).MergeCellsExcel = CBool(chkMergeCellsExcel.Value)
 End Sub
@@ -323,7 +310,6 @@ Private Sub PropertyPage_SelectionChanged()
     chkAutoSelect125PercentScaleOnSmallGrids.Value = Abs(CLng(SelectedControls(0).AutoSelect125PercentScaleOnSmallGrids))
     txtFileName.Text = SelectedControls(0).FileName
     chkIgnoreEmptyRowsAtTheEnd.Value = Abs(CLng(SelectedControls(0).IgnoreEmptyRowsAtTheEnd))
-    chkPrintPrevUseAltScaleIcons.Value = Abs(CLng(SelectedControls(0).PrintPrevUseAltScaleIcons))
     cboAfterSaveAction.ListIndex = SelectedControls(0).AfterSaveAction
     chkMergeCellsExcel.Value = Abs(CLng(SelectedControls(0).MergeCellsExcel))
     

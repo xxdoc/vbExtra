@@ -66,6 +66,12 @@ Begin VB.Form frmPrintPreview
       TabStop         =   0   'False
       Top             =   0
       Width           =   16872
+      Begin VB.Timer tmrIgnoreMouseWheelEvents 
+         Enabled         =   0   'False
+         Interval        =   100
+         Left            =   540
+         Top             =   3492
+      End
       Begin VB.Timer tmrShowPage 
          Enabled         =   0   'False
          Interval        =   1
@@ -87,7 +93,7 @@ Begin VB.Form frmPrintPreview
          PicHeight24     =   30
          PicHeight30     =   36
          PicHeight36     =   44
-         ButtonsCount    =   15
+         ButtonsCount    =   16
          ButtonWidth1    =   80
          ButtonStyle1    =   4
          ButtonKey2      =   "Print"
@@ -104,46 +110,45 @@ Begin VB.Form frmPrintPreview
          ButtonPic303    =   "frmPrintPreview.frx":54EC
          ButtonPic363    =   "frmPrintPreview.frx":646E
          ButtonToolTipText3=   "# Page setup"
-         ButtonKey4      =   "Format"
+         ButtonKey4      =   "PageNumbers"
          ButtonPic164    =   "frmPrintPreview.frx":7B70
          ButtonPic204    =   "frmPrintPreview.frx":8072
          ButtonPic244    =   "frmPrintPreview.frx":8784
          ButtonPic304    =   "frmPrintPreview.frx":929E
          ButtonPic364    =   "frmPrintPreview.frx":A220
-         ButtonToolTipText4=   "# Format"
-         ButtonKey5      =   "OrientationLabelSpace"
-         ButtonWidth5    =   1100
-         ButtonStyle5    =   4
-         ButtonChecked6  =   -1  'True
-         ButtonKey6      =   "OrientationPortrait"
-         ButtonPic166    =   "frmPrintPreview.frx":B922
-         ButtonPic206    =   "frmPrintPreview.frx":BE24
-         ButtonPic246    =   "frmPrintPreview.frx":C536
-         ButtonPic306    =   "frmPrintPreview.frx":D050
-         ButtonPic366    =   "frmPrintPreview.frx":DFD2
-         ButtonStyle6    =   2
-         ButtonToolTipText6=   "# Orientation portrait"
-         ButtonKey7      =   "OrientationLandscape"
+         ButtonToolTipText4=   "# Page numbers options"
+         ButtonVisible4  =   0   'False
+         ButtonKey5      =   "Format"
+         ButtonPic165    =   "frmPrintPreview.frx":B922
+         ButtonPic205    =   "frmPrintPreview.frx":BE24
+         ButtonPic245    =   "frmPrintPreview.frx":C536
+         ButtonPic305    =   "frmPrintPreview.frx":D050
+         ButtonPic365    =   "frmPrintPreview.frx":DFD2
+         ButtonToolTipText5=   "# Format"
+         ButtonKey6      =   "OrientationLabelSpace"
+         ButtonWidth6    =   1100
+         ButtonStyle6    =   4
+         ButtonChecked7  =   -1  'True
+         ButtonKey7      =   "OrientationPortrait"
          ButtonPic167    =   "frmPrintPreview.frx":F6D4
          ButtonPic207    =   "frmPrintPreview.frx":FBD6
          ButtonPic247    =   "frmPrintPreview.frx":102E8
          ButtonPic307    =   "frmPrintPreview.frx":10E02
          ButtonPic367    =   "frmPrintPreview.frx":11D84
          ButtonStyle7    =   2
-         ButtonToolTipText7=   "# Orientation landscape"
-         ButtonKey8      =   "ViewLabelSpace"
-         ButtonWidth8    =   660
-         ButtonStyle8    =   4
-         ButtonKey9      =   "ViewNormalSize"
-         ButtonTag9      =   "view"
-         ButtonPic169    =   "frmPrintPreview.frx":13486
-         ButtonPic209    =   "frmPrintPreview.frx":13988
-         ButtonPic249    =   "frmPrintPreview.frx":1409A
-         ButtonPic309    =   "frmPrintPreview.frx":14BB4
-         ButtonPic369    =   "frmPrintPreview.frx":15B36
-         ButtonStyle9    =   2
-         ButtonToolTipText9=   "# View normal page size"
-         ButtonKey10     =   "ViewScreenWidth"
+         ButtonToolTipText7=   "# Orientation portrait"
+         ButtonKey8      =   "OrientationLandscape"
+         ButtonPic168    =   "frmPrintPreview.frx":13486
+         ButtonPic208    =   "frmPrintPreview.frx":13988
+         ButtonPic248    =   "frmPrintPreview.frx":1409A
+         ButtonPic308    =   "frmPrintPreview.frx":14BB4
+         ButtonPic368    =   "frmPrintPreview.frx":15B36
+         ButtonStyle8    =   2
+         ButtonToolTipText8=   "# Orientation landscape"
+         ButtonKey9      =   "ViewLabelSpace"
+         ButtonWidth9    =   660
+         ButtonStyle9    =   4
+         ButtonKey10     =   "ViewNormalSize"
          ButtonTag10     =   "view"
          ButtonPic1610   =   "frmPrintPreview.frx":17238
          ButtonPic2010   =   "frmPrintPreview.frx":1773A
@@ -151,9 +156,8 @@ Begin VB.Form frmPrintPreview
          ButtonPic3010   =   "frmPrintPreview.frx":18966
          ButtonPic3610   =   "frmPrintPreview.frx":198E8
          ButtonStyle10   =   2
-         ButtonToolTipText10=   "# View page adjusted to the screen width"
-         ButtonChecked11 =   -1  'True
-         ButtonKey11     =   "ViewScreenHeight"
+         ButtonToolTipText10=   "# View normal page size"
+         ButtonKey11     =   "ViewScreenWidth"
          ButtonTag11     =   "view"
          ButtonPic1611   =   "frmPrintPreview.frx":1AFEA
          ButtonPic2011   =   "frmPrintPreview.frx":1B4EC
@@ -161,9 +165,9 @@ Begin VB.Form frmPrintPreview
          ButtonPic3011   =   "frmPrintPreview.frx":1C718
          ButtonPic3611   =   "frmPrintPreview.frx":1D69A
          ButtonStyle11   =   2
-         ButtonToolTipText11=   "# View page adjusted to the screen height"
-         ButtonEnabled12 =   0   'False
-         ButtonKey12     =   "ViewSeveralPages"
+         ButtonToolTipText11=   "# View page adjusted to the screen width"
+         ButtonChecked12 =   -1  'True
+         ButtonKey12     =   "ViewScreenHeight"
          ButtonTag12     =   "view"
          ButtonPic1612   =   "frmPrintPreview.frx":1ED9C
          ButtonPic2012   =   "frmPrintPreview.frx":1F29E
@@ -171,34 +175,44 @@ Begin VB.Form frmPrintPreview
          ButtonPic3012   =   "frmPrintPreview.frx":204CA
          ButtonPic3612   =   "frmPrintPreview.frx":2144C
          ButtonStyle12   =   2
-         ButtonToolTipText12=   "# View several pages"
-         ButtonKey13     =   "ScaleSpace"
-         ButtonWidth13   =   2100
-         ButtonStyle13   =   4
-         ButtonKey14     =   "DecreaseScale"
-         ButtonPic1614   =   "frmPrintPreview.frx":22B4E
-         ButtonPic2014   =   "frmPrintPreview.frx":23050
-         ButtonPic2414   =   "frmPrintPreview.frx":23762
-         ButtonPic3014   =   "frmPrintPreview.frx":2427C
-         ButtonPic3614   =   "frmPrintPreview.frx":251FE
-         ButtonPic16Alt14=   "frmPrintPreview.frx":26900
-         ButtonPic20Alt14=   "frmPrintPreview.frx":26E02
-         ButtonPic24Alt14=   "frmPrintPreview.frx":27514
-         ButtonPic30Alt14=   "frmPrintPreview.frx":2802E
-         ButtonPic36Alt14=   "frmPrintPreview.frx":28FB0
-         ButtonToolTipText14=   "# Decrease fonts and elements size"
-         ButtonKey15     =   "IncreaseScale"
-         ButtonPic1615   =   "frmPrintPreview.frx":2A6B2
-         ButtonPic2015   =   "frmPrintPreview.frx":2ABB4
-         ButtonPic2415   =   "frmPrintPreview.frx":2B2C6
-         ButtonPic3015   =   "frmPrintPreview.frx":2BDE0
-         ButtonPic3615   =   "frmPrintPreview.frx":2CD62
-         ButtonPic16Alt15=   "frmPrintPreview.frx":2E464
-         ButtonPic20Alt15=   "frmPrintPreview.frx":2E966
-         ButtonPic24Alt15=   "frmPrintPreview.frx":2F078
-         ButtonPic30Alt15=   "frmPrintPreview.frx":2FB92
-         ButtonPic36Alt15=   "frmPrintPreview.frx":30B14
-         ButtonToolTipText15=   "# Increase fonts and elements size"
+         ButtonToolTipText12=   "# View page adjusted to the screen height"
+         ButtonEnabled13 =   0   'False
+         ButtonKey13     =   "ViewSeveralPages"
+         ButtonTag13     =   "view"
+         ButtonPic1613   =   "frmPrintPreview.frx":22B4E
+         ButtonPic2013   =   "frmPrintPreview.frx":23050
+         ButtonPic2413   =   "frmPrintPreview.frx":23762
+         ButtonPic3013   =   "frmPrintPreview.frx":2427C
+         ButtonPic3613   =   "frmPrintPreview.frx":251FE
+         ButtonStyle13   =   2
+         ButtonToolTipText13=   "# View several pages"
+         ButtonKey14     =   "ScaleSpace"
+         ButtonWidth14   =   2100
+         ButtonStyle14   =   4
+         ButtonKey15     =   "DecreaseScale"
+         ButtonPic1615   =   "frmPrintPreview.frx":26900
+         ButtonPic2015   =   "frmPrintPreview.frx":26E02
+         ButtonPic2415   =   "frmPrintPreview.frx":27514
+         ButtonPic3015   =   "frmPrintPreview.frx":2802E
+         ButtonPic3615   =   "frmPrintPreview.frx":28FB0
+         ButtonPic16Alt15=   "frmPrintPreview.frx":2A6B2
+         ButtonPic20Alt15=   "frmPrintPreview.frx":2ABB4
+         ButtonPic24Alt15=   "frmPrintPreview.frx":2B2C6
+         ButtonPic30Alt15=   "frmPrintPreview.frx":2BDE0
+         ButtonPic36Alt15=   "frmPrintPreview.frx":2CD62
+         ButtonToolTipText15=   "# Decrease fonts and elements size"
+         ButtonKey16     =   "IncreaseScale"
+         ButtonPic1616   =   "frmPrintPreview.frx":2E464
+         ButtonPic2016   =   "frmPrintPreview.frx":2E966
+         ButtonPic2416   =   "frmPrintPreview.frx":2F078
+         ButtonPic3016   =   "frmPrintPreview.frx":2FB92
+         ButtonPic3616   =   "frmPrintPreview.frx":30B14
+         ButtonPic16Alt16=   "frmPrintPreview.frx":32216
+         ButtonPic20Alt16=   "frmPrintPreview.frx":32718
+         ButtonPic24Alt16=   "frmPrintPreview.frx":32E2A
+         ButtonPic30Alt16=   "frmPrintPreview.frx":33944
+         ButtonPic36Alt16=   "frmPrintPreview.frx":348C6
+         ButtonToolTipText16=   "# Increase fonts and elements size"
          Begin VB.Timer tmrcboScalePercentChange 
             Enabled         =   0   'False
             Interval        =   5000
@@ -281,9 +295,9 @@ Begin VB.Form frmPrintPreview
                   Strikethrough   =   0   'False
                EndProperty
                Height          =   312
-               ItemData        =   "frmPrintPreview.frx":32216
+               ItemData        =   "frmPrintPreview.frx":35FC8
                Left            =   948
-               List            =   "frmPrintPreview.frx":32232
+               List            =   "frmPrintPreview.frx":35FE4
                TabIndex        =   15
                Text            =   "cboFontScale"
                Top             =   60
@@ -348,27 +362,27 @@ Begin VB.Form frmPrintPreview
          ButtonStyle1    =   4
          ButtonEnabled2  =   0   'False
          ButtonKey2      =   "FirstPage"
-         ButtonPic162    =   "frmPrintPreview.frx":32263
-         ButtonPic202    =   "frmPrintPreview.frx":32EB5
-         ButtonPic242    =   "frmPrintPreview.frx":341C7
+         ButtonPic162    =   "frmPrintPreview.frx":36015
+         ButtonPic202    =   "frmPrintPreview.frx":36C67
+         ButtonPic242    =   "frmPrintPreview.frx":37F79
          ButtonToolTipText2=   "# First page"
          ButtonEnabled3  =   0   'False
          ButtonKey3      =   "PreviousPage"
-         ButtonPic163    =   "frmPrintPreview.frx":35D19
-         ButtonPic203    =   "frmPrintPreview.frx":3696B
-         ButtonPic243    =   "frmPrintPreview.frx":37C7D
+         ButtonPic163    =   "frmPrintPreview.frx":39ACB
+         ButtonPic203    =   "frmPrintPreview.frx":3A71D
+         ButtonPic243    =   "frmPrintPreview.frx":3BA2F
          ButtonToolTipText3=   "# Previous page"
          ButtonEnabled4  =   0   'False
          ButtonKey4      =   "NextPage"
-         ButtonPic164    =   "frmPrintPreview.frx":397CF
-         ButtonPic204    =   "frmPrintPreview.frx":3A421
-         ButtonPic244    =   "frmPrintPreview.frx":3B733
+         ButtonPic164    =   "frmPrintPreview.frx":3D581
+         ButtonPic204    =   "frmPrintPreview.frx":3E1D3
+         ButtonPic244    =   "frmPrintPreview.frx":3F4E5
          ButtonToolTipText4=   "# Next page"
          ButtonEnabled5  =   0   'False
          ButtonKey5      =   "LastPage"
-         ButtonPic165    =   "frmPrintPreview.frx":3D285
-         ButtonPic205    =   "frmPrintPreview.frx":3DED7
-         ButtonPic245    =   "frmPrintPreview.frx":3F1E9
+         ButtonPic165    =   "frmPrintPreview.frx":41037
+         ButtonPic205    =   "frmPrintPreview.frx":41C89
+         ButtonPic245    =   "frmPrintPreview.frx":42F9B
          ButtonToolTipText5=   "# Last page"
          Begin VB.PictureBox picPageNumber 
             BorderStyle     =   0  'None
@@ -540,9 +554,9 @@ Begin VB.Form frmPrintPreview
             Strikethrough   =   0   'False
          EndProperty
          Height          =   360
-         ItemData        =   "frmPrintPreview.frx":40D3B
+         ItemData        =   "frmPrintPreview.frx":44AED
          Left            =   4980
-         List            =   "frmPrintPreview.frx":40D3D
+         List            =   "frmPrintPreview.frx":44AEF
          Style           =   2  'Dropdown List
          TabIndex        =   6
          Top             =   240
@@ -673,6 +687,7 @@ Private mMaxScalePercent As Long
 
 Public Event PrepareDoc(Cancel As Boolean)
 Public Event FormatOptionsClick(ByRef Canceled As Boolean)
+Public Event PageNumbersOptionsClick(ByRef Canceled As Boolean)
 Public Event ScaleChange(NewScalePercent As Integer)
 
 Private mRefreshed As Boolean
@@ -689,6 +704,7 @@ Private mFormatButtonToolTipText As String
 Private mAddedToScaleForRounding As Long
 Public DoNotLoad As Boolean
 Private mControlsPositioned As Boolean
+Private mCanceled As Boolean
 
 Private Sub cboChangeIconsSize_Click()
     SetToolBarIconsSize cboChangeIconsSize.ListIndex
@@ -720,6 +736,7 @@ Private Sub cboScalePercent_Change()
         If mRaiseFontEvent Then
             RaiseEvent ScaleChange(CInt(mScalePercent))
             RaiseEventPrepareDoc
+            If mCanceled Then Exit Sub
         End If
     End If
 
@@ -759,6 +776,7 @@ Private Sub cboScalePercent_KeyPress(KeyAscii As Integer)
         End If
         tmrcboScalePercentChange.Enabled = False
         cboScalePercent_Change
+        If mCanceled Then Exit Sub
     Else
         tmrcboScalePercentChange.Enabled = False
         tmrcboScalePercentChange.Enabled = True
@@ -901,6 +919,7 @@ Private Sub Form_Load()
     Dim iLng As Long
     
     If DoNotLoad Then Exit Sub
+    mCanceled = False
     
     LoadGUICaptions
     AssignAcceleratorToControl lblScalePercent
@@ -920,6 +939,8 @@ Private Sub Form_Load()
     End If
     
     If mPrintFnObject Is Nothing Then Set mPrintFnObject = New PrintFnObject
+    
+    mAllowUserChangeOrientation = True
     
     If (mPrintFnObject.PageSetupFlags And cdePSDisableOrientation) <> 0 Then
         AllowUserChangeOrientation = False
@@ -1072,6 +1093,10 @@ Private Sub mnuView6p_Click()
     SelectView efnViewButtonSevealPages, 2
 End Sub
 
+Private Sub MouseWheelEnabler1_MouseWheelRotation(Direction As Long)
+
+End Sub
+
 Private Sub picPage_Click(Index As Integer)
     Dim iLng As Long
     
@@ -1172,6 +1197,7 @@ Private Sub tbrTop_ButtonClick(Button As ToolBarDAButton)
                     If mPrintFnObject.Changed Then
                         Orientation = mPrintFnObject.Orientation
                         RaiseEventPrepareDoc
+                        If mCanceled Then Exit Sub
                     End If
                 Case "OrientationPortrait", "OrientationLandscape"
                     If Button.Key = "OrientationPortrait" Then
@@ -1179,12 +1205,14 @@ Private Sub tbrTop_ButtonClick(Button As ToolBarDAButton)
                             ResetPrinter2
                             mPrintFnObject.Orientation = vbPRORPortrait
                             RaiseEventPrepareDoc
+                            If mCanceled Then Exit Sub
                         End If
                     Else
                         If mPrintFnObject.Orientation <> vbPRORLandscape Then
                             ResetPrinter2
                             mPrintFnObject.Orientation = vbPRORLandscape
                             RaiseEventPrepareDoc
+                            If mCanceled Then Exit Sub
                         End If
                     End If
                     Button.Checked = True
@@ -1198,6 +1226,13 @@ Private Sub tbrTop_ButtonClick(Button As ToolBarDAButton)
 '                    End If
                     If Not iCanceled Then
                         RaiseEventPrepareDoc
+                        If mCanceled Then Exit Sub
+                    End If
+                Case "PageNumbers"
+                    RaiseEvent PageNumbersOptionsClick(iCanceled)
+                    If Not iCanceled Then
+                        RaiseEventPrepareDoc
+                        If mCanceled Then Exit Sub
                     End If
                 Case "DecreaseScale"
                     iStrScalePercent = cboScalePercent.Text
@@ -1314,12 +1349,19 @@ Private Sub ShowPages()
     Dim iTotalPagesRow(3) As Long
     Dim iAux As Long
     Dim iView As efnViewPagesConstants
+    Dim iPageCount As String
+    
     'Static sFirst As Boolean
     
     'If Not sFirst Then
     
     If Not PrinterExCurrentDocument Is Nothing Then
-        lblPageCount.Caption = GetLocalizedString(efnGUIStr_frmPrintPreview_lblPageCount_Caption) & " " & PrinterExCurrentDocument.PageCount
+        If PrinterExCurrentDocument.PageCount = 0 Then
+            iPageCount = "..."
+        Else
+            iPageCount = " " & PrinterExCurrentDocument.PageCount
+        End If
+        lblPageCount.Caption = GetLocalizedString(efnGUIStr_frmPrintPreview_lblPageCount_Caption) & iPageCount
         If PrinterExCurrentDocument.PageCount = 1 Then
             tbrTop.Buttons("ViewSeveralPages").Enabled = False
         Else
@@ -1409,9 +1451,9 @@ Private Sub ShowPages()
     
     If Not PrinterExCurrentDocument Is Nothing Then
         If PrinterExCurrentDocument.PageCount = 0 Then
-            PrinterExCurrentDocument.DisableEvents = True
-            PrinterExCurrentDocument.PrintText " "
-            PrinterExCurrentDocument.DisableEvents = False
+'            PrinterExCurrentDocument.DisableEvents = True
+'            PrinterExCurrentDocument.PrintText " "
+'            PrinterExCurrentDocument.DisableEvents = False
             mCurrentPageNumber = 1
         End If
         If (mCurrentPageNumber + mPagesOnScreen - 1) > PrinterExCurrentDocument.PageCount Then
@@ -1433,8 +1475,8 @@ Private Sub ShowPages()
     End If
     Select Case iView
         Case efnViewNormal
-            picPage(0).Width = iPagesWidth(0) / 100 * PrinterExCurrentDocument.Zoom
-            picPage(0).Height = iPagesHeight(0) / 100 * PrinterExCurrentDocument.Zoom
+            picPage(0).Width = iPagesWidth(0) '/ 100 * PrinterExCurrentDocument.Zoom
+            picPage(0).Height = iPagesHeight(0) ' / 100 * PrinterExCurrentDocument.Zoom
             picPagesContainer.Move picPagesContainer.Left, picPagesContainer.Top, picPage(0).Width + 600, picPage(0).Height + 600
             If Not PrinterExCurrentDocument Is Nothing Then
                 AuxPaintPage mCurrentPageNumber, iPagesWidth(0), iPagesHeight(0), picPage(0), PrinterExCurrentDocument.ColorMode = vbPRCMMonochrome
@@ -1805,11 +1847,11 @@ Private Sub ShowPages()
     
     If picPagesContainer.Height > mAvailableScreenHeightSpace Then
         picPagesContainer.Top = tbrTop.Height
-        VScroll1.Max = (picPagesContainer.Height - mAvailableScreenHeightSpace) / mAvailableScreenHeightSpace * 30 + 1
+        VScroll1.Max = ((picPagesContainer.Height - mAvailableScreenHeightSpace) / mAvailableScreenHeightSpace * 300 + 1)
         VScroll1.Min = 0
         VScroll1.Value = 0
-        VScroll1.SmallChange = 3
-        VScroll1.LargeChange = 20
+        VScroll1.SmallChange = 15
+        VScroll1.LargeChange = 200
         VScroll1.Visible = True
         VScroll1.ZOrder
         mAvailableScreenWidthSpace = Me.ScaleWidth - VScroll1.Width
@@ -1897,6 +1939,10 @@ Public Sub RefreshPreview()
     mRefreshed = True
 End Sub
 
+Private Sub tmrIgnoreMouseWheelEvents_Timer()
+    tmrIgnoreMouseWheelEvents.Enabled = False
+End Sub
+
 Private Sub tmrPopupcboChangeIconsSize_Timer()
     tmrPopupcboChangeIconsSize.Enabled = False
     
@@ -1949,7 +1995,7 @@ Private Sub txtPage_KeyPress(KeyAscii As Integer)
 End Sub
 
 Private Sub VScroll1_Change()
-    picPagesContainer.Top = tbrTop.Height - VScroll1.Value / 30 * mAvailableScreenHeightSpace
+    picPagesContainer.Top = tbrTop.Height - VScroll1.Value / 300 * mAvailableScreenHeightSpace
 End Sub
 
 Private Sub VScroll1_Scroll()
@@ -2061,6 +2107,7 @@ Private Sub RaiseEventPrepareDoc()
     
     If iCancel Then
         Unload Me
+        mCanceled = True
         Exit Sub
     End If
     mCurrentPageNumber = iDocumentPosition * PrinterExCurrentDocument.PageCount + 1
@@ -2112,6 +2159,13 @@ Public Property Let PageSetupButtonVisible(nValue As Boolean)
     End If
 End Property
 
+Public Property Let PageNumbersButtonVisible(nValue As Boolean)
+    tbrTop.Buttons("PageNumbers").Visible = nValue
+    If mControlsPositioned Then
+        PositionControls
+    End If
+End Property
+
 Public Property Let FormatButtonToolTipText(nValue As String)
     mFormatButtonToolTipText = nValue
     tbrTop.Buttons("Format").ToolTipText = Trim(mFormatButtonToolTipText)
@@ -2149,10 +2203,19 @@ Public Property Get AllowUserChangeOrientation() As Boolean
 End Property
 
 Public Property Let AllowUserChangeOrientation(nValue As Boolean)
-    mAllowUserChangeOrientation = nValue
-    tbrTop.Buttons("OrientationLabelSpace").Visible = mAllowUserChangeOrientation
-    tbrTop.Buttons("OrientationPortrait").Visible = mAllowUserChangeOrientation
-    tbrTop.Buttons("OrientationLandscape").Visible = mAllowUserChangeOrientation
+    If nValue <> mAllowUserChangeOrientation Then
+        tbrTop.Visible = False
+        mAllowUserChangeOrientation = nValue
+        tbrTop.Buttons("OrientationLabelSpace").Visible = mAllowUserChangeOrientation
+        lblPageOrientation.Visible = mAllowUserChangeOrientation
+        tbrTop.Buttons("OrientationPortrait").Visible = mAllowUserChangeOrientation
+        tbrTop.Buttons("OrientationLandscape").Visible = mAllowUserChangeOrientation
+        lblView.Left = tbrTop.Buttons("ViewNormalSize").Left - lblView.Width - 60
+        picScalePercent.Left = tbrTop.Buttons("DecreaseScale").Left - picScalePercent.Width - 30
+        tbrTop.Visible = True
+        tbrTop.Refresh
+        Me.Refresh
+    End If
 End Property
 
 
@@ -2249,29 +2312,51 @@ Public Property Get ScalePercent() As Long
 End Property
 
 Private Sub mMouseWheel_MouseWheelRotation(Direction As Long, Handled As Boolean)
-    
+    If tmrIgnoreMouseWheelEvents.Enabled Then Exit Sub
     If VScroll1.Visible Then
         If Direction = 1 Then
             If (VScroll1.Value + VScroll1.SmallChange) <= VScroll1.Max Then
                 VScroll1.Value = VScroll1.Value + VScroll1.SmallChange
             Else
-                VScroll1.Value = VScroll1.Max
+                If VScroll1.Value = VScroll1.Max Then
+                    If mCurrentPageNumber < PrinterExCurrentDocument.PageCount Then
+                        mCurrentPageNumber = mCurrentPageNumber + 1
+                        ShowPages
+                        VScroll1.Value = VScroll1.Min
+                        tmrIgnoreMouseWheelEvents.Enabled = False
+                        tmrIgnoreMouseWheelEvents.Enabled = True
+                    End If
+                Else
+                    VScroll1.Value = VScroll1.Max
+                End If
             End If
         Else
             If (VScroll1.Value - VScroll1.SmallChange) >= VScroll1.Min Then
                 VScroll1.Value = VScroll1.Value - VScroll1.SmallChange
             Else
-                VScroll1.Value = VScroll1.Min
+                If VScroll1.Value = VScroll1.Min Then
+                    If mCurrentPageNumber > 1 Then
+                        mCurrentPageNumber = mCurrentPageNumber - 1
+                        ShowPages
+                        VScroll1.Value = VScroll1.Max
+                        tmrIgnoreMouseWheelEvents.Enabled = False
+                        tmrIgnoreMouseWheelEvents.Enabled = True
+                    End If
+                Else
+                    VScroll1.Value = VScroll1.Min
+                End If
             End If
         End If
         Handled = True
     End If
+    
 End Sub
 
 Private Sub PositionControls()
     Dim iFontSize As Single
     Dim iScreenWidth As Long
     
+    tbrTop.Redraw = False
     picScalePercent.Visible = False
     iScreenWidth = Screen.Width / Screen.TwipsPerPixelX
     cboView.Top = tbrTop.Height - cboView.Height
@@ -2315,6 +2400,7 @@ Private Sub PositionControls()
     tbrTop.Buttons("ScaleSpace").Width = picScalePercent.Width
     picScalePercent.Left = tbrTop.Buttons("DecreaseScale").Left - picScalePercent.Width - 30
     picScalePercent.Visible = mAllowUserChangeScale
+    picScalePercent.Refresh
     
     picPageNumber.Top = 0
     picPageNumber.Height = tbrBottom.Height
@@ -2344,6 +2430,7 @@ Private Sub PositionControls()
     cmdClose.Font.Size = 10
     cmdClose_2.Font.Size = cmdClose.Font.Size
     
+    tbrTop.Redraw = True
     mControlsPositioned = True
 End Sub
 
@@ -2442,6 +2529,7 @@ Private Sub LoadGUICaptions()
     
     tbrTop.Buttons("Print").ToolTipText = GetLocalizedString(efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_Print)
     tbrTop.Buttons("PageSetup").ToolTipText = GetLocalizedString(efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_PageSetup)
+    tbrTop.Buttons("PageNumbers").ToolTipText = GetLocalizedString(efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_PageNumbersOptions)
     If mFormatButtonToolTipText = "" Then
         tbrTop.Buttons("Format").ToolTipText = GetLocalizedString(efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_Format)
     End If
@@ -2523,6 +2611,5 @@ Public Property Let ToolBarIconsSize(nValue As Long)
         SetToolBarIconsSize CLng(GetSetting(AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", efnISAuto))
     End If
 End Property
-
 
 

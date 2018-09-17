@@ -27,6 +27,7 @@ Private mAttached As Boolean
 
 Public Sub SetForm(Optional nForm, Optional nFormHwnd)
     If Not InIDE Then
+    'If True Then
         On Error Resume Next
         If Not IsMissing(nForm) Then
             Set mForm = nForm

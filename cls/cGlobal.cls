@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
 
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 '[Enumerations]
 
@@ -223,7 +223,59 @@ Public Enum vbExPrintExAlignConstants
     vxAlignRightBottom = 8
 End Enum
 
+Public Enum vbExStandardBorderStyleConstants
+    vxNone = 0
+    vxFixedSingle = 1
+End Enum
 
+Public Enum vbExStandardAppearanceConstants
+    vxAppearanceFlat = 0
+    vxAppearance3D = 1
+End Enum
+ 
+Public Enum vbExGridAlignmentConstants
+    vxGACentered = 0
+    vxGALeft = 1
+    vxGARight = 2
+    vxGAStretch = 3
+    vxGAStretchLastColumn = 4
+End Enum
+ 
+Public Enum gfnOrientation
+    gfnPrinterDefault = 0&
+    gfnPortrait = 1&
+    gfnLandscape = 2&
+    gfnDecideOnReportWidth = 3&
+End Enum
+
+Public Enum gfnRememberUserPrintingPreferences
+    gfnRememberByReportIDIfAvailable = 0&
+    gfnRememberByGridName = 1&
+    gfnRememberGlobally = 2&
+    gfnDontRemember = 3&
+End Enum
+
+Public Enum gfnCopyToClipboardModeOptions
+    gfnLetUserToSelect = 0&
+    gfnSeparateWithTabs = 1&
+    gfnSeparateWithSpacesForFixedFont = 2&
+    gfnSeparateWithSpacesForVariableFont = 3&
+    gfnSeparateWithSpecialCharacters = 4&
+End Enum
+
+Public Enum gfnAfterSaveActionSettings
+    gfnDoNothing = 0&
+    gfnShowConfirmationMessage = 1&
+    gfnOfferToOpen = 2&
+End Enum
+
+Public Enum gfnScrollWithMouseWheelSettings
+    gfnScrollDisabled = 0&
+    gfnScrollEnabled = 1&
+    gfnScrollOnlyOnFocus = 2&
+End Enum
+ 
+ 
 Private Sub Class_Initialize()
     InitGlobal
 End Sub
@@ -243,11 +295,6 @@ End Sub
 
 Public Function GetFormPersistedWindowState(nForm As Object) As Long
     GetFormPersistedWindowState = mGlobals.GetFormPersistedWindowState(nForm)
-End Function
-
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Function GetSavedFormWindowState(nForm As Object, Optional nContext As String, Optional nDefaultValue As Long = -1) As FormWindowStateConstants
-    
 End Function
 
 Public Sub ShowModal(nForm As Object, Optional nWaitWithDoevents As Boolean = True, Optional nSetIcon As Boolean = True, Optional nFormsHwndToKeepEnabled As Variant, Optional nKeepEnabledTaskBarWindows As Boolean = True, Optional nNoOwner As Boolean)
@@ -308,11 +355,6 @@ Public Function IsAppRunning(nAppPath As String) As Boolean
     IsAppRunning = iAP.IsAppRunning(nAppPath)
 End Function
 
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Function IsProgramRunning(nAppPath As String) As Boolean
-
-End Function
-
 Public Function MinimizeApp() As AppMinimizer
     Set MinimizeApp = New AppMinimizer
 End Function
@@ -335,16 +377,6 @@ End Function
 
 Public Function GetTempFolder() As String
     GetTempFolder = mGlobals.GetTempFolder
-End Function
-
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Property Get TempFolder() As String
-    
-End Property
-
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Function GetTempDir() As String
-    
 End Function
 
 Public Function GetTempFileFullPath() As String
@@ -484,23 +516,8 @@ Public Function GetFolder(nFilePath As String) As String
     GetFolder = mGlobals.GetFolder(nFilePath)
 End Function
 
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Function FolderName(nFilePath As String) As String
-    
-End Function
-
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Function GetFileFolderPath(nFileFullPath As String) As String
-    
-End Function
-
 Public Function FolderExists(nFolderPath As String) As Boolean
     FolderExists = mGlobals.FolderExists(nFolderPath)
-End Function
-
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Function DirExists(strDirName As String) As Boolean
-    
 End Function
 
 Public Sub EnsureFocusRect(nForm As Object)
@@ -540,16 +557,6 @@ End Sub
 
 Public Function CheckFreeDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes As Double) As Boolean
     CheckFreeDiskSpace = mGlobals.CheckFreeDiskSpace(nPathToTest, nRequiredFreeSpaceInBytes)
-End Function
-
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Function CheckDiskFreeSpace(nPathToTest As String, nRequiredFreeSpaceInBytes As Double) As Boolean
-    
-End Function
-
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Function CheckDiskSpace(nPathToTest As String, nRequiredFreeSpaceInBytes As Double) As Boolean
-    
 End Function
 
 Public Function GMTDateTime(nLocalDateTime As Date) As Date
@@ -622,16 +629,6 @@ End Function
 
 Public Function GetFileName(nFileFullPath As String) As String
     GetFileName = mGlobals.GetFileName(nFileFullPath)
-End Function
-
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Function BaseName(nFullFilePath As String) As String
-    
-End Function
-
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Function GetFileNameFromFullPath(nFileFullPath As String) As String
-    
 End Function
 
 Public Function FileInUse(ByVal nFilePath As String) As Boolean
@@ -743,18 +740,6 @@ Public Sub DateTimeToUnsigned(ByVal nDateTime As Date, nLow As Long, nHigh As Lo
     mGlobals.DateTimeToUnsigned nDateTime, nLow, nHigh
 End Sub
 
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Sub CVrStr(nString As String)
-Attribute CVrStr.VB_MemberFlags = "40"
-    
-End Sub
-
-' Kept for keeping binary compatibility, it will be removed in the next version
-Public Sub CVrBA(nBA() As Byte)
-Attribute CVrBA.VB_MemberFlags = "40"
-    
-End Sub
-
 Public Sub SaveTextFile(nPath As String, nText As String)
     mGlobals.SaveTextFile nPath, nText
 End Sub
@@ -822,3 +807,15 @@ End Function
 Public Sub SaveBinaryFile(nFilePath As String, nBytes() As Byte, Optional nDateTime)
     mGlobals.SaveBinaryFile nFilePath, nBytes, nDateTime
 End Sub
+
+Public Function AdjustPictureWithHLS(nSourcePic As StdPicture, Optional HAddition As Long, Optional LAddition As Long, Optional SAddition As Long, Optional LFactor As Single = 1, Optional SFactor As Single = 1, Optional ColorToPreserve As Long = -1) As StdPicture
+    Set AdjustPictureWithHLS = MPicStretch.AdjustPictureWithHLS(nSourcePic, HAddition, LAddition, SAddition, LFactor, SFactor, ColorToPreserve)
+End Function
+
+Public Function AdjustColorWithHLS(nColor As Long, Optional HAddition As Long, Optional LAddition As Long, Optional SAddition As Long, Optional LFactor As Single = 1, Optional SFactor As Single = 1) As Long
+    AdjustColorWithHLS = MPicStretch.AdjustColorWithHLS(nColor, HAddition, LAddition, SAddition, LFactor, SFactor)
+End Function
+
+Public Function SetColorToSameHue(nColor As Long, nReferenceColor As Long) As Long
+    SetColorToSameHue = MPicStretch.SetColorToSameHue(nColor, nReferenceColor)
+End Function

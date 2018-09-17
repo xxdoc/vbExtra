@@ -20,6 +20,8 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
 
+Private Declare Function SendMessageLong Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+
 Public Event MouseWheelRotation(Direction As Long)
 Public Event Message(ByVal iMsg As Long, ByVal wParam As Long, ByVal lParam As Long, Handled As Boolean)
 
@@ -28,9 +30,17 @@ Attribute mMouseWheelNotifierObject.VB_VarHelpID = -1
 
 Private mAutoScrollControls As Boolean
 Private mControlToScroll As Object
+Private mLastMessage As Long
+Private mLastMessage_wParam As Long
+Private mLastMessage_lParam As Long
 
 Private Sub mMouseWheelNotifierObject_Message(ByVal iMsg As Long, ByVal wParam As Long, ByVal lParam As Long, Handled As Boolean)
      RaiseEvent Message(iMsg, wParam, lParam, Handled)
+     If Not Handled Then
+        mLastMessage = iMsg
+        mLastMessage_wParam = wParam
+        mLastMessage_lParam = lParam
+     End If
 End Sub
 
 Private Sub UserControl_InitProperties()
@@ -127,6 +137,7 @@ Private Function GetScrollableControl(Optional RequirePartiallyVisibleAtLeast As
             If IsTypeSupported(iCtl) Then
                 If IsWindowVisibleOnScreen(iCtl.hWnd, RequirePartiallyVisibleAtLeast) Then
                     Set GetScrollableControl = iCtl
+                    Exit For
                 Else
                     If Not RequirePartiallyVisibleAtLeast Then
                         Set iControl2 = iCtl
@@ -168,7 +179,7 @@ Private Sub mMouseWheelNotifierObject_MouseWheelRotation(Direction As Long, Hand
     Static sGridRowsPrev As Long
     Dim iControlIsActiveControl As Boolean
     Dim iAuxHeight As Long
-    Dim r As Long
+    Dim R As Long
     Dim iControlIsGrid As Boolean
     
     On Error GoTo TheExit:
@@ -204,13 +215,13 @@ Private Sub mMouseWheelNotifierObject_MouseWheelRotation(Direction As Long, Hand
             If (sGridNamePrev <> sControlToScroll.Name) Or (sGridRowsPrev <> sControlToScroll.Rows) Then
                 ' calculate the scroll step based on grid variables
                 iAuxHeight = 0
-                For r = 0 To sControlToScroll.Rows - 1
-                    iAuxHeight = iAuxHeight + sControlToScroll.RowHeight(r)
+                For R = 0 To sControlToScroll.Rows - 1
+                    iAuxHeight = iAuxHeight + sControlToScroll.RowHeight(R)
                     If iAuxHeight >= sControlToScroll.Height Then
                         Exit For
                     End If
-                Next r
-                sScrollStep = r / 4
+                Next R
+                sScrollStep = R / 4
                 If sScrollStep = 0 Then sScrollStep = 1
             End If
             
@@ -241,20 +252,24 @@ Private Sub mMouseWheelNotifierObject_MouseWheelRotation(Direction As Long, Hand
             Handled = True
         End If
     Else
-        If Direction = 1 Then
-            If (sControlToScroll.Value + sControlToScroll.SmallChange) <= sControlToScroll.Max Then
-                sControlToScroll.Value = sControlToScroll.Value + sControlToScroll.SmallChange
+        If LCase$(TypeName(sControlToScroll)) = "vscrollbar" Then
+            If Direction = 1 Then
+                If (sControlToScroll.Value + sControlToScroll.SmallChange) <= sControlToScroll.Max Then
+                    sControlToScroll.Value = sControlToScroll.Value + sControlToScroll.SmallChange
+                Else
+                    sControlToScroll.Value = sControlToScroll.Max
+                End If
             Else
-                sControlToScroll.Value = sControlToScroll.Max
+                If (sControlToScroll.Value - sControlToScroll.SmallChange) >= sControlToScroll.Min Then
+                    sControlToScroll.Value = sControlToScroll.Value - sControlToScroll.SmallChange
+                Else
+                    sControlToScroll.Value = sControlToScroll.Min
+                End If
             End If
+            Handled = True
         Else
-            If (sControlToScroll.Value - sControlToScroll.SmallChange) >= sControlToScroll.Min Then
-                sControlToScroll.Value = sControlToScroll.Value - sControlToScroll.SmallChange
-            Else
-                sControlToScroll.Value = sControlToScroll.Min
-            End If
+            SendMessageLong sControlToScroll.hWnd, mLastMessage, mLastMessage_wParam, mLastMessage_lParam
         End If
-        Handled = True
     End If
     Exit Sub
     

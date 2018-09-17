@@ -118,6 +118,7 @@ End Enum
 Public Event TrayClick(Button As vbExTrayIconMouseEventConstants)
 Public Event BalloonClick(ClickType As vbExTrayIconClickTypeConstants)
 Public Event Restored(ByRef RemoveTrayIcon As Boolean)
+Public Event DblClick()
 
 Private mActive As Boolean
 Private m_TrayIcon As StdPicture
@@ -130,6 +131,9 @@ Private Sub hWndHolder_MouseMove(Button As Integer, Shift As Integer, x As Singl
     msg = x / Screen.TwipsPerPixelX
     If msg >= WM_LBUTTONDOWN And msg <= WM_RBUTTONDBLCLK Then
         RaiseEvent TrayClick(msg)
+        If msg = WM_LBUTTONDBLCLK Then
+            RaiseEvent DblClick
+        End If
     ElseIf msg >= WM_BALLOONXCLK And msg <= WM_BALLOONLCLK Then
         RaiseEvent BalloonClick(msg)
     End If
@@ -215,7 +219,7 @@ Public Sub Remove()
     Shell_NotifyIcon NIM_DELETE, m_IconData
     mActive = False
     If mParentHwnd <> 0 Then
-        DetachMessage Me, Parent.hWnd, mWM_RESTORE_FROM_SYSTEM_TRAY
+        DetachMessage Me, mParentHwnd, mWM_RESTORE_FROM_SYSTEM_TRAY
         mParentHwnd = 0
     End If
 End Sub

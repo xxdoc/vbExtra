@@ -47,14 +47,14 @@ Public Enum efnGUIString
     efnGUIStr_frmPrintGridFormatOptions_lblOtherTextsFont_Caption
     efnGUIStr_frmPrintGridFormatOptions_lblSubheadingFont_Caption
     efnGUIStr_frmPrintGridFormatOptions_lblHeadingFont_Caption
-    efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersFont_Caption
-    efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersFormat_Caption
-    efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersPosition_Caption
+    efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersFont_Caption
+    efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersFormat_Caption
+    efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersPosition_Caption
     efnGUIStr_frmPrintGridFormatOptions_lblGridAlign_Caption
     efnGUIStr_frmPrintGridFormatOptions_lblColor_Caption
     efnGUIStr_frmPrintGridFormatOptions_lblScalePercent_Caption
     efnGUIStr_frmPrintGridFormatOptions_cboColor_List
-    efnGUIStr_frmPrintGridFormatOptions_cboPageNumbersPosition_List
+    efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_cboPageNumbersPosition_List
     efnGUIStr_frmPrintGridFormatOptions_cboGridAlign_List
     efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_Style
     efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_CustomStyle
@@ -70,6 +70,9 @@ Public Enum efnGUIString
     efnGUIStr_frmPrintGridFormatOptions_VariousChangeColorCommandButtons_ToolTipText
     efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidth_Message
     efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidthHeadersSeparatorLine_Message
+    ' frmPageNumbersOptions
+    efnGUIStr_frmPageNumbersOptions_Caption
+    
     ' frmSelectColumns
     efnGUIStr_frmSelectColumns_Caption
     efnGUIStr_frmSelectColumns_lblTitle_Caption
@@ -97,6 +100,7 @@ Public Enum efnGUIString
     efnGUIStr_frmPrintPreview_cmdClose_Caption
     efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_Print
     efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_PageSetup
+    efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_PageNumbersOptions
     efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_Format
     efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_OrientationPortrait
     efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_OrientationLandscape
@@ -284,11 +288,11 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "小标题字体:"
                 Case efnGUIStr_frmPrintGridFormatOptions_lblHeadingFont_Caption
                     GetLocalizedString = "标题或标题字体："
-                Case efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersFont_Caption
+                Case efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersFont_Caption
                     GetLocalizedString = "页码字体:"
-                Case efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersFormat_Caption
+                Case efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersFormat_Caption
                     GetLocalizedString = "页码格式:"
-                Case efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersPosition_Caption
+                Case efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersPosition_Caption
                     GetLocalizedString = "页码位置:"
                 Case efnGUIStr_frmPrintGridFormatOptions_lblGridAlign_Caption
                     GetLocalizedString = "网格对齐:"
@@ -305,7 +309,7 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                         Case 2
                             GetLocalizedString = "彩色"
                     End Select
-                Case efnGUIStr_frmPrintGridFormatOptions_cboPageNumbersPosition_List
+                Case efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_cboPageNumbersPosition_List
                     Select Case nIndex
                         Case 0
                             GetLocalizedString = "右下角"
@@ -358,9 +362,12 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                 Case efnGUIStr_frmPrintGridFormatOptions_VariousChangeColorCommandButtons_ToolTipText
                     GetLocalizedString = "修改颜色"
                 Case efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidth_Message
-                    GetLocalizedString = "线条的宽度值必须在1到10之间"
+                    GetLocalizedString = "线条的宽度值必须在1到80之间"
                 Case efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidthHeadersSeparatorLine_Message
-                    GetLocalizedString = "线条的宽度值必须在1到20之间"
+                    GetLocalizedString = "线条的宽度值必须在1到80之间"
+                ' frmPageNumbersOptions
+                Case efnGUIStr_frmPageNumbersOptions_Caption
+                    GetLocalizedString = "页码"
                 ' frmSelectColumns
                 Case efnGUIStr_frmSelectColumns_Caption
                     GetLocalizedString = "配置可见列"
@@ -412,6 +419,8 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "开始打印"
                 Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_PageSetup
                     GetLocalizedString = "页面设置"
+                Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_PageNumbersOptions
+                    GetLocalizedString = "页码"
                 Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_Format
                     GetLocalizedString = "显示格式"
                 Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_OrientationPortrait
@@ -692,11 +701,11 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "Fuente del sub-encabezado:"
                 Case efnGUIStr_frmPrintGridFormatOptions_lblHeadingFont_Caption
                     GetLocalizedString = "Fuente del encabezado o t韙ulo:"
-                Case efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersFont_Caption
+                Case efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersFont_Caption
                     GetLocalizedString = "Fuente de n鷐eros de p醙ina:"
-                Case efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersFormat_Caption
+                Case efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersFormat_Caption
                     GetLocalizedString = "Formato de n鷐eros de p醙ina:"
-                Case efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersPosition_Caption
+                Case efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersPosition_Caption
                     GetLocalizedString = "Posici髇 de n鷐eros de p醙ina:"
                 Case efnGUIStr_frmPrintGridFormatOptions_lblGridAlign_Caption
                     GetLocalizedString = "Alineaci髇 de grilla de datos:"
@@ -713,7 +722,7 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                         Case 2
                             GetLocalizedString = "Color"
                     End Select
-                Case efnGUIStr_frmPrintGridFormatOptions_cboPageNumbersPosition_List
+                Case efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_cboPageNumbersPosition_List
                     Select Case nIndex
                         Case 0
                             GetLocalizedString = "Abajo a la derecha"
@@ -746,7 +755,7 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                 Case efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_CustomStyle
                     GetLocalizedString = "Estilo personal"
                 Case efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_Customize
-                    GetLocalizedString = "Personalizado"
+                    GetLocalizedString = "Personalizar"
                 Case efnGUIStr_frmPrintGridFormatOptions_lblSample_Caption
                     GetLocalizedString = "Ejemplo:"
                 Case efnGUIStr_frmPrintGridFormatOptions_DrawSample_Column
@@ -766,9 +775,12 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                 Case efnGUIStr_frmPrintGridFormatOptions_VariousChangeColorCommandButtons_ToolTipText
                     GetLocalizedString = "Cambiar color"
                 Case efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidth_Message
-                    GetLocalizedString = "El valor del grosor de las l韓eas debe estar entre 1 y 10"
+                    GetLocalizedString = "El valor del grosor de las l韓eas debe estar entre 1 y 80"
                 Case efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidthHeadersSeparatorLine_Message
-                    GetLocalizedString = "El valor del grosor de las l韓eas debe estar entre 1 y 20"
+                    GetLocalizedString = "El valor del grosor de las l韓eas debe estar entre 1 y 80"
+                ' frmPageNumbersOptions
+                Case efnGUIStr_frmPageNumbersOptions_Caption
+                    GetLocalizedString = "Opciones de n鷐eros de p醙ina"
                 ' frmSelectColumns
                 Case efnGUIStr_frmSelectColumns_Caption
                     GetLocalizedString = "Configurar columnas a ver"
@@ -820,6 +832,8 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "Imprimir"
                 Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_PageSetup
                     GetLocalizedString = "Configurar p醙ina"
+                Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_PageNumbersOptions
+                    GetLocalizedString = "Opciones de n鷐eros de p醙ina"
                 Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_Format
                     GetLocalizedString = "Formato"
                 Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_OrientationPortrait
@@ -1100,11 +1114,11 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "Sub-heading font:"
                 Case efnGUIStr_frmPrintGridFormatOptions_lblHeadingFont_Caption
                     GetLocalizedString = "Heading or title font:"
-                Case efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersFont_Caption
+                Case efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersFont_Caption
                     GetLocalizedString = "Page numbers font:"
-                Case efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersFormat_Caption
+                Case efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersFormat_Caption
                     GetLocalizedString = "Page numbers format:"
-                Case efnGUIStr_frmPrintGridFormatOptions_lblPageNumbersPosition_Caption
+                Case efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_lblPageNumbersPosition_Caption
                     GetLocalizedString = "Page numbers position:"
                 Case efnGUIStr_frmPrintGridFormatOptions_lblGridAlign_Caption
                     GetLocalizedString = "Grid alignment:"
@@ -1121,7 +1135,7 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                         Case 2
                             GetLocalizedString = "Color"
                     End Select
-                Case efnGUIStr_frmPrintGridFormatOptions_cboPageNumbersPosition_List
+                Case efnGUIStr_frmPrintGridFormatOptions_frmPageNumbersOptions_cboPageNumbersPosition_List
                     Select Case nIndex
                         Case 0
                             GetLocalizedString = "Bottom right"
@@ -1154,7 +1168,7 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                 Case efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_CustomStyle
                     GetLocalizedString = "Custom style"
                 Case efnGUIStr_frmPrintGridFormatOptions_cboStyle_List_Customize
-                    GetLocalizedString = "Customized"
+                    GetLocalizedString = "Customize"
                 Case efnGUIStr_frmPrintGridFormatOptions_lblSample_Caption
                     GetLocalizedString = "Sample:"
                 Case efnGUIStr_frmPrintGridFormatOptions_DrawSample_Column
@@ -1174,9 +1188,12 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                 Case efnGUIStr_frmPrintGridFormatOptions_VariousChangeColorCommandButtons_ToolTipText
                     GetLocalizedString = "Change color"
                 Case efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidth_Message
-                    GetLocalizedString = "The thickness value of the lines must be between 1 and 10"
+                    GetLocalizedString = "The thickness value of the lines must be between 1 and 80"
                 Case efnGUIStr_frmPrintGridFormatOptions_ValidateLineWidthHeadersSeparatorLine_Message
-                    GetLocalizedString = "The thickness value of the lines must be between 1 and 20"
+                    GetLocalizedString = "The thickness value of the lines must be between 1 and 80"
+                ' frmPageNumbersOptions
+                Case efnGUIStr_frmPageNumbersOptions_Caption
+                    GetLocalizedString = "Page numbers options"
                 ' frmSelectColumns
                 Case efnGUIStr_frmSelectColumns_Caption
                     GetLocalizedString = "Configure visible columns"
@@ -1228,6 +1245,8 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "Print"
                 Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_PageSetup
                     GetLocalizedString = "Page setup"
+                Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_PageNumbersOptions
+                    GetLocalizedString = "Page numbers options"
                 Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_Format
                     GetLocalizedString = "Format"
                 Case efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_OrientationPortrait
