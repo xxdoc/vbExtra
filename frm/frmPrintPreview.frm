@@ -66,6 +66,12 @@ Begin VB.Form frmPrintPreview
       TabStop         =   0   'False
       Top             =   0
       Width           =   16872
+      Begin VB.Timer tmrIgnoreMouseWheelEvents 
+         Enabled         =   0   'False
+         Interval        =   100
+         Left            =   540
+         Top             =   3492
+      End
       Begin VB.Timer tmrShowPage 
          Enabled         =   0   'False
          Interval        =   1
@@ -1087,6 +1093,10 @@ Private Sub mnuView6p_Click()
     SelectView efnViewButtonSevealPages, 2
 End Sub
 
+Private Sub MouseWheelEnabler1_MouseWheelRotation(Direction As Long)
+
+End Sub
+
 Private Sub picPage_Click(Index As Integer)
     Dim iLng As Long
     
@@ -1837,11 +1847,11 @@ Private Sub ShowPages()
     
     If picPagesContainer.Height > mAvailableScreenHeightSpace Then
         picPagesContainer.Top = tbrTop.Height
-        VScroll1.Max = (picPagesContainer.Height - mAvailableScreenHeightSpace) / mAvailableScreenHeightSpace * 30 + 1
+        VScroll1.Max = ((picPagesContainer.Height - mAvailableScreenHeightSpace) / mAvailableScreenHeightSpace * 300 + 1)
         VScroll1.Min = 0
         VScroll1.Value = 0
-        VScroll1.SmallChange = 3
-        VScroll1.LargeChange = 20
+        VScroll1.SmallChange = 15
+        VScroll1.LargeChange = 200
         VScroll1.Visible = True
         VScroll1.ZOrder
         mAvailableScreenWidthSpace = Me.ScaleWidth - VScroll1.Width
@@ -1929,6 +1939,10 @@ Public Sub RefreshPreview()
     mRefreshed = True
 End Sub
 
+Private Sub tmrIgnoreMouseWheelEvents_Timer()
+    tmrIgnoreMouseWheelEvents.Enabled = False
+End Sub
+
 Private Sub tmrPopupcboChangeIconsSize_Timer()
     tmrPopupcboChangeIconsSize.Enabled = False
     
@@ -1981,7 +1995,7 @@ Private Sub txtPage_KeyPress(KeyAscii As Integer)
 End Sub
 
 Private Sub VScroll1_Change()
-    picPagesContainer.Top = tbrTop.Height - VScroll1.Value / 30 * mAvailableScreenHeightSpace
+    picPagesContainer.Top = tbrTop.Height - VScroll1.Value / 300 * mAvailableScreenHeightSpace
 End Sub
 
 Private Sub VScroll1_Scroll()
@@ -2298,23 +2312,44 @@ Public Property Get ScalePercent() As Long
 End Property
 
 Private Sub mMouseWheel_MouseWheelRotation(Direction As Long, Handled As Boolean)
-    
+    If tmrIgnoreMouseWheelEvents.Enabled Then Exit Sub
     If VScroll1.Visible Then
         If Direction = 1 Then
             If (VScroll1.Value + VScroll1.SmallChange) <= VScroll1.Max Then
                 VScroll1.Value = VScroll1.Value + VScroll1.SmallChange
             Else
-                VScroll1.Value = VScroll1.Max
+                If VScroll1.Value = VScroll1.Max Then
+                    If mCurrentPageNumber < PrinterExCurrentDocument.PageCount Then
+                        mCurrentPageNumber = mCurrentPageNumber + 1
+                        ShowPages
+                        VScroll1.Value = VScroll1.Min
+                        tmrIgnoreMouseWheelEvents.Enabled = False
+                        tmrIgnoreMouseWheelEvents.Enabled = True
+                    End If
+                Else
+                    VScroll1.Value = VScroll1.Max
+                End If
             End If
         Else
             If (VScroll1.Value - VScroll1.SmallChange) >= VScroll1.Min Then
                 VScroll1.Value = VScroll1.Value - VScroll1.SmallChange
             Else
-                VScroll1.Value = VScroll1.Min
+                If VScroll1.Value = VScroll1.Min Then
+                    If mCurrentPageNumber > 1 Then
+                        mCurrentPageNumber = mCurrentPageNumber - 1
+                        ShowPages
+                        VScroll1.Value = VScroll1.Max
+                        tmrIgnoreMouseWheelEvents.Enabled = False
+                        tmrIgnoreMouseWheelEvents.Enabled = True
+                    End If
+                Else
+                    VScroll1.Value = VScroll1.Min
+                End If
             End If
         End If
         Handled = True
     End If
+    
 End Sub
 
 Private Sub PositionControls()
