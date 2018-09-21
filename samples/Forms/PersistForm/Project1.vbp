@@ -1,9 +1,9 @@
 Type=Exe
-Form=frmFormPersistanceTest.frm
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#F:\WINDOWS\system32\stdole2.tlb#OLE Automation
-Object={F22668DE-E08D-467B-8E41-13900013BD5F}#2.0#0; vbExtra2.ocx
-IconForm="frmFormPersistanceTest"
-Startup="frmFormPersistanceTest"
+Form=frmFormPersistenceTest.frm
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#F:\WINDOWS\system32\STDOLE2.TLB#OLE Automation
+Object={F22668DE-E08D-467B-8E41-13900013BD5F}#2.5#0; vbExtra2.ocx
+IconForm="frmFormPersistenceTest"
+Startup="frmFormPersistenceTest"
 HelpFile=""
 Title="Project1"
 Command32=""

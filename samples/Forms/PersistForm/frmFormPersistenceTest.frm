@@ -1,6 +1,6 @@
 VERSION 5.00
-Begin VB.Form frmFormPersistanceTest 
-   Caption         =   "Form persistance test"
+Begin VB.Form frmFormPersistenceTest 
+   Caption         =   "Form persistence test"
    ClientHeight    =   3132
    ClientLeft      =   5472
    ClientTop       =   4740
@@ -19,7 +19,7 @@ Begin VB.Form frmFormPersistanceTest
    ScaleWidth      =   5376
    Begin VB.Label Label1 
       Alignment       =   2  'Center
-      Caption         =   "To have 'persistance' means that the form will remember the size and position the next time"
+      Caption         =   "To have 'persistence' means that the form will remember the size and position the next time"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   12
@@ -36,7 +36,7 @@ Begin VB.Form frmFormPersistanceTest
       Width           =   3036
    End
 End
-Attribute VB_Name = "frmFormPersistanceTest"
+Attribute VB_Name = "frmFormPersistenceTest"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
