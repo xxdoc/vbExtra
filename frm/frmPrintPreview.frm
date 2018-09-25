@@ -3,10 +3,10 @@ Begin VB.Form frmPrintPreview
    BackColor       =   &H80000010&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "# Print preview"
-   ClientHeight    =   8688
-   ClientLeft      =   2700
-   ClientTop       =   2484
-   ClientWidth     =   12336
+   ClientHeight    =   6828
+   ClientLeft      =   3600
+   ClientTop       =   1248
+   ClientWidth     =   9648
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   7.8
@@ -22,10 +22,31 @@ Begin VB.Form frmPrintPreview
    LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   8688
-   ScaleWidth      =   12336
+   ScaleHeight     =   6828
+   ScaleWidth      =   9648
    ShowInTaskbar   =   0   'False
-   Begin VB.Timer tmrPopupcboChangeIconsSize 
+   Begin VB.PictureBox picStatus 
+      BackColor       =   &H80000010&
+      BorderStyle     =   0  'None
+      Height          =   264
+      Left            =   216
+      ScaleHeight     =   264
+      ScaleWidth      =   3648
+      TabIndex        =   20
+      Top             =   9900
+      Width           =   3648
+      Begin VB.Label lblStatus 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         ForeColor       =   &H8000000E&
+         Height          =   192
+         Left            =   0
+         TabIndex        =   21
+         Top             =   0
+         Width           =   48
+      End
+   End
+   Begin VB.Timer tmrCheckPopupMenu 
       Enabled         =   0   'False
       Interval        =   1
       Left            =   504
@@ -36,7 +57,7 @@ Begin VB.Form frmPrintPreview
       Default         =   -1  'True
       Height          =   405
       Left            =   17850
-      TabIndex        =   7
+      TabIndex        =   3
       TabStop         =   0   'False
       Top             =   11940
       Width           =   945
@@ -62,10 +83,22 @@ Begin VB.Form frmPrintPreview
       Left            =   0
       ScaleHeight     =   13752
       ScaleWidth      =   16872
-      TabIndex        =   0
+      TabIndex        =   10
       TabStop         =   0   'False
       Top             =   0
       Width           =   16872
+      Begin VB.Timer tmrUnload 
+         Enabled         =   0   'False
+         Interval        =   1
+         Left            =   1332
+         Top             =   3492
+      End
+      Begin VB.Timer tmrIgnoreKeysUpDown 
+         Enabled         =   0   'False
+         Interval        =   400
+         Left            =   936
+         Top             =   3492
+      End
       Begin VB.Timer tmrIgnoreMouseWheelEvents 
          Enabled         =   0   'False
          Interval        =   100
@@ -93,7 +126,7 @@ Begin VB.Form frmPrintPreview
          PicHeight24     =   30
          PicHeight30     =   36
          PicHeight36     =   44
-         ButtonsCount    =   16
+         ButtonsCount    =   21
          ButtonWidth1    =   80
          ButtonStyle1    =   4
          ButtonKey2      =   "Print"
@@ -102,6 +135,7 @@ Begin VB.Form frmPrintPreview
          ButtonPic242    =   "frmPrintPreview.frx":0C20
          ButtonPic302    =   "frmPrintPreview.frx":173A
          ButtonPic362    =   "frmPrintPreview.frx":26BC
+         ButtonWidth2    =   512
          ButtonToolTipText2=   "# Print"
          ButtonKey3      =   "PageSetup"
          ButtonPic163    =   "frmPrintPreview.frx":3DBE
@@ -109,6 +143,7 @@ Begin VB.Form frmPrintPreview
          ButtonPic243    =   "frmPrintPreview.frx":49D2
          ButtonPic303    =   "frmPrintPreview.frx":54EC
          ButtonPic363    =   "frmPrintPreview.frx":646E
+         ButtonWidth3    =   512
          ButtonToolTipText3=   "# Page setup"
          ButtonKey4      =   "PageNumbers"
          ButtonPic164    =   "frmPrintPreview.frx":7B70
@@ -124,6 +159,7 @@ Begin VB.Form frmPrintPreview
          ButtonPic245    =   "frmPrintPreview.frx":C536
          ButtonPic305    =   "frmPrintPreview.frx":D050
          ButtonPic365    =   "frmPrintPreview.frx":DFD2
+         ButtonWidth5    =   512
          ButtonToolTipText5=   "# Format"
          ButtonKey6      =   "OrientationLabelSpace"
          ButtonWidth6    =   1100
@@ -135,6 +171,7 @@ Begin VB.Form frmPrintPreview
          ButtonPic247    =   "frmPrintPreview.frx":102E8
          ButtonPic307    =   "frmPrintPreview.frx":10E02
          ButtonPic367    =   "frmPrintPreview.frx":11D84
+         ButtonWidth7    =   512
          ButtonStyle7    =   2
          ButtonToolTipText7=   "# Orientation portrait"
          ButtonKey8      =   "OrientationLandscape"
@@ -143,6 +180,7 @@ Begin VB.Form frmPrintPreview
          ButtonPic248    =   "frmPrintPreview.frx":1409A
          ButtonPic308    =   "frmPrintPreview.frx":14BB4
          ButtonPic368    =   "frmPrintPreview.frx":15B36
+         ButtonWidth8    =   512
          ButtonStyle8    =   2
          ButtonToolTipText8=   "# Orientation landscape"
          ButtonKey9      =   "ViewLabelSpace"
@@ -155,6 +193,7 @@ Begin VB.Form frmPrintPreview
          ButtonPic2410   =   "frmPrintPreview.frx":17E4C
          ButtonPic3010   =   "frmPrintPreview.frx":18966
          ButtonPic3610   =   "frmPrintPreview.frx":198E8
+         ButtonWidth10   =   512
          ButtonStyle10   =   2
          ButtonToolTipText10=   "# View normal page size"
          ButtonKey11     =   "ViewScreenWidth"
@@ -164,6 +203,7 @@ Begin VB.Form frmPrintPreview
          ButtonPic2411   =   "frmPrintPreview.frx":1BBFE
          ButtonPic3011   =   "frmPrintPreview.frx":1C718
          ButtonPic3611   =   "frmPrintPreview.frx":1D69A
+         ButtonWidth11   =   512
          ButtonStyle11   =   2
          ButtonToolTipText11=   "# View page adjusted to the screen width"
          ButtonChecked12 =   -1  'True
@@ -174,6 +214,7 @@ Begin VB.Form frmPrintPreview
          ButtonPic2412   =   "frmPrintPreview.frx":1F9B0
          ButtonPic3012   =   "frmPrintPreview.frx":204CA
          ButtonPic3612   =   "frmPrintPreview.frx":2144C
+         ButtonWidth12   =   512
          ButtonStyle12   =   2
          ButtonToolTipText12=   "# View page adjusted to the screen height"
          ButtonEnabled13 =   0   'False
@@ -184,6 +225,7 @@ Begin VB.Form frmPrintPreview
          ButtonPic2413   =   "frmPrintPreview.frx":23762
          ButtonPic3013   =   "frmPrintPreview.frx":2427C
          ButtonPic3613   =   "frmPrintPreview.frx":251FE
+         ButtonWidth13   =   512
          ButtonStyle13   =   2
          ButtonToolTipText13=   "# View several pages"
          ButtonKey14     =   "ScaleSpace"
@@ -200,6 +242,7 @@ Begin VB.Form frmPrintPreview
          ButtonPic24Alt15=   "frmPrintPreview.frx":2B2C6
          ButtonPic30Alt15=   "frmPrintPreview.frx":2BDE0
          ButtonPic36Alt15=   "frmPrintPreview.frx":2CD62
+         ButtonWidth15   =   512
          ButtonToolTipText15=   "# Decrease fonts and elements size"
          ButtonKey16     =   "IncreaseScale"
          ButtonPic1616   =   "frmPrintPreview.frx":2E464
@@ -212,7 +255,41 @@ Begin VB.Form frmPrintPreview
          ButtonPic24Alt16=   "frmPrintPreview.frx":32E2A
          ButtonPic30Alt16=   "frmPrintPreview.frx":33944
          ButtonPic36Alt16=   "frmPrintPreview.frx":348C6
+         ButtonWidth16   =   512
          ButtonToolTipText16=   "# Increase fonts and elements size"
+         ButtonStyle17   =   4
+         ButtonKey18     =   "FirstPage"
+         ButtonTag18     =   "GoToPage"
+         ButtonPic1618   =   "frmPrintPreview.frx":35FC8
+         ButtonPic2018   =   "frmPrintPreview.frx":364CA
+         ButtonPic2418   =   "frmPrintPreview.frx":36BDC
+         ButtonPic3018   =   "frmPrintPreview.frx":376F6
+         ButtonPic3618   =   "frmPrintPreview.frx":38678
+         ButtonVisible18 =   0   'False
+         ButtonKey19     =   "PreviousPage"
+         ButtonTag19     =   "GoToPage"
+         ButtonPic1619   =   "frmPrintPreview.frx":39D7A
+         ButtonPic2019   =   "frmPrintPreview.frx":3A27C
+         ButtonPic2419   =   "frmPrintPreview.frx":3A98E
+         ButtonPic3019   =   "frmPrintPreview.frx":3B4A8
+         ButtonPic3619   =   "frmPrintPreview.frx":3C42A
+         ButtonVisible19 =   0   'False
+         ButtonKey20     =   "NextPage"
+         ButtonTag20     =   "GoToPage"
+         ButtonPic1620   =   "frmPrintPreview.frx":3DB2C
+         ButtonPic2020   =   "frmPrintPreview.frx":3E02E
+         ButtonPic2420   =   "frmPrintPreview.frx":3E740
+         ButtonPic3020   =   "frmPrintPreview.frx":3F25A
+         ButtonPic3620   =   "frmPrintPreview.frx":401DC
+         ButtonVisible20 =   0   'False
+         ButtonKey21     =   "LastPage"
+         ButtonTag21     =   "GoToPage"
+         ButtonPic1621   =   "frmPrintPreview.frx":418DE
+         ButtonPic2021   =   "frmPrintPreview.frx":41DE0
+         ButtonPic2421   =   "frmPrintPreview.frx":424F2
+         ButtonPic3021   =   "frmPrintPreview.frx":4300C
+         ButtonPic3621   =   "frmPrintPreview.frx":43F8E
+         ButtonVisible21 =   0   'False
          Begin VB.Timer tmrcboScalePercentChange 
             Enabled         =   0   'False
             Interval        =   5000
@@ -239,14 +316,14 @@ Begin VB.Form frmPrintPreview
             EndProperty
             Height          =   435
             Left            =   13680
-            TabIndex        =   18
+            TabIndex        =   1
             Top             =   36
             Width           =   2232
          End
          Begin vbExtra.ButtonEx cmdClose_2 
             Height          =   372
             Left            =   10200
-            TabIndex        =   17
+            TabIndex        =   2
             Top             =   96
             Visible         =   0   'False
             Width           =   348
@@ -280,8 +357,7 @@ Begin VB.Form frmPrintPreview
             Left            =   6624
             ScaleHeight     =   492
             ScaleWidth      =   1932
-            TabIndex        =   14
-            TabStop         =   0   'False
+            TabIndex        =   0
             Top             =   0
             Width           =   1932
             Begin VB.ComboBox cboScalePercent 
@@ -295,11 +371,11 @@ Begin VB.Form frmPrintPreview
                   Strikethrough   =   0   'False
                EndProperty
                Height          =   312
-               ItemData        =   "frmPrintPreview.frx":35FC8
+               ItemData        =   "frmPrintPreview.frx":45690
                Left            =   948
-               List            =   "frmPrintPreview.frx":35FE4
-               TabIndex        =   15
-               Text            =   "cboFontScale"
+               List            =   "frmPrintPreview.frx":456AC
+               TabIndex        =   7
+               Text            =   "cboScalePercent"
                Top             =   60
                Width           =   975
             End
@@ -317,7 +393,7 @@ Begin VB.Form frmPrintPreview
                EndProperty
                Height          =   348
                Left            =   36
-               TabIndex        =   16
+               TabIndex        =   6
                Top             =   96
                Width           =   804
             End
@@ -328,7 +404,7 @@ Begin VB.Form frmPrintPreview
             Caption         =   "# View:"
             Height          =   192
             Left            =   3780
-            TabIndex        =   13
+            TabIndex        =   5
             Top             =   108
             Width           =   624
             WordWrap        =   -1  'True
@@ -339,7 +415,7 @@ Begin VB.Form frmPrintPreview
             Caption         =   "# Page orientation:"
             Height          =   384
             Left            =   1764
-            TabIndex        =   12
+            TabIndex        =   4
             Top             =   36
             Width           =   876
             WordWrap        =   -1  'True
@@ -362,27 +438,31 @@ Begin VB.Form frmPrintPreview
          ButtonStyle1    =   4
          ButtonEnabled2  =   0   'False
          ButtonKey2      =   "FirstPage"
-         ButtonPic162    =   "frmPrintPreview.frx":36015
-         ButtonPic202    =   "frmPrintPreview.frx":36C67
-         ButtonPic242    =   "frmPrintPreview.frx":37F79
+         ButtonPic162    =   "frmPrintPreview.frx":456DD
+         ButtonPic202    =   "frmPrintPreview.frx":4632F
+         ButtonPic242    =   "frmPrintPreview.frx":47641
+         ButtonWidth2    =   626
          ButtonToolTipText2=   "# First page"
          ButtonEnabled3  =   0   'False
          ButtonKey3      =   "PreviousPage"
-         ButtonPic163    =   "frmPrintPreview.frx":39ACB
-         ButtonPic203    =   "frmPrintPreview.frx":3A71D
-         ButtonPic243    =   "frmPrintPreview.frx":3BA2F
+         ButtonPic163    =   "frmPrintPreview.frx":49193
+         ButtonPic203    =   "frmPrintPreview.frx":49DE5
+         ButtonPic243    =   "frmPrintPreview.frx":4B0F7
+         ButtonWidth3    =   626
          ButtonToolTipText3=   "# Previous page"
          ButtonEnabled4  =   0   'False
          ButtonKey4      =   "NextPage"
-         ButtonPic164    =   "frmPrintPreview.frx":3D581
-         ButtonPic204    =   "frmPrintPreview.frx":3E1D3
-         ButtonPic244    =   "frmPrintPreview.frx":3F4E5
+         ButtonPic164    =   "frmPrintPreview.frx":4CC49
+         ButtonPic204    =   "frmPrintPreview.frx":4D89B
+         ButtonPic244    =   "frmPrintPreview.frx":4EBAD
+         ButtonWidth4    =   626
          ButtonToolTipText4=   "# Next page"
          ButtonEnabled5  =   0   'False
          ButtonKey5      =   "LastPage"
-         ButtonPic165    =   "frmPrintPreview.frx":41037
-         ButtonPic205    =   "frmPrintPreview.frx":41C89
-         ButtonPic245    =   "frmPrintPreview.frx":42F9B
+         ButtonPic165    =   "frmPrintPreview.frx":506FF
+         ButtonPic205    =   "frmPrintPreview.frx":51351
+         ButtonPic245    =   "frmPrintPreview.frx":52663
+         ButtonWidth5    =   626
          ButtonToolTipText5=   "# Last page"
          Begin VB.PictureBox picPageNumber 
             BorderStyle     =   0  'None
@@ -399,10 +479,12 @@ Begin VB.Form frmPrintPreview
             Left            =   3440
             ScaleHeight     =   552
             ScaleWidth      =   2292
-            TabIndex        =   8
+            TabIndex        =   17
+            TabStop         =   0   'False
             Top             =   45
             Width           =   2295
             Begin VB.TextBox txtPage 
+               Alignment       =   1  'Right Justify
                Height          =   330
                Left            =   840
                TabIndex        =   9
@@ -415,7 +497,7 @@ Begin VB.Form frmPrintPreview
                Caption         =   "# of..."
                Height          =   204
                Left            =   1620
-               TabIndex        =   11
+               TabIndex        =   18
                Top             =   180
                Width           =   432
             End
@@ -425,18 +507,10 @@ Begin VB.Form frmPrintPreview
                Caption         =   "# Page:"
                Height          =   304
                Left            =   144
-               TabIndex        =   10
+               TabIndex        =   8
                Top             =   180
                Width           =   588
             End
-         End
-         Begin VB.Label lblPreparingDoc 
-            AutoSize        =   -1  'True
-            Height          =   204
-            Left            =   180
-            TabIndex        =   20
-            Top             =   144
-            Width           =   48
          End
       End
       Begin VB.Timer tmrtxtPageChanged 
@@ -462,7 +536,7 @@ Begin VB.Form frmPrintPreview
          Left            =   240
          ScaleHeight     =   828
          ScaleWidth      =   768
-         TabIndex        =   5
+         TabIndex        =   15
          TabStop         =   0   'False
          Top             =   720
          Visible         =   0   'False
@@ -471,7 +545,7 @@ Begin VB.Form frmPrintPreview
       Begin VB.VScrollBar VScroll1 
          Height          =   10155
          Left            =   15660
-         TabIndex        =   4
+         TabIndex        =   14
          TabStop         =   0   'False
          Top             =   420
          Width           =   315
@@ -496,7 +570,8 @@ Begin VB.Form frmPrintPreview
          Left            =   2988
          ScaleHeight     =   9912
          ScaleWidth      =   9252
-         TabIndex        =   2
+         TabIndex        =   12
+         TabStop         =   0   'False
          Top             =   660
          Visible         =   0   'False
          Width           =   9255
@@ -519,7 +594,7 @@ Begin VB.Form frmPrintPreview
             Left            =   0
             ScaleHeight     =   9768
             ScaleWidth      =   6888
-            TabIndex        =   3
+            TabIndex        =   13
             TabStop         =   0   'False
             Top             =   0
             Width           =   6915
@@ -538,7 +613,7 @@ Begin VB.Form frmPrintPreview
       Begin VB.HScrollBar HScroll1 
          Height          =   255
          Left            =   0
-         TabIndex        =   1
+         TabIndex        =   11
          TabStop         =   0   'False
          Top             =   10320
          Width           =   15435
@@ -554,15 +629,16 @@ Begin VB.Form frmPrintPreview
             Strikethrough   =   0   'False
          EndProperty
          Height          =   360
-         ItemData        =   "frmPrintPreview.frx":44AED
+         ItemData        =   "frmPrintPreview.frx":541B5
          Left            =   4980
-         List            =   "frmPrintPreview.frx":44AEF
+         List            =   "frmPrintPreview.frx":541B7
          Style           =   2  'Dropdown List
-         TabIndex        =   6
+         TabIndex        =   16
+         TabStop         =   0   'False
          Top             =   240
          Width           =   1335
       End
-      Begin VB.ComboBox cboChangeIconsSize 
+      Begin VB.ComboBox cboAlternativePopupMenu 
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   9.6
@@ -573,9 +649,12 @@ Begin VB.Form frmPrintPreview
             Strikethrough   =   0   'False
          EndProperty
          Height          =   312
+         ItemData        =   "frmPrintPreview.frx":541B9
          Left            =   9108
+         List            =   "frmPrintPreview.frx":541BB
          Style           =   2  'Dropdown List
          TabIndex        =   19
+         TabStop         =   0   'False
          Top             =   216
          Width           =   3240
       End
@@ -611,6 +690,13 @@ Begin VB.Form frmPrintPreview
       End
       Begin VB.Menu mnuIconsBig 
          Caption         =   "# Large icons"
+      End
+      Begin VB.Menu mnuIconsSep 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuIconsShowBottomToolBar 
+         Caption         =   "# Show bottom bar"
+         Checked         =   -1  'True
       End
    End
 End
@@ -680,10 +766,11 @@ Attribute mMouseWheel.VB_VarHelpID = -1
 Private mPrintFnObject As PrintFnObject
 Private mCurrentPageNumber As Long
 Private mAllowUserChangeScale As Boolean
-Private mAllowUserChangeOrientation As Boolean
+Private mPageOrientationButtonsVisible As Boolean
 Private mScalePercent As Long
 Private mMinScalePercent As Long
 Private mMaxScalePercent As Long
+Private mUseOneToolBar As Boolean
 
 Public Event PrepareDoc(Cancel As Boolean)
 Public Event FormatOptionsClick(ByRef Canceled As Boolean)
@@ -703,11 +790,19 @@ Private mClickChangeIconsSize_X As Single
 Private mFormatButtonToolTipText As String
 Private mAddedToScaleForRounding As Long
 Public DoNotLoad As Boolean
-Private mControlsPositioned As Boolean
 Private mCanceled As Boolean
+Private mLoading As Boolean
+Private mpicPageNumberVisible As Boolean
+Private mtbrTopIconsSize As Long
 
-Private Sub cboChangeIconsSize_Click()
-    SetToolBarIconsSize cboChangeIconsSize.ListIndex
+Private Sub cboAlternativePopupMenu_Click()
+    If cboAlternativePopupMenu.ListIndex < 4 Then
+        SetToolBarIconsSize cboAlternativePopupMenu.ListIndex
+    Else
+        If cboAlternativePopupMenu.ListIndex = 5 Then
+            mnuIconsShowBottomToolBar_Click
+        End If
+    End If
 End Sub
 
 Private Sub cboScalePercent_Change()
@@ -743,6 +838,10 @@ Private Sub cboScalePercent_Change()
     tbrTop.Buttons("DecreaseScale").Enabled = Val(cboScalePercent.Text) > mMinScalePercent
     tbrTop.Buttons("IncreaseScale").Enabled = Val(cboScalePercent.Text) < mMaxScalePercent
     
+    If Me.ActiveControl Is cboScalePercent Then
+        cboScalePercent.SelStart = 0
+        cboScalePercent.SelLength = Len(cboScalePercent.Text) - 1
+    End If
     sInside = False
 End Sub
 
@@ -760,6 +859,11 @@ End Sub
 Private Sub cboScalePercent_DropDown()
     tmrcboScalePercentChange.Enabled = False
     tmrcboScalePercentChange.Enabled = True
+End Sub
+
+Private Sub cboScalePercent_GotFocus()
+    cboScalePercent.SelStart = 0
+    cboScalePercent.SelLength = Len(cboScalePercent.Text) - 1
 End Sub
 
 Private Sub cboScalePercent_KeyPress(KeyAscii As Integer)
@@ -781,6 +885,11 @@ Private Sub cboScalePercent_KeyPress(KeyAscii As Integer)
         tmrcboScalePercentChange.Enabled = False
         tmrcboScalePercentChange.Enabled = True
     End If
+End Sub
+
+Private Sub cboScalePercent_LostFocus()
+    cboScalePercent.SelStart = Len(cboScalePercent.Text)
+    cboScalePercent.SelLength = 0
 End Sub
 
 Private Sub cboView_Click()
@@ -895,22 +1004,78 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
                     End If
                 End Select
         Case vbKeyDown
-            If VScroll1.Visible Then
-                If VScroll1.Value + VScroll1.SmallChange <= VScroll1.Max Then
-                    VScroll1.Value = VScroll1.Value + VScroll1.SmallChange
+            If Not Me.ActiveControl Is cboScalePercent Then
+                If VScroll1.Visible Then
+                    If VScroll1.Value + VScroll1.SmallChange <= VScroll1.Max Then
+                        VScroll1.Value = VScroll1.Value + VScroll1.SmallChange
+                        tmrIgnoreKeysUpDown.Enabled = False
+                        tmrIgnoreKeysUpDown.Enabled = True
+                    Else
+                        If VScroll1.Value <> VScroll1.Max Then
+                            VScroll1.Value = VScroll1.Max
+                        Else
+                            If Not tmrIgnoreKeysUpDown.Enabled Then
+                                If mCurrentPageNumber < PrinterExCurrentDocument.PageCount Then
+                                    mCurrentPageNumber = mCurrentPageNumber + 1
+                                    ShowPages
+                                End If
+                            End If
+                        End If
+                    End If
                 Else
-                    VScroll1.Value = VScroll1.Max
+                    If mCurrentPageNumber < PrinterExCurrentDocument.PageCount Then
+                        mCurrentPageNumber = mCurrentPageNumber + 1
+                        ShowPages
+                    End If
                 End If
             End If
         Case vbKeyUp
-            If VScroll1.Visible Then
-                If VScroll1.Value - VScroll1.SmallChange >= VScroll1.Min Then
-                    VScroll1.Value = VScroll1.Value - VScroll1.SmallChange
-                Else
-                    VScroll1.Value = VScroll1.Min
+            If Not Me.ActiveControl Is cboScalePercent Then
+                If VScroll1.Visible Then
+                    If VScroll1.Value - VScroll1.SmallChange >= VScroll1.Min Then
+                        VScroll1.Value = VScroll1.Value - VScroll1.SmallChange
+                        tmrIgnoreKeysUpDown.Enabled = False
+                        tmrIgnoreKeysUpDown.Enabled = True
+                    Else
+                        If VScroll1.Value <> VScroll1.Min Then
+                            VScroll1.Value = VScroll1.Min
+                        Else
+                            If Not tmrIgnoreKeysUpDown.Enabled Then
+                                If mCurrentPageNumber > 1 Then
+                                    mCurrentPageNumber = mCurrentPageNumber - 1
+                                    ShowPages
+                                    If VScroll1.Visible And Not ((Shift And vbCtrlMask) = vbCtrlMask) Then
+                                        VScroll1.Value = VScroll1.Max
+                                    End If
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+            Else
+                If mCurrentPageNumber > 1 Then
+                    mCurrentPageNumber = mCurrentPageNumber - 1
+                    ShowPages
                 End If
             End If
-        
+        Case vbKeyRight
+            If Not Me.ActiveControl Is txtPage Then
+                If Not Me.ActiveControl Is cboScalePercent Then
+                    If mCurrentPageNumber < PrinterExCurrentDocument.PageCount Then
+                        mCurrentPageNumber = mCurrentPageNumber + 1
+                        ShowPages
+                    End If
+                End If
+            End If
+        Case vbKeyLeft
+            If Not Me.ActiveControl Is txtPage Then
+                If Not Me.ActiveControl Is cboScalePercent Then
+                    If mCurrentPageNumber > 1 Then
+                        mCurrentPageNumber = mCurrentPageNumber - 1
+                        ShowPages
+                    End If
+                End If
+            End If
     End Select
 End Sub
 
@@ -940,22 +1105,21 @@ Private Sub Form_Load()
     
     If mPrintFnObject Is Nothing Then Set mPrintFnObject = New PrintFnObject
     
-    mAllowUserChangeOrientation = True
+    mPageOrientationButtonsVisible = True
     
     If (mPrintFnObject.PageSetupFlags And cdePSDisableOrientation) <> 0 Then
-        AllowUserChangeOrientation = False
+        PageOrientationButtonsVisible = False
     End If
     
-    picPageNumber.Visible = False
+'    picPageNumber.Visible = False
     
     Set mMouseWheel = New MouseWheelNotifierObject
     mMouseWheel.SetForm Me
     
-    Me.Caption = ClientProductName & " - " & GetLocalizedString(efnGUIStr_frmPrintPreview_Caption)
     Set cboView.Font = GetSystemFont(vxMenuFont)
     
     cboView.Visible = False
-    cboChangeIconsSize.Visible = False
+    cboAlternativePopupMenu.Visible = False
     
     cboScalePercent.ListIndex = 2
     For c = cboScalePercent.ListCount - 1 To 0 Step -1
@@ -999,10 +1163,12 @@ Private Sub Form_Load()
         Load shpPageShadow(c)
     Next c
     cboScalePercent.SelStart = Len(cboScalePercent.Text)
+    cboScalePercent.SelLength = 0
     
     cboView.Top = tbrTop.Height - cboView.Height
     ShowPages
     mRaiseFontEvent = True
+    PositionControls
 End Sub
 
 Private Sub Form_Resize()
@@ -1018,37 +1184,17 @@ Private Sub Form_Resize()
     
     iWidth = (picPageNumber.Width + tbrBottom.ButtonWidth * 4)
     tbrBottom.Buttons(1).Width = (Me.ScaleWidth - iWidth) / 2 + picPageNumber.Width
-    picPageNumber.Left = tbrBottom.Buttons(2).Left - tbrBottom.ButtonWidth - picPageNumber.Width
     
-    VScroll1.Move Me.ScaleWidth - VScroll1.Width, tbrTop.Height, GetSystemMetrics(SM_CXVSCROLL) * Screen.TwipsPerPixelX, Me.ScaleHeight - tbrTop.Height - tbrBottom.Height
+    VScroll1.Move Me.ScaleWidth - VScroll1.Width, tbrTop.Height, GetSystemMetrics(SM_CXVSCROLL) * Screen.TwipsPerPixelX, Me.ScaleHeight - tbrTop.Height - IIf(mUseOneToolBar, 0, tbrBottom.Height)
     
     If VScroll1.Visible Then
-        HScroll1.Move 0, tbrBottom.Top - HScroll1.Height, Me.ScaleWidth - VScroll1.Width, GetSystemMetrics(SM_CXVSCROLL)
+        HScroll1.Move 0, IIf(mUseOneToolBar, Me.ScaleHeight, tbrBottom.Top) - HScroll1.Height, Me.ScaleWidth - VScroll1.Width, GetSystemMetrics(SM_CXVSCROLL)
     Else
-        HScroll1.Move 0, tbrBottom.Top - HScroll1.Height, Me.ScaleWidth, GetSystemMetrics(SM_CXVSCROLL)
-    End If
-    
-    iLng = 10600 + (Me.ScaleWidth - 10600) / 2
-    If iLng < 0 Then iLng = 0
-    cmdClose.Left = iLng
-    If cmdClose.Left + cmdClose.Width + 200 > Me.ScaleWidth Then
-        cmdClose.Left = Me.ScaleWidth - cmdClose.Width - 200
-    End If
-    cmdClose_2.Left = cmdClose.Left
-    
-    If cmdClose.Left < (tbrTop.Buttons("IncreaseScale").Left + tbrTop.ButtonWidth + 100) Then
-        cmdClose.Visible = False
-        cmdClose_2.Visible = False
-    Else
-        If gButtonsStyle <> -1 Then
-            cmdClose_2.Visible = True
-        Else
-            cmdClose.Visible = True
-        End If
+        HScroll1.Move 0, IIf(mUseOneToolBar, Me.ScaleHeight, tbrBottom.Top) - HScroll1.Height, Me.ScaleWidth, GetSystemMetrics(SM_CXVSCROLL)
     End If
     
     PositionControls
-    'picPagesContainer.Move 0, tbrTop.Height, Me.ScaleWidth, Me.ScaleHeight - tbrTop.Height - tbrBottom.Height
+    
 End Sub
 
 
@@ -1061,6 +1207,30 @@ Private Sub Form_Unload(Cancel As Integer)
     DoNotLoad = False
 End Sub
 
+Private Sub lblPage_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If picPageNumber.Container Is tbrTop Then
+        tbrTop_MouseUp Button, Shift, x, y
+    End If
+End Sub
+
+Private Sub lblPageCount_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If picPageNumber.Container Is tbrTop Then
+        tbrTop_MouseUp Button, Shift, x, y
+    End If
+End Sub
+
+Private Sub lblPageOrientation_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    tbrTop_MouseUp Button, Shift, x, y
+End Sub
+
+Private Sub lblScalePercent_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    tbrTop_MouseUp Button, Shift, x, y
+End Sub
+
+Private Sub lblView_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    tbrTop_MouseUp Button, Shift, x, y
+End Sub
+
 Private Sub mnuIconsAuto_Click()
     SetToolBarIconsSize efnISAuto
 End Sub
@@ -1071,6 +1241,14 @@ End Sub
 
 Private Sub mnuIconsMedium_Click()
     SetToolBarIconsSize efnISMedium
+End Sub
+
+Private Sub mnuIconsShowBottomToolBar_Click()
+    mnuIconsShowBottomToolBar.Checked = Not mnuIconsShowBottomToolBar.Checked
+    mUseOneToolBar = Not mnuIconsShowBottomToolBar.Checked
+    Form_Resize
+    tmrShowPage.Enabled = True
+    SaveSetting AppNameForRegistry, "Preferences", "PrintPreview_ShowBottomToolBar", CStr(CLng(mUseOneToolBar))
 End Sub
 
 Private Sub mnuIconsSmall_Click()
@@ -1097,15 +1275,58 @@ Private Sub MouseWheelEnabler1_MouseWheelRotation(Direction As Long)
 
 End Sub
 
-Private Sub picPage_Click(Index As Integer)
+Private Sub picPage_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
     Dim iLng As Long
     
-    iLng = Val(picPage(Index).Tag)
-    If iLng > 0 Then
-        mCurrentPageNumber = iLng
-        SelectView efnViewButtonFitToHeight
+    If ((Shift And vbCtrlMask) = vbCtrlMask) Or ((Shift And vbShiftMask) = vbShiftMask) Or Button = vbRightButton Then
+        If mPageView = efnViewFitHeight Then
+            iLng = 0
+            If Not PrinterExCurrentDocument Is Nothing Then
+                If PrinterExCurrentDocument.PageCount > 6 Then
+                    iLng = 3
+                ElseIf PrinterExCurrentDocument.PageCount > 3 Then
+                    iLng = 2
+                ElseIf PrinterExCurrentDocument.PageCount > 2 Then
+                    iLng = 1
+                End If
+            End If
+            SelectView efnViewButtonSevealPages, iLng
+        ElseIf mPageView = efnViewNormal Then
+            SelectView efnViewButtonFitToHeight
+        ElseIf mPageView = efnViewFitWidth Then
+            SelectView efnViewButtonNormal
+        Else
+            ' nothing
+        End If
+    Else
+        If mPageView = efnViewFitHeight Then
+            iLng = Val(picPage(Index).Tag)
+            If iLng > 0 Then
+                mCurrentPageNumber = iLng
+                SelectView efnViewButtonNormal
+            End If
+        ElseIf mPageView = efnViewNormal Then
+            SelectView efnViewButtonFitToWidth
+        ElseIf mPageView = efnViewFitWidth Then
+            ' nothing
+        Else
+            iLng = Val(picPage(Index).Tag)
+            If iLng > 0 Then
+                mCurrentPageNumber = iLng
+                SelectView efnViewButtonFitToHeight
+            End If
+        End If
     End If
-    
+End Sub
+
+Private Sub picPageNumber_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If picPageNumber.Container Is tbrTop Then
+        tbrTop_MouseUp Button, Shift, x, y
+    End If
+End Sub
+
+Private Sub picScalePercent_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    tbrTop_MouseUp Button, Shift, x, y
 End Sub
 
 Private Sub tbrBottom_ButtonClick(Button As ToolBarDAButton)
@@ -1145,6 +1366,10 @@ Private Sub EnableDisablePageNavigation()
         tbrBottom.Buttons("NextPage").Enabled = False
         tbrBottom.Buttons("LastPage").Enabled = False
     End If
+    tbrTop.Buttons("FirstPage").Enabled = tbrBottom.Buttons("FirstPage").Enabled
+    tbrTop.Buttons("PreviousPage").Enabled = tbrBottom.Buttons("PreviousPage").Enabled
+    tbrTop.Buttons("NextPage").Enabled = tbrBottom.Buttons("NextPage").Enabled
+    tbrTop.Buttons("LastPage").Enabled = tbrBottom.Buttons("LastPage").Enabled
     
     If mPagesOnScreen = 1 Then
         tbrBottom.Buttons("PreviousPage").ToolTipText = GetLocalizedString(efnGUIStr_frmPrintPreview_tbrBottom_Buttons_ToolTipText_PreviousPage_Singular)
@@ -1165,7 +1390,8 @@ Private Sub EnableDisablePageNavigation()
             tbrBottom.Buttons("NextPage").ToolTipText = GetLocalizedString(efnGUIStr_frmPrintPreview_tbrBottom_Buttons_ToolTipText_NextPage_Plural)
         End If
     End If
-    
+    tbrTop.Buttons("PreviousPage").ToolTipText = tbrBottom.Buttons("PreviousPage").ToolTipText
+    tbrTop.Buttons("NextPage").ToolTipText = tbrBottom.Buttons("NextPage").ToolTipText
 End Sub
 
 Private Sub tbrTop_ButtonClick(Button As ToolBarDAButton)
@@ -1188,6 +1414,8 @@ Private Sub tbrTop_ButtonClick(Button As ToolBarDAButton)
     Else
         If Button.Tag = "view" Then
             SelectView Button.Index - tbrTop.Buttons("ViewNormalSize").Index
+        ElseIf Button.Tag = "GoToPage" Then
+            tbrBottom_ButtonClick Button
         Else
             Select Case Button.Key
                 Case "Print"
@@ -1354,6 +1582,15 @@ Private Sub ShowPages()
     'Static sFirst As Boolean
     
     'If Not sFirst Then
+        
+    If mLoading Then
+        If mUserCanChangeIconsSize Then
+            iAux = CLng(GetSetting(AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", efnISAuto))
+            If iAux <> efnISAuto Then
+                SetToolBarIconsSize iAux
+            End If
+        End If
+    End If
     
     If Not PrinterExCurrentDocument Is Nothing Then
         If PrinterExCurrentDocument.PageCount = 0 Then
@@ -1444,10 +1681,10 @@ Private Sub ShowPages()
     picPagesContainer.Visible = False
     HScroll1.Visible = False
     VScroll1.Visible = False
-    picPage(0).Move 300, 300
+    picPage(0).Move 300, 150
     iUnits = mPrintFnObject.Units
     mPrintFnObject.Units = vbMillimeters
-    mAvailableScreenHeightSpace = Me.ScaleHeight - tbrTop.Height - tbrBottom.Height
+    mAvailableScreenHeightSpace = Me.ScaleHeight - tbrTop.Height - IIf(mUseOneToolBar, 0, tbrBottom.Height)
     
     If Not PrinterExCurrentDocument Is Nothing Then
         If PrinterExCurrentDocument.PageCount = 0 Then
@@ -1486,19 +1723,19 @@ Private Sub ShowPages()
             picPage(0).Width = Me.ScaleWidth - VScroll1.Width - 600
             iProportion = picPage(0).Width / iPagesWidth(0)
             picPage(0).Height = iPagesHeight(0) * picPage(0).Width / iPagesWidth(0)
-            picPagesContainer.Move picPagesContainer.Left, picPagesContainer.Top, picPage(0).Width + 600, picPage(0).Height + 600
+            picPagesContainer.Move picPagesContainer.Left, picPagesContainer.Top, picPage(0).Width + 600, picPage(0).Height + 300
             If Not PrinterExCurrentDocument Is Nothing Then
                 AuxPaintPage mCurrentPageNumber, iPagesWidth(0), iPagesHeight(0), picPage(0), PrinterExCurrentDocument.ColorMode = vbPRCMMonochrome
             End If
             txtPage_Text = mCurrentPageNumber
         Case efnViewFitHeight
-            picPage(0).Height = mAvailableScreenHeightSpace - 600
+            picPage(0).Height = mAvailableScreenHeightSpace - 300
             picPage(0).Width = iPagesWidth(0) * picPage(0).Height / iPagesHeight(0)
             If picPage(0).Width > (Me.ScaleWidth - 600) Then
                 picPage(0).Width = Me.ScaleWidth - 600
                 picPage(0).Height = iPagesHeight(0) * picPage(0).Width / iPagesWidth(0)
             End If
-            picPagesContainer.Move picPagesContainer.Left, picPagesContainer.Top, picPage(0).Width + 600, picPage(0).Height + 600
+            picPagesContainer.Move picPagesContainer.Left, picPagesContainer.Top, picPage(0).Width + 600, picPage(0).Height + 300
             If Not PrinterExCurrentDocument Is Nothing Then
                 AuxPaintPage mCurrentPageNumber, iPagesWidth(0), iPagesHeight(0), picPage(0), PrinterExCurrentDocument.ColorMode = vbPRCMMonochrome
             End If
@@ -1518,7 +1755,7 @@ Private Sub ShowPages()
                 iMaxHeight = iPagesHeight(1)
             End If
             
-            iProportion = (mAvailableScreenHeightSpace - 600) / iMaxHeight
+            iProportion = (mAvailableScreenHeightSpace - 300) / iMaxHeight
             
             iTotalWidth = iPagesWidth(0) + iPagesWidth(1)
             
@@ -1572,7 +1809,7 @@ Private Sub ShowPages()
                 iMaxHeight = iPagesHeight(2)
             End If
             
-            iProportion = (mAvailableScreenHeightSpace - 600) / iMaxHeight
+            iProportion = (mAvailableScreenHeightSpace - 300) / iMaxHeight
             
             iTotalWidth = iPagesWidth(0) + iPagesWidth(1) + iPagesWidth(2)
             
@@ -1629,9 +1866,9 @@ Private Sub ShowPages()
                 End If
             Next c
             
-            iProportion = (mAvailableScreenHeightSpace - 900) / (iMaxRowHeight(0) + iMaxRowHeight(1))
+            iProportion = (mAvailableScreenHeightSpace - 600) / (iMaxRowHeight(0) + iMaxRowHeight(1))
             
-            If iTotalRowWidth(0) * iProportion >= iTotalRowWidth(1) Then
+            If iTotalRowWidth(0) >= iTotalRowWidth(1) Then
                 If iTotalRowWidth(0) * iProportion > (Me.ScaleWidth - 1200) Then
                     iProportion = (Me.ScaleWidth - 1200) / iTotalRowWidth(0)
                 End If
@@ -1655,9 +1892,9 @@ Private Sub ShowPages()
                     End If
                     
                     If Int(c / 3) = 1 Then
-                        picPage(c).Top = picPage(0).Top + iMaxRowHeight(0) * iProportion + 300
+                        picPage(c).Top = picPage(0).Top + iMaxRowHeight(0) * iProportion + 150
                     Else
-                        picPage(c).Top = (mAvailableScreenHeightSpace - 300 - ((iMaxRowHeight(0) + iMaxRowHeight(1)) * iProportion)) / 2
+                        picPage(c).Top = (mAvailableScreenHeightSpace - 150 - ((iMaxRowHeight(0) + iMaxRowHeight(1)) * iProportion)) / 2
                     End If
                     If (c = 0) Or (c = 3) Then
                         picPage(c).Left = (Me.ScaleWidth - 600 - (iTotalPagesRow(Int(c / 3)) - 1) * 300 - (iTotalRowWidth(Int(c / 3)) * iProportion)) / 2 + 300
@@ -1703,14 +1940,14 @@ Private Sub ShowPages()
                     End If
                 Next c
                 
-                iProportion = (mAvailableScreenHeightSpace - 900) / (iMaxRowHeight(0) + iMaxRowHeight(1))
-                If iTotalRowWidth(0) * iProportion >= iTotalRowWidth(1) Then
-                    If iTotalRowWidth(0) > (Me.ScaleWidth - 1200) Then
-                        iProportion = (Me.ScaleWidth - 1200) / iTotalRowWidth(0)
+                iProportion = (mAvailableScreenHeightSpace - 600) / (iMaxRowHeight(0) + iMaxRowHeight(1))
+                If iTotalRowWidth(0) >= iTotalRowWidth(1) Then
+                    If iTotalRowWidth(0) * iProportion > (Me.ScaleWidth - 1800) Then
+                        iProportion = (Me.ScaleWidth - 1800) / iTotalRowWidth(0)
                     End If
                 Else
-                    If iTotalRowWidth(1) * iProportion > (Me.ScaleWidth - 1200) Then
-                        iProportion = (Me.ScaleWidth - 1200) / iTotalRowWidth(1)
+                    If iTotalRowWidth(1) * iProportion > (Me.ScaleWidth - 1800) Then
+                        iProportion = (Me.ScaleWidth - 1800) / iTotalRowWidth(1)
                     End If
                 End If
                 
@@ -1728,9 +1965,9 @@ Private Sub ShowPages()
                         End If
                         
                         If Int(c / 6) = 1 Then
-                            picPage(c).Top = picPage(0).Top + iMaxRowHeight(0) * iProportion + 300
+                            picPage(c).Top = picPage(0).Top + iMaxRowHeight(0) * iProportion + 150
                         Else
-                            picPage(c).Top = (mAvailableScreenHeightSpace - 300 - ((iMaxRowHeight(0) + iMaxRowHeight(1)) * iProportion)) / 2
+                            picPage(c).Top = (mAvailableScreenHeightSpace - 150 - ((iMaxRowHeight(0) + iMaxRowHeight(1)) * iProportion)) / 2
                         End If
                         If (c = 0) Or (c = 6) Then
                             picPage(c).Left = (Me.ScaleWidth - 600 - (iTotalPagesRow(Int(c / 6)) - 1) * 300 - (iTotalRowWidth(Int(c / 6)) * iProportion)) / 2 + 300
@@ -1787,7 +2024,7 @@ Private Sub ShowPages()
                     End If
                 Next c
                 
-                iProportion = (mAvailableScreenHeightSpace - 1200) / (iMaxRowHeight(0) + iMaxRowHeight(1) + iMaxRowHeight(2))
+                iProportion = (mAvailableScreenHeightSpace - 600) / (iMaxRowHeight(0) + iMaxRowHeight(1) + iMaxRowHeight(2))
                 If (iTotalRowWidth(0) >= iTotalRowWidth(1)) And (iTotalRowWidth(0) >= iTotalRowWidth(2)) Then
                     If iTotalRowWidth(0) * iProportion > (Me.ScaleWidth - 1500) Then
                         iProportion = (Me.ScaleWidth - 1500) / iTotalRowWidth(0)
@@ -1817,12 +2054,12 @@ Private Sub ShowPages()
                     End If
                     
                     If Int(c / 4) = 1 Then
-                        picPage(c).Top = picPage(0).Top + iMaxRowHeight(0) * iProportion + 300
+                        picPage(c).Top = picPage(0).Top + iMaxRowHeight(0) * iProportion + 150
                     Else
                         If Int(c / 4) = 2 Then
-                            picPage(c).Top = picPage(4).Top + iMaxRowHeight(1) * iProportion + 300
+                            picPage(c).Top = picPage(4).Top + iMaxRowHeight(1) * iProportion + 150
                         Else
-                            picPage(c).Top = (mAvailableScreenHeightSpace - 600 - ((iMaxRowHeight(0) + iMaxRowHeight(1) + iMaxRowHeight(2)) * iProportion)) / 2
+                            picPage(c).Top = (mAvailableScreenHeightSpace - 300 - ((iMaxRowHeight(0) + iMaxRowHeight(1) + iMaxRowHeight(2)) * iProportion)) / 2
                         End If
                     End If
                     If (c = 0) Or (c = 4) Or (c = 8) Then
@@ -1864,9 +2101,9 @@ Private Sub ShowPages()
     If picPagesContainer.Width > mAvailableScreenWidthSpace Then
         picPagesContainer.Left = 0
         If VScroll1.Visible Then
-            HScroll1.Move 0, tbrBottom.Top - VScroll1.Width, Me.ScaleWidth - VScroll1.Width, VScroll1.Width
+            HScroll1.Move 0, IIf(mUseOneToolBar, Me.ScaleHeight, tbrBottom.Top) - VScroll1.Width, Me.ScaleWidth - VScroll1.Width, VScroll1.Width
         Else
-            HScroll1.Move 0, tbrBottom.Top - VScroll1.Width, Me.ScaleWidth, VScroll1.Width
+            HScroll1.Move 0, IIf(mUseOneToolBar, Me.ScaleHeight, tbrBottom.Top) - VScroll1.Width, Me.ScaleWidth, VScroll1.Width
         End If
         HScroll1.Max = (picPagesContainer.Width - mAvailableScreenWidthSpace) / mAvailableScreenWidthSpace * 30 + 1
         HScroll1.Min = 0
@@ -1886,8 +2123,18 @@ Private Sub ShowPages()
     'Debug.Print picPagesContainer.Left, picPagesContainer.Top, picPagesContainer.Width, picPagesContainer.Height
     EnableDisablePageNavigation
     
-    picPageNumber.Visible = True
-    picPageNumber.Refresh
+    If Not mLoading Then
+        If mUseOneToolBar Then
+            If (picPageNumber.Left + picPageNumber.Width) > Me.ScaleWidth Then
+                picPageNumber.Visible = False
+            Else
+                picPageNumber.Visible = mpicPageNumberVisible
+                picPageNumber.Refresh
+            End If
+        Else
+            picPageNumber.Visible = mpicPageNumberVisible
+        End If
+    End If
     
 End Sub
 
@@ -1895,7 +2142,7 @@ End Sub
 Private Sub tbrTop_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         If mUserCanChangeIconsSize Then
-            tmrPopupcboChangeIconsSize.Enabled = True
+            tmrCheckPopupMenu.Enabled = True
             mClickChangeIconsSize_X = x
             PopupMenu mnuPopupChangeIconsSize
         End If
@@ -1924,6 +2171,7 @@ Private Sub tmrFirstDraw_Timer()
     End If
     tmrFirstDraw.Enabled = False
     RaiseEventPrepareDoc
+    If Not mCanceled Then SetFocusTo picScalePercent
 End Sub
 
 Public Property Get PrePrintCtrlObj() As PrintFnObject
@@ -1939,21 +2187,26 @@ Public Sub RefreshPreview()
     mRefreshed = True
 End Sub
 
+Private Sub tmrIgnoreKeysUpDown_Timer()
+    tmrIgnoreKeysUpDown.Enabled = False
+End Sub
+
 Private Sub tmrIgnoreMouseWheelEvents_Timer()
     tmrIgnoreMouseWheelEvents.Enabled = False
 End Sub
 
-Private Sub tmrPopupcboChangeIconsSize_Timer()
-    tmrPopupcboChangeIconsSize.Enabled = False
+Private Sub tmrCheckPopupMenu_Timer()
+    tmrCheckPopupMenu.Enabled = False
     
     If IsWindowVisible(FindWindowEx(GetParent(Me.hWnd), ByVal 0&, "#32768", vbNullString)) = 0 Then
-        cboChangeIconsSize.Left = mClickChangeIconsSize_X
-        If cboChangeIconsSize.Left + cboChangeIconsSize.Width > Me.ScaleWidth Then
-            cboChangeIconsSize.Left = Me.ScaleWidth - cboChangeIconsSize.Width
+        LoadcboAlternativePopupMenu
+        cboAlternativePopupMenu.Left = mClickChangeIconsSize_X
+        If cboAlternativePopupMenu.Left + cboAlternativePopupMenu.Width > Me.ScaleWidth Then
+            cboAlternativePopupMenu.Left = Me.ScaleWidth - cboAlternativePopupMenu.Width
         End If
-        cboChangeIconsSize.Top = tbrTop.Height - cboChangeIconsSize.Height
-        cboChangeIconsSize.Visible = True
-        SendMessage cboChangeIconsSize.hWnd, CB_SHOWDROPDOWN, True, ByVal 0&
+        cboAlternativePopupMenu.Top = tbrTop.Height - cboAlternativePopupMenu.Height
+        cboAlternativePopupMenu.Visible = True
+        SendMessage cboAlternativePopupMenu.hWnd, CB_SHOWDROPDOWN, True, ByVal 0&
     End If
 End Sub
 
@@ -1982,6 +2235,16 @@ Private Sub tmrtxtPageChanged_Timer()
         txtPage.SelStart = 0
         txtPage.SelLength = Len(txtPage.Text)
     End If
+End Sub
+
+Private Sub tmrUnload_Timer()
+    tmrUnload.Enabled = False
+    Unload Me
+End Sub
+
+Private Sub txtPage_GotFocus()
+    txtPage.SelStart = 0
+    txtPage.SelLength = Len(txtPage.Text)
 End Sub
 
 Private Sub txtPage_KeyPress(KeyAscii As Integer)
@@ -2094,19 +2357,29 @@ Private Sub RaiseEventPrepareDoc()
     End If
     
     'picPageNumber.Visible = False
+    PositionPicStatus
     
-    lblPreparingDoc.Caption = GetLocalizedString(efnGUIStr_frmPrintPreview_lblPreparingDoc_Caption)
-    lblPreparingDoc.Top = tbrBottom.Height / 2 - lblPreparingDoc.Height / 2
-    If lblPreparingDoc.Left + lblPreparingDoc.Width + 100 > tbrBottom.Buttons("FirstPage").Left Then
-        lblPreparingDoc.Caption = ""
+    lblStatus.Caption = GetLocalizedString(efnGUIStr_frmPrintPreview_PreparingDoc_Caption)
+'    lblStatus.Top = tbrBottom.Height / 2 - lblStatus.Height / 2
+    If lblStatus.Left + lblStatus.Width + 100 > tbrBottom.Buttons("FirstPage").Left Then
+        lblStatus.Caption = ""
+        picStatus.Visible = False
     Else
-        lblPreparingDoc.Refresh
+        picStatus.Visible = True
+        lblStatus.Refresh
     End If
     RaiseEvent PrepareDoc(iCancel)
-    lblPreparingDoc.Caption = ""
+    lblStatus.Caption = ""
+    picStatus.Visible = False
     
     If iCancel Then
+        On Error Resume Next
+        Err.Clear
         Unload Me
+        If Err.Number Then
+            tmrUnload.Enabled = True
+        End If
+        On Error GoTo 0
         mCanceled = True
         Exit Sub
     End If
@@ -2147,23 +2420,17 @@ End Sub
 
 Public Property Let FormatButtonVisible(nValue As Boolean)
     tbrTop.Buttons("Format").Visible = nValue
-    If mControlsPositioned Then
-        PositionControls
-    End If
+    PositionControls
 End Property
 
 Public Property Let PageSetupButtonVisible(nValue As Boolean)
     tbrTop.Buttons("PageSetup").Visible = nValue
-    If mControlsPositioned Then
-        PositionControls
-    End If
+    PositionControls
 End Property
 
 Public Property Let PageNumbersButtonVisible(nValue As Boolean)
     tbrTop.Buttons("PageNumbers").Visible = nValue
-    If mControlsPositioned Then
-        PositionControls
-    End If
+    PositionControls
 End Property
 
 Public Property Let FormatButtonToolTipText(nValue As String)
@@ -2171,7 +2438,7 @@ Public Property Let FormatButtonToolTipText(nValue As String)
     tbrTop.Buttons("Format").ToolTipText = Trim(mFormatButtonToolTipText)
 End Property
 
-Public Property Set FormatButtonPicture(nSizeIdentifier As VBExToobarDAButtonIconSizeConstants, nPic As StdPicture)
+Public Property Set FormatButtonPicture(nSizeIdentifier As VBExToolbarDAButtonIconSizeConstants, nPic As StdPicture)
     If (nSizeIdentifier < vxIZ16) Or (nSizeIdentifier > vxIZ36) Then
         RaiseError 381, TypeName(Me) ' Invalid property array index
         Exit Property
@@ -2179,7 +2446,7 @@ Public Property Set FormatButtonPicture(nSizeIdentifier As VBExToobarDAButtonIco
     Set tbrTop.Buttons("Format").Picture(nSizeIdentifier) = nPic
 End Property
 
-Public Property Get FormatButtonPicture(nSizeIdentifier As VBExToobarDAButtonIconSizeConstants) As StdPicture
+Public Property Get FormatButtonPicture(nSizeIdentifier As VBExToolbarDAButtonIconSizeConstants) As StdPicture
     If (nSizeIdentifier < vxIZ16) Or (nSizeIdentifier > vxIZ36) Then
         RaiseError 381, TypeName(Me) ' Invalid property array index
         Exit Property
@@ -2192,29 +2459,33 @@ Public Property Get AllowUserChangeScale() As Boolean
 End Property
 
 Public Property Let AllowUserChangeScale(nValue As Boolean)
-    mAllowUserChangeScale = nValue
-    picScalePercent.Visible = mAllowUserChangeScale
-    tbrTop.Buttons("DecreaseScale").Visible = mAllowUserChangeScale
-    tbrTop.Buttons("IncreaseScale").Visible = mAllowUserChangeScale
+    If nValue <> mAllowUserChangeScale Then
+        mAllowUserChangeScale = nValue
+        PositionControls
+'    picScalePercent.Visible = mAllowUserChangeScale
+'    tbrTop.Buttons("DecreaseScale").Visible = mAllowUserChangeScale
+'    tbrTop.Buttons("IncreaseScale").Visible = mAllowUserChangeScale
+    End If
 End Property
 
-Public Property Get AllowUserChangeOrientation() As Boolean
-    AllowUserChangeOrientation = mAllowUserChangeOrientation
+Public Property Get PageOrientationButtonsVisible() As Boolean
+    PageOrientationButtonsVisible = mPageOrientationButtonsVisible
 End Property
 
-Public Property Let AllowUserChangeOrientation(nValue As Boolean)
-    If nValue <> mAllowUserChangeOrientation Then
-        tbrTop.Visible = False
-        mAllowUserChangeOrientation = nValue
-        tbrTop.Buttons("OrientationLabelSpace").Visible = mAllowUserChangeOrientation
-        lblPageOrientation.Visible = mAllowUserChangeOrientation
-        tbrTop.Buttons("OrientationPortrait").Visible = mAllowUserChangeOrientation
-        tbrTop.Buttons("OrientationLandscape").Visible = mAllowUserChangeOrientation
-        lblView.Left = tbrTop.Buttons("ViewNormalSize").Left - lblView.Width - 60
-        picScalePercent.Left = tbrTop.Buttons("DecreaseScale").Left - picScalePercent.Width - 30
-        tbrTop.Visible = True
-        tbrTop.Refresh
-        Me.Refresh
+Public Property Let PageOrientationButtonsVisible(nValue As Boolean)
+    If nValue <> mPageOrientationButtonsVisible Then
+'        tbrTop.Visible = False
+        mPageOrientationButtonsVisible = nValue
+        tbrTop.Buttons("OrientationLabelSpace").Visible = mPageOrientationButtonsVisible
+        lblPageOrientation.Visible = mPageOrientationButtonsVisible
+        tbrTop.Buttons("OrientationPortrait").Visible = mPageOrientationButtonsVisible
+        tbrTop.Buttons("OrientationLandscape").Visible = mPageOrientationButtonsVisible
+        PositionControls
+'        lblView.Left = tbrTop.Buttons("ViewNormalSize").Left - lblView.Width - 60
+'        picScalePercent.Left = tbrTop.Buttons("DecreaseScale").Left - picScalePercent.Width - 30
+'        tbrTop.Visible = True
+'        tbrTop.Refresh
+'        Me.Refresh
     End If
 End Property
 
@@ -2245,19 +2516,26 @@ Private Sub LoadcboView()
 
 End Sub
 
-Private Sub LoadcboChangeIconsSize()
+Private Sub LoadcboAlternativePopupMenu()
     Dim iCtl As Control
+    Dim iStr As String
+    Dim iPastSep As Boolean
     
-    cboChangeIconsSize.Clear
+    cboAlternativePopupMenu.Clear
     For Each iCtl In Me.Controls
         If TypeOf iCtl Is Menu Then
             If Left(iCtl.Name, 8) = "mnuIcons" Then
-                cboChangeIconsSize.AddItem "    " & iCtl.Caption & IIf(iCtl.Checked, "  (currently selected)", "") & "    "
+                iStr = iCtl.Caption
+                If iStr = "-" Then
+                    iStr = "---------------------"
+                    iPastSep = True
+                End If
+                cboAlternativePopupMenu.AddItem "    " & iStr & IIf(iCtl.Checked, IIf(iPastSep, "  (" & GetLocalizedString(efnGUIStr_frmPrintPreview_CurrentlyShown) & ")", "  (" & GetLocalizedString(efnGUIStr_frmPrintPreview_CurrentlySelected) & ")"), "") & "    "
             End If
         End If
     Next iCtl
     
-    cboChangeIconsSize.Width = AutoSizeDropDownWidth(cboChangeIconsSize) * Screen.TwipsPerPixelX
+    cboAlternativePopupMenu.Width = AutoSizeDropDownWidth(cboAlternativePopupMenu) * Screen.TwipsPerPixelX
     
 End Sub
 
@@ -2299,10 +2577,22 @@ Public Sub PressProperViewButtonInToolbar()
 End Sub
 
 Public Property Let ScalePercent(nValue As Long)
+    Dim c As Long
+    
     If nValue <> mScalePercent Then
         mScalePercent = nValue
         mRaiseFontEvent = False
+        
+        c = 0
+        Do While Val(cboScalePercent.List(c)) <= nValue
+            c = c + 1
+        Loop
+        c = c - 1
+        If c < 0 Then c = 0
+        cboScalePercent.ListIndex = c
+        
         cboScalePercent.Text = nValue & "%"
+        
         mRaiseFontEvent = True
     End If
 End Property
@@ -2348,19 +2638,51 @@ Private Sub mMouseWheel_MouseWheelRotation(Direction As Long, Handled As Boolean
             End If
         End If
         Handled = True
+    Else
+        If Not Handled Then
+            If Direction = 1 Then
+                If mCurrentPageNumber < PrinterExCurrentDocument.PageCount Then
+                    mCurrentPageNumber = mCurrentPageNumber + 1
+                    ShowPages
+'                    tmrIgnoreMouseWheelEvents.Enabled = False
+'                    tmrIgnoreMouseWheelEvents.Enabled = True
+                End If
+            Else
+                If mCurrentPageNumber > 1 Then
+                    mCurrentPageNumber = mCurrentPageNumber - 1
+                    ShowPages
+'                    tmrIgnoreMouseWheelEvents.Enabled = False
+'                    tmrIgnoreMouseWheelEvents.Enabled = True
+                End If
+            End If
+        End If
+
     End If
-    
 End Sub
 
-Private Sub PositionControls()
+Public Sub PositionControls()
     Dim iFontSize As Single
     Dim iScreenWidth As Long
+    Dim iLastToolBarElementPos As Long
+    Dim iAuxFont As StdFont
+    Dim iLng As Long
+    Dim iPosEndButtonViewSeveralPages  As Long
+    Dim iPosEndButtonIncreaseScale  As Long
+    Dim iPosEndGotoPageLastButton As Long
+    Dim iPosEndpicPageNumber As Long
+    Const cDefaultWidthCloseButton = 2265
+    Dim iCloseButtonVisible As Boolean
+    Dim iRedraw As Boolean
     
+    If mLoading Then Exit Sub
+    
+    iRedraw = tbrTop.Redraw
+    mnuIconsShowBottomToolBar.Checked = Not mUseOneToolBar
     tbrTop.Redraw = False
     picScalePercent.Visible = False
     iScreenWidth = Screen.Width / Screen.TwipsPerPixelX
     cboView.Top = tbrTop.Height - cboView.Height
-    cboChangeIconsSize.Top = tbrTop.Height - cboChangeIconsSize.Height
+    cboAlternativePopupMenu.Top = tbrTop.Height - cboAlternativePopupMenu.Height
     
     lblPageOrientation.AutoSize = True
     lblPageOrientation.WordWrap = False
@@ -2368,9 +2690,10 @@ Private Sub PositionControls()
         lblPageOrientation.WordWrap = True
         lblPageOrientation.Width = 876
     End If
-    lblPageOrientation.Top = tbrTop.Height / 2 - lblPageOrientation.Height / 2
     tbrTop.Buttons("OrientationLabelSpace").Width = lblPageOrientation.Width + IIf(Not ((iScreenWidth < 1025) And (tbrTop.IconsSize = vxIconsBig)), 300, 100)
     lblPageOrientation.Left = tbrTop.Buttons("OrientationPortrait").Left - lblPageOrientation.Width - 60
+    lblPageOrientation.Top = tbrTop.Height / 2 - lblPageOrientation.Height / 2
+    
     lblView.AutoSize = True
     lblView.WordWrap = False
     If lblView.Width > 1000 Then
@@ -2380,6 +2703,8 @@ Private Sub PositionControls()
     lblView.Top = tbrTop.Height / 2 - lblView.Height / 2
     tbrTop.Buttons("ViewLabelSpace").Width = lblView.Width + IIf(Not ((iScreenWidth < 1025) And (tbrTop.IconsSize = vxIconsBig)), 300, 100)
     lblView.Left = tbrTop.Buttons("ViewNormalSize").Left - lblView.Width - 60
+    
+    tbrBottom.Visible = Not mUseOneToolBar
     
     iFontSize = 9
     If iFontSize < 7.5 Then iFontSize = 7.5
@@ -2397,41 +2722,177 @@ Private Sub PositionControls()
     lblScalePercent.Top = picScalePercent.Height / 2 - picScalePercent.TextHeight(lblScalePercent.Caption) / 2
     lblScalePercent.Left = cboScalePercent.Left - lblScalePercent.Width - 60
     
+    lblStatus.FontSize = iFontSize
+    
+    If mUseOneToolBar Then
+        If Not picPageNumber.Container Is tbrTop Then
+            Set picPageNumber.Container = tbrTop
+        End If
+        picPageNumber.Top = 0
+        picPageNumber.Height = tbrTop.Height
+    Else
+        If Not picPageNumber.Container Is tbrBottom Then
+            Set picPageNumber.Container = tbrBottom
+        End If
+        picPageNumber.Top = 0
+        picPageNumber.Height = tbrBottom.Height
+    End If
+    
     tbrTop.Buttons("ScaleSpace").Width = picScalePercent.Width
-    picScalePercent.Left = tbrTop.Buttons("DecreaseScale").Left - picScalePercent.Width - 30
+    picScalePercent.Left = tbrTop.Buttons("ScaleSpace").Left - 30
     picScalePercent.Visible = mAllowUserChangeScale
-    picScalePercent.Refresh
+    tbrTop.Buttons("ScaleSpace").Visible = mAllowUserChangeScale
+    tbrTop.Buttons("DecreaseScale").Visible = mAllowUserChangeScale
+    tbrTop.Buttons("IncreaseScale").Visible = mAllowUserChangeScale
     
-    picPageNumber.Top = 0
-    picPageNumber.Height = tbrBottom.Height
+    iPosEndButtonViewSeveralPages = tbrTop.Buttons("ViewSeveralPages").Left + tbrTop.Buttons("ViewSeveralPages").Width
+    If mAllowUserChangeScale Then
+        iPosEndButtonIncreaseScale = tbrTop.Buttons("IncreaseScale").Left + tbrTop.Buttons("IncreaseScale").Width
+        iLastToolBarElementPos = iPosEndButtonIncreaseScale
+        picScalePercent.Refresh
+    Else
+        iLastToolBarElementPos = iPosEndButtonViewSeveralPages
+    End If
     
-    txtPage.FontSize = iFontSize
-    txtPage.Height = cboScalePercent.Height
-    lblPage.FontSize = iFontSize
-    lblPage.Left = txtPage.Left - lblPage.Width - 110
-    picPageNumber.FontName = txtPage.FontName
-    picPageNumber.FontSize = iFontSize
-    lblPageCount.Left = txtPage.Left + txtPage.Width + 100
+    tbrTop.Buttons("FirstPage").Visible = mUseOneToolBar
+    tbrTop.Buttons("PreviousPage").Visible = mUseOneToolBar
+    tbrTop.Buttons("NextPage").Visible = mUseOneToolBar
+    tbrTop.Buttons("LastPage").Visible = mUseOneToolBar
     
-    lblPreparingDoc.FontSize = iFontSize
+    If mUseOneToolBar Then
+        iPosEndGotoPageLastButton = tbrTop.Buttons("LastPage").Left + tbrTop.Buttons("LastPage").Width
+        iPosEndpicPageNumber = iPosEndGotoPageLastButton + 300 + picPageNumber.Width
+        iLastToolBarElementPos = iPosEndpicPageNumber
+    End If
     
-    lblPageCount.FontSize = iFontSize
-    txtPage.Top = picPageNumber.ScaleHeight / 2 - txtPage.Height / 2
-    lblPage.Top = picPageNumber.ScaleHeight / 2 - picPageNumber.TextHeight("awqigWÑÓ") / 2
-    lblPageCount.Top = lblPage.Top
-
-    cmdClose.Width = 2265
+    If tbrTop.IconsSize = vxIconsSmall Then
+        cmdClose.Font.Size = 9
+    Else
+        cmdClose.Font.Size = 10
+    End If
+    
     cmdClose.Height = 405
     If (cmdClose.Height + 6 * Screen.TwipsPerPixelY) > tbrTop.Height Then
         cmdClose.Height = tbrTop.Height - 6 * Screen.TwipsPerPixelY
     End If
     cmdClose.Top = (tbrTop.Height - cmdClose.Height) / 2 - Screen.TwipsPerPixelY
-    cmdClose_2.Move cmdClose.Left, cmdClose.Top, cmdClose.Width, cmdClose.Height
-    cmdClose.Font.Size = 10
-    cmdClose_2.Font.Size = cmdClose.Font.Size
     
-    tbrTop.Redraw = True
-    mControlsPositioned = True
+    iCloseButtonVisible = True
+    mpicPageNumberVisible = True
+    If (Me.ScaleWidth - iLastToolBarElementPos - 120) > cDefaultWidthCloseButton Then
+        cmdClose.Caption = GetLocalizedString(efnGUIStr_frmPrintPreview_cmdClose_Caption)
+        cmdClose.Width = cDefaultWidthCloseButton
+    Else
+        cmdClose.Caption = GetLocalizedString(efnGUIStr_General_CloseButton_Caption)
+        Set iAuxFont = Me.Font
+        Set Me.Font = cmdClose.Font
+        iLng = Me.TextWidth(cmdClose.Caption) + 120
+        If iLng < 900 Then iLng = 900
+        cmdClose.Width = iLng
+        Set Me.Font = iAuxFont
+        If (Me.ScaleWidth - iLastToolBarElementPos - 60) < cmdClose.Width Then
+            If mUseOneToolBar Then
+                mpicPageNumberVisible = False
+                iLastToolBarElementPos = iPosEndGotoPageLastButton
+                If (Me.ScaleWidth - iPosEndGotoPageLastButton - 60) < cmdClose.Width Then
+                    iCloseButtonVisible = False
+                End If
+            Else
+                iCloseButtonVisible = False
+            End If
+        End If
+    End If
+    
+'    If iCloseButtonVisible Then mpicPageNumberVisible = mUseOneToolBar
+        
+    mpicPageNumberVisible = mpicPageNumberVisible And (Me.ScaleWidth - iPosEndpicPageNumber - 30) > 0
+    
+    If Not mpicPageNumberVisible Then
+        ' check to hide more things
+        If mAllowUserChangeScale Then
+            If mUseOneToolBar Then
+                If (Me.ScaleWidth - iPosEndGotoPageLastButton - 30) < 0 Then
+                    tbrTop.Buttons("DecreaseScale").Visible = False
+                    tbrTop.Buttons("IncreaseScale").Visible = False
+                    iLastToolBarElementPos = tbrTop.Buttons("ScaleSpace").Left + tbrTop.Buttons("ScaleSpace").Width
+                End If
+            Else
+                If (Me.ScaleWidth - iPosEndButtonIncreaseScale - 30) < 0 Then
+                    tbrTop.Buttons("DecreaseScale").Visible = False
+                    tbrTop.Buttons("IncreaseScale").Visible = False
+                    iLastToolBarElementPos = tbrTop.Buttons("ScaleSpace").Left + tbrTop.Buttons("ScaleSpace").Width
+                End If
+            End If
+        End If
+        
+        If mUseOneToolBar Then
+            If (Me.ScaleWidth - (tbrTop.Buttons("LastPage").Left + tbrTop.Buttons("LastPage").Width) - 30) < 0 Then
+                tbrTop.Buttons("FirstPage").Visible = False
+                tbrTop.Buttons("LastPage").Visible = False
+                iLastToolBarElementPos = tbrTop.Buttons("NextPage").Left + tbrTop.Buttons("NextPage").Width
+                tbrTop.Buttons("ScaleSpace").Width = tbrTop.Buttons("ScaleSpace").Width - 250
+            End If
+            If (Me.ScaleWidth - (tbrTop.Buttons("NextPage").Left + tbrTop.Buttons("NextPage").Width) - 30) < 0 Then
+                tbrTop.Buttons("PreviousPage").Visible = False
+                tbrTop.Buttons("NextPage").Visible = False
+                If mAllowUserChangeScale Then
+                    iLastToolBarElementPos = tbrTop.Buttons("ScaleSpace").Left + tbrTop.Buttons("ScaleSpace").Width
+                Else
+                    iLastToolBarElementPos = iPosEndButtonViewSeveralPages
+                End If
+            End If
+        End If
+    End If
+    
+    If iCloseButtonVisible Then
+        'cmdClose.Left = iLastToolBarElementPos
+        ' tbrTop.Buttons("IncreaseScale").Left + tbrTop.Buttons("IncreaseScale").Width
+        cmdClose.Left = (Me.ScaleWidth + iLastToolBarElementPos - cmdClose.Width) / 2
+        If gButtonsStyle <> -1 Then
+            cmdClose_2.Font.Size = cmdClose.Font.Size
+            cmdClose_2.Caption = cmdClose.Caption
+            cmdClose_2.Move cmdClose.Left, cmdClose.Top, cmdClose.Width, cmdClose.Height
+            cmdClose_2.Visible = True
+            cmdClose.Visible = False
+        Else
+            cmdClose.Visible = True
+        End If
+    Else
+        cmdClose.Visible = False
+        cmdClose_2.Visible = False
+    End If
+    
+    If mpicPageNumberVisible Then
+        txtPage.FontSize = iFontSize
+        txtPage.Height = cboScalePercent.Height
+        lblPage.FontSize = iFontSize
+        lblPage.Left = txtPage.Left - lblPage.Width - 110
+        picPageNumber.FontName = txtPage.FontName
+        picPageNumber.FontSize = iFontSize
+        lblPageCount.Left = txtPage.Left + txtPage.Width + 100
+        
+        lblPageCount.FontSize = iFontSize
+        txtPage.Top = (picPageNumber.ScaleHeight - txtPage.Height) / 2
+        lblPage.Top = picPageNumber.ScaleHeight / 2 - picPageNumber.TextHeight("awqigWÑÓ") / 2 - Screen.TwipsPerPixelY '* 2
+        lblPageCount.Top = lblPage.Top
+        
+        
+        If mUseOneToolBar Then
+            picPageNumber.Left = tbrTop.Buttons("LastPage").Left + tbrTop.Buttons("LastPage").Width + 300
+        Else
+            picPageNumber.Left = tbrBottom.Buttons(2).Left - tbrBottom.ButtonWidth - picPageNumber.Width
+        End If
+    End If
+    
+    picPageNumber.Visible = mpicPageNumberVisible
+    
+    If Not Me.ActiveControl Is cboScalePercent Then
+        cboScalePercent.SelStart = Len(cboScalePercent.Text)
+        cboScalePercent.SelLength = 0
+    End If
+    
+    tbrTop.Redraw = iRedraw
+    
 End Sub
 
 Private Function SetIconsAutoSize() As Boolean
@@ -2451,16 +2912,18 @@ Private Function SetIconsAutoSize() As Boolean
             SetIconsAutoSize = True
         End If
     End If
+
 End Function
 
 Private Sub SetToolBarIconsSize(nSize As efnUserToolbarIconsSizeConstants)
     Dim iChanged As Boolean
     
-    cboChangeIconsSize.Visible = False
+    cboAlternativePopupMenu.Visible = False
     mnuIconsAuto.Checked = False
     mnuIconsSmall.Checked = False
     mnuIconsMedium.Checked = False
     mnuIconsBig.Checked = False
+    tbrTop.Redraw = False
     If nSize = efnISAuto Then
         iChanged = SetIconsAutoSize
         mnuIconsAuto.Checked = True
@@ -2483,13 +2946,14 @@ Private Sub SetToolBarIconsSize(nSize As efnUserToolbarIconsSizeConstants)
         End If
         mnuIconsBig.Checked = True
     End If
-    SaveSetting AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", CStr(nSize)
-    LoadcboChangeIconsSize
-    
+    If Not tmrFirstDraw.Enabled Then
+        SaveSetting AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", CStr(nSize)
+    End If
     If iChanged Then
         Form_Resize
         tmrShowPage.Enabled = True
     End If
+    tbrTop.Redraw = True
 End Sub
 
 Private Property Let txtPage_Text(nValue As String)
@@ -2503,8 +2967,10 @@ Private Property Let txtPage_Text(nValue As String)
         lblPageCount.Left = txtPage.Left + txtPage.Width + 100
         If picPageNumber.Width < (lblPageCount.Left + lblPageCount.Width) Then
             picPageNumber.Width = lblPageCount.Left + lblPageCount.Width
-            If picPageNumber.Left + picPageNumber.Width + 30 > tbrBottom.Buttons("FirstPage").Left Then
-                picPageNumber.Left = tbrBottom.Buttons("FirstPage").Left - picPageNumber.Width - 30
+            If Not mUseOneToolBar Then
+                If picPageNumber.Left + picPageNumber.Width + 30 > tbrBottom.Buttons("FirstPage").Left Then
+                    picPageNumber.Left = tbrBottom.Buttons("FirstPage").Left - picPageNumber.Width - 30
+                End If
             End If
         End If
     End If
@@ -2519,6 +2985,7 @@ Private Sub LoadGUICaptions()
     mnuIconsSmall.Caption = GetLocalizedString(efnGUIStr_frmPrintPreview_mnuIconsSmall_Caption)
     mnuIconsMedium.Caption = GetLocalizedString(efnGUIStr_frmPrintPreview_mnuIconsMedium_Caption)
     mnuIconsBig.Caption = GetLocalizedString(efnGUIStr_frmPrintPreview_mnuIconsBig_Caption)
+    mnuIconsShowBottomToolBar.Caption = GetLocalizedString(efnGUIStr_frmPrintPreview_mnuIconsShowBottomToolBar_Caption)
     
     lblPageOrientation.Caption = GetLocalizedString(efnGUIStr_frmPrintPreview_lblPageOrientation_Caption)
     lblView.Caption = GetLocalizedString(efnGUIStr_frmPrintPreview_lblView_Caption)
@@ -2546,6 +3013,11 @@ Private Sub LoadGUICaptions()
     tbrBottom.Buttons("PreviousPage").ToolTipText = GetLocalizedString(efnGUIStr_frmPrintPreview_tbrBottom_Buttons_ToolTipText_PreviousPage_Singular)
     tbrBottom.Buttons("NextPage").ToolTipText = GetLocalizedString(efnGUIStr_frmPrintPreview_tbrBottom_Buttons_ToolTipText_NextPage_Singular)
     tbrBottom.Buttons("LastPage").ToolTipText = GetLocalizedString(efnGUIStr_frmPrintPreview_tbrBottom_Buttons_ToolTipText_LastPage)
+    
+    tbrTop.Buttons("FirstPage").ToolTipText = tbrBottom.Buttons("FirstPage").ToolTipText
+    tbrTop.Buttons("PreviousPage").ToolTipText = tbrBottom.Buttons("PreviousPage").ToolTipText
+    tbrTop.Buttons("NextPage").ToolTipText = tbrBottom.Buttons("NextPage").ToolTipText
+    tbrTop.Buttons("LastPage").ToolTipText = tbrBottom.Buttons("LastPage").ToolTipText
     
 End Sub
 
@@ -2575,41 +3047,94 @@ Public Property Let ToolBarIconsSize(nValue As Long)
     mUserCanChangeIconsSize = False
     Select Case nValue
         Case vxPPTIAppDefault
-            tbrTop.IconsSize = gToolbarsDefaultIconsSize
+            mtbrTopIconsSize = gToolbarsDefaultIconsSize
         Case vxPPTIconsSmall
-            tbrTop.IconsSize = vxIconsSmall
+            mtbrTopIconsSize = vxIconsSmall
         Case vxPPTIconsMedium
-            tbrTop.IconsSize = vxIconsMedium
+            mtbrTopIconsSize = vxIconsMedium
         Case vxPPTIconsBig
-            tbrTop.IconsSize = vxIconsBig
+            mtbrTopIconsSize = vxIconsBig
         Case vxPPTIconsAuto
 '            SetIconsAutoSize
             mUserCanChangeIconsSize = True
         Case vxPPTIconsSmallAndUserCanChange
-            tbrTop.IconsSize = vxIconsSmall
+            mtbrTopIconsSize = vxIconsSmall
             mUserCanChangeIconsSize = True
-            If CLng(GetSetting(AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", efnISAuto)) = efnISAuto Then
-                SaveSetting AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", CStr(efnISSmall)
+            If Not tmrFirstDraw.Enabled Then
+                If CLng(GetSetting(AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", efnISAuto)) = efnISAuto Then
+                    SaveSetting AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", CStr(efnISSmall)
+                End If
             End If
         Case vxPPTIconsMediumAndUserCanChange
-            tbrTop.IconsSize = vxIconsMedium
+            mtbrTopIconsSize = vxIconsMedium
             mUserCanChangeIconsSize = True
-            If CLng(GetSetting(AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", efnISAuto)) = efnISAuto Then
-                SaveSetting AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", CStr(efnISMedium)
+            If Not tmrFirstDraw.Enabled Then
+                If CLng(GetSetting(AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", efnISAuto)) = efnISAuto Then
+                    SaveSetting AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", CStr(efnISMedium)
+                End If
             End If
         Case vxPPTIconsBigAndUserCanChange
-            tbrTop.IconsSize = vxIconsBig
+            mtbrTopIconsSize = vxIconsBig
             mUserCanChangeIconsSize = True
-            If CLng(GetSetting(AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", efnISAuto)) = efnISAuto Then
-                SaveSetting AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", CStr(efnISBig)
+            If Not tmrFirstDraw.Enabled Then
+                If CLng(GetSetting(AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", efnISAuto)) = efnISAuto Then
+                    SaveSetting AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", CStr(efnISBig)
+                End If
             End If
     End Select
     
-    If mUserCanChangeIconsSize Then
-        Set cboChangeIconsSize.Font = GetSystemFont(vxMenuFont)
-        LoadcboChangeIconsSize
-        SetToolBarIconsSize CLng(GetSetting(AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", efnISAuto))
+    If Not mLoading Then
+        tbrTop.IconsSize = mtbrTopIconsSize
+        If mUserCanChangeIconsSize Then
+            Set cboAlternativePopupMenu.Font = GetSystemFont(vxMenuFont)
+            SetToolBarIconsSize CLng(GetSetting(AppNameForRegistry, "Preferences", "PrintPreview_ToolBarIconsSize", efnISAuto))
+        End If
     End If
 End Property
 
 
+Public Property Let UseOneToolBar(ByVal nValue As Boolean)
+    Dim iStr As String
+    
+    If mLoading Then
+        iStr = GetSetting(AppNameForRegistry, "Preferences", "PrintPreview_ShowBottomToolBar", "")
+        If iStr <> "" Then
+            nValue = CBool(Val(iStr))
+        End If
+    End If
+    
+    If nValue <> mUseOneToolBar Then
+        mUseOneToolBar = nValue
+        If Not mLoading Then
+            Form_Resize
+        End If
+    End If
+End Property
+
+Public Property Get UseOneToolBar() As Boolean
+    UseOneToolBar = mUseOneToolBar
+End Property
+
+Public Property Let Loading(nValue As Boolean)
+    mLoading = nValue
+End Property
+
+Private Sub PositionPicStatus()
+    Dim iTop As Long
+    
+    If Not mUseOneToolBar Then
+        If HScroll1.Visible Then
+            iTop = HScroll1.Top - picStatus.Height
+        Else
+            iTop = tbrBottom.Top - picStatus.Height
+        End If
+    Else
+        If HScroll1.Visible Then
+            iTop = HScroll1.Top - picStatus.Height
+        Else
+            iTop = Me.ScaleHeight - picStatus.Height
+        End If
+    End If
+    picStatus.Move 200, iTop
+
+End Sub

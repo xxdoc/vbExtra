@@ -167,6 +167,7 @@ Begin VB.Form frmComponentHelp
       ButtonPic241    =   "frmComponentHelp.frx":796C
       ButtonPic301    =   "frmComponentHelp.frx":807E
       ButtonPic361    =   "frmComponentHelp.frx":8B98
+      ButtonWidth1    =   428
       ButtonToolTipText1=   "Decrease the font size"
       ButtonOrderToHide1=   5
       ButtonKey2      =   "IncreaseFont"
@@ -175,6 +176,7 @@ Begin VB.Form frmComponentHelp
       ButtonPic242    =   "frmComponentHelp.frx":A36E
       ButtonPic302    =   "frmComponentHelp.frx":AA80
       ButtonPic362    =   "frmComponentHelp.frx":B59A
+      ButtonWidth2    =   428
       ButtonToolTipText2=   "Increase the font size"
       ButtonOrderToHide2=   5
       ButtonKey3      =   "Print"
@@ -183,6 +185,7 @@ Begin VB.Form frmComponentHelp
       ButtonPic243    =   "frmComponentHelp.frx":CD70
       ButtonPic303    =   "frmComponentHelp.frx":D482
       ButtonPic363    =   "frmComponentHelp.frx":DF9C
+      ButtonWidth3    =   428
       ButtonToolTipText3=   "Print"
       ButtonOrderToHide3=   3
       ButtonKey4      =   "Copy"
@@ -191,6 +194,7 @@ Begin VB.Form frmComponentHelp
       ButtonPic244    =   "frmComponentHelp.frx":F772
       ButtonPic304    =   "frmComponentHelp.frx":FE84
       ButtonPic364    =   "frmComponentHelp.frx":1099E
+      ButtonWidth4    =   428
       ButtonToolTipText4=   "Copy"
       ButtonOrderToHide4=   2
       ButtonKey5      =   "Save"
@@ -199,6 +203,7 @@ Begin VB.Form frmComponentHelp
       ButtonPic245    =   "frmComponentHelp.frx":12174
       ButtonPic305    =   "frmComponentHelp.frx":12886
       ButtonPic365    =   "frmComponentHelp.frx":133A0
+      ButtonWidth5    =   428
       ButtonToolTipText5=   "Save to a file"
       ButtonOrderToHide5=   1
       ButtonKey6      =   "Find"
@@ -207,6 +212,7 @@ Begin VB.Form frmComponentHelp
       ButtonPic246    =   "frmComponentHelp.frx":14B76
       ButtonPic306    =   "frmComponentHelp.frx":15288
       ButtonPic366    =   "frmComponentHelp.frx":15DA2
+      ButtonWidth6    =   428
       ButtonToolTipText6=   "Find text"
       ButtonOrderToHide6=   1
    End
@@ -215,6 +221,7 @@ Begin VB.Form frmComponentHelp
       Top             =   600
       _ExtentX        =   720
       _ExtentY        =   720
+      PrintPrevUseOneToolBar=   -1  'True
       FormatButtonPicture_0=   "frmComponentHelp.frx":16D24
       FormatButtonPicture_1=   "frmComponentHelp.frx":17226
       FormatButtonPicture_2=   "frmComponentHelp.frx":17938
