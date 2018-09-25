@@ -90,13 +90,16 @@ Public Enum efnGUIString
     efnGUIStr_frmPrintPreview_mnuIconsSmall_Caption
     efnGUIStr_frmPrintPreview_mnuIconsMedium_Caption
     efnGUIStr_frmPrintPreview_mnuIconsBig_Caption
+    efnGUIStr_frmPrintPreview_mnuIconsShowBottomToolBar_Caption
+    efnGUIStr_frmPrintPreview_CurrentlySelected
+    efnGUIStr_frmPrintPreview_CurrentlyShown
     efnGUIStr_frmPrintPreview_lblPageOrientation_Caption
     efnGUIStr_frmPrintPreview_lblView_Caption
     efnGUIStr_frmPrintPreview_lblScalePercent_Caption
     efnGUIStr_frmPrintPreview_lblPage_Singular_Caption
     efnGUIStr_frmPrintPreview_lblPage_Plural_Caption
     efnGUIStr_frmPrintPreview_lblPageCount_Caption
-    efnGUIStr_frmPrintPreview_lblPreparingDoc_Caption
+    efnGUIStr_frmPrintPreview_PreparingDoc_Caption
     efnGUIStr_frmPrintPreview_cmdClose_Caption
     efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_Print
     efnGUIStr_frmPrintPreview_tbrTop_Buttons_ToolTipText_PageSetup
@@ -399,6 +402,12 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "中图标"
                 Case efnGUIStr_frmPrintPreview_mnuIconsBig_Caption
                     GetLocalizedString = "中等图标"
+                Case efnGUIStr_frmPrintPreview_mnuIconsShowBottomToolBar_Caption
+                    GetLocalizedString = "Show bottom bar"
+                Case efnGUIStr_frmPrintPreview_CurrentlySelected
+                    GetLocalizedString = "selected"
+                Case efnGUIStr_frmPrintPreview_CurrentlyShown
+                    GetLocalizedString = "now shown"
                 Case efnGUIStr_frmPrintPreview_lblPageOrientation_Caption
                     GetLocalizedString = "显示方向:"
                 Case efnGUIStr_frmPrintPreview_lblView_Caption
@@ -411,7 +420,7 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "总页数:"
                 Case efnGUIStr_frmPrintPreview_lblPageCount_Caption
                     GetLocalizedString = "/"
-                Case efnGUIStr_frmPrintPreview_lblPreparingDoc_Caption
+                Case efnGUIStr_frmPrintPreview_PreparingDoc_Caption
                     GetLocalizedString = "正在生成打印预览..."
                 Case efnGUIStr_frmPrintPreview_cmdClose_Caption
                     GetLocalizedString = "&C 关闭"
@@ -812,6 +821,12 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "蚦onos  medianos"
                 Case efnGUIStr_frmPrintPreview_mnuIconsBig_Caption
                     GetLocalizedString = "蚦onos grandes"
+                Case efnGUIStr_frmPrintPreview_mnuIconsShowBottomToolBar_Caption
+                    GetLocalizedString = "Mostrar barra inferior"
+                Case efnGUIStr_frmPrintPreview_CurrentlySelected
+                    GetLocalizedString = "seleccionado"
+                Case efnGUIStr_frmPrintPreview_CurrentlyShown
+                    GetLocalizedString = "actualmente visible"
                 Case efnGUIStr_frmPrintPreview_lblPageOrientation_Caption
                     GetLocalizedString = "Orientaci髇 de p醙ina:"
                 Case efnGUIStr_frmPrintPreview_lblView_Caption
@@ -824,7 +839,7 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "P醙inas:"
                 Case efnGUIStr_frmPrintPreview_lblPageCount_Caption
                     GetLocalizedString = "de"
-                Case efnGUIStr_frmPrintPreview_lblPreparingDoc_Caption
+                Case efnGUIStr_frmPrintPreview_PreparingDoc_Caption
                     GetLocalizedString = "Generando vista preliminar..."
                 Case efnGUIStr_frmPrintPreview_cmdClose_Caption
                     GetLocalizedString = "Cerrar vista preliminar"
@@ -1225,6 +1240,12 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "Medium icons"
                 Case efnGUIStr_frmPrintPreview_mnuIconsBig_Caption
                     GetLocalizedString = "Large icons"
+                Case efnGUIStr_frmPrintPreview_mnuIconsShowBottomToolBar_Caption
+                    GetLocalizedString = "Show bottom bar"
+                Case efnGUIStr_frmPrintPreview_CurrentlySelected
+                    GetLocalizedString = "selected"
+                Case efnGUIStr_frmPrintPreview_CurrentlyShown
+                    GetLocalizedString = "now shown"
                 Case efnGUIStr_frmPrintPreview_lblPageOrientation_Caption
                     GetLocalizedString = "Page orientation:"
                 Case efnGUIStr_frmPrintPreview_lblView_Caption
@@ -1237,7 +1258,7 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "Pages:"
                 Case efnGUIStr_frmPrintPreview_lblPageCount_Caption
                     GetLocalizedString = "of"
-                Case efnGUIStr_frmPrintPreview_lblPreparingDoc_Caption
+                Case efnGUIStr_frmPrintPreview_PreparingDoc_Caption
                     GetLocalizedString = "Generating print preview..."
                 Case efnGUIStr_frmPrintPreview_cmdClose_Caption
                     GetLocalizedString = "Close print preview"
