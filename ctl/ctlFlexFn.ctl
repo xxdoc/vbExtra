@@ -8,7 +8,7 @@ Begin VB.UserControl FlexFn
    PropertyPages   =   "ctlFlexFn.ctx":0000
    ScaleHeight     =   3600
    ScaleWidth      =   4800
-   ToolboxBitmap   =   "ctlFlexFn.ctx":00C3
+   ToolboxBitmap   =   "ctlFlexFn.ctx":00C0
    Begin VB.TextBox txtAux 
       BorderStyle     =   0  'None
       Height          =   588
@@ -33,46 +33,52 @@ Begin VB.UserControl FlexFn
       _ExtentY        =   699
       ButtonsCount    =   6
       ButtonKey1      =   "Print"
-      ButtonPic161    =   "ctlFlexFn.ctx":03D5
-      ButtonPic201    =   "ctlFlexFn.ctx":0727
-      ButtonPic241    =   "ctlFlexFn.ctx":0C29
-      ButtonPic301    =   "ctlFlexFn.ctx":133B
-      ButtonPic361    =   "ctlFlexFn.ctx":1E55
+      ButtonPic161    =   "ctlFlexFn.ctx":03D2
+      ButtonPic201    =   "ctlFlexFn.ctx":0724
+      ButtonPic241    =   "ctlFlexFn.ctx":0C26
+      ButtonPic301    =   "ctlFlexFn.ctx":1338
+      ButtonPic361    =   "ctlFlexFn.ctx":1E52
+      ButtonWidth1    =   428
       ButtonKey2      =   "Copy"
-      ButtonPic162    =   "ctlFlexFn.ctx":2DD7
-      ButtonPic202    =   "ctlFlexFn.ctx":3129
-      ButtonPic242    =   "ctlFlexFn.ctx":362B
-      ButtonPic302    =   "ctlFlexFn.ctx":3D3D
-      ButtonPic362    =   "ctlFlexFn.ctx":4857
+      ButtonPic162    =   "ctlFlexFn.ctx":2DD4
+      ButtonPic202    =   "ctlFlexFn.ctx":3126
+      ButtonPic242    =   "ctlFlexFn.ctx":3628
+      ButtonPic302    =   "ctlFlexFn.ctx":3D3A
+      ButtonPic362    =   "ctlFlexFn.ctx":4854
+      ButtonWidth2    =   428
       ButtonKey3      =   "Save"
-      ButtonPic163    =   "ctlFlexFn.ctx":57D9
-      ButtonPic203    =   "ctlFlexFn.ctx":5B2B
-      ButtonPic243    =   "ctlFlexFn.ctx":602D
-      ButtonPic303    =   "ctlFlexFn.ctx":673F
-      ButtonPic363    =   "ctlFlexFn.ctx":7259
+      ButtonPic163    =   "ctlFlexFn.ctx":57D6
+      ButtonPic203    =   "ctlFlexFn.ctx":5B28
+      ButtonPic243    =   "ctlFlexFn.ctx":602A
+      ButtonPic303    =   "ctlFlexFn.ctx":673C
+      ButtonPic363    =   "ctlFlexFn.ctx":7256
+      ButtonWidth3    =   428
       ButtonKey4      =   "Find"
-      ButtonPic164    =   "ctlFlexFn.ctx":81DB
-      ButtonPic204    =   "ctlFlexFn.ctx":852D
-      ButtonPic244    =   "ctlFlexFn.ctx":8A2F
-      ButtonPic304    =   "ctlFlexFn.ctx":9141
-      ButtonPic364    =   "ctlFlexFn.ctx":9C5B
+      ButtonPic164    =   "ctlFlexFn.ctx":81D8
+      ButtonPic204    =   "ctlFlexFn.ctx":852A
+      ButtonPic244    =   "ctlFlexFn.ctx":8A2C
+      ButtonPic304    =   "ctlFlexFn.ctx":913E
+      ButtonPic364    =   "ctlFlexFn.ctx":9C58
+      ButtonWidth4    =   428
       ButtonKey5      =   "GroupData"
-      ButtonPic165    =   "ctlFlexFn.ctx":ABDD
-      ButtonPic205    =   "ctlFlexFn.ctx":AF2F
-      ButtonPic245    =   "ctlFlexFn.ctx":B431
-      ButtonPic305    =   "ctlFlexFn.ctx":BB43
-      ButtonPic365    =   "ctlFlexFn.ctx":C65D
+      ButtonPic165    =   "ctlFlexFn.ctx":ABDA
+      ButtonPic205    =   "ctlFlexFn.ctx":AF2C
+      ButtonPic245    =   "ctlFlexFn.ctx":B42E
+      ButtonPic305    =   "ctlFlexFn.ctx":BB40
+      ButtonPic365    =   "ctlFlexFn.ctx":C65A
+      ButtonWidth5    =   428
       ButtonKey6      =   "ConfigColumns"
-      ButtonPic166    =   "ctlFlexFn.ctx":D5DF
-      ButtonPic206    =   "ctlFlexFn.ctx":D931
-      ButtonPic246    =   "ctlFlexFn.ctx":DE33
-      ButtonPic306    =   "ctlFlexFn.ctx":E545
-      ButtonPic366    =   "ctlFlexFn.ctx":F05F
-      ButtonPic16Alt6 =   "ctlFlexFn.ctx":FFE1
-      ButtonPic20Alt6 =   "ctlFlexFn.ctx":10333
-      ButtonPic24Alt6 =   "ctlFlexFn.ctx":10835
-      ButtonPic30Alt6 =   "ctlFlexFn.ctx":10F47
-      ButtonPic36Alt6 =   "ctlFlexFn.ctx":11A61
+      ButtonPic166    =   "ctlFlexFn.ctx":D5DC
+      ButtonPic206    =   "ctlFlexFn.ctx":D92E
+      ButtonPic246    =   "ctlFlexFn.ctx":DE30
+      ButtonPic306    =   "ctlFlexFn.ctx":E542
+      ButtonPic366    =   "ctlFlexFn.ctx":F05C
+      ButtonPic16Alt6 =   "ctlFlexFn.ctx":FFDE
+      ButtonPic20Alt6 =   "ctlFlexFn.ctx":10330
+      ButtonPic24Alt6 =   "ctlFlexFn.ctx":10832
+      ButtonPic30Alt6 =   "ctlFlexFn.ctx":10F44
+      ButtonPic36Alt6 =   "ctlFlexFn.ctx":11A5E
+      ButtonWidth6    =   428
    End
    Begin VB.Timer tmrShow 
       Enabled         =   0   'False
@@ -83,7 +89,7 @@ Begin VB.UserControl FlexFn
    Begin VB.Image imgIcon 
       Height          =   408
       Left            =   696
-      Picture         =   "ctlFlexFn.ctx":129E3
+      Picture         =   "ctlFlexFn.ctx":129E0
       Top             =   1680
       Width           =   408
    End
@@ -162,7 +168,7 @@ Private Declare Function IsWindowEnabled Lib "user32" (ByVal hWnd As Long) As Lo
 Public Event ButtonClick(ByVal ButtonIndex As Integer, ByVal ButtonName As String, ByRef Cancel As Boolean, ByVal ButtonStatePressed As Boolean)
 Public Event ButtonClicked(ByVal ButtonIndex As Integer, ByVal ButtonName As String, ByVal ButtonStatePressed As Boolean)
 Public Event BeforeShowingPopupMenu(ByVal GridName As String, ByVal GridHasData As Boolean, ByRef Cancel As Boolean)
-Public Event TextFound(ByVal Row As Long, ByVal col As Long, ByVal Text As String)
+Public Event TextFound(ByVal Row As Long, ByVal Col As Long, ByVal Text As String)
 Public Event BeforeAction(Action As String, ByVal GridName As String, ByVal ExtraParam As Variant, ByRef Cancel As Boolean)
 Attribute BeforeAction.VB_MemberFlags = "200"
 Public Event AfterAction(Action As String, ByVal GridName As String, ByVal ExtraParam As Variant)
@@ -178,7 +184,7 @@ Public Event PersonalizeDefaultReportStyle(GridName As String, nRS As GridReport
 Public Event PersonalizeDefaultPrintGridFormatSettings(nRF As PrintGridFormatSettings)
 Public Event BeforeCopyingToClipboard(ByVal GridName As String, ByRef TextBefore As String, ByRef TextAfter As String)
 Public Event AfterSettingColumnsWidths(ByVal GridName As String, WidthsWereAdjusted As Boolean)
-Public Event CellTextChange(ByVal GridName As String, Row As Long, col As Long)
+Public Event CellTextChange(ByVal GridName As String, Row As Long, Col As Long)
 Public Event BeforeTextEdit(ByVal GridName As String, Cancel As Boolean)
 Public Event OrientationChange(ByVal NewOrientation As Long)
 Public Event GridHasDataCheck(ByVal GridName As String, ByRef GridHasData As Boolean)
@@ -766,8 +772,8 @@ Private Sub mFlexFnObject_BeforeTextEdit(ByVal GridName As String, Cancel As Boo
     RaiseEvent BeforeTextEdit(GridName, Cancel)
 End Sub
 
-Private Sub mFlexFnObject_CellTextChange(ByVal GridName As String, Row As Long, col As Long)
-    RaiseEvent CellTextChange(GridName, Row, col)
+Private Sub mFlexFnObject_CellTextChange(ByVal GridName As String, Row As Long, Col As Long)
+    RaiseEvent CellTextChange(GridName, Row, Col)
 End Sub
 
 Private Sub mFlexFnObject_PersonalizeDefaultReportStyle(GridName As String, nRS As GridReportStyle)
@@ -790,8 +796,8 @@ Private Sub mFlexFnObject_EndDocument(ByVal GridName As String)
     RaiseEvent EndDocument(GridName)
 End Sub
 
-Private Sub mFlexFnObject_TextFound(ByVal Row As Long, ByVal col As Long, ByVal Text As String)
-    RaiseEvent TextFound(Row, col, Text)
+Private Sub mFlexFnObject_TextFound(ByVal Row As Long, ByVal Col As Long, ByVal Text As String)
+    RaiseEvent TextFound(Row, Col, Text)
 End Sub
 
 Private Sub mFlexFnObject_UpdateUI()
@@ -1108,7 +1114,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mFlexFnObject.AllowTextEdition = PropBag.ReadProperty("AllowTextEdition", False)
     mFlexFnObject.TextEditionLocked = PropBag.ReadProperty("TextEditionLocked", False)
     mFlexFnObject.PrintPrevUseAltScaleIcons = PropBag.ReadProperty("PrintPrevUseAltScaleIcons", True)
-    mFlexFnObject.PrintCellColors = PropBag.ReadProperty("PrintCellColors", True)
+    mFlexFnObject.PrintCellsFormatting = PropBag.ReadProperty("PrintCellsFormatting", vxPCFPrintAllFormatting)
     
     tbrButtons.IconsSize = mIconsSize
     LoadButtons
@@ -1173,6 +1179,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mFlexFnObject.PrintFnObject.AllowUserChangeScale = PropBag.ReadProperty("AllowUserChangeScale", True)
     mFlexFnObject.PrintFnObject.AllowUserChangeOrientation = PropBag.ReadProperty("AllowUserChangeOrientation", True)
     mFlexFnObject.PrintFnObject.AllowUserChangePaper = PropBag.ReadProperty("AllowUserChangePaper", True)
+    mFlexFnObject.PrintFnObject.PrintPrevUseOneToolBar = PropBag.ReadProperty("PrintPrevUseOneToolBar", False)
     mFlexFnObject.PrintFnObject.PrintPrevToolBarIconsSize = PropBag.ReadProperty("PrintPrevToolBarIconsSize", vxPPTIconsAuto)
     mFlexFnObject.PrintFnObject.PageSetupButtonVisible = PropBag.ReadProperty("PageSetupButtonVisible", True)
     mFlexFnObject.PrintFnObject.FormatButtonVisible = PropBag.ReadProperty("FormatButtonVisible", True)
@@ -1337,7 +1344,7 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     Call PropBag.WriteProperty("AllowTextEdition", mFlexFnObject.AllowTextEdition, False)
     Call PropBag.WriteProperty("TextEditionLocked", mFlexFnObject.TextEditionLocked, False)
     Call PropBag.WriteProperty("PrintPrevUseAltScaleIcons", mFlexFnObject.PrintPrevUseAltScaleIcons, True)
-    Call PropBag.WriteProperty("PrintCellColors", mFlexFnObject.PrintCellColors, True)
+    Call PropBag.WriteProperty("PrintCellsFormatting", mFlexFnObject.PrintCellsFormatting, vxPCFPrintAllFormatting)
     
     ' PrintFnObject properties
     Call PropBag.WriteProperty("PaperSize", mFlexFnObject.PrintFnObject.PaperSize, vbPRPSPrinterDefault)
@@ -1373,6 +1380,7 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     Call PropBag.WriteProperty("AllowUserChangeScale", mFlexFnObject.PrintFnObject.AllowUserChangeScale, True)
     Call PropBag.WriteProperty("AllowUserChangeOrientation", mFlexFnObject.PrintFnObject.AllowUserChangeOrientation, True)
     Call PropBag.WriteProperty("AllowUserChangePaper", mFlexFnObject.PrintFnObject.AllowUserChangePaper, True)
+    Call PropBag.WriteProperty("PrintPrevUseOneToolBar", mFlexFnObject.PrintFnObject.PrintPrevUseOneToolBar, False)
     Call PropBag.WriteProperty("PrintPrevToolBarIconsSize", mFlexFnObject.PrintFnObject.PrintPrevToolBarIconsSize, vxPPTIconsAuto)
     Call PropBag.WriteProperty("PageSetupButtonVisible", mFlexFnObject.PrintFnObject.PageSetupButtonVisible, True)
     Call PropBag.WriteProperty("FormatButtonVisible", mFlexFnObject.PrintFnObject.FormatButtonVisible, True)
@@ -3053,15 +3061,15 @@ Public Property Get PrintPrevUseAltScaleIcons() As Boolean
 End Property
 
 
-Public Property Let PrintCellColors(nValue As Boolean)
-    If nValue <> mFlexFnObject.PrintCellColors Then
-        mFlexFnObject.PrintCellColors = nValue
-        PropertyChanged "PrintCellColors"
+Public Property Let PrintCellsFormatting(nValue As vbExPrintCellsFormatting)
+    If nValue <> mFlexFnObject.PrintCellsFormatting Then
+        mFlexFnObject.PrintCellsFormatting = nValue
+        PropertyChanged "PrintCellsFormatting"
     End If
 End Property
 
-Public Property Get PrintCellColors() As Boolean
-    PrintCellColors = mFlexFnObject.PrintCellColors
+Public Property Get PrintCellsFormatting() As vbExPrintCellsFormatting
+    PrintCellsFormatting = mFlexFnObject.PrintCellsFormatting
 End Property
 
 
@@ -3317,6 +3325,18 @@ Public Property Let AllowUserChangePaper(nValue As Boolean)
     If nValue <> mFlexFnObject.PrintFnObject.AllowUserChangePaper Then
         mFlexFnObject.PrintFnObject.AllowUserChangePaper = nValue
         PropertyChanged "AllowUserChangePaper"
+    End If
+End Property
+
+
+Public Property Get PrintPrevUseOneToolBar() As Boolean
+    PrintPrevUseOneToolBar = mFlexFnObject.PrintFnObject.PrintPrevUseOneToolBar
+End Property
+
+Public Property Let PrintPrevUseOneToolBar(nValue As Boolean)
+    If nValue <> mFlexFnObject.PrintFnObject.PrintPrevUseOneToolBar Then
+        mFlexFnObject.PrintFnObject.PrintPrevUseOneToolBar = nValue
+        PropertyChanged "PrintPrevUseOneToolBar"
     End If
 End Property
 
