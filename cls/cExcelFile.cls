@@ -171,7 +171,7 @@ Private Type tInteger
     Opcode As Integer
     Length As Integer
     Row As Integer     'unsigned integer
-    col As Integer
+    Col As Integer
 
     'rgbAttr1 handles whether cell is hidden and/or locked
     rgbAttr1 As Byte
@@ -190,7 +190,7 @@ Private Type tNumber
     Opcode As Integer
     Length As Integer
     Row As Integer
-    col As Integer
+    Col As Integer
     rgbAttr1 As Byte
     rgbAttr2 As Byte
     rgbAttr3 As Byte
@@ -202,7 +202,7 @@ Private Type tText
     Opcode As Integer
     Length As Integer
     Row As Integer
-    col As Integer
+    Col As Integer
     rgbAttr1 As Byte
     rgbAttr2 As Byte
     rgbAttr3 As Byte
@@ -365,7 +365,7 @@ End Function
 
 Public Function WriteValue(ValueType As XLSValueTypes, CellFontUsed As XLSCellFont, Alignment As XLSCellAlignment, HiddenLocked As XLSCellHiddenLocked, lrow As Long, lcol As Long, Value As Variant, Optional CellFormat As Long = 0) As Integer
     Dim Row%
-    Dim col%
+    Dim Col%
     Dim ST$
     Dim l%
     Dim a As Integer
@@ -382,9 +382,9 @@ Public Function WriteValue(ValueType As XLSValueTypes, CellFontUsed As XLSCellFo
     End If
 
     If lcol > 32767 Then
-        col% = CInt(lcol - 65536)
+        Col% = CInt(lcol - 65536)
     Else
-        col% = CInt(lcol) - 1    'rows/cols in Excel binary file are zero based
+        Col% = CInt(lcol) - 1    'rows/cols in Excel binary file are zero based
     End If
 
     Select Case ValueType
@@ -394,7 +394,7 @@ Public Function WriteValue(ValueType As XLSValueTypes, CellFontUsed As XLSCellFo
                 .Opcode = 2
                 .Length = 9
                 .Row = Row%
-                .col = col%
+                .Col = Col%
                 .rgbAttr1 = CByte(HiddenLocked)
                 .rgbAttr2 = CByte(CellFontUsed + CellFormat)
                 .rgbAttr3 = CByte(Alignment)
@@ -408,7 +408,7 @@ Public Function WriteValue(ValueType As XLSValueTypes, CellFontUsed As XLSCellFo
                 .Opcode = 3
                 .Length = 15
                 .Row = Row%
-                .col = col%
+                .Col = Col%
                 .rgbAttr1 = CByte(HiddenLocked)
                 .rgbAttr2 = CByte(CellFontUsed + CellFormat)
                 .rgbAttr3 = CByte(Alignment)
@@ -435,7 +435,7 @@ Public Function WriteValue(ValueType As XLSValueTypes, CellFontUsed As XLSCellFo
                 .Length = 8 + l
 
                 .Row = Row%
-                .col = col%
+                .Col = Col%
 
                 .rgbAttr1 = CByte(HiddenLocked)
                 .rgbAttr2 = CByte(CellFontUsed + CellFormat)

@@ -26,7 +26,7 @@ Private Const SW_SHOWMAXIMIZED = 3
 
 Private Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hWnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
 
-Public Event TextFound(ByVal Row As Long, ByVal col As Long, ByVal Text As String)
+Public Event TextFound(ByVal Row As Long, ByVal Col As Long, ByVal Text As String)
 Public Event BeforeOrderingByColumn(ByVal GridName As String, ByVal ColumnClicked As Long, ByRef OrderByThisColumn As Long, Descending As Boolean)
 Public Event AfterOrderingByColumn(ByVal GridName As String, ByVal ColumnClicked As Long, ByVal OrderedByCol As Long, ByVal Descending As Boolean)
 Public Event BeforePrintGrid(ByVal GridName As String)
@@ -39,7 +39,7 @@ Public Event WorkGridChange(GridName As String)
 Public Event PersonalizeDefaultReportStyle(GridName As String, nRS As GridReportStyle)
 Public Event BeforeCopyingToClipboard(ByVal GridName As String, ByRef TextBefore As String, ByRef TextAfter As String)
 Public Event AfterSettingColumnsWidths(ByVal GridName As String, WidthsWereAdjusted As Boolean)
-Public Event CellTextChange(ByVal GridName As String, Row As Long, col As Long)
+Public Event CellTextChange(ByVal GridName As String, Row As Long, Col As Long)
 Public Event BeforeTextEdit(ByVal GridName As String, Cancel As Boolean)
 Public Event OrientationChange(ByVal NewOrientation As Long)
 Public Event DocPrinted()
@@ -128,7 +128,7 @@ Private mTextEditionLocked As Boolean
 Private mShowCopyConfirmationMessage As Boolean
 Private mCopyConfirmationMessage As String
 Private mAutoSelect125PercentScaleOnSmallGrids As Boolean
-Private mPrintCellColors As Boolean
+Private mPrintCellsFormatting As vbExPrintCellsFormatting
 
 Private WithEvents mForm As Form
 Attribute mForm.VB_VarHelpID = -1
@@ -310,7 +310,7 @@ Private Sub Class_Initialize()
     mShowToolTipsForOrderColumns = True
     mAllowTextEdition = False
     mTextEditionLocked = False
-    mPrintCellColors = True
+    mPrintCellsFormatting = vxPCFPrintAllFormatting
     
     mMinScalePercent = cPrintPreviewDefaultMinScale
     mMaxScalePercent = cPrintPreviewDefaultMaxScale
@@ -1128,7 +1128,7 @@ Private Sub FindTextInGrid(TextToFind, Optional nFindNext As Boolean)
     
     iRedraw = mCurrentGrid.Redraw
     iPrevRow = mCurrentGrid.Row
-    iPrevCol = mCurrentGrid.col
+    iPrevCol = mCurrentGrid.Col
     iPrevRowSel = mCurrentGrid.RowSel
     iPrevColSel = mCurrentGrid.ColSel
     On Error Resume Next
@@ -1138,10 +1138,10 @@ Private Sub FindTextInGrid(TextToFind, Optional nFindNext As Boolean)
     If (sLastCurrentRow = iPrevRow) And (sLastCurrentCol = iPrevCol) Then
         'If mCurrentGrid.Row <> 0 Then
             mCurrentGrid.Row = sLastRow
-            mCurrentGrid.col = sLastCol
+            mCurrentGrid.Col = sLastCol
         'End If
     Else
-        mCurrentGrid.col = iPrevCol
+        mCurrentGrid.Col = iPrevCol
         mCurrentGrid.Row = iPrevRow
     End If
     
@@ -1154,7 +1154,7 @@ Private Sub FindTextInGrid(TextToFind, Optional nFindNext As Boolean)
     iPass = 1
     If iTextToFind <> "" Then
         R = mCurrentGrid.Row - 1
-        c = mCurrentGrid.col
+        c = mCurrentGrid.Col
 Again:
         Do Until R = mCurrentGrid.Rows - 1
             R = R + 1
@@ -1163,7 +1163,7 @@ Again:
                     c = c + 1
                     If mCurrentGrid.ColWidth(c) <> 0 Then
                         If InStr(LCase$(mCurrentGrid.TextMatrix(R, c)), iTextToFind) > 0 Then
-                            mCurrentGrid.col = c
+                            mCurrentGrid.Col = c
                             sLastCol = c
                             If R > 1 Then
                                 If mCurrentGrid.TopRow < (R - 1) Then
@@ -1216,12 +1216,12 @@ Again:
                         End If
                     End If
                     If iPass = 2 Then
-                        If R = mCurrentGrid.Row And c > mCurrentGrid.col Then Exit Do
+                        If R = mCurrentGrid.Row And c > mCurrentGrid.Col Then Exit Do
                     End If
                 Loop
             End If
             If iPass = 2 Then
-                If R = mCurrentGrid.Row And c > mCurrentGrid.col Then Exit Do
+                If R = mCurrentGrid.Row And c > mCurrentGrid.Col Then Exit Do
             End If
             c = -1
         Loop
@@ -1343,7 +1343,7 @@ Again:
         
         iRedraw = mCurrentGrid.Redraw
         iPrevRow = mCurrentGrid.Row
-        iPrevCol = mCurrentGrid.col
+        iPrevCol = mCurrentGrid.Col
         iPrevRowSel = mCurrentGrid.RowSel
         iPrevColSel = mCurrentGrid.ColSel
         mCurrentGrid.Redraw = False
@@ -1388,7 +1388,7 @@ Again:
         ' asigna una matriz y un array, iFontsInGrid para la lista de fuentes en la grilla, y iCellsFontNumber para saber a cual corresponde cada celda
         iCcv = -1
         For ContCol = 0 To mCurrentGrid.Cols - 1
-            mCurrentGrid.col = ContCol
+            mCurrentGrid.Col = ContCol
             If mCurrentGrid.ColWidth(ContCol) <> 0 Then
                 iCcv = iCcv + 1
                 iColumns(ContCol) = iCcv
@@ -1860,7 +1860,7 @@ Again:
         SaveGridAsExcelFile = iPath1
         
         mCurrentGrid.Row = iPrevRow
-        mCurrentGrid.col = iPrevCol
+        mCurrentGrid.Col = iPrevCol
         mCurrentGrid.RowSel = iPrevRowSel
         mCurrentGrid.ColSel = iPrevColSel
         mCurrentGrid.Redraw = iRedraw
@@ -3118,8 +3118,9 @@ Friend Sub DrawGrid(nCanceled As Boolean)
     Dim iScaleWidth As Long
     Dim iScaleHeight As Long
     Dim iFontsProportion As Single
-    Dim iLongerTexts() As Long
+    Dim iLongerTextsLen() As Long
     Dim iLongerTextsRow() As Long
+    Dim iLongerTextsStr() As String
     Dim r1 As Long
     Dim iGridReDraw As Boolean
     Dim iLen As Long
@@ -3132,10 +3133,10 @@ Friend Sub DrawGrid(nCanceled As Boolean)
     Dim iAuxLng2 As Long
     Dim iAuxLng3 As Long
     Dim iAuxLng4 As Long
-    Dim iGridStatus_Row As Long
-    Dim iGridStatus_RowSel As Long
-    Dim iGridStatus_Col As Long
-    Dim iGridStatus_RowColSel As Long
+    Dim iGridState_Row As Long
+    Dim iGridState_RowSel As Long
+    Dim iGridState_Col As Long
+    Dim iGridState_RowColSel As Long
     Dim iGridAlign As Long
     Dim iFixedRows As Long
     Dim iFixedCols As Long
@@ -3174,6 +3175,9 @@ Friend Sub DrawGrid(nCanceled As Boolean)
     Dim iConsiderGridWordWrap As Boolean
     Dim iLines() As String
     Dim iStretchLastColumn As Boolean
+    Dim c2 As Long
+    Dim iAuxFontIndex As Long
+    Dim iLastFontIndex As Long
     
     Dim iGrid As Object   ' to have intellisense replace 'Object' with MsFlexGrid or MSHFlexGrid and add the proper reference...
     
@@ -3184,10 +3188,10 @@ Friend Sub DrawGrid(nCanceled As Boolean)
     Dim iT1 As Double
     iT1 = Timer
     
-    iGridStatus_Row = iGrid.Row
-    iGridStatus_RowSel = iGrid.RowSel
-    iGridStatus_Col = iGrid.col
-    iGridStatus_RowColSel = iGrid.ColSel
+    iGridState_Row = iGrid.Row
+    iGridState_RowSel = iGrid.RowSel
+    iGridState_Col = iGrid.Col
+    iGridState_RowColSel = iGrid.ColSel
     iGridReDraw = iGrid.Redraw
     iGrid.Redraw = False
     
@@ -3195,7 +3199,7 @@ Friend Sub DrawGrid(nCanceled As Boolean)
 Start:
     If mGridPrintingData Is Nothing Then
         Set mGridPrintingData = New cGridPrintingData
-        mGridPrintingData.SetGrid mCurrentGrid, mGridReportStyle.HeadersBackgroundColor, mPrintCellColors
+        mGridPrintingData.SetGrid mCurrentGrid, mGridReportStyle.HeadersBackgroundColor, mPrintCellsFormatting
         If mGridPrintingData.Canceled Then
             nCanceled = True
             iGrid.Redraw = iGridReDraw
@@ -3203,7 +3207,7 @@ Start:
         End If
     Else
         If mGridPrintingData.SizeStrStoredGrid <> mGridPrintingData.GetGridSizeStr(mCurrentGrid) Then
-            mGridPrintingData.SetGrid mCurrentGrid, mGridReportStyle.HeadersBackgroundColor, mPrintCellColors
+            mGridPrintingData.SetGrid mCurrentGrid, mGridReportStyle.HeadersBackgroundColor, mPrintCellsFormatting
             If mGridPrintingData.Canceled Then
                 nCanceled = True
                 iGrid.Redraw = iGridReDraw
@@ -3213,11 +3217,6 @@ Start:
             mGridPrintingData.ResetAddedData mGridReportStyle.HeadersBackgroundColor
         End If
         
-    End If
-    If mIgnoreEmptyRowsAtTheEnd Then
-        iLastRowToPrint = mGridPrintingData.LastRowWithData
-    Else
-        iLastRowToPrint = iGridRows - 1
     End If
     
     iScaleWidth = Printer2.ScaleWidth
@@ -3229,6 +3228,12 @@ Start:
     iGridRows = iGrid.Rows
     iFixedRows = iGrid.FixedRows
     iFixedCols = iGrid.FixedCols
+    
+    If mIgnoreEmptyRowsAtTheEnd Then
+        iLastRowToPrint = mGridPrintingData.LastRowWithData
+    Else
+        iLastRowToPrint = iGridRows - 1
+    End If
     
     iCellMarginsX = Printer2.ScaleX(1, vbMillimeters, vbTwips)
     iCellMarginsY = Printer2.ScaleY(1, vbMillimeters, vbTwips)
@@ -3352,8 +3357,9 @@ OptionA:
 Part2:
 
     ' find the 5 longer data strings in each column
-    ReDim iLongerTexts(iGridCols - 1, 5)
+    ReDim iLongerTextsLen(iGridCols - 1, 5)
     ReDim iLongerTextsRow(iGridCols - 1, 5)
+    ReDim iLongerTextsStr(iGridCols - 1, 5)
     For c = 0 To iGridCols - 1
         For r1 = iFixedRows To iLastRowToPrint
             If mGridPrintingData.RowIsVisible(r1) Then
@@ -3379,27 +3385,68 @@ Part2:
                 End If
                 
                 If Not iIgnore Then
-                    iLen = Len(iGrid.TextMatrix(r1, c)) * mGridPrintingData.CellFontAttibutes(r1, c).Size
-                    If iLen > iLongerTexts(c, 5) Then
-                        If iLen > iLongerTexts(c, 1) Then
-                            iLongerTexts(c, 1) = iLen
+                    iLen = Len(iGrid.TextMatrix(r1, c)) * mGridPrintingData.CellFontAttibutes(r1, c).Size * IIf(mGridPrintingData.CellFontAttibutes(r1, c).Bold, 1.15, 1)
+                    If iLen > iLongerTextsLen(c, 5) Then
+                        If iLen > iLongerTextsLen(c, 1) Then
+                            iLongerTextsLen(c, 1) = iLen
                             iLongerTextsRow(c, 1) = r1
+                            iLongerTextsStr(c, 1) = iGrid.TextMatrix(r1, c)
                         Else
-                            If iLen > iLongerTexts(c, 2) Then
-                                iLongerTexts(c, 2) = iLen
-                                iLongerTextsRow(c, 2) = r1
+                            If iLen > iLongerTextsLen(c, 2) Then
+                                iAuxBool = False
+                                For c2 = 1 To 2
+                                    If iLongerTextsStr(c, c2) = iGrid.TextMatrix(r1, c) Then
+                                        iAuxBool = True
+                                        Exit For
+                                    End If
+                                Next c2
+                                If Not iAuxBool Then
+                                    iLongerTextsLen(c, 2) = iLen
+                                    iLongerTextsRow(c, 2) = r1
+                                    iLongerTextsStr(c, 2) = iGrid.TextMatrix(r1, c)
+                                End If
                             Else
-                                If iLen > iLongerTexts(c, 3) Then
-                                    iLongerTexts(c, 3) = iLen
-                                    iLongerTextsRow(c, 3) = r1
+                                If iLen > iLongerTextsLen(c, 3) Then
+                                    iAuxBool = False
+                                    For c2 = 1 To 3
+                                        If iLongerTextsStr(c, c2) = iGrid.TextMatrix(r1, c) Then
+                                            iAuxBool = True
+                                            Exit For
+                                        End If
+                                    Next c2
+                                    If Not iAuxBool Then
+                                        iLongerTextsLen(c, 3) = iLen
+                                        iLongerTextsRow(c, 3) = r1
+                                        iLongerTextsStr(c, 3) = iGrid.TextMatrix(r1, c)
+                                    End If
                                 Else
-                                    If iLen > iLongerTexts(c, 4) Then
-                                        iLongerTexts(c, 4) = iLen
-                                        iLongerTextsRow(c, 4) = r1
+                                    If iLen > iLongerTextsLen(c, 4) Then
+                                        iAuxBool = False
+                                        For c2 = 1 To 4
+                                            If iLongerTextsStr(c, c2) = iGrid.TextMatrix(r1, c) Then
+                                                iAuxBool = True
+                                                Exit For
+                                            End If
+                                        Next c2
+                                        If Not iAuxBool Then
+                                            iLongerTextsLen(c, 4) = iLen
+                                            iLongerTextsRow(c, 4) = r1
+                                            iLongerTextsStr(c, 4) = iGrid.TextMatrix(r1, c)
+                                        End If
                                     Else
-                                        If iLen > iLongerTexts(c, 5) Then
-                                            iLongerTexts(c, 5) = iLen
-                                            iLongerTextsRow(c, 5) = r1
+                                        If iLen > iLongerTextsLen(c, 5) Then
+                                            iAuxBool = False
+                                            For c2 = 1 To 5
+                                                If iLongerTextsStr(c, c2) = iGrid.TextMatrix(r1, c) Then
+                                                    iAuxBool = True
+                                                    Exit For
+                                                End If
+                                            Next c2
+                                            If Not iAuxBool Then
+                                                iLongerTextsLen(c, 5) = iLen
+                                                iLongerTextsRow(c, 5) = r1
+                                                iLongerTextsStr(c, 5) = iGrid.TextMatrix(r1, c)
+                                            End If
                                         End If
                                     End If
                                 End If
@@ -3419,29 +3466,49 @@ Part2:
     ReDim iColumnHeadersTextWidths(iGridCols - 1)
     ReDim iColumnTextWidthsGeneralFontNormal(iGridCols - 1)
     ReDim iColumnTextWidthsGeneralFontReduced(iGridCols - 1)
+    iLastFontIndex = -1
     For c = 0 To iGridCols - 1
         If mGridPrintingData.ColIsVisible(c) Then
-            iGrid.col = c
+            'iGrid.col = c
             For r1 = 0 To iFixedRows - 1
                 If mGridPrintingData.RowIsVisible(r1) Then
-                    iGrid.Row = r1
-                    Printer2.FontName = iGrid.CellFontName
-                    Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
-                    iSng = iFontsProportion
-                    Do Until Printer2.FontSize <= (iGrid.CellFontSize * iSng * 1.001)
-                        iFontsProportion = iFontsProportion * 0.995
-                        Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
-                        If Printer2.FontSize < 2 Then Exit Do
-                    Loop
-                    Printer2.FontBold = iGrid.CellFontBold
-                    Printer2.FontItalic = iGrid.CellFontItalic
-                    On Error Resume Next
-                    Printer2.FontStrikeThru = iGrid.CellFontStrikeThrough
-                    Printer2.FontUnderLine = iGrid.CellFontUnderline
-                    PrinterEx.FontWidth = iGrid.CellFontWidth
-                    On Error GoTo 0
+                    iAuxFontIndex = mGridPrintingData.CellFontAttibutesIndex(r1, c)
+                    If iAuxFontIndex <> iLastFontIndex Then
+                        iLastFontIndex = iAuxFontIndex
+                        Set iFontAttibutes = mGridPrintingData.CellFontAttibutes(r1, c)
+                        Printer2.FontName = iFontAttibutes.Name
+                        Printer2.FontSize = iFontAttibutes.Size * iFontsProportion
+                        iSng = iFontsProportion
+                        Do Until Printer2.FontSize <= (iFontAttibutes.Size * iSng * 1.001)
+                            iFontsProportion = iFontsProportion * 0.995
+                            Printer2.FontSize = iFontAttibutes.Size * iFontsProportion
+                            If Printer2.FontSize < 2 Then Exit Do
+                        Loop
+                        Printer2.FontBold = iFontAttibutes.Bold
+                        Printer2.FontItalic = iFontAttibutes.Italic
+                        Printer2.FontStrikeThru = iFontAttibutes.Strikethrough
+                        Printer2.FontUnderLine = iFontAttibutes.Underline
+                        PrinterEx.FontWidth = iFontAttibutes.Width
+                    End If
                     
-                    iSng = Printer2.TextWidth(iGrid.Text) + iCellMarginsX * 2 + 15
+                    'iGrid.Row = r1
+                    'Printer2.FontName = iGrid.CellFontName
+                    
+                    'Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
+                    'iSng = iFontsProportion
+'                    Do Until Printer2.FontSize <= (iGrid.CellFontSize * iSng * 1.001)
+'                        iFontsProportion = iFontsProportion * 0.995
+'                        Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
+'                        If Printer2.FontSize < 2 Then Exit Do
+'                    Loop
+'                    Printer2.FontBold = iGrid.CellFontBold
+'                    Printer2.FontItalic = iGrid.CellFontItalic
+'                    On Error Resume Next
+'                    Printer2.FontStrikeThru = iGrid.CellFontStrikeThrough
+'                    Printer2.FontUnderLine = iGrid.CellFontUnderline
+'                    PrinterEx.FontWidth = iGrid.CellFontWidth
+'                    On Error GoTo 0
+                    iSng = Printer2.TextWidth(iGrid.TextMatrix(r1, c)) + iCellMarginsX * 2 + 15
                     If iSng > iColumnHeadersTextWidths(c) Then
                         iColumnHeadersTextWidths(c) = iSng
                     End If
@@ -3454,28 +3521,47 @@ Part2:
     ReDim iColumnDataTextWidths(iGridCols - 1)
     For c = 0 To iGridCols - 1
         If mGridPrintingData.ColIsVisible(c) Then
-            iGrid.col = c
+'            iGrid.col = c
             For r1 = 1 To 5
                 If mGridPrintingData.RowIsVisible(r1) Then
-                    If iLongerTexts(c, r1) <> 0 Then
-                        iGrid.Row = iLongerTextsRow(c, r1)
-                        Printer2.FontName = iGrid.CellFontName
-                        Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
-                        iSng = iFontsProportion
-                        Do Until Printer2.FontSize <= (iGrid.CellFontSize * iSng * 1.001)
-                            iFontsProportion = iFontsProportion * 0.995
-                            Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
-                            If Printer2.FontSize < 2 Then Exit Do
-                        Loop
-                        Printer2.FontBold = iGrid.CellFontBold
-                        Printer2.FontItalic = iGrid.CellFontItalic
-                        On Error Resume Next
-                        Printer2.FontStrikeThru = iGrid.CellFontStrikeThrough
-                        Printer2.FontUnderLine = iGrid.CellFontUnderline
-                        PrinterEx.FontWidth = iGrid.CellFontWidth
-                        On Error GoTo 0
+                    If iLongerTextsLen(c, r1) <> 0 Then
+                        iAuxFontIndex = mGridPrintingData.CellFontAttibutesIndex(iLongerTextsRow(c, r1), c)
+                        If iAuxFontIndex <> iLastFontIndex Then
+                            iLastFontIndex = iAuxFontIndex
+                            Set iFontAttibutes = mGridPrintingData.CellFontAttibutes(iLongerTextsRow(c, r1), c)
+                            Printer2.FontName = iFontAttibutes.Name
+                            Printer2.FontSize = iFontAttibutes.Size * iFontsProportion
+                            iSng = iFontsProportion
+                            Do Until Printer2.FontSize <= (iFontAttibutes.Size * iSng * 1.001)
+                                iFontsProportion = iFontsProportion * 0.995
+                                Printer2.FontSize = iFontAttibutes.Size * iFontsProportion
+                                If Printer2.FontSize < 2 Then Exit Do
+                            Loop
+                            Printer2.FontBold = iFontAttibutes.Bold
+                            Printer2.FontItalic = iFontAttibutes.Italic
+                            Printer2.FontStrikeThru = iFontAttibutes.Strikethrough
+                            Printer2.FontUnderLine = iFontAttibutes.Underline
+                            PrinterEx.FontWidth = iFontAttibutes.Width
+                        End If
                     
-                        iSng = Printer2.TextWidth(iGrid.Text) + iCellMarginsX * 2 + 15
+'                        iGrid.Row = iLongerTextsRow(c, r1)
+'                        Printer2.FontName = iGrid.CellFontName
+'                        Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
+'                        iSng = iFontsProportion
+'                        Do Until Printer2.FontSize <= (iGrid.CellFontSize * iSng * 1.001)
+'                            iFontsProportion = iFontsProportion * 0.995
+'                            Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
+'                            If Printer2.FontSize < 2 Then Exit Do
+'                        Loop
+'                        Printer2.FontBold = iGrid.CellFontBold
+'                        Printer2.FontItalic = iGrid.CellFontItalic
+'                        On Error Resume Next
+'                        Printer2.FontStrikeThru = iGrid.CellFontStrikeThrough
+'                        Printer2.FontUnderLine = iGrid.CellFontUnderline
+'                        PrinterEx.FontWidth = iGrid.CellFontWidth
+'                        On Error GoTo 0
+'
+                        iSng = Printer2.TextWidth(iGrid.TextMatrix(iLongerTextsRow(c, r1), c)) + iCellMarginsX * 2 + 15
                         If iSng > iColumnDataTextWidths(c) Then
                             iColumnDataTextWidths(c) = iSng
                         End If
@@ -3484,6 +3570,7 @@ Part2:
             Next r1
         End If
     Next c
+    
     
     ' Column text width considering widtest texts
     iTotalTextWidth = 0
@@ -3638,19 +3725,33 @@ Part2:
                     iColumnHeadersTextWidths(c) = 0
                     For r1 = 0 To iFixedRows - 1
                         If mGridPrintingData.RowIsVisible(r1) Then
-                            iGrid.col = c
-                            iGrid.Row = r1
-                            Printer2.FontName = iGrid.CellFontName
-                            Printer2.FontSize = iGrid.CellFontSize * iFontsProportion * 0.75
-                            Printer2.FontBold = iGrid.CellFontBold
-                            Printer2.FontItalic = iGrid.CellFontItalic
-                            On Error Resume Next
-                            Printer2.FontStrikeThru = iGrid.CellFontStrikeThrough
-                            Printer2.FontUnderLine = iGrid.CellFontUnderline
-                            PrinterEx.FontWidth = iGrid.CellFontWidth
-                            On Error GoTo 0
+
+'                            iGrid.col = c
+'                            iGrid.Row = r1
+'                            Printer2.FontName = iGrid.CellFontName
+'                            Printer2.FontSize = iGrid.CellFontSize * iFontsProportion * 0.75
+'                            Printer2.FontBold = iGrid.CellFontBold
+'                            Printer2.FontItalic = iGrid.CellFontItalic
+'                            On Error Resume Next
+'                            Printer2.FontStrikeThru = iGrid.CellFontStrikeThrough
+'                            Printer2.FontUnderLine = iGrid.CellFontUnderline
+'                            PrinterEx.FontWidth = iGrid.CellFontWidth
+'                            On Error GoTo 0
                             
-                            iSng = Printer2.TextWidth(iGrid.Text) + iCellMarginsX * 2 + 15
+                            iAuxFontIndex = mGridPrintingData.CellFontAttibutesIndex(r1, c)
+                            If iAuxFontIndex <> iLastFontIndex Then
+                                iLastFontIndex = iAuxFontIndex
+                                Set iFontAttibutes = mGridPrintingData.CellFontAttibutes(r1, c)
+                                Printer2.FontName = iFontAttibutes.Name
+                                Printer2.FontSize = iFontAttibutes.Size * iFontsProportion * 0.75
+                                Printer2.FontBold = iFontAttibutes.Bold
+                                Printer2.FontItalic = iFontAttibutes.Italic
+                                Printer2.FontStrikeThru = iFontAttibutes.Strikethrough
+                                Printer2.FontUnderLine = iFontAttibutes.Underline
+                                PrinterEx.FontWidth = iFontAttibutes.Width
+                            End If
+                            
+                            iSng = Printer2.TextWidth(iGrid.TextMatrix(r1, c)) + iCellMarginsX * 2 + 15
                             If iSng > iColumnHeadersTextWidths(c) Then
                                 iColumnHeadersTextWidths(c) = iSng
                             End If
@@ -3692,29 +3793,54 @@ Part2:
                                 If InStr(iGrid.TextMatrix(r1, c), " ") > 0 Then
                                     iWordWrapTheColumnHeaders = True
                                 End If
-                                iGrid.col = c
-                                iGrid.Row = r1
-                                Printer2.FontName = iGrid.CellFontName
-                                If iReduceTheColumnsHeadersFont Then
-                                    Printer2.FontSize = iGrid.CellFontSize * iFontsProportion * 0.75
-                                Else
-                                    iSng = iFontsProportion
-                                    Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
-                                    Do Until Printer2.FontSize <= (iGrid.CellFontSize * iSng * 1.001)
-                                        iFontsProportion = iFontsProportion * 0.995
-                                        Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
-                                        If Printer2.FontSize < 2 Then Exit Do
-                                    Loop
+                                
+'                                iGrid.col = c
+'                                iGrid.Row = r1
+'                                Printer2.FontName = iGrid.CellFontName
+'                                If iReduceTheColumnsHeadersFont Then
+'                                    Printer2.FontSize = iGrid.CellFontSize * iFontsProportion * 0.75
+'                                Else
+'                                    iSng = iFontsProportion
+'                                    Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
+'                                    Do Until Printer2.FontSize <= (iGrid.CellFontSize * iSng * 1.001)
+'                                        iFontsProportion = iFontsProportion * 0.995
+'                                        Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
+'                                        If Printer2.FontSize < 2 Then Exit Do
+'                                    Loop
+'                                End If
+'                                Printer2.FontBold = iGrid.CellFontBold
+'                                Printer2.FontItalic = iGrid.CellFontItalic
+'                                On Error Resume Next
+'                                Printer2.FontStrikeThru = iGrid.CellFontStrikeThrough
+'                                Printer2.FontUnderLine = iGrid.CellFontUnderline
+'                                PrinterEx.FontWidth = iGrid.CellFontWidth
+'                                On Error GoTo 0
+                                
+                                iAuxFontIndex = mGridPrintingData.CellFontAttibutesIndex(r1, c)
+                                If iAuxFontIndex <> iLastFontIndex Then
+                                    iLastFontIndex = iAuxFontIndex
+                                    Set iFontAttibutes = mGridPrintingData.CellFontAttibutes(r1, c)
+                                    Printer2.FontName = iFontAttibutes.Name
+                                    If iReduceTheColumnsHeadersFont Then
+                                        Printer2.FontSize = iFontAttibutes.Size * iFontsProportion * 0.75
+                                    Else
+                                        iSng = iFontsProportion
+                                        Printer2.FontSize = iFontAttibutes.Size * iFontsProportion
+                                        Do Until Printer2.FontSize <= (iFontAttibutes.Size * iSng * 1.001)
+                                            iFontsProportion = iFontsProportion * 0.995
+                                            Printer2.FontSize = iFontAttibutes.Size * iFontsProportion
+                                            If Printer2.FontSize < 2 Then Exit Do
+                                        Loop
+                                    End If
+                                    Printer2.FontBold = iFontAttibutes.Bold
+                                    Printer2.FontItalic = iFontAttibutes.Italic
+                                    Printer2.FontStrikeThru = iFontAttibutes.Strikethrough
+                                    Printer2.FontUnderLine = iFontAttibutes.Underline
+                                    PrinterEx.FontWidth = iFontAttibutes.Width
                                 End If
-                                Printer2.FontBold = iGrid.CellFontBold
-                                Printer2.FontItalic = iGrid.CellFontItalic
-                                On Error Resume Next
-                                Printer2.FontStrikeThru = iGrid.CellFontStrikeThrough
-                                Printer2.FontUnderLine = iGrid.CellFontUnderline
-                                PrinterEx.FontWidth = iGrid.CellFontWidth
-                                On Error GoTo 0
-                            
-                                iSng = Printer2.TextWidth(WordWrappedInMax3Lines(FirstWords(iGrid.Text, 15))) + iCellMarginsX * 2 + 15
+                                
+                                iSng = Printer2.TextWidth(WordWrappedInMax3Lines(FirstWords(iGrid.TextMatrix(r1, c), 15))) + iCellMarginsX * 2 + 15
+                                
                                 If iSng > iAuxColumnTextWidths(c) Then
                                     iAuxColumnTextWidths(c) = iSng
                                 End If
@@ -3757,20 +3883,33 @@ Part2:
                         iColumnDataTextWidths(c) = 0
                         For r1 = 1 To 5
                             If mGridPrintingData.RowIsVisible(r1) Then
-                                If iLongerTexts(c, r1) <> 0 Then
-                                    iGrid.col = c
-                                    iGrid.Row = iLongerTextsRow(c, r1)
-                                    Printer2.FontName = iGrid.CellFontName
-                                    Printer2.FontSize = iGrid.CellFontSize * iFontsProportion * 0.75
-                                    Printer2.FontBold = iGrid.CellFontBold
-                                    Printer2.FontItalic = iGrid.CellFontItalic
-                                    On Error Resume Next
-                                    Printer2.FontStrikeThru = iGrid.CellFontStrikeThrough
-                                    Printer2.FontUnderLine = iGrid.CellFontUnderline
-                                    PrinterEx.FontWidth = iGrid.CellFontWidth
-                                    On Error GoTo 0
+                                If iLongerTextsLen(c, r1) <> 0 Then
+'                                    iGrid.col = c
+'                                    iGrid.Row = iLongerTextsRow(c, r1)
+'                                    Printer2.FontName = iGrid.CellFontName
+'                                    Printer2.FontSize = iGrid.CellFontSize * iFontsProportion * 0.75
+'                                    Printer2.FontBold = iGrid.CellFontBold
+'                                    Printer2.FontItalic = iGrid.CellFontItalic
+'                                    On Error Resume Next
+'                                    Printer2.FontStrikeThru = iGrid.CellFontStrikeThrough
+'                                    Printer2.FontUnderLine = iGrid.CellFontUnderline
+'                                    PrinterEx.FontWidth = iGrid.CellFontWidth
+'                                    On Error GoTo 0
                                     
-                                    iSng = Printer2.TextWidth(iGrid.Text) + iCellMarginsX * 2 + 15
+                                    iAuxFontIndex = mGridPrintingData.CellFontAttibutesIndex(iLongerTextsRow(c, r1), c)
+                                    If iAuxFontIndex <> iLastFontIndex Then
+                                        iLastFontIndex = iAuxFontIndex
+                                        Set iFontAttibutes = mGridPrintingData.CellFontAttibutes(iLongerTextsRow(c, r1), c)
+                                        Printer2.FontName = iFontAttibutes.Name
+                                        Printer2.FontSize = iFontAttibutes.Size * iFontsProportion * 0.75
+                                        Printer2.FontBold = iFontAttibutes.Bold
+                                        Printer2.FontItalic = iFontAttibutes.Italic
+                                        Printer2.FontStrikeThru = iFontAttibutes.Strikethrough
+                                        Printer2.FontUnderLine = iFontAttibutes.Underline
+                                        PrinterEx.FontWidth = iFontAttibutes.Width
+                                    End If
+                                    
+                                    iSng = Printer2.TextWidth(iGrid.TextMatrix(iLongerTextsRow(c, r1), c)) + iCellMarginsX * 2 + 15
                                     If iSng > iColumnDataTextWidths(c) Then
                                         iColumnDataTextWidths(c) = iSng
                                     End If
@@ -3813,34 +3952,57 @@ Part2:
                     If iColumnDataTextWidths(c) > iColumnHeadersTextWidths(c) Then
                         For r1 = 1 To 5
                             If mGridPrintingData.RowIsVisible(r1) Then
-                                If iLongerTexts(c, r1) <> 0 Then
+                                If iLongerTextsLen(c, r1) <> 0 Then
                                     If InStr(iGrid.TextMatrix(iLongerTextsRow(c, r1), c), " ") > 0 Then
                                         iWordWrapTheColumnData = True
                                         iColumnDataWordWraps(c) = True
                                     End If
-                                    iGrid.col = c
-                                    iGrid.Row = iLongerTextsRow(c, r1)
-                                    Printer2.FontName = iGrid.CellFontName
-                                    If iReduceTheColumnsDataFont Then
-                                        Printer2.FontSize = iGrid.CellFontSize * iFontsProportion * 0.75
-                                    Else
-                                        iSng = iFontsProportion
-                                        Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
-                                        Do Until Printer2.FontSize <= (iGrid.CellFontSize * iSng * 1.001)
-                                            iFontsProportion = iFontsProportion * 0.995
-                                            Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
-                                            If Printer2.FontSize < 2 Then Exit Do
-                                        Loop
-                                    End If
-                                    Printer2.FontBold = iGrid.CellFontBold
-                                    Printer2.FontItalic = iGrid.CellFontItalic
-                                    On Error Resume Next
-                                    Printer2.FontStrikeThru = iGrid.CellFontStrikeThrough
-                                    Printer2.FontUnderLine = iGrid.CellFontUnderline
-                                    PrinterEx.FontWidth = iGrid.CellFontWidth
-                                    On Error GoTo 0
+'                                    iGrid.col = c
+'                                    iGrid.Row = iLongerTextsRow(c, r1)
+'                                    Printer2.FontName = iGrid.CellFontName
+'                                    If iReduceTheColumnsDataFont Then
+'                                        Printer2.FontSize = iGrid.CellFontSize * iFontsProportion * 0.75
+'                                    Else
+'                                        iSng = iFontsProportion
+'                                        Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
+'                                        Do Until Printer2.FontSize <= (iGrid.CellFontSize * iSng * 1.001)
+'                                            iFontsProportion = iFontsProportion * 0.995
+'                                            Printer2.FontSize = iGrid.CellFontSize * iFontsProportion
+'                                            If Printer2.FontSize < 2 Then Exit Do
+'                                        Loop
+'                                    End If
+'                                    Printer2.FontBold = iGrid.CellFontBold
+'                                    Printer2.FontItalic = iGrid.CellFontItalic
+'                                    On Error Resume Next
+'                                    Printer2.FontStrikeThru = iGrid.CellFontStrikeThrough
+'                                    Printer2.FontUnderLine = iGrid.CellFontUnderline
+'                                    PrinterEx.FontWidth = iGrid.CellFontWidth
+'                                    On Error GoTo 0
                                     
-                                    iSng = Printer2.TextWidth(WordWrappedInMax3Lines(FirstWords(iGrid.Text, 15))) + iCellMarginsX * 2 + 15
+                                    iAuxFontIndex = mGridPrintingData.CellFontAttibutesIndex(iLongerTextsRow(c, r1), c)
+                                    If iAuxFontIndex <> iLastFontIndex Then
+                                        iLastFontIndex = iAuxFontIndex
+                                        Set iFontAttibutes = mGridPrintingData.CellFontAttibutes(iLongerTextsRow(c, r1), c)
+                                        Printer2.FontName = iFontAttibutes.Name
+                                        If iReduceTheColumnsHeadersFont Then
+                                            Printer2.FontSize = iFontAttibutes.Size * iFontsProportion * 0.75
+                                        Else
+                                            iSng = iFontsProportion
+                                            Printer2.FontSize = iFontAttibutes.Size * iFontsProportion
+                                            Do Until Printer2.FontSize <= (iFontAttibutes.Size * iSng * 1.001)
+                                                iFontsProportion = iFontsProportion * 0.995
+                                                Printer2.FontSize = iFontAttibutes.Size * iFontsProportion
+                                                If Printer2.FontSize < 2 Then Exit Do
+                                            Loop
+                                        End If
+                                        Printer2.FontBold = iFontAttibutes.Bold
+                                        Printer2.FontItalic = iFontAttibutes.Italic
+                                        Printer2.FontStrikeThru = iFontAttibutes.Strikethrough
+                                        Printer2.FontUnderLine = iFontAttibutes.Underline
+                                        PrinterEx.FontWidth = iFontAttibutes.Width
+                                    End If
+                                    
+                                    iSng = Printer2.TextWidth(WordWrappedInMax3Lines(FirstWords(iGrid.TextMatrix(iLongerTextsRow(c, r1), c), 15))) + iCellMarginsX * 2 + 15
                                     If iSng > iAuxColumnTextWidths(c) Then
                                         iAuxColumnTextWidths(c) = iSng
                                     End If
@@ -4143,11 +4305,8 @@ Part2:
     Dim iPosCellLineRight As Long
     Dim iCellWidth As Long
     Dim iText As String
-    Dim iAuxFontIndex As Long
-    Dim iLastFontIndex As Long
     Dim iLastFontWasReduced As Boolean
     Dim iAuxTop As Long
-    Dim c2 As Long
     Dim ci As Long
     Dim r2 As Long
     Dim iRow As Long
@@ -4801,10 +4960,10 @@ MakeNewPage:
     
 TheExit:
 '    mAuxAllowAutoOrientation = False
-    iGrid.Row = iGridStatus_Row
-    iGrid.RowSel = iGridStatus_RowSel
-    iGrid.col = iGridStatus_Col
-    iGrid.ColSel = iGridStatus_RowColSel
+    iGrid.Row = iGridState_Row
+    iGrid.RowSel = iGridState_RowSel
+    iGrid.Col = iGridState_Col
+    iGrid.ColSel = iGridState_RowColSel
     iGrid.Redraw = iGridReDraw
     
     Printer2.CurrentX = 0
@@ -4985,13 +5144,14 @@ PrintRow:
             End If
             
             iOldFontSize = 0
-            If iCheckRowTextHeight Then
+            If iCheckRowTextHeight And (mGridPrintingData.CellText(iRow, c) <> "") Then
                 iAuxLng = PrinterEx.TextHeightEx(mGridPrintingData.CellText(iRow, c), vxNoLineFeed, iGridLeftPos + mGridPrintingData.ColPosLeft(c), , mGridPrintingData.CellWidth(iRow, c), mGridPrintingData.CellAlignment(iRow, c), iWW, iWordBreakTheColumnTexts, iCellMarginsX, iCellMarginsY)
                 If iAuxLng > (Printer2.ScaleHeight - (iCY + Printer2.TwipsPerPixelY * Printer2.DrawWidth)) Then
                     iOldFontSize = Printer2.FontSize
                     Printer2.FontSize = Printer2.FontSize * 0.99
                     iAuxLng = PrinterEx.TextHeightEx(mGridPrintingData.CellText(iRow, c), vxNoLineFeed, iGridLeftPos + mGridPrintingData.ColPosLeft(c), , mGridPrintingData.CellWidth(iRow, c), mGridPrintingData.CellAlignment(iRow, c), iWW, iWordBreakTheColumnTexts, iCellMarginsX, iCellMarginsY)
                     Do Until iAuxLng <= (Printer2.ScaleHeight - (iCY + Printer2.TwipsPerPixelY * Printer2.DrawWidth))
+                        If iAuxLng = 0 Then Exit Do
                         Printer2.FontSize = Printer2.FontSize * 0.99
                         iAuxLng2 = iAuxLng
                         iAuxLng = PrinterEx.TextHeightEx(mGridPrintingData.CellText(iRow, c), vxNoLineFeed, iGridLeftPos + mGridPrintingData.ColPosLeft(c), , mGridPrintingData.CellWidth(iRow, c), mGridPrintingData.CellAlignment(iRow, c), iWW, iWordBreakTheColumnTexts, iCellMarginsX, iCellMarginsY)
@@ -5011,33 +5171,36 @@ PrintRow:
             End If
             
             iTextExceedsWidth = False ' ' adds the check above that is that no cell text exceeds the cell width (when there is no WordWrap and the text must be printed in one line). It happens just in some specific situations when the above algorytm (the one that calculates the columns widths, WordWrap's and font sizes) seems to have a bug. The correct font size to fit is assured now with this meassure (anyway perhaps one day I'll revisit the algorytm and correct it).
-            PrinterEx.PrintEx mGridPrintingData.CellText(iRow, c), vxNoLineFeed, iGridLeftPos + mGridPrintingData.ColPosLeft(c), , mGridPrintingData.CellWidth(iRow, c), iRh2, iAlign, iWW, iWordBreakTheColumnTexts, iCellMarginsX, iCellMarginsY, , iTextExceedsWidth, True
-            If (Not iWW) And iTextExceedsWidth Then
-                iAuxLng = PrinterEx.TextWidthEx(mGridPrintingData.CellText(iRow, c), vxNoLineFeed, iGridLeftPos + mGridPrintingData.ColPosLeft(c), , iRh2, mGridPrintingData.CellAlignment(iRow, c), iWW, iWordBreakTheColumnTexts, iCellMarginsX, iCellMarginsY)
-                If iAuxLng > mGridPrintingData.CellWidth(iRow, c) Then
-                    If iOldFontSize = 0 Then
-                        iOldFontSize = Printer2.FontSize
-                    End If
-                    Printer2.FontSize = Printer2.FontSize * 0.99
+            If mGridPrintingData.CellText(iRow, c) <> "" Then
+                PrinterEx.PrintEx mGridPrintingData.CellText(iRow, c), vxNoLineFeed, iGridLeftPos + mGridPrintingData.ColPosLeft(c), , mGridPrintingData.CellWidth(iRow, c), iRh2, iAlign, iWW, iWordBreakTheColumnTexts, iCellMarginsX, iCellMarginsY, , iTextExceedsWidth, True
+                If (Not iWW) And iTextExceedsWidth Then
                     iAuxLng = PrinterEx.TextWidthEx(mGridPrintingData.CellText(iRow, c), vxNoLineFeed, iGridLeftPos + mGridPrintingData.ColPosLeft(c), , iRh2, mGridPrintingData.CellAlignment(iRow, c), iWW, iWordBreakTheColumnTexts, iCellMarginsX, iCellMarginsY)
-                    Do Until iAuxLng <= mGridPrintingData.CellWidth(iRow, c)
-                        Printer2.FontSize = Printer2.FontSize * 0.99
-                        iAuxLng2 = iAuxLng
-                        iAuxLng = PrinterEx.TextWidthEx(mGridPrintingData.CellText(iRow, c), vxNoLineFeed, iGridLeftPos + mGridPrintingData.ColPosLeft(c), , iRh2, mGridPrintingData.CellAlignment(iRow, c), iWW, iWordBreakTheColumnTexts, iCellMarginsX, iCellMarginsY)
-                        If iAuxLng = iAuxLng2 Then
-                            iAuxSng = Printer2.FontSize
-                            c3 = 0
-                            Do Until Printer2.FontSize <> iAuxSng
-                                c3 = c3 + 1
-                                If c > 90 Then Exit Do
-                                Printer2.FontSize = Printer2.FontSize * (1 - c3 / 100)
-                                If Printer2.FontSize < 1 Then Exit Do
-                            Loop
+                    If iAuxLng > mGridPrintingData.CellWidth(iRow, c) Then
+                        If iOldFontSize = 0 Then
+                            iOldFontSize = Printer2.FontSize
                         End If
-                        If Printer2.FontSize < 1 Then Exit Do
-                    Loop
+                        Printer2.FontSize = Printer2.FontSize * 0.99
+                        iAuxLng = PrinterEx.TextWidthEx(mGridPrintingData.CellText(iRow, c), vxNoLineFeed, iGridLeftPos + mGridPrintingData.ColPosLeft(c), , iRh2, mGridPrintingData.CellAlignment(iRow, c), iWW, iWordBreakTheColumnTexts, iCellMarginsX, iCellMarginsY)
+                        Do Until iAuxLng <= mGridPrintingData.CellWidth(iRow, c)
+                            If iAuxLng = 0 Then Exit Do
+                            Printer2.FontSize = Printer2.FontSize * 0.99
+                            iAuxLng2 = iAuxLng
+                            iAuxLng = PrinterEx.TextWidthEx(mGridPrintingData.CellText(iRow, c), vxNoLineFeed, iGridLeftPos + mGridPrintingData.ColPosLeft(c), , iRh2, mGridPrintingData.CellAlignment(iRow, c), iWW, iWordBreakTheColumnTexts, iCellMarginsX, iCellMarginsY)
+                            If iAuxLng = iAuxLng2 Then
+                                iAuxSng = Printer2.FontSize
+                                c3 = 0
+                                Do Until Printer2.FontSize <> iAuxSng
+                                    c3 = c3 + 1
+                                    If c > 90 Then Exit Do
+                                    Printer2.FontSize = Printer2.FontSize * (1 - c3 / 100)
+                                    If Printer2.FontSize < 1 Then Exit Do
+                                Loop
+                            End If
+                            If Printer2.FontSize < 1 Then Exit Do
+                        Loop
+                    End If
+                    PrinterEx.PrintEx mGridPrintingData.CellText(iRow, c), vxNoLineFeed, iGridLeftPos + mGridPrintingData.ColPosLeft(c), , mGridPrintingData.CellWidth(iRow, c), iRh2, iAlign, iWW, iWordBreakTheColumnTexts, iCellMarginsX, iCellMarginsY
                 End If
-                PrinterEx.PrintEx mGridPrintingData.CellText(iRow, c), vxNoLineFeed, iGridLeftPos + mGridPrintingData.ColPosLeft(c), , mGridPrintingData.CellWidth(iRow, c), iRh2, iAlign, iWW, iWordBreakTheColumnTexts, iCellMarginsX, iCellMarginsY
             End If
             If iOldFontSize <> 0 Then
                 Printer2.FontSize = iOldFontSize
@@ -6311,12 +6474,12 @@ Friend Function GetAuxTextBox() As Object
 End Function
 
 
-Public Property Let PrintCellColors(nValue As Boolean)
-    If nValue <> mPrintCellColors Then
-        mPrintCellColors = nValue
+Public Property Let PrintCellsFormatting(nValue As vbExPrintCellsFormatting)
+    If nValue <> mPrintCellsFormatting Then
+        mPrintCellsFormatting = nValue
     End If
 End Property
 
-Public Property Get PrintCellColors() As Boolean
-    PrintCellColors = mPrintCellColors
+Public Property Get PrintCellsFormatting() As vbExPrintCellsFormatting
+    PrintCellsFormatting = mPrintCellsFormatting
 End Property

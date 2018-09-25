@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
 
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 Public Enum vbExToolBarDAButtonStyleConstants
     vxTBDefault = 0
@@ -23,7 +23,7 @@ Public Enum vbExToolBarDAButtonStyleConstants
     vxTBPlaceholder = 4
 End Enum
 
-Public Enum VBExToobarDAButtonIconSizeConstants
+Public Enum VBExToolbarDAButtonIconSizeConstants
     vxIZ16 = 0
     vxIZ20 = 1
     vxIZ24 = 2
@@ -54,6 +54,7 @@ Private mUseAltPic As Boolean
 Private mIconSize As vbExToolbarDAIconsSizeConstants
 Private mOrderToHide As Long
 Private mHidden As Boolean
+Private mLeft As Single
 
 Private mButtonControlPtr As Long
 Private mParentTBPtr As Long
@@ -701,11 +702,16 @@ Public Property Get Left() As Single
                 Left = iControl.Left
             End If
         End If
+    Else
+        Left = mLeft
     End If
 End Property
 
+Public Property Let Left(nValue As Single)
+    mLeft = nValue
+End Property
 
-Public Property Get Picture(nSizeIdentifier As VBExToobarDAButtonIconSizeConstants) As StdPicture
+Public Property Get Picture(nSizeIdentifier As VBExToolbarDAButtonIconSizeConstants) As StdPicture
     If (nSizeIdentifier < vxIZ16) Or (nSizeIdentifier > vxIZ36) Then
         RaiseError 381, TypeName(Me) ' Invalid property array index
         Exit Property
@@ -725,7 +731,7 @@ Public Property Get Picture(nSizeIdentifier As VBExToobarDAButtonIconSizeConstan
     End Select
 End Property
 
-Public Property Set Picture(nSizeIdentifier As VBExToobarDAButtonIconSizeConstants, nPic As StdPicture)
+Public Property Set Picture(nSizeIdentifier As VBExToolbarDAButtonIconSizeConstants, nPic As StdPicture)
     If (nSizeIdentifier < vxIZ16) Or (nSizeIdentifier > vxIZ36) Then
         RaiseError 381, TypeName(Me) ' Invalid property array index
         Exit Property
@@ -745,7 +751,7 @@ Public Property Set Picture(nSizeIdentifier As VBExToobarDAButtonIconSizeConstan
     End Select
 End Property
 
-Public Property Let Picture(nSizeIdentifier As VBExToobarDAButtonIconSizeConstants, nPic As StdPicture)
+Public Property Let Picture(nSizeIdentifier As VBExToolbarDAButtonIconSizeConstants, nPic As StdPicture)
     If (nSizeIdentifier < vxIZ16) Or (nSizeIdentifier > vxIZ36) Then
         RaiseError 381, TypeName(Me) ' Invalid property array index
         Exit Property
@@ -754,7 +760,7 @@ Public Property Let Picture(nSizeIdentifier As VBExToobarDAButtonIconSizeConstan
 End Property
 
 
-Public Property Get PictureAlt(nSizeIdentifier As VBExToobarDAButtonIconSizeConstants) As StdPicture
+Public Property Get PictureAlt(nSizeIdentifier As VBExToolbarDAButtonIconSizeConstants) As StdPicture
     If (nSizeIdentifier < vxIZ16) Or (nSizeIdentifier > vxIZ36) Then
         RaiseError 381, TypeName(Me) ' Invalid property array index
         Exit Property
@@ -774,7 +780,7 @@ Public Property Get PictureAlt(nSizeIdentifier As VBExToobarDAButtonIconSizeCons
     End Select
 End Property
 
-Public Property Set PictureAlt(nSizeIdentifier As VBExToobarDAButtonIconSizeConstants, nPic As StdPicture)
+Public Property Set PictureAlt(nSizeIdentifier As VBExToolbarDAButtonIconSizeConstants, nPic As StdPicture)
     If (nSizeIdentifier < vxIZ16) Or (nSizeIdentifier > vxIZ36) Then
         RaiseError 381, TypeName(Me) ' Invalid property array index
         Exit Property
@@ -794,7 +800,7 @@ Public Property Set PictureAlt(nSizeIdentifier As VBExToobarDAButtonIconSizeCons
     End Select
 End Property
 
-Public Property Let PictureAlt(nSizeIdentifier As VBExToobarDAButtonIconSizeConstants, nPic As StdPicture)
+Public Property Let PictureAlt(nSizeIdentifier As VBExToolbarDAButtonIconSizeConstants, nPic As StdPicture)
     If (nSizeIdentifier < vxIZ16) Or (nSizeIdentifier > vxIZ36) Then
         RaiseError 381, TypeName(Me) ' Invalid property array index
         Exit Property

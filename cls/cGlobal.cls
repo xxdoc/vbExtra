@@ -240,6 +240,13 @@ Public Enum vbExGridAlignmentConstants
     vxGAStretch = 3
     vxGAStretchLastColumn = 4
 End Enum
+
+Public Enum vbExPrintCellsFormatting
+    vxPCFPrintAllFormatting = 0
+    vxPCFIgnoreColors = 1
+    vxPCFIgnoreFont = 2
+    vxPCFPrintNone = 3
+End Enum
  
 Public Enum gfnOrientation
     gfnPrinterDefault = 0&
@@ -274,7 +281,7 @@ Public Enum gfnScrollWithMouseWheelSettings
     gfnScrollEnabled = 1&
     gfnScrollOnlyOnFocus = 2&
 End Enum
- 
+
  
 Private Sub Class_Initialize()
     InitGlobal
@@ -289,8 +296,8 @@ Public Sub UnpersistForm(nForm As Object)
     mGlobals.UnpersistForm nForm
 End Sub
 
-Public Sub SaveFormPersistance(nForm As Object)
-    mGlobals.SaveFormPersistance nForm
+Public Sub SaveFormPersistence(nForm As Object)
+    mGlobals.SaveFormPersistence nForm
 End Sub
 
 Public Function GetFormPersistedWindowState(nForm As Object) As Long

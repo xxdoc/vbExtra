@@ -323,47 +323,47 @@ Public Property Get PageHeight() As Single
 End Property
 
 
-Public Property Let PrintPrevFormatButtonVisible(nValue As Boolean)
+Public Property Let FormatButtonVisible(nValue As Boolean)
 
 End Property
 
-Public Property Get PrintPrevFormatButtonVisible() As Boolean
+Public Property Get FormatButtonVisible() As Boolean
 
 End Property
 
 
-Public Property Get PrintPrevFormatButtonToolTipText() As String
+Public Property Get FormatButtonToolTipText() As String
     
 End Property
 
-Public Property Let PrintPrevFormatButtonToolTipText(nValue As String)
-    
-End Property
-
-
-Public Property Get PrintPrevFormatButtonPicture(nSizeIdentifier As VBExToobarDAButtonIconSizeConstants) As StdPicture
-    
-End Property
-
-Public Property Set PrintPrevFormatButtonPicture(nSizeIdentifier As VBExToobarDAButtonIconSizeConstants, nPic As StdPicture)
+Public Property Let FormatButtonToolTipText(nValue As String)
     
 End Property
 
 
-Public Property Let PrintPrevPageSetupButtonVisible(nValue As Boolean)
+Public Property Get FormatButtonPicture(nSizeIdentifier As VBExToolbarDAButtonIconSizeConstants) As StdPicture
+    
+End Property
+
+Public Property Set FormatButtonPicture(nSizeIdentifier As VBExToolbarDAButtonIconSizeConstants, nPic As StdPicture)
+    
+End Property
+
+
+Public Property Let PageSetupButtonVisible(nValue As Boolean)
 
 End Property
 
-Public Property Get PrintPrevPageSetupButtonVisible() As Boolean
+Public Property Get PageSetupButtonVisible() As Boolean
 
 End Property
 
 
-Public Property Let PrintPrevPageNumbersButtonVisible(nValue As Boolean)
+Public Property Let PageNumbersButtonVisible(nValue As Boolean)
 
 End Property
 
-Public Property Get PrintPrevPageNumbersButtonVisible() As Boolean
+Public Property Get PageNumbersButtonVisible() As Boolean
 
 End Property
 
@@ -410,20 +410,20 @@ Public Property Get PageSetupFlags() As cdeCommonDialogExPageSetupFlagsConstants
 End Property
 
 
-Public Property Let PrintPrevMinScalePercent(nValue As Long)
+Public Property Let MinScalePercent(nValue As Long)
     
 End Property
 
-Public Property Get PrintPrevMinScalePercent() As Long
+Public Property Get MinScalePercent() As Long
     
 End Property
 
 
-Public Property Let PrintPrevMaxScalePercent(nValue As Long)
+Public Property Let MaxScalePercent(nValue As Long)
     
 End Property
 
-Public Property Get PrintPrevMaxScalePercent() As Long
+Public Property Get MaxScalePercent() As Long
     
 End Property
 
@@ -432,7 +432,7 @@ Public Sub PrintRichTextBox(nRTB As Object)
 
 End Sub
 
-Public Sub PrintFlexGrid(nFlexGrid As Object, Optional Style As Variant, Optional UserCanChangeStyle As Boolean = True, Optional GridAlign As vbExGridAlignmentConstants = vxGACentered, Optional UserCanChangeGridAlign As Boolean = True, Optional PrintCellColors As Boolean = True, Optional ByRef Canceled As Boolean)
+Public Sub PrintFlexGrid(nFlexGrid As Object, Optional Style As Variant, Optional UserCanChangeStyle As Boolean = True, Optional GridAlign As vbExGridAlignmentConstants = vxGACentered, Optional UserCanChangeGridAlign As Boolean = True, Optional PrintCellsFormatting As vbExPrintCellsFormatting = vxPCFPrintAllFormatting, Optional IgnoreEmptyRowsAtTheEnd As Boolean = True, Optional ByRef Canceled As Boolean)
     
 End Sub
 
@@ -485,3 +485,22 @@ End Property
 Public Sub AddGridReportStyle(ByVal nStyle As GridReportStyle)
 
 End Sub
+
+
+Public Property Let PrintPrevUseOneToolBar(nValue As Boolean)
+    
+End Property
+
+Public Property Get PrintPrevUseOneToolBar() As Boolean
+    
+End Property
+
+
+Public Property Let PrintPrevDialogCaption(nValue As String)
+    
+End Property
+
+Public Property Get PrintPrevDialogCaption() As String
+    
+End Property
+
