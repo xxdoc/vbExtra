@@ -18,21 +18,30 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
    PaletteMode     =   0  'Halftone
    ScaleHeight     =   4248
    ScaleWidth      =   7668
-   Begin VB.CheckBox chkPrintCellColors 
-      Caption         =   "PrintCellColors"
-      Height          =   250
-      Left            =   6116
-      TabIndex        =   2
-      Top             =   216
-      Visible         =   0   'False
-      Width           =   1488
+   Begin VB.CheckBox chkIgnoreEmptyRowsAtTheEnd 
+      Caption         =   "IgnoreEmptyRowsAtTheEnd"
+      Height          =   684
+      Left            =   5868
+      TabIndex        =   4
+      Top             =   180
+      Width           =   1596
+   End
+   Begin VB.ComboBox cboPrintCellsFormatting 
+      Height          =   288
+      ItemData        =   "ptpPrintFnPrintSettings.pgx":0000
+      Left            =   2256
+      List            =   "ptpPrintFnPrintSettings.pgx":0002
+      Style           =   2  'Dropdown List
+      TabIndex        =   16
+      Top             =   1908
+      Width           =   3432
    End
    Begin VB.TextBox txtCopies 
       Height          =   300
       Left            =   6516
       MaxLength       =   3
       TabIndex        =   14
-      Top             =   1800
+      Top             =   1620
       Visible         =   0   'False
       Width           =   588
    End
@@ -40,7 +49,7 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       Caption         =   "AllowUserChangeScale"
       Height          =   228
       Left            =   2244
-      TabIndex        =   24
+      TabIndex        =   26
       Top             =   3924
       Width           =   2676
    End
@@ -48,7 +57,7 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       Height          =   300
       Left            =   2244
       MaxLength       =   3
-      TabIndex        =   21
+      TabIndex        =   23
       Top             =   3492
       Width           =   588
    End
@@ -56,7 +65,7 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       Height          =   300
       Left            =   6516
       MaxLength       =   3
-      TabIndex        =   23
+      TabIndex        =   25
       Top             =   3492
       Width           =   588
    End
@@ -64,27 +73,27 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       Height          =   300
       Left            =   6516
       MaxLength       =   3
-      TabIndex        =   26
+      TabIndex        =   28
       Top             =   3852
       Width           =   588
    End
    Begin VB.ComboBox cboPageNumbersFormat 
       Height          =   288
-      ItemData        =   "ptpPrintFnPrintSettings.pgx":0000
+      ItemData        =   "ptpPrintFnPrintSettings.pgx":0004
       Left            =   2244
-      List            =   "ptpPrintFnPrintSettings.pgx":0002
-      TabIndex        =   19
+      List            =   "ptpPrintFnPrintSettings.pgx":0006
+      TabIndex        =   21
       Text            =   "cboPageNumbersFormat"
-      Top             =   2952
+      Top             =   2916
       Width           =   3432
    End
    Begin VB.ComboBox cboPageNumbersPosition 
       Height          =   288
-      ItemData        =   "ptpPrintFnPrintSettings.pgx":0004
+      ItemData        =   "ptpPrintFnPrintSettings.pgx":0008
       Left            =   2244
-      List            =   "ptpPrintFnPrintSettings.pgx":0006
+      List            =   "ptpPrintFnPrintSettings.pgx":000A
       Style           =   2  'Dropdown List
-      TabIndex        =   17
+      TabIndex        =   19
       Top             =   2628
       Width           =   3432
    End
@@ -92,45 +101,45 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       Caption         =   "PrintPageNumbers"
       Height          =   228
       Left            =   2244
-      TabIndex        =   15
+      TabIndex        =   17
       Top             =   2340
       Width           =   2676
    End
    Begin VB.ComboBox cboDuplex 
       Height          =   288
-      ItemData        =   "ptpPrintFnPrintSettings.pgx":0008
-      Left            =   2244
-      List            =   "ptpPrintFnPrintSettings.pgx":000A
-      Style           =   2  'Dropdown List
-      TabIndex        =   10
-      Top             =   1476
-      Width           =   3432
-   End
-   Begin VB.ComboBox cboPrintQuality 
-      Height          =   288
       ItemData        =   "ptpPrintFnPrintSettings.pgx":000C
       Left            =   2244
       List            =   "ptpPrintFnPrintSettings.pgx":000E
       Style           =   2  'Dropdown List
-      TabIndex        =   6
-      Top             =   828
+      TabIndex        =   10
+      Top             =   1332
       Width           =   3432
    End
-   Begin VB.ComboBox cboPaperBin 
+   Begin VB.ComboBox cboPrintQuality 
       Height          =   288
       ItemData        =   "ptpPrintFnPrintSettings.pgx":0010
       Left            =   2244
       List            =   "ptpPrintFnPrintSettings.pgx":0012
       Style           =   2  'Dropdown List
-      TabIndex        =   4
-      Top             =   504
+      TabIndex        =   6
+      Top             =   756
       Width           =   3432
    End
-   Begin VB.ComboBox cboPaperSize 
+   Begin VB.ComboBox cboPaperBin 
       Height          =   288
       ItemData        =   "ptpPrintFnPrintSettings.pgx":0014
       Left            =   2244
       List            =   "ptpPrintFnPrintSettings.pgx":0016
+      Style           =   2  'Dropdown List
+      TabIndex        =   3
+      Top             =   468
+      Width           =   3432
+   End
+   Begin VB.ComboBox cboPaperSize 
+      Height          =   288
+      ItemData        =   "ptpPrintFnPrintSettings.pgx":0018
+      Left            =   2244
+      List            =   "ptpPrintFnPrintSettings.pgx":001A
       Style           =   2  'Dropdown List
       TabIndex        =   1
       Top             =   180
@@ -138,22 +147,22 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
    End
    Begin VB.ComboBox cboOrientation 
       Height          =   288
-      ItemData        =   "ptpPrintFnPrintSettings.pgx":0018
-      Left            =   2244
-      List            =   "ptpPrintFnPrintSettings.pgx":001A
-      Style           =   2  'Dropdown List
-      TabIndex        =   12
-      Top             =   1800
-      Width           =   3432
-   End
-   Begin VB.ComboBox cboColorMode 
-      Height          =   288
       ItemData        =   "ptpPrintFnPrintSettings.pgx":001C
       Left            =   2244
       List            =   "ptpPrintFnPrintSettings.pgx":001E
       Style           =   2  'Dropdown List
+      TabIndex        =   12
+      Top             =   1620
+      Width           =   3432
+   End
+   Begin VB.ComboBox cboColorMode 
+      Height          =   288
+      ItemData        =   "ptpPrintFnPrintSettings.pgx":0020
+      Left            =   2244
+      List            =   "ptpPrintFnPrintSettings.pgx":0022
+      Style           =   2  'Dropdown List
       TabIndex        =   8
-      Top             =   1152
+      Top             =   1044
       Width           =   3432
    End
    Begin VB.Label lblCopies 
@@ -162,7 +171,7 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       Height          =   264
       Left            =   5724
       TabIndex        =   13
-      Top             =   1836
+      Top             =   1656
       Visible         =   0   'False
       Width           =   732
       WordWrap        =   -1  'True
@@ -182,7 +191,7 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       ForeColor       =   &H00FF0000&
       Height          =   192
       Left            =   180
-      TabIndex        =   28
+      TabIndex        =   30
       Top             =   3288
       Width           =   504
    End
@@ -201,7 +210,7 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       ForeColor       =   &H00FF0000&
       Height          =   192
       Left            =   180
-      TabIndex        =   27
+      TabIndex        =   29
       Top             =   2160
       Width           =   1200
    End
@@ -224,7 +233,7 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       Caption         =   "ScalePercent:"
       Height          =   264
       Left            =   300
-      TabIndex        =   20
+      TabIndex        =   22
       Top             =   3528
       Width           =   1884
       WordWrap        =   -1  'True
@@ -234,7 +243,7 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       Caption         =   "MinScalePercent:"
       Height          =   264
       Left            =   4932
-      TabIndex        =   22
+      TabIndex        =   24
       Top             =   3528
       Width           =   1524
       WordWrap        =   -1  'True
@@ -244,7 +253,7 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       Caption         =   "MaxScalePercent:"
       Height          =   264
       Left            =   4932
-      TabIndex        =   25
+      TabIndex        =   27
       Top             =   3888
       Width           =   1524
       WordWrap        =   -1  'True
@@ -254,8 +263,8 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       Caption         =   "PageNumbersFormat:"
       Height          =   336
       Left            =   480
-      TabIndex        =   18
-      Top             =   2988
+      TabIndex        =   20
+      Top             =   2952
       Width           =   1704
    End
    Begin VB.Label Label7 
@@ -263,7 +272,7 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       Caption         =   "PageNumbersPosition:"
       Height          =   336
       Left            =   480
-      TabIndex        =   16
+      TabIndex        =   18
       Top             =   2664
       Width           =   1704
    End
@@ -273,7 +282,7 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       Height          =   336
       Left            =   696
       TabIndex        =   5
-      Top             =   864
+      Top             =   792
       Width           =   1488
    End
    Begin VB.Label Label4 
@@ -281,8 +290,8 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       Caption         =   "PaperBin:"
       Height          =   336
       Left            =   696
-      TabIndex        =   3
-      Top             =   540
+      TabIndex        =   2
+      Top             =   504
       Width           =   1488
    End
    Begin VB.Label Label3 
@@ -300,7 +309,7 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       Height          =   336
       Left            =   672
       TabIndex        =   11
-      Top             =   1836
+      Top             =   1656
       Width           =   1512
    End
    Begin VB.Label Label1 
@@ -309,7 +318,7 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       Height          =   336
       Left            =   696
       TabIndex        =   7
-      Top             =   1188
+      Top             =   1080
       Width           =   1488
    End
    Begin VB.Label Label6 
@@ -318,8 +327,17 @@ Begin VB.PropertyPage ptpPrintFnPrintSettings
       Height          =   336
       Left            =   696
       TabIndex        =   9
-      Top             =   1512
+      Top             =   1368
       Width           =   1488
+   End
+   Begin VB.Label lblPrintCellsFormatting 
+      Alignment       =   1  'Right Justify
+      Caption         =   "PrintCellsFormatting:"
+      Height          =   336
+      Left            =   684
+      TabIndex        =   15
+      Top             =   1944
+      Width           =   1512
    End
 End
 Attribute VB_Name = "ptpPrintFnPrintSettings"
@@ -468,6 +486,16 @@ Private Sub LoadSettingsInCombos()
         cboPageNumbersPosition.ListIndex = iLi
     End If
     
+    ' PrintCellsFormatting
+    iLi = cboPrintCellsFormatting.ListIndex
+    cboPrintCellsFormatting.Clear
+    cboPrintCellsFormatting.AddItem vxPCFPrintAllFormatting & " - vxPCFPrintAllFormatting": cboPrintCellsFormatting.ItemData(cboPrintCellsFormatting.NewIndex) = vxPCFPrintAllFormatting
+    cboPrintCellsFormatting.AddItem vxPCFIgnoreColors & " - vxPCFIgnoreColors": cboPrintCellsFormatting.ItemData(cboPrintCellsFormatting.NewIndex) = vxPCFIgnoreColors
+    cboPrintCellsFormatting.AddItem vxPCFIgnoreFont & " - vxPCFIgnoreFont": cboPrintCellsFormatting.ItemData(cboPrintCellsFormatting.NewIndex) = vxPCFIgnoreFont
+    cboPrintCellsFormatting.AddItem vxPCFPrintNone & " - vxPCFPrintNone": cboPrintCellsFormatting.ItemData(cboPrintCellsFormatting.NewIndex) = vxPCFPrintNone
+    If iLi > -1 Then
+        cboPrintCellsFormatting.ListIndex = iLi
+    End If
 End Sub
 
 Private Sub cboPageNumbersFormat_Click()
@@ -502,15 +530,19 @@ Private Sub cboOrientation_Click()
     If Not mLoading Then Changed = True
 End Sub
 
+Private Sub cboPrintCellsFormatting_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
 Private Sub chkAllowUserChangeScale_Click()
     If Not mLoading Then Changed = True
 End Sub
 
-Private Sub chkPrintPageNumbers_Click()
+Private Sub chkIgnoreEmptyRowsAtTheEnd_Click()
     If Not mLoading Then Changed = True
 End Sub
 
-Private Sub chkPrintCellColors_Click()
+Private Sub chkPrintPageNumbers_Click()
     If Not mLoading Then Changed = True
 End Sub
 
@@ -536,7 +568,10 @@ Private Sub PropertyPage_ApplyChanges()
     End If
     
     If mCtrlTypeIsFlexFn Then
-        SelectedControls(0).PrintCellColors = CBool(chkPrintCellColors.Value)
+        If cboPrintCellsFormatting.ListIndex > -1 Then
+            SelectedControls(0).PrintCellsFormatting = cboPrintCellsFormatting.ItemData(cboPrintCellsFormatting.ListIndex)
+        End If
+        SelectedControls(0).IgnoreEmptyRowsAtTheEnd = CBool(chkIgnoreEmptyRowsAtTheEnd.Value)
     Else
         SelectedControls(0).Copies = Val(txtCopies.Text)
     End If
@@ -573,12 +608,18 @@ Private Sub PropertyPage_SelectionChanged()
     SelectInComboByItemData cboDuplex, SelectedControls(0).Duplex
     SelectInComboByItemData cboOrientation, SelectedControls(0).Orientation
     If mCtrlTypeIsFlexFn Then
-        chkPrintCellColors.Value = CLng(SelectedControls(0).PrintCellColors) * -1
-        chkPrintCellColors.Visible = True
+        SelectInComboByItemData cboPrintCellsFormatting, SelectedControls(0).PrintCellsFormatting
+        cboPrintCellsFormatting.Visible = True
+        lblPrintCellsFormatting.Visible = True
+        chkIgnoreEmptyRowsAtTheEnd.Value = Abs(CLng(SelectedControls(0).IgnoreEmptyRowsAtTheEnd))
+        chkIgnoreEmptyRowsAtTheEnd.Visible = True
     Else
         txtCopies.Text = SelectedControls(0).Copies
         lblCopies.Visible = True
         txtCopies.Visible = True
+        cboPrintCellsFormatting.Visible = False
+        lblPrintCellsFormatting.Visible = False
+        chkIgnoreEmptyRowsAtTheEnd.Visible = False
     End If
     chkPrintPageNumbers.Value = CLng(SelectedControls(0).PrintPageNumbers) * -1
     SelectInComboByItemData cboPageNumbersPosition, SelectedControls(0).PageNumbersPosition
@@ -633,4 +674,8 @@ End Sub
 
 Private Sub txtScalePercent_GotFocus()
     If txtScalePercent.SelStart = 0 Then txtScalePercent.SelStart = Len(txtScalePercent.Text)
+End Sub
+
+Private Sub txtScalePercent_KeyDown(KeyCode As Integer, Shift As Integer)
+
 End Sub
