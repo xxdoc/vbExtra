@@ -111,17 +111,17 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1, Optio
     iPrintFontFormat = (nPrintCellsFormatting = vxPCFPrintAllFormatting) Or (nPrintCellsFormatting = vxPCFIgnoreColors)
     
     'ReDim mFontsAttributes(0)
-    ReDim mCellAlignment(mGrid.Rows - 1, mGrid.cols - 1)
-    ReDim mCellBackColor(mGrid.Rows - 1, mGrid.cols - 1)
-    ReDim mCellBackColorIsExplicitelySet(mGrid.Rows - 1, mGrid.cols - 1)
-    ReDim mCellForeColor(mGrid.Rows - 1, mGrid.cols - 1)
-    ReDim mCellFontIndex(mGrid.Rows - 1, mGrid.cols - 1)
-    ReDim mColLargerFontSize(mGrid.cols - 1)
-    ReDim mColLargerFontSizeFontIndex(mGrid.cols - 1)
-    ReDim mColIsVisible(mGrid.cols - 1)
-    ReDim mColOriginalWidth(mGrid.cols - 1)
+    ReDim mCellAlignment(mGrid.Rows - 1, mGrid.Cols - 1)
+    ReDim mCellBackColor(mGrid.Rows - 1, mGrid.Cols - 1)
+    ReDim mCellBackColorIsExplicitelySet(mGrid.Rows - 1, mGrid.Cols - 1)
+    ReDim mCellForeColor(mGrid.Rows - 1, mGrid.Cols - 1)
+    ReDim mCellFontIndex(mGrid.Rows - 1, mGrid.Cols - 1)
+    ReDim mColLargerFontSize(mGrid.Cols - 1)
+    ReDim mColLargerFontSizeFontIndex(mGrid.Cols - 1)
+    ReDim mColIsVisible(mGrid.Cols - 1)
+    ReDim mColOriginalWidth(mGrid.Cols - 1)
     ReDim mRowIsVisible(mGrid.Rows - 1)
-    ReDim mTextMatrix(mGrid.Rows - 1, mGrid.cols - 1)
+    ReDim mTextMatrix(mGrid.Rows - 1, mGrid.Cols - 1)
     
     Canceled = False
     iTx = Screen.TwipsPerPixelX
@@ -158,7 +158,7 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1, Optio
     iAuxMergeRow0 = mGrid.MergeRow(0)
     mGrid.MergeRow(0) = False
     mFirstVisibleCol = -1
-    For c1 = 0 To mGrid.cols - 1
+    For c1 = 0 To mGrid.Cols - 1
         If mGrid.ColWidth(c1) <> 0 Then
             mLastVisibleCol = c1
             If mFirstVisibleCol = -1 Then
@@ -186,7 +186,7 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1, Optio
     
     mLastRowWithData = -1
     For r1 = mGrid.Rows - 1 To mGrid.FixedRows Step -1
-        For c1 = 0 To mGrid.cols - 1
+        For c1 = 0 To mGrid.Cols - 1
             If mGrid.TextMatrix(r1, c1) <> "" Then
                 mLastRowWithData = r1
                 Exit For
@@ -194,6 +194,13 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1, Optio
         Next c1
         If mLastRowWithData <> -1 Then Exit For
     Next r1
+    
+    If mLastRowWithData = -1 Then
+        mLastRowWithData = mFixedRows
+        If mLastRowWithData > (mGrid.Rows - 1) Then
+            mLastRowWithData = mGrid.Rows - 1
+        End If
+    End If
     
     iBackColorFixed = mGrid.BackColorFixed
     
@@ -204,7 +211,7 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1, Optio
     
     If (mGrid.Rows > 3000) And iPrintCellsFormat Then
         frmSettingGridDataProgress.Show
-        frmSettingGridDataProgress.pgb1.Max = mGrid.Rows * mGrid.cols / 1000 * 3
+        frmSettingGridDataProgress.pgb1.Max = mGrid.Rows * mGrid.Cols / 1000 * 3
         mfrmSettingGridDataProgressShown = True
         DoEvents
     End If
@@ -230,7 +237,7 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1, Optio
     mFontsAttributes(1).Width = iFontWidth_Prev
     iCurrentFontIndex = 1
     
-    For c1 = 0 To mGrid.cols - 1
+    For c1 = 0 To mGrid.Cols - 1
 '        If iPrintCellsFormat Or (c1 < mFixedCols) Then
         mGrid.Col = c1
 '        End If
@@ -501,6 +508,7 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1, Optio
     Else
         mBackColorFixed = mGrid.BackColor
     End If
+    
 End Sub
 
 
@@ -555,7 +563,7 @@ End Property
 Public Property Get GridWidth() As Long
     Dim c As Long
     
-    For c = 0 To mGrid.cols - 1
+    For c = 0 To mGrid.Cols - 1
         GridWidth = GridWidth + mColWidth(c)
     Next c
 End Property
@@ -661,7 +669,7 @@ End Property
 
 Public Property Get FirstColMergedInThisCellAtThisRow(Row As Long, Col As Long) As Long
     FirstColMergedInThisCellAtThisRow = mFirstColMergedInThisCellAtThisRow(Row, Col)
-    If FirstColMergedInThisCellAtThisRow = mGrid.cols Then
+    If FirstColMergedInThisCellAtThisRow = mGrid.Cols Then
         FirstColMergedInThisCellAtThisRow = Col
     End If
 End Property
@@ -733,7 +741,7 @@ End Property
 Public Sub SetColsWidthsToProportion(nProportion As Single)
     Dim c As Long
     
-    For c = 0 To mGrid.cols - 1
+    For c = 0 To mGrid.Cols - 1
         mColWidth(c) = mColOriginalWidth(c) * nProportion
     Next c
     mColWidthsAreSet = True
@@ -828,28 +836,28 @@ Public Sub ResetAddedData(nBackColorFixed As Long)
     
     iFixedRows = mGrid.FixedRows
     iFixedCols = mGrid.FixedCols
-    iCols = mGrid.cols
+    iCols = mGrid.Cols
     
-    ReDim mCellText(mGrid.Rows - 1, mGrid.cols - 1)
-    ReDim mPrintCell(mGrid.Rows - 1, mGrid.cols - 1)
-    ReDim mCellPrintRightLine(mGrid.Rows - 1, mGrid.cols - 1)
-    ReDim mCellWidth(mGrid.Rows - 1, mGrid.cols - 1)
-    ReDim mLastRowMergedInThisCellAtThisCol(mGrid.Rows - 1, mGrid.cols - 1)
-    ReDim mLastColMergedInThisCellAtThisRow(mGrid.Rows - 1, mGrid.cols - 1)
-    ReDim mFirstColMergedInThisCellAtThisRow(mGrid.Rows - 1, mGrid.cols - 1)
-    ReDim mRowWhereCellIsMerged(mGrid.Rows - 1, mGrid.cols - 1)
-    ReDim mTextHeightCell(mGrid.Rows - 1, mGrid.cols - 1)
-    ReDim mCellTop(mGrid.Rows - 1, mGrid.cols - 1)
-    ReDim mColWidth(mGrid.cols - 1)
+    ReDim mCellText(mGrid.Rows - 1, mGrid.Cols - 1)
+    ReDim mPrintCell(mGrid.Rows - 1, mGrid.Cols - 1)
+    ReDim mCellPrintRightLine(mGrid.Rows - 1, mGrid.Cols - 1)
+    ReDim mCellWidth(mGrid.Rows - 1, mGrid.Cols - 1)
+    ReDim mLastRowMergedInThisCellAtThisCol(mGrid.Rows - 1, mGrid.Cols - 1)
+    ReDim mLastColMergedInThisCellAtThisRow(mGrid.Rows - 1, mGrid.Cols - 1)
+    ReDim mFirstColMergedInThisCellAtThisRow(mGrid.Rows - 1, mGrid.Cols - 1)
+    ReDim mRowWhereCellIsMerged(mGrid.Rows - 1, mGrid.Cols - 1)
+    ReDim mTextHeightCell(mGrid.Rows - 1, mGrid.Cols - 1)
+    ReDim mCellTop(mGrid.Rows - 1, mGrid.Cols - 1)
+    ReDim mColWidth(mGrid.Cols - 1)
     ReDim mRowHeight(mGrid.Rows - 1)
     ReDim mTextHeightRow(mGrid.Rows - 1)
     ReDim mRowFinalPosYForTop(mGrid.Rows - 1)
-    ReDim mColPosLeft(mGrid.cols - 1)
-    ReDim mColPosRight(mGrid.cols - 1)
-    ReDim mMinColWidth(mGrid.cols - 1)
-    ReDim mMinColWidthFontReduced(mGrid.cols - 1)
-    ReDim mColMergeForPrintingBegunAtRow(mGrid.cols - 1)
-    ReDim mRowWidthDataForColMergedForPrinting(mGrid.cols - 1)
+    ReDim mColPosLeft(mGrid.Cols - 1)
+    ReDim mColPosRight(mGrid.Cols - 1)
+    ReDim mMinColWidth(mGrid.Cols - 1)
+    ReDim mMinColWidthFontReduced(mGrid.Cols - 1)
+    ReDim mColMergeForPrintingBegunAtRow(mGrid.Cols - 1)
+    ReDim mRowWidthDataForColMergedForPrinting(mGrid.Cols - 1)
 
     If nBackColorFixed = -1 Then
         iBackColorFixed = mGrid.BackColorFixed
@@ -858,7 +866,7 @@ Public Sub ResetAddedData(nBackColorFixed As Long)
     End If
     TranslateColor iBackColorFixed, 0, iBackColorFixed
 
-    For c = 0 To mGrid.cols - 1
+    For c = 0 To mGrid.Cols - 1
         mColMergeForPrintingBegunAtRow(c) = -1
         mRowWidthDataForColMergedForPrinting(c) = -1
         For R = 0 To mGrid.Rows - 1
@@ -891,7 +899,7 @@ End Property
     
 Public Function GetGridSizeStr(nGrid As Object) As String
     On Error Resume Next
-    GetGridSizeStr = nGrid.Rows & "-" & nGrid.cols & "-" & nGrid.FixedRows & "-" & nGrid.FixedCols
+    GetGridSizeStr = nGrid.Rows & "-" & nGrid.Cols & "-" & nGrid.FixedRows & "-" & nGrid.FixedCols
 End Function
 
 Public Property Get SizeStrStoredGrid() As String
