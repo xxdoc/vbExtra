@@ -1,3 +1,4 @@
+09/25/2018 Chinese GUI captions update and small performance inprovement when printing FlexGrid
 09/24/2018 better handle of mouse wheel and navigation of pages through the keyboard in the Print preview dialog
 09/24/2018 added to FlexFn the property PrintCellsFormatting and a parameter with the same name to PrinterEx.PrintFlexGrid method that allows to ignore the (data) cells formatting when printing a FlexGrid
 09/24/2018 added to PrinterEx, PrintFn and FlexFn the property PrintPrevUseOneToolBar that allows to have just one toolbar instead of two in the Print preview dialog
