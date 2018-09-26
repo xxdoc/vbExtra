@@ -1056,7 +1056,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     End If
     
     mIconsSize = PropBag.ReadProperty("IconsSize", vxIconsAppDefault)
-    mPrintButtonVisible = PropBag.ReadProperty("PrintButtonVisible", False)
+    mPrintButtonVisible = PropBag.ReadProperty("PrintButtonVisible", True)
     mFindButtonVisible = PropBag.ReadProperty("FindButtonVisible", True)
     mCopyButtonVisible = PropBag.ReadProperty("CopyButtonVisible", True)
     mSaveButtonVisible = PropBag.ReadProperty("SaveButtonVisible", True)
@@ -1270,7 +1270,7 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     Dim iUnits As Long
     
     Call PropBag.WriteProperty("IconsSize", mIconsSize, vxIconsAppDefault)
-    Call PropBag.WriteProperty("PrintButtonVisible", mPrintButtonVisible, False)
+    Call PropBag.WriteProperty("PrintButtonVisible", mPrintButtonVisible, True)
     Call PropBag.WriteProperty("FindButtonVisible", mFindButtonVisible, True)
     Call PropBag.WriteProperty("CopyButtonVisible", mCopyButtonVisible, True)
     Call PropBag.WriteProperty("SaveButtonVisible", mSaveButtonVisible, True)
