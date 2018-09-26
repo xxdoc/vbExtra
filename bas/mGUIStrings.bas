@@ -403,21 +403,21 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                 Case efnGUIStr_frmPrintPreview_mnuIconsBig_Caption
                     GetLocalizedString = "中等图标"
                 Case efnGUIStr_frmPrintPreview_mnuIconsShowBottomToolBar_Caption
-                    GetLocalizedString = "Show bottom bar"
+                    GetLocalizedString = "显示底部工具栏"
                 Case efnGUIStr_frmPrintPreview_CurrentlySelected
-                    GetLocalizedString = "selected"
+                    GetLocalizedString = "已选择" 'selected"
                 Case efnGUIStr_frmPrintPreview_CurrentlyShown
-                    GetLocalizedString = "now shown"
+                    GetLocalizedString = "正在显示" 'now shown"
                 Case efnGUIStr_frmPrintPreview_lblPageOrientation_Caption
                     GetLocalizedString = "显示方向:"
                 Case efnGUIStr_frmPrintPreview_lblView_Caption
                     GetLocalizedString = "多页显示:"
                 Case efnGUIStr_frmPrintPreview_lblScalePercent_Caption
-                    GetLocalizedString = "&S 缩  放："
+                    GetLocalizedString = "&S 缩放："
                 Case efnGUIStr_frmPrintPreview_lblPage_Singular_Caption
-                    GetLocalizedString = "页:"
+                    GetLocalizedString = "&P 页数:"
                 Case efnGUIStr_frmPrintPreview_lblPage_Plural_Caption
-                    GetLocalizedString = "总页数:"
+                    GetLocalizedString = "&P 页数:" '总页:"
                 Case efnGUIStr_frmPrintPreview_lblPageCount_Caption
                     GetLocalizedString = "/"
                 Case efnGUIStr_frmPrintPreview_PreparingDoc_Caption
@@ -453,14 +453,13 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                 Case efnGUIStr_frmPrintPreview_tbrBottom_Buttons_ToolTipText_PreviousPage_Singular
                     GetLocalizedString = "上一页"
                 Case efnGUIStr_frmPrintPreview_tbrBottom_Buttons_ToolTipText_PreviousPage_Plural
-                    GetLocalizedString = "Previous pages"
+                    GetLocalizedString = "上一个多页"
                 Case efnGUIStr_frmPrintPreview_tbrBottom_Buttons_ToolTipText_NextPage_Singular
                     GetLocalizedString = "下一页"
                 Case efnGUIStr_frmPrintPreview_tbrBottom_Buttons_ToolTipText_NextPage_Plural
-                    GetLocalizedString = "Next pages"
+                    GetLocalizedString = "下一个多页"
                 Case efnGUIStr_frmPrintPreview_tbrBottom_Buttons_ToolTipText_LastPage
                     GetLocalizedString = "最后页"
-                
                 ' UserControls
                 ' FontPicker
                 Case efnGUIStr_FontPicker_ButtonToolTipTextDefault
@@ -543,7 +542,6 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "日期不能低于"
                 Case efnGUIStr_DateEnter_Validate1_MsgBoxError8
                     GetLocalizedString = "日期不能大于"
-                
                 ' Class modules
                 ' cGridHandler
                 Case efnGUIStr_cGridHandler_ISubclass_Windowproc_OrderByColumnsString1
