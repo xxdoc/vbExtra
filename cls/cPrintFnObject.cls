@@ -334,7 +334,7 @@ Public Sub ShowPrintPreview(Optional DocKey As String)
         mfrmPrintPreview.ToolBarIconsSize = mPrintPrevToolBarIconsSize
         mfrmPrintPreview.PositionControls
         
-        ShowModal mfrmPrintPreview
+        mfrmPrintPreview.Show vbModal
         Set mfrmPrintPreview.PrePrintCtrlObj = Nothing
         Set mfrmPrintPreview = Nothing
         mPrinted = PrinterEx.Printed

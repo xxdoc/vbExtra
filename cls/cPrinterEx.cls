@@ -1031,7 +1031,9 @@ End Property
 Public Property Let DocumentName(ByVal nValue As String)
     mDocumentName = nValue
     If mPageCreated Then
-        mPages(mCurrentPage).DocumentName = mDocumentName
+        If Not mNewPagePending Then
+            mPages(mCurrentPage).DocumentName = mDocumentName
+        End If
     End If
 End Property
 
@@ -6947,6 +6949,16 @@ Friend Property Let DocKey(ByVal nDocKey As String)
     Dim iZoom As Long
     
     If nDocKey <> mDocKey Then
+        If mDocumentCreated And (Not mNewPagePending) Then
+            If mPages(mCurrentPage).SomethingPrintedOnPage Then
+                If Not mDontCheckError396 Then
+                    RaiseError 396, "PrinterEx", "DocKey property cannot be set within a page"
+                    Exit Property
+                End If
+            Else
+                KillLastPage
+            End If
+        End If
         mDocKey = nDocKey
         LoadUserDocPreferences
         If Not mPrintFnObject Is Nothing Then
