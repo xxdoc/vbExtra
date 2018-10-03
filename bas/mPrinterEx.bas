@@ -22,6 +22,7 @@ Public gPrinterExPageNumbersPosition As Variant
 Public gPrinterExPageNumbersFormat As Variant
 Public gPrinterExAllowUserChangeScale As Variant
 Public gPrinterExEvents As Variant
+Public gPrinterExPrintPrevUseOneToolBar As Variant
 ' Page setup and printer options
 Public gPrinterExLeftMargin As Variant
 Public gPrinterExRightMargin As Variant

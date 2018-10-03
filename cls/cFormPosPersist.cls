@@ -265,7 +265,7 @@ Private Sub mForm_Unload(Cancel As Integer)
     Dim iHwndOwner As Long
     
     If Cancel = 0 Then
-        SaveFormPersistance
+        SaveFormPersistence
         
         If Not mCollection Is Nothing Then
             mCollection.Remove mFormHwnd
@@ -302,7 +302,7 @@ Public Sub Unpersist()
     Set mMe = Nothing
 End Sub
 
-Public Sub SaveFormPersistance()
+Public Sub SaveFormPersistence()
     Dim iWP As WINDOWPLACEMENT
     Dim iWindowState As Long
     

@@ -12,7 +12,7 @@ Begin VB.UserControl PrintFn
    PropertyPages   =   "ctlPrintFn.ctx":1C26
    ScaleHeight     =   3600
    ScaleWidth      =   4800
-   ToolboxBitmap   =   "ctlPrintFn.ctx":1CAA
+   ToolboxBitmap   =   "ctlPrintFn.ctx":1CA7
 End
 Attribute VB_Name = "PrintFn"
 Attribute VB_GlobalNameSpace = False
@@ -131,6 +131,8 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mPrintFnObject.AllowUserChangeScale = PropBag.ReadProperty("AllowUserChangeScale", True)
     mPrintFnObject.AllowUserChangeOrientation = PropBag.ReadProperty("AllowUserChangeOrientation", True)
     mPrintFnObject.AllowUserChangePaper = PropBag.ReadProperty("AllowUserChangePaper", True)
+    mPrintFnObject.PrintPrevUseOneToolBar = PropBag.ReadProperty("PrintPrevUseOneToolBar", False)
+    mPrintFnObject.PrintPrevUseOneToolBar = PropBag.ReadProperty("PrintPrevUseOneToolBar", True)
     mPrintFnObject.MinScalePercent = PropBag.ReadProperty("MinScalePercent", cPrintPreviewDefaultMinScale)
     mPrintFnObject.MaxScalePercent = PropBag.ReadProperty("MaxScalePercent", cPrintPreviewDefaultMaxScale)
     mPrintFnObject.FormatButtonVisible = PropBag.ReadProperty("FormatButtonVisible", False)
@@ -499,16 +501,16 @@ Public Property Let FormatButtonToolTipText(nValue As String)
 End Property
 
 
-Public Property Get FormatButtonPicture(nSizeIdentifier As VBExToobarDAButtonIconSizeConstants) As StdPicture
+Public Property Get FormatButtonPicture(nSizeIdentifier As VBExToolbarDAButtonIconSizeConstants) As StdPicture
     Set FormatButtonPicture = mPrintFnObject.FormatButtonPicture(nSizeIdentifier)
 End Property
 
-Public Property Set FormatButtonPicture(nSizeIdentifier As VBExToobarDAButtonIconSizeConstants, nPic As StdPicture)
+Public Property Set FormatButtonPicture(nSizeIdentifier As VBExToolbarDAButtonIconSizeConstants, nPic As StdPicture)
     Set mPrintFnObject.FormatButtonPicture(nSizeIdentifier) = nPic
     PropertyChanged "FormatButtonPicture"
 End Property
 
-Public Property Let FormatButtonPicture(nSizeIdentifier As VBExToobarDAButtonIconSizeConstants, nPic As StdPicture)
+Public Property Let FormatButtonPicture(nSizeIdentifier As VBExToolbarDAButtonIconSizeConstants, nPic As StdPicture)
     Set FormatButtonPicture(nSizeIdentifier) = nPic
 End Property
 
@@ -545,6 +547,18 @@ Public Property Let AllowUserChangePaper(nValue As Boolean)
     If nValue <> mPrintFnObject.AllowUserChangePaper Then
         mPrintFnObject.AllowUserChangePaper = nValue
         PropertyChanged "AllowUserChangePaper"
+    End If
+End Property
+
+
+Public Property Get PrintPrevUseOneToolBar() As Boolean
+    PrintPrevUseOneToolBar = mPrintFnObject.PrintPrevUseOneToolBar
+End Property
+
+Public Property Let PrintPrevUseOneToolBar(nValue As Boolean)
+    If nValue <> mPrintFnObject.PrintPrevUseOneToolBar Then
+        mPrintFnObject.PrintPrevUseOneToolBar = nValue
+        PropertyChanged "PrintPrevUseOneToolBar"
     End If
 End Property
 
@@ -618,6 +632,7 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     PropBag.WriteProperty "AllowUserChangeScale", mPrintFnObject.AllowUserChangeScale, True
     PropBag.WriteProperty "AllowUserChangeOrientation", mPrintFnObject.AllowUserChangeOrientation, True
     PropBag.WriteProperty "AllowUserChangePaper", mPrintFnObject.AllowUserChangePaper, True
+    PropBag.WriteProperty "PrintPrevUseOneToolBar", mPrintFnObject.PrintPrevUseOneToolBar, False
     PropBag.WriteProperty "MinScalePercent", mPrintFnObject.MinScalePercent, cPrintPreviewDefaultMinScale
     PropBag.WriteProperty "MaxScalePercent", mPrintFnObject.MaxScalePercent, cPrintPreviewDefaultMaxScale
     PropBag.WriteProperty "FormatButtonVisible", mPrintFnObject.FormatButtonVisible, False
@@ -819,6 +834,18 @@ Public Property Let PageNumbersForeColor(ByVal nValue As OLE_COLOR)
     If mPrintFnObject.PageNumbersForeColor <> nValue Then
         mPrintFnObject.PageNumbersForeColor = nValue
         PropertyChanged "PageNumbersForeColor"
+    End If
+End Property
+
+
+Public Property Get PrintPrevDialogCaption() As String
+    PrintPrevDialogCaption = mPrintFnObject.PrintPrevDialogCaption
+End Property
+
+Public Property Let PrintPrevDialogCaption(ByVal nValue As String)
+    If mPrintFnObject.PrintPrevDialogCaption <> nValue Then
+        mPrintFnObject.PrintPrevDialogCaption = nValue
+        PropertyChanged "PrintPrevDialogCaption"
     End If
 End Property
 

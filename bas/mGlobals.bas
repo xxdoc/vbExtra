@@ -401,7 +401,7 @@ Public Const DT_CALCRECT As Long = &H400
 
 Public Declare Function DrawText Lib "user32" Alias "DrawTextA" (ByVal hDC As Long, ByVal lpStr As String, ByVal nCount As Long, lpRect As RECT, ByVal wFormat As Long) As Long
 
-Public Declare Function TranslateColor Lib "olepro32.dll" Alias "OleTranslateColor" (ByVal clr As OLE_COLOR, ByVal palet As Long, col As Long) As Long
+Public Declare Function TranslateColor Lib "olepro32.dll" Alias "OleTranslateColor" (ByVal clr As OLE_COLOR, ByVal palet As Long, Col As Long) As Long
 
 Private Const MAX_PATH = 260
 
@@ -1917,12 +1917,12 @@ Public Sub UnpersistForm(nForm As Object)
     End If
 End Sub
 
-Public Sub SaveFormPersistance(nForm As Object)
+Public Sub SaveFormPersistence(nForm As Object)
     Dim iFormPersist As cFormPersist
     
     Set iFormPersist = mFormPersistCollection.GetInstance(nForm)
     If Not iFormPersist Is Nothing Then
-        iFormPersist.SaveFormPersistance
+        iFormPersist.SaveFormPersistence
     End If
 End Sub
 
@@ -3316,14 +3316,14 @@ Public Function SetFileDateTimesUnsigned(nPath As String, nCreatedLow As Long, n
 End Function
 
 Public Sub DateTimeToUnsigned(ByVal nDateTime As Date, nLow As Long, nHigh As Long)
-    Dim iST As SYSTEMTIME
+    Dim iSt As SYSTEMTIME
     Dim iFT As FileTime
     
     ' Convert the Date into a SYSTEMTIME.
-    iST = DateToSystemTime(nDateTime)
+    iSt = DateToSystemTime(nDateTime)
     
     ' Convert the SYSTEMTIME into a FILETIME.
-    SystemTimeToFileTime iST, iFT
+    SystemTimeToFileTime iSt, iFT
     nLow = iFT.dwLowDateTime
     nHigh = iFT.dwHighDateTime
 End Sub
@@ -3865,7 +3865,11 @@ Public Function AssignAcceleratorToControl(nControl As Object, Optional nUsedLet
     Else
         iAUsed = nUsedLetters
     End If
-    nControl.Caption = AssignAcceleratorToCaption(Replace(nControl.Caption, "&", ""), GetNotToUseAccelerators & iAUsed, , iLetterAssigned)
+    
+    nControl.Caption = AssignAcceleratorToCaption(Replace(nControl.Caption, "&", ""), GetNotToUseAccelerators & "I" & iAUsed, , iLetterAssigned)
+    If iLetterAssigned = "" Then
+        nControl.Caption = AssignAcceleratorToCaption(Replace(nControl.Caption, "&", ""), GetNotToUseAccelerators & iAUsed, , iLetterAssigned)
+    End If
     If Not IsMissing(nUsedLetters) Then
         nUsedLetters = nUsedLetters & iLetterAssigned
     End If

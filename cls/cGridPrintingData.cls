@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Private Declare Function TranslateColor Lib "olepro32.dll" Alias "OleTranslateColor" (ByVal clr As OLE_COLOR, ByVal palet As Long, col As Long) As Long
+Private Declare Function TranslateColor Lib "olepro32.dll" Alias "OleTranslateColor" (ByVal clr As OLE_COLOR, ByVal palet As Long, Col As Long) As Long
 
 Public Enum efnGridType
     efnGridTypeMSFlex = 1
@@ -27,7 +27,7 @@ Private mCellBackColor() As Long
 Private mCellForeColor() As Long
 Private mCellFontIndex() As Long
 Private mColLargerFontSize() As Single
-Private mColLargerFontSizeFontIndex() As Single
+Private mColLargerFontSizeFontIndex() As Long
 Private mColIsVisible() As Boolean
 Private mRowIsVisible() As Boolean
 Private mVisibleCols As Long
@@ -64,14 +64,18 @@ Private mTextHeightRow() As Long
 Private mRowFinalPosYForTop() As Long
 Private mColWidthsAreSet As Boolean
 Private mSizeStrStoredGrid As String
-Private mPrintCellColors As Boolean
+Private mFixedRows As Long
+Private mFixedCols As Long
+Private mBackColor As Long
+Private mBackColorFixed As Long
+Private mTextMatrix() As String
 
 Public Canceled As Boolean
 Public mfrmSettingGridDataProgressShown As Boolean
 
-Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1, Optional nPrintCellColors As Boolean = True)
-    Dim c As Long
-    Dim R As Long
+Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1, Optional nPrintCellsFormatting As vbExPrintCellsFormatting = vxPCFPrintAllFormatting)
+    Dim c1 As Long
+    Dim r1 As Long
     Dim iFontChanged As Boolean
     Dim iCurrentFontIndex As Long
     Dim f As Long
@@ -85,9 +89,7 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1, Optio
     Dim iFontUnderline_Prev As Boolean
     Dim iFontWidth_Prev As Long
     Dim iLng As Long
-    Dim iFixedRows As Long
-    Dim iFixedCols As Long
-    Set mGrid = nGrid
+    
     Dim iBackColor As Long
     Dim iForeColorFixed As Long
     Dim iForeColor As Long
@@ -98,10 +100,17 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1, Optio
     Dim iBackColorFixed As Long
     Dim iGrid_CellFontStrikeThrough As Boolean
     Dim iLng2 As Long
+    Dim iPrintCellsColors As Boolean
+    Dim iPrintCellsFormat As Boolean
+    Dim iPrintFontFormat As Boolean
     
-    mPrintCellColors = nPrintCellColors
+    Set mGrid = nGrid
     
-    ReDim mFontsAttributes(0)
+    iPrintCellsFormat = nPrintCellsFormatting <> vxPCFPrintNone
+    iPrintCellsColors = (nPrintCellsFormatting = vxPCFPrintAllFormatting) Or (nPrintCellsFormatting = vxPCFIgnoreFont)
+    iPrintFontFormat = (nPrintCellsFormatting = vxPCFPrintAllFormatting) Or (nPrintCellsFormatting = vxPCFIgnoreColors)
+    
+    'ReDim mFontsAttributes(0)
     ReDim mCellAlignment(mGrid.Rows - 1, mGrid.Cols - 1)
     ReDim mCellBackColor(mGrid.Rows - 1, mGrid.Cols - 1)
     ReDim mCellBackColorIsExplicitelySet(mGrid.Rows - 1, mGrid.Cols - 1)
@@ -112,6 +121,7 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1, Optio
     ReDim mColIsVisible(mGrid.Cols - 1)
     ReDim mColOriginalWidth(mGrid.Cols - 1)
     ReDim mRowIsVisible(mGrid.Rows - 1)
+    ReDim mTextMatrix(mGrid.Rows - 1, mGrid.Cols - 1)
     
     Canceled = False
     iTx = Screen.TwipsPerPixelX
@@ -127,63 +137,70 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1, Optio
             End If
     End Select
     
-    iFixedRows = mGrid.FixedRows
-    iFixedCols = mGrid.FixedCols
+    mFixedRows = mGrid.FixedRows
+    mFixedCols = mGrid.FixedCols
     
     mVisibleFixedRows = 0
-    For R = 0 To iFixedRows - 1
-        If mGrid.RowHeight(R) <> 0 Then
+    For r1 = 0 To mFixedRows - 1
+        If mGrid.RowHeight(r1) <> 0 Then
             mVisibleFixedRows = mVisibleFixedRows + 1
         End If
-    Next R
+    Next r1
     
-    For R = 0 To mGrid.Rows - 1
-        If mGrid.RowHeight(R) = -1 Then
-            mRowIsVisible(R) = True
+    For r1 = 0 To mGrid.Rows - 1
+        If mGrid.RowHeight(r1) = -1 Then
+            mRowIsVisible(r1) = True
         Else
-            mRowIsVisible(R) = mGrid.RowHeight(R) > 35
+            mRowIsVisible(r1) = mGrid.RowHeight(r1) > 35
         End If
-    Next R
+    Next r1
     
     iAuxMergeRow0 = mGrid.MergeRow(0)
     mGrid.MergeRow(0) = False
     mFirstVisibleCol = -1
-    For c = 0 To mGrid.Cols - 1
-        If mGrid.ColWidth(c) <> 0 Then
-            mLastVisibleCol = c
+    For c1 = 0 To mGrid.Cols - 1
+        If mGrid.ColWidth(c1) <> 0 Then
+            mLastVisibleCol = c1
             If mFirstVisibleCol = -1 Then
-                mFirstVisibleCol = c
+                mFirstVisibleCol = c1
             End If
         End If
         
         If mGridType = efnGridTypeMSFlex Then
-            mColOriginalWidth(c) = mGrid.ColWidth(c)
+            mColOriginalWidth(c1) = mGrid.ColWidth(c1)
         Else
-            If mGrid.ColWidth(c) <> -1 Then
-                mColOriginalWidth(c) = mGrid.ColWidth(c)
+            If mGrid.ColWidth(c1) <> -1 Then
+                mColOriginalWidth(c1) = mGrid.ColWidth(c1)
             Else
                 If mGrid.Rows > 0 Then
                     mGrid.Row = 0
-                    mGrid.col = c
-                    mColOriginalWidth(c) = mGrid.CellWidth + iTx
+                    mGrid.Col = c1
+                    mColOriginalWidth(c1) = mGrid.CellWidth + iTx
                 Else
-                    mColOriginalWidth(c) = 960
+                    mColOriginalWidth(c1) = 960
                 End If
             End If
         End If
-    Next c
+    Next c1
     mGrid.MergeRow(0) = iAuxMergeRow0
     
     mLastRowWithData = -1
-    For R = mGrid.Rows - 1 To mGrid.FixedRows Step -1
-        For c = 0 To mGrid.Cols - 1
-            If mGrid.TextMatrix(R, c) <> "" Then
-                mLastRowWithData = R
+    For r1 = mGrid.Rows - 1 To mGrid.FixedRows Step -1
+        For c1 = 0 To mGrid.Cols - 1
+            If mGrid.TextMatrix(r1, c1) <> "" Then
+                mLastRowWithData = r1
                 Exit For
             End If
-        Next c
+        Next c1
         If mLastRowWithData <> -1 Then Exit For
-    Next R
+    Next r1
+    
+    If mLastRowWithData = -1 Then
+        mLastRowWithData = mFixedRows
+        If mLastRowWithData > (mGrid.Rows - 1) Then
+            mLastRowWithData = mGrid.Rows - 1
+        End If
+    End If
     
     iBackColorFixed = mGrid.BackColorFixed
     
@@ -192,26 +209,50 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1, Optio
     TranslateColor mGrid.ForeColor, 0, iForeColor
     TranslateColor iForeColorFixed, 0, iForeColorFixed
     
-    If mGrid.Rows > 3000 Then
+    If (mGrid.Rows > 3000) And iPrintCellsFormat Then
         frmSettingGridDataProgress.Show
         frmSettingGridDataProgress.pgb1.Max = mGrid.Rows * mGrid.Cols / 1000 * 3
         mfrmSettingGridDataProgressShown = True
         DoEvents
     End If
     
-    For c = 0 To mGrid.Cols - 1
-        mGrid.col = c
-        mColLargerFontSize(c) = iFontSize_Prev
-        mColLargerFontSizeFontIndex(c) = iCurrentFontIndex
-        mColIsVisible(c) = mColOriginalWidth(c) > 35
-        If mColIsVisible(c) Then
+    iFontName_Prev = mGrid.Font.Name
+    iFontSize_Prev = mGrid.Font.Size
+    iFontBold_prev = mGrid.Font.Bold
+    iFontItalic_Prev = mGrid.Font.Italic
+    iFontUnderline_Prev = mGrid.Font.Underline
+    On Error Resume Next
+    iFontStrikethrough_Prev = mGrid.Font.Strikethrough
+    On Error GoTo 0
+    
+    ReDim mFontsAttributes(1)
+    Set mFontsAttributes(1) = New cFontAttributes
+    
+    mFontsAttributes(1).Name = iFontName_Prev
+    mFontsAttributes(1).Size = iFontSize_Prev
+    mFontsAttributes(1).Bold = iFontBold_prev
+    mFontsAttributes(1).Italic = iFontItalic_Prev
+    mFontsAttributes(1).Underline = iFontUnderline_Prev
+    mFontsAttributes(1).Strikethrough = iFontStrikethrough_Prev
+    mFontsAttributes(1).Width = iFontWidth_Prev
+    iCurrentFontIndex = 1
+    
+    For c1 = 0 To mGrid.Cols - 1
+'        If iPrintCellsFormat Or (c1 < mFixedCols) Then
+        mGrid.Col = c1
+'        End If
+        mColLargerFontSize(c1) = iFontSize_Prev
+        mColLargerFontSizeFontIndex(c1) = iCurrentFontIndex
+        mColIsVisible(c1) = mColOriginalWidth(c1) > 35
+        If mColIsVisible(c1) Then
             mVisibleCols = mVisibleCols + 1
         End If
         
-        For R = 0 To mGrid.Rows - 1
+        For r1 = 0 To mLastRowWithData
+            mTextMatrix(r1, c1) = mGrid.TextMatrix(r1, c1)
             If mfrmSettingGridDataProgressShown Then
-                If R Mod 1000 = 0 Then
-                    frmSettingGridDataProgress.pgb1.Value = (R + c * mGrid.Rows) / 1000
+                If r1 Mod 1000 = 0 Then
+                    frmSettingGridDataProgress.pgb1.Value = (r1 + c1 * mLastRowWithData) / 1000
                     frmSettingGridDataProgress.ZOrder
                     DoEvents
                     If frmSettingGridDataProgress.Canceled Then
@@ -223,234 +264,300 @@ Public Sub SetGrid(nGrid As Object, Optional nBackColorFixed As Long = -1, Optio
                     End If
                 End If
             End If
-            mGrid.Row = R
-            If mGridType = efnGridTypeMSFlex Then
-                ' CellAlignment
-                iLng = mGrid.CellAlignment
-                If iLng = 0 Then
-                    If R < iFixedRows Then
-                        mCellAlignment(R, c) = mGrid.FixedAlignment(c)
-                    Else
-                        mCellAlignment(R, c) = mGrid.ColAlignment(c)
-                    End If
-                Else
-                    mCellAlignment(R, c) = iLng
-                End If
+            If iPrintCellsFormat Or ((r1 < mFixedRows) Or (c1 < mFixedCols)) Then
+                mGrid.Row = r1
                 
-                'CellBackColor
-                iLng = mGrid.CellBackColor
-                If iLng = iBackColorFixed Then
-                    If nBackColorFixed <> -1 Then
-                        iLng = nBackColorFixed
-                    End If
-                End If
-                TranslateColor iLng, 0, iLng
-                If iLng = 0 Then
-                    If Not ((R < iFixedRows) Or (c < iFixedCols)) Then
-                        mCellBackColor(R, c) = iBackColor
-                    End If
-                Else
-                    If mPrintCellColors Then
-                        mCellBackColor(R, c) = iLng
-                        mCellBackColorIsExplicitelySet(R, c) = True
-                    Else
-                        mCellBackColor(R, c) = iBackColor
-                    End If
-                End If
-                
-                TranslateColor mGrid.CellForeColor, 0, iLng
-                If iLng = 0 Then
-                    If (R < iFixedRows) Or (c < iFixedCols) Then
-                        mCellForeColor(R, c) = iForeColorFixed
-                    Else
-                        mCellForeColor(R, c) = iForeColor
-                    End If
-                Else
-                    If mPrintCellColors Then
-                        mCellForeColor(R, c) = iLng
-                    Else
-                        mCellForeColor(R, c) = iForeColor
-                    End If
-                End If
-                
-            Else
-                mCellAlignment(R, c) = mGrid.CellAlignment
-                If (R < iFixedRows) Or (c < iFixedCols) Then
-                    iGridCellBackColor = mGrid.CellBackColor
-                    If iGridCellBackColor = 0 Then
-                        TranslateColor mGrid.CellForeColor, 0, iLng2
-                        If iLng2 = 0 Then
-                            iGridCellBackColor = vbWhite
-                        End If
-                    End If
-                    If iGridCellBackColor <> iGridBackColorFixed Then
-                        TranslateColor mGrid.CellBackColor, 0, iLng
-                        mCellBackColor(R, c) = iLng
-                        mCellBackColorIsExplicitelySet(R, c) = True
-                    End If
-                Else
-                    If mPrintCellColors Then
-                        iLng = mGrid.CellBackColor
-                        If iLng = 0 Then
-                            TranslateColor mGrid.CellForeColor, 0, iLng2
-                            If iLng2 = 0 Then
-                                iLng = vbWhite
-                            End If
+                If mGridType = efnGridTypeMSFlex Then ' Grid type MSFlexGrid
+                    ' CellAlignment
+                    iLng = mGrid.CellAlignment
+                    If iLng = 0 Then
+                        If r1 < mFixedRows Then
+                            mCellAlignment(r1, c1) = mGrid.FixedAlignment(c1)
+                        Else
+                            mCellAlignment(r1, c1) = mGrid.ColAlignment(c1)
                         End If
                     Else
-                        iLng = iBackColor
+                        mCellAlignment(r1, c1) = iLng
                     End If
+                    
+                    'CellBackColor
+                    iLng = mGrid.CellBackColor
                     If iLng = iBackColorFixed Then
                         If nBackColorFixed <> -1 Then
                             iLng = nBackColorFixed
                         End If
                     End If
                     TranslateColor iLng, 0, iLng
-                    mCellBackColor(R, c) = iLng
-                End If
-            
-                If (R < iFixedRows) Or (c < iFixedCols) Then
-                    TranslateColor mGrid.CellForeColor, 0, iLng
-                    mCellForeColor(R, c) = iLng
-                Else
-                    If mPrintCellColors Then
-                        TranslateColor mGrid.CellForeColor, 0, iLng
+                    If iLng = 0 Then
+                        If Not ((r1 < mFixedRows) Or (c1 < mFixedCols)) Then
+                            mCellBackColor(r1, c1) = iBackColor
+                        End If
                     Else
-                        iLng = iForeColor
+                        If iPrintCellsColors Then
+                            mCellBackColor(r1, c1) = iLng
+                            mCellBackColorIsExplicitelySet(r1, c1) = True
+                        Else
+                            mCellBackColor(r1, c1) = iBackColor
+                        End If
                     End If
-                    mCellForeColor(R, c) = iLng
-                End If
-            End If
-            
-            On Error Resume Next
-            Err.Clear
-            iGrid_CellFontStrikeThrough = mGrid.CellFontStrikeThrough
-            If Err.Number Then
-                iGrid_CellFontStrikeThrough = iFontStrikethrough_Prev
-            End If
-            On Error GoTo 0
-            
-            iFontChanged = False
-            If mGrid.CellFontName <> iFontName_Prev Then
-                iFontChanged = True
-            ElseIf mGrid.CellFontSize <> iFontSize_Prev Then
-                iFontChanged = True
-            ElseIf mGrid.CellFontBold <> iFontBold_prev Then
-                iFontChanged = True
-            ElseIf mGrid.CellFontItalic <> iFontItalic_Prev Then
-                iFontChanged = True
-            ElseIf mGrid.CellFontUnderline <> iFontUnderline_Prev Then
-                iFontChanged = True
-            ElseIf iGrid_CellFontStrikeThrough <> iFontStrikethrough_Prev Then
-                iFontChanged = True
-            Else
-                Err.Clear
-                On Error Resume Next
-                If mGrid.CellFontWidth <> iFontWidth_Prev Then
-                    If Err.Number = 0 Then
-                        iFontChanged = True
+                    
+                    'CellForeColor
+                    TranslateColor mGrid.CellForeColor, 0, iLng
+                    If iLng = 0 Then
+                        If (r1 < mFixedRows) Or (c1 < mFixedCols) Then
+                            mCellForeColor(r1, c1) = iForeColorFixed
+                        Else
+                            mCellForeColor(r1, c1) = iForeColor
+                        End If
+                    Else
+                        If iPrintCellsColors Then
+                            mCellForeColor(r1, c1) = iLng
+                        Else
+                            mCellForeColor(r1, c1) = iForeColor
+                        End If
+                    End If
+                    
+                Else ' Grid type other than MSFlexGrid (MSHFlexGrid, Etc.)
+                    ' CellAlignment
+                    mCellAlignment(r1, c1) = mGrid.CellAlignment
+                    ' CellBackColor
+                    If (r1 < mFixedRows) Or (c1 < mFixedCols) Then
+                        If iPrintCellsColors Then
+                            iGridCellBackColor = mGrid.CellBackColor
+                            If iGridCellBackColor = 0 Then
+                                TranslateColor mGrid.CellForeColor, 0, iLng2
+                                If iLng2 = 0 Then
+                                    iGridCellBackColor = vbWhite
+                                End If
+                            End If
+                            If iGridCellBackColor <> iGridBackColorFixed Then
+                                TranslateColor mGrid.CellBackColor, 0, iLng
+                                mCellBackColor(r1, c1) = iLng
+                                mCellBackColorIsExplicitelySet(r1, c1) = True
+                            End If
+                        Else
+                            If nBackColorFixed <> -1 Then
+                                iLng = nBackColorFixed
+                            Else
+                                iLng = iBackColorFixed
+                            End If
+                            mCellBackColor(r1, c1) = iLng
+                        End If
+                    Else
+                        If iPrintCellsColors Then
+                            iLng = mGrid.CellBackColor
+                            If iLng = 0 Then
+                                TranslateColor mGrid.CellForeColor, 0, iLng2
+                                If iLng2 = 0 Then
+                                    iLng = vbWhite
+                                End If
+                            End If
+                        Else
+                            iLng = iBackColor
+                        End If
+                        If iLng = iBackColorFixed Then
+                            If nBackColorFixed <> -1 Then
+                                iLng = nBackColorFixed
+                            End If
+                        End If
+                        TranslateColor iLng, 0, iLng
+                        mCellBackColor(r1, c1) = iLng
+                    End If
+                    
+                    ' CellForeColor
+                    If (r1 < mFixedRows) Or (c1 < mFixedCols) Then
+                        If iPrintCellsColors Then
+                            TranslateColor mGrid.CellForeColor, 0, iLng
+                        Else
+                            iLng = iForeColor
+                        End If
+                        mCellForeColor(r1, c1) = iLng
+                    Else
+                        If iPrintCellsColors Then
+                            TranslateColor mGrid.CellForeColor, 0, iLng
+                        Else
+                            iLng = iForeColor
+                        End If
+                        mCellForeColor(r1, c1) = iLng
                     End If
                 End If
-                On Error GoTo 0
-            End If
-            
-            If iFontChanged Then
-                iFontName_Prev = mGrid.CellFontName
-                iFontSize_Prev = mGrid.CellFontSize
-                iFontBold_prev = mGrid.CellFontBold
-                iFontItalic_Prev = mGrid.CellFontItalic
-                iFontUnderline_Prev = mGrid.CellFontUnderline
-                On Error Resume Next
-                iFontStrikethrough_Prev = mGrid.CellFontStrikeThrough
-                iFontWidth_Prev = mGrid.CellFontWidth
-                On Error GoTo 0
                 
-                iFontFound = False
-                For f = 1 To UBound(mFontsAttributes)
-                    If mFontsAttributes(f).Name = iFontName_Prev Then
-                        If mFontsAttributes(f).Size = iFontSize_Prev Then
-                            If mFontsAttributes(f).Bold = iFontBold_prev Then
-                                If mFontsAttributes(f).Italic = iFontItalic_Prev Then
-                                    If mFontsAttributes(f).Underline = iFontUnderline_Prev Then
-                                        If mFontsAttributes(f).Strikethrough = iFontStrikethrough_Prev Then
-                                            If mFontsAttributes(f).Width = iFontWidth_Prev Then
-                                                iFontFound = True
-                                                iCurrentFontIndex = f
+                If iPrintFontFormat Or ((r1 < mFixedRows) Or (c1 < mFixedCols)) Then
+                    ' CellFont...
+                    On Error Resume Next
+                    Err.Clear
+                    iGrid_CellFontStrikeThrough = mGrid.CellFontStrikeThrough
+                    If Err.Number Then
+                        iGrid_CellFontStrikeThrough = iFontStrikethrough_Prev
+                    End If
+                    On Error GoTo 0
+                    
+                    iFontChanged = False
+                    If mGrid.CellFontName <> iFontName_Prev Then
+                        iFontChanged = True
+                    ElseIf mGrid.CellFontSize <> iFontSize_Prev Then
+                        iFontChanged = True
+                    ElseIf mGrid.CellFontBold <> iFontBold_prev Then
+                        iFontChanged = True
+                    ElseIf mGrid.CellFontItalic <> iFontItalic_Prev Then
+                        iFontChanged = True
+                    ElseIf mGrid.CellFontUnderline <> iFontUnderline_Prev Then
+                        iFontChanged = True
+                    ElseIf iGrid_CellFontStrikeThrough <> iFontStrikethrough_Prev Then
+                        iFontChanged = True
+                    Else
+                        Err.Clear
+                        On Error Resume Next
+                        If mGrid.CellFontWidth <> iFontWidth_Prev Then
+                            If Err.Number = 0 Then
+                                iFontChanged = True
+                            End If
+                        End If
+                        On Error GoTo 0
+                    End If
+                    
+                    If iFontChanged Then
+                        iFontName_Prev = mGrid.CellFontName
+                        iFontSize_Prev = mGrid.CellFontSize
+                        iFontBold_prev = mGrid.CellFontBold
+                        iFontItalic_Prev = mGrid.CellFontItalic
+                        iFontUnderline_Prev = mGrid.CellFontUnderline
+                        On Error Resume Next
+                        iFontStrikethrough_Prev = mGrid.CellFontStrikeThrough
+                        iFontWidth_Prev = mGrid.CellFontWidth
+                        On Error GoTo 0
+                        
+                        iFontFound = False
+                        For f = 1 To UBound(mFontsAttributes)
+                            If mFontsAttributes(f).Name = iFontName_Prev Then
+                                If mFontsAttributes(f).Size = iFontSize_Prev Then
+                                    If mFontsAttributes(f).Bold = iFontBold_prev Then
+                                        If mFontsAttributes(f).Italic = iFontItalic_Prev Then
+                                            If mFontsAttributes(f).Underline = iFontUnderline_Prev Then
+                                                If mFontsAttributes(f).Strikethrough = iFontStrikethrough_Prev Then
+                                                    If mFontsAttributes(f).Width = iFontWidth_Prev Then
+                                                        iFontFound = True
+                                                        iCurrentFontIndex = f
+                                                    End If
+                                                End If
                                             End If
                                         End If
                                     End If
                                 End If
                             End If
+                        Next f
+                        
+                        If Not iFontFound Then
+                            iCurrentFontIndex = UBound(mFontsAttributes) + 1
+                            ReDim Preserve mFontsAttributes(iCurrentFontIndex)
+                            Set mFontsAttributes(iCurrentFontIndex) = New cFontAttributes
+                            
+                            mFontsAttributes(iCurrentFontIndex).Name = iFontName_Prev
+                            mFontsAttributes(iCurrentFontIndex).Size = iFontSize_Prev
+                            mFontsAttributes(iCurrentFontIndex).Bold = iFontBold_prev
+                            mFontsAttributes(iCurrentFontIndex).Italic = iFontItalic_Prev
+                            mFontsAttributes(iCurrentFontIndex).Underline = iFontUnderline_Prev
+                            mFontsAttributes(iCurrentFontIndex).Strikethrough = iFontStrikethrough_Prev
+                            mFontsAttributes(iCurrentFontIndex).Width = iFontWidth_Prev
                         End If
-                    End If
-                Next f
-                
-                If Not iFontFound Then
-                    iCurrentFontIndex = UBound(mFontsAttributes) + 1
-                    ReDim Preserve mFontsAttributes(iCurrentFontIndex)
-                    Set mFontsAttributes(iCurrentFontIndex) = New cFontAttributes
+                        
+                        If iFontSize_Prev > mColLargerFontSize(c1) Then
+                            mColLargerFontSize(c1) = iFontSize_Prev
+                            mColLargerFontSizeFontIndex(c1) = iCurrentFontIndex
+                        End If
                     
-                    mFontsAttributes(iCurrentFontIndex).Name = iFontName_Prev
-                    mFontsAttributes(iCurrentFontIndex).Size = iFontSize_Prev
-                    mFontsAttributes(iCurrentFontIndex).Bold = iFontBold_prev
-                    mFontsAttributes(iCurrentFontIndex).Italic = iFontItalic_Prev
-                    mFontsAttributes(iCurrentFontIndex).Underline = iFontUnderline_Prev
-                    mFontsAttributes(iCurrentFontIndex).Strikethrough = iFontStrikethrough_Prev
-                    mFontsAttributes(iCurrentFontIndex).Width = iFontWidth_Prev
+                    End If
+                    ' Font
+                    mCellFontIndex(r1, c1) = iCurrentFontIndex
+                Else
+                    mCellFontIndex(r1, c1) = 1
                 End If
-                
-                If iFontSize_Prev > mColLargerFontSize(c) Then
-                    mColLargerFontSize(c) = iFontSize_Prev
-                    mColLargerFontSizeFontIndex(c) = iCurrentFontIndex
+            Else
+                ' CellAlignment
+                mCellAlignment(r1, c1) = mGrid.ColAlignment(c1)
+                ' CellBackColor
+                If (r1 < mFixedRows) Or (c1 < mFixedCols) Then
+                    If nBackColorFixed <> -1 Then
+                        iLng = nBackColorFixed
+                    Else
+                        iLng = iBackColorFixed
+                    End If
+                Else
+                    iLng = iBackColor
                 End If
-            
+                mCellBackColor(r1, c1) = iLng
+                ' CellForeColor
+                If (r1 < mFixedRows) Or (c1 < mFixedCols) Then
+                     iLng = iForeColorFixed
+                Else
+                    iLng = iForeColor
+                End If
+                mCellForeColor(r1, c1) = iLng
+                ' Font
+                mCellFontIndex(r1, c1) = 1
             End If
-            
-            mCellFontIndex(R, c) = iCurrentFontIndex
-            
-        Next R
-    Next c
+        Next r1
+    Next c1
     
     ResetAddedData nBackColorFixed
     mSizeStrStoredGrid = GetGridSizeStr(mGrid)
 
+    mBackColor = iBackColor
+    If nBackColorFixed <> -1 Then
+        mBackColorFixed = nBackColorFixed
+    Else
+        mBackColorFixed = mGrid.BackColor
+    End If
+    
 End Sub
 
 
-Public Property Get CellFontAttibutes(Row As Long, col As Long) As cFontAttributes
-    Set CellFontAttibutes = mFontsAttributes(mCellFontIndex(Row, col))
+Public Property Get CellFontAttibutes(Row As Long, Col As Long) As cFontAttributes
+    Set CellFontAttibutes = mFontsAttributes(mCellFontIndex(Row, Col))
+    If CellFontAttibutes Is Nothing Then
+        Set CellFontAttibutes = mFontsAttributes(1)
+    End If
 End Property
 
-Public Property Get CellFontAttibutesByFontAttibutesIndex(FontAttibutesIndex As Long) As cFontAttributes
+Public Property Get CellFontAttibutesByFontAttibutesIndex(ByVal FontAttibutesIndex As Long) As cFontAttributes
+    If FontAttibutesIndex = 0 Then FontAttibutesIndex = 1
     Set CellFontAttibutesByFontAttibutesIndex = mFontsAttributes(FontAttibutesIndex)
 End Property
 
-Public Property Get CellFontAttibutesIndex(Row As Long, col As Long) As Long
-    CellFontAttibutesIndex = mCellFontIndex(Row, col)
+Public Property Get CellFontAttibutesIndex(Row As Long, Col As Long) As Long
+    CellFontAttibutesIndex = mCellFontIndex(Row, Col)
 End Property
 
 Public Property Get RowHeight(Row As Long) As Long
     RowHeight = mRowHeight(Row)
 End Property
 
-Public Property Get ColPosLeft(col As Long) As Long
-    ColPosLeft = mColPosLeft(col)
+Public Property Get ColPosLeft(Col As Long) As Long
+    ColPosLeft = mColPosLeft(Col)
 End Property
 
-Public Property Get ColPosRight(col As Long) As Long
-    ColPosRight = mColPosRight(col)
+Public Property Get ColPosRight(Col As Long) As Long
+    ColPosRight = mColPosRight(Col)
 End Property
 
-Public Property Get CellAlignment(Row As Long, col As Long) As Long
-    CellAlignment = mCellAlignment(Row, col)
+Public Property Get CellAlignment(Row As Long, Col As Long) As Long
+    CellAlignment = mCellAlignment(Row, Col)
 End Property
 
-Public Property Get CellBackColor(Row As Long, col As Long) As Long
-    CellBackColor = mCellBackColor(Row, col)
+Public Property Get CellBackColor(Row As Long, Col As Long) As Long
+    If Row <= mLastRowWithData Then
+        CellBackColor = mCellBackColor(Row, Col)
+    Else
+        If Col < mFixedCols Then
+            CellBackColor = mBackColorFixed
+        Else
+            CellBackColor = mBackColor
+        End If
+    End If
 End Property
 
-Public Property Get CellForeColor(Row As Long, col As Long) As Long
-    CellForeColor = mCellForeColor(Row, col)
+Public Property Get CellForeColor(Row As Long, Col As Long) As Long
+    CellForeColor = mCellForeColor(Row, Col)
 End Property
 
 Public Property Get GridWidth() As Long
@@ -465,8 +572,8 @@ Public Property Get VisibleFixedRows() As Long
     VisibleFixedRows = mVisibleFixedRows
 End Property
 
-Public Property Get ColLargerFontSizeFontIndex(col As Long) As Long
-    ColLargerFontSizeFontIndex = mColLargerFontSizeFontIndex(col)
+Public Property Get ColLargerFontSizeFontIndex(Col As Long) As Long
+    ColLargerFontSizeFontIndex = mColLargerFontSizeFontIndex(Col)
 End Property
 
 Public Property Get GridType() As efnGridType
@@ -485,95 +592,95 @@ Public Property Get LastRowWithData() As Long
     LastRowWithData = mLastRowWithData
 End Property
 
-Public Property Let ColWidth(col As Long, nValue As Long)
-    mColWidth(col) = nValue
+Public Property Let ColWidth(Col As Long, nValue As Long)
+    mColWidth(Col) = nValue
 End Property
 
-Public Property Get ColWidth(col As Long) As Long
-    ColWidth = mColWidth(col)
-End Property
-
-
-Public Property Let CellText(Row As Long, col As Long, nText As String)
-    mCellText(Row, col) = nText
-End Property
-
-Public Property Get CellText(Row As Long, col As Long) As String
-    CellText = mCellText(Row, col)
+Public Property Get ColWidth(Col As Long) As Long
+    ColWidth = mColWidth(Col)
 End Property
 
 
-Public Property Let CellWidth(Row As Long, col As Long, nWidth As Long)
-    mCellWidth(Row, col) = nWidth
+Public Property Let CellText(Row As Long, Col As Long, nText As String)
+    mCellText(Row, Col) = nText
 End Property
 
-Public Property Get CellWidth(Row As Long, col As Long) As Long
-    CellWidth = mCellWidth(Row, col)
-End Property
-
-
-Public Property Let CellPrintRightLine(Row As Long, col As Long, nPrintRightLine As Boolean)
-    mCellPrintRightLine(Row, col) = nPrintRightLine
-End Property
-
-Public Property Get CellPrintRightLine(Row As Long, col As Long) As Boolean
-    CellPrintRightLine = mCellPrintRightLine(Row, col)
+Public Property Get CellText(Row As Long, Col As Long) As String
+    CellText = mCellText(Row, Col)
 End Property
 
 
-Public Property Let LastRowMergedInThisCellAtThisCol(Row As Long, col As Long, nLastRow As Long)
+Public Property Let CellWidth(Row As Long, Col As Long, nWidth As Long)
+    mCellWidth(Row, Col) = nWidth
+End Property
+
+Public Property Get CellWidth(Row As Long, Col As Long) As Long
+    CellWidth = mCellWidth(Row, Col)
+End Property
+
+
+Public Property Let CellPrintRightLine(Row As Long, Col As Long, nPrintRightLine As Boolean)
+    mCellPrintRightLine(Row, Col) = nPrintRightLine
+End Property
+
+Public Property Get CellPrintRightLine(Row As Long, Col As Long) As Boolean
+    CellPrintRightLine = mCellPrintRightLine(Row, Col)
+End Property
+
+
+Public Property Let LastRowMergedInThisCellAtThisCol(Row As Long, Col As Long, nLastRow As Long)
     Dim R As Long
-    mLastRowMergedInThisCellAtThisCol(Row, col) = nLastRow
+    mLastRowMergedInThisCellAtThisCol(Row, Col) = nLastRow
     For R = Row To nLastRow
-        mRowWhereCellIsMerged(R, col) = Row
-        mCellForeColor(R, col) = mCellForeColor(Row, col)
-        mCellBackColor(R, col) = mCellBackColor(Row, col)
-        mCellFontIndex(R, col) = mCellFontIndex(Row, col)
-        mCellText(R, col) = mCellText(Row, col)
-        mCellWidth(R, col) = mCellWidth(Row, col)
-        mCellPrintRightLine(R, col) = mCellPrintRightLine(Row, col)
-        mCellAlignment(R, col) = mCellAlignment(Row, col)
+        mRowWhereCellIsMerged(R, Col) = Row
+        mCellForeColor(R, Col) = mCellForeColor(Row, Col)
+        mCellBackColor(R, Col) = mCellBackColor(Row, Col)
+        mCellFontIndex(R, Col) = mCellFontIndex(Row, Col)
+        mCellText(R, Col) = mCellText(Row, Col)
+        mCellWidth(R, Col) = mCellWidth(Row, Col)
+        mCellPrintRightLine(R, Col) = mCellPrintRightLine(Row, Col)
+        mCellAlignment(R, Col) = mCellAlignment(Row, Col)
     Next R
 End Property
 
-Public Property Get LastRowMergedInThisCellAtThisCol(Row As Long, col As Long) As Long
-    LastRowMergedInThisCellAtThisCol = mLastRowMergedInThisCellAtThisCol(Row, col)
+Public Property Get LastRowMergedInThisCellAtThisCol(Row As Long, Col As Long) As Long
+    LastRowMergedInThisCellAtThisCol = mLastRowMergedInThisCellAtThisCol(Row, Col)
 End Property
 
 
-Public Property Let LastColMergedInThisCellAtThisRow(Row As Long, col As Long, nLastCol As Long)
+Public Property Let LastColMergedInThisCellAtThisRow(Row As Long, Col As Long, nLastCol As Long)
     Dim c As Long
     
-    mLastColMergedInThisCellAtThisRow(Row, col) = nLastCol
+    mLastColMergedInThisCellAtThisRow(Row, Col) = nLastCol
     
-    For c = col + 1 To nLastCol - 1
+    For c = Col + 1 To nLastCol - 1
         mLastColMergedInThisCellAtThisRow(Row, c) = nLastCol
     Next c
-    For c = col To nLastCol
-        If col < mFirstColMergedInThisCellAtThisRow(Row, c) Then
-            mFirstColMergedInThisCellAtThisRow(Row, c) = col
+    For c = Col To nLastCol
+        If Col < mFirstColMergedInThisCellAtThisRow(Row, c) Then
+            mFirstColMergedInThisCellAtThisRow(Row, c) = Col
         End If
     Next c
 End Property
 
-Public Property Get LastColMergedInThisCellAtThisRow(Row As Long, col As Long) As Long
-    LastColMergedInThisCellAtThisRow = mLastColMergedInThisCellAtThisRow(Row, col)
+Public Property Get LastColMergedInThisCellAtThisRow(Row As Long, Col As Long) As Long
+    LastColMergedInThisCellAtThisRow = mLastColMergedInThisCellAtThisRow(Row, Col)
 End Property
 
-Public Property Get FirstColMergedInThisCellAtThisRow(Row As Long, col As Long) As Long
-    FirstColMergedInThisCellAtThisRow = mFirstColMergedInThisCellAtThisRow(Row, col)
+Public Property Get FirstColMergedInThisCellAtThisRow(Row As Long, Col As Long) As Long
+    FirstColMergedInThisCellAtThisRow = mFirstColMergedInThisCellAtThisRow(Row, Col)
     If FirstColMergedInThisCellAtThisRow = mGrid.Cols Then
-        FirstColMergedInThisCellAtThisRow = col
+        FirstColMergedInThisCellAtThisRow = Col
     End If
 End Property
 
 
-Public Property Let RowWhereCellIsMerged(Row As Long, col As Long, nValue As Long)
-    mRowWhereCellIsMerged(Row, col) = nValue
+Public Property Let RowWhereCellIsMerged(Row As Long, Col As Long, nValue As Long)
+    mRowWhereCellIsMerged(Row, Col) = nValue
 End Property
 
-Public Property Get RowWhereCellIsMerged(Row As Long, col As Long) As Long
-    RowWhereCellIsMerged = mRowWhereCellIsMerged(Row, col)
+Public Property Get RowWhereCellIsMerged(Row As Long, Col As Long) As Long
+    RowWhereCellIsMerged = mRowWhereCellIsMerged(Row, Col)
 End Property
 
 
@@ -595,39 +702,39 @@ Public Property Get RowFinalPosYForTop(Row As Long) As Long
 End Property
 
 
-Public Property Let TextHeightCell(Row As Long, col As Long, nValue As Long)
-    mTextHeightCell(Row, col) = nValue
+Public Property Let TextHeightCell(Row As Long, Col As Long, nValue As Long)
+    mTextHeightCell(Row, Col) = nValue
 End Property
 
-Public Property Get TextHeightCell(Row As Long, col As Long) As Long
-    TextHeightCell = mTextHeightCell(Row, col)
-End Property
-
-
-Public Property Let PrintCell(Row As Long, col As Long, nValue As Boolean)
-    mPrintCell(Row, col) = nValue
-End Property
-
-Public Property Get PrintCell(Row As Long, col As Long) As Boolean
-    PrintCell = mPrintCell(Row, col)
+Public Property Get TextHeightCell(Row As Long, Col As Long) As Long
+    TextHeightCell = mTextHeightCell(Row, Col)
 End Property
 
 
-Public Property Let MinColWidth(col As Long, nValue As Long)
-    mMinColWidth(col) = nValue
+Public Property Let PrintCell(Row As Long, Col As Long, nValue As Boolean)
+    mPrintCell(Row, Col) = nValue
 End Property
 
-Public Property Get MinColWidth(col As Long) As Long
-    MinColWidth = mMinColWidth(col)
+Public Property Get PrintCell(Row As Long, Col As Long) As Boolean
+    PrintCell = mPrintCell(Row, Col)
 End Property
 
 
-Public Property Let MinColWidthFontReduced(col As Long, nValue As Long)
-    mMinColWidthFontReduced(col) = nValue
+Public Property Let MinColWidth(Col As Long, nValue As Long)
+    mMinColWidth(Col) = nValue
 End Property
 
-Public Property Get MinColWidthFontReduced(col As Long) As Long
-    MinColWidthFontReduced = mMinColWidthFontReduced(col)
+Public Property Get MinColWidth(Col As Long) As Long
+    MinColWidth = mMinColWidth(Col)
+End Property
+
+
+Public Property Let MinColWidthFontReduced(Col As Long, nValue As Long)
+    mMinColWidthFontReduced(Col) = nValue
+End Property
+
+Public Property Get MinColWidthFontReduced(Col As Long) As Long
+    MinColWidthFontReduced = mMinColWidthFontReduced(Col)
 End Property
 
 
@@ -675,38 +782,38 @@ Public Function GetRowHeightWithText(Row As Long) As Long
 End Function
 
 
-Public Sub StartMergingColForPrinting(col As Long, nRowWithData As Long, nStartRowForPrinting As Long)
-    mColMergeForPrintingBegunAtRow(col) = nStartRowForPrinting
-    mRowWidthDataForColMergedForPrinting(col) = nRowWithData
+Public Sub StartMergingColForPrinting(Col As Long, nRowWithData As Long, nStartRowForPrinting As Long)
+    mColMergeForPrintingBegunAtRow(Col) = nStartRowForPrinting
+    mRowWidthDataForColMergedForPrinting(Col) = nRowWithData
 End Sub
 
-Public Property Get ColMergeForPrintingBegunAtRow(col As Long) As Long
-    ColMergeForPrintingBegunAtRow = mColMergeForPrintingBegunAtRow(col)
+Public Property Get ColMergeForPrintingBegunAtRow(Col As Long) As Long
+    ColMergeForPrintingBegunAtRow = mColMergeForPrintingBegunAtRow(Col)
 End Property
 
-Public Property Get ColIsBeingMergedForPrintingInRow(col As Long) As Long
-    ColIsBeingMergedForPrintingInRow = mColMergeForPrintingBegunAtRow(col)
+Public Property Get ColIsBeingMergedForPrintingInRow(Col As Long) As Long
+    ColIsBeingMergedForPrintingInRow = mColMergeForPrintingBegunAtRow(Col)
 End Property
 
-Public Sub EndMergingColForPrinting(col As Long)
-    mColMergeForPrintingBegunAtRow(col) = -1
+Public Sub EndMergingColForPrinting(Col As Long)
+    mColMergeForPrintingBegunAtRow(Col) = -1
 End Sub
 
-Public Property Get CellIsColMergedInRow(Row, col) As Long
-    CellIsColMergedInRow = mRowWhereCellIsMerged(Row, col)
+Public Property Get CellIsColMergedInRow(Row, Col) As Long
+    CellIsColMergedInRow = mRowWhereCellIsMerged(Row, Col)
 End Property
 
 
-Public Property Let CellTop(Row As Long, col As Long, nValue As Long)
-    mCellTop(Row, col) = nValue
+Public Property Let CellTop(Row As Long, Col As Long, nValue As Long)
+    mCellTop(Row, Col) = nValue
 End Property
 
-Public Property Get CellTop(Row As Long, col As Long) As Long
-    CellTop = mCellTop(Row, col)
+Public Property Get CellTop(Row As Long, Col As Long) As Long
+    CellTop = mCellTop(Row, Col)
 End Property
 
-Public Property Get ColIsVisible(col As Long) As Boolean
-    ColIsVisible = mColIsVisible(col)
+Public Property Get ColIsVisible(Col As Long) As Boolean
+    ColIsVisible = mColIsVisible(Col)
 End Property
 
 Public Property Get RowIsVisible(Row As Long) As Boolean
@@ -715,8 +822,8 @@ Public Property Get RowIsVisible(Row As Long) As Boolean
     End If
 End Property
 
-Public Property Get RowWidthDataForColMergedForPrinting(col As Long) As Long
-    RowWidthDataForColMergedForPrinting = mRowWidthDataForColMergedForPrinting(col)
+Public Property Get RowWidthDataForColMergedForPrinting(Col As Long) As Long
+    RowWidthDataForColMergedForPrinting = mRowWidthDataForColMergedForPrinting(Col)
 End Property
 
 Public Sub ResetAddedData(nBackColorFixed As Long)
@@ -778,8 +885,8 @@ Public Sub ResetAddedData(nBackColorFixed As Long)
     mColWidthsAreSet = False
 End Sub
 
-Public Property Get ColOriginalWidth(col As Long) As Long
-    ColOriginalWidth = mColOriginalWidth(col)
+Public Property Get ColOriginalWidth(Col As Long) As Long
+    ColOriginalWidth = mColOriginalWidth(Col)
 End Property
 
 Public Property Get VisibleCols() As Long
@@ -797,4 +904,8 @@ End Function
 
 Public Property Get SizeStrStoredGrid() As String
     SizeStrStoredGrid = mSizeStrStoredGrid
+End Property
+
+Public Property Get TextMatrix(Row As Long, Col As Long) As String
+    TextMatrix = mTextMatrix(Row, Col)
 End Property

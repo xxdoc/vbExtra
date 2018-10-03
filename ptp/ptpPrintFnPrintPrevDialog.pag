@@ -1,0 +1,848 @@
+VERSION 5.00
+Begin VB.PropertyPage ptpPrintFnPrintPrevDialog 
+   Caption         =   "PrintPreview dialog"
+   ClientHeight    =   4248
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   7668
+   BeginProperty Font 
+      Name            =   "Tahoma"
+      Size            =   7.8
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LockControls    =   -1  'True
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   4248
+   ScaleWidth      =   7668
+   Begin VB.CheckBox chkPrintPrevUseOneToolBar 
+      Caption         =   "PrintPrevUseOneToolBar"
+      Height          =   228
+      Left            =   72
+      TabIndex        =   8
+      Top             =   1440
+      Width           =   2280
+   End
+   Begin VB.CheckBox chkAllowUserChangePaper 
+      Caption         =   "AllowUserChangePaper"
+      Height          =   228
+      Left            =   2412
+      TabIndex        =   7
+      Top             =   1152
+      Width           =   1992
+   End
+   Begin VB.CheckBox chkFormatButtonVisible 
+      Caption         =   "FormatButtonVisible"
+      Height          =   228
+      Left            =   72
+      TabIndex        =   6
+      Top             =   1152
+      Width           =   2280
+   End
+   Begin VB.CheckBox chkPageNumbersButtonVisible 
+      Caption         =   "PageNumbersButtonVisible"
+      Height          =   228
+      Left            =   72
+      TabIndex        =   4
+      Top             =   864
+      Width           =   2280
+   End
+   Begin VB.ComboBox cboPrintPrevToolBarIconsSize 
+      Height          =   288
+      ItemData        =   "ptpPrintFnPrintPrevDialog.pgx":0000
+      Left            =   2424
+      List            =   "ptpPrintFnPrintPrevDialog.pgx":0002
+      Style           =   2  'Dropdown List
+      TabIndex        =   1
+      Top             =   180
+      Width           =   3432
+   End
+   Begin VB.CheckBox chkAllowUserChangeScale 
+      Caption         =   "AllowUserChangeScale"
+      Height          =   228
+      Left            =   2412
+      TabIndex        =   3
+      Top             =   576
+      Width           =   2280
+   End
+   Begin VB.Frame fraFormatButton 
+      Caption         =   "Format button"
+      Height          =   2268
+      Left            =   36
+      TabIndex        =   11
+      Top             =   1944
+      Width           =   7608
+      Begin VB.Frame FramePic 
+         Caption         =   "30:"
+         Height          =   1380
+         Index           =   3
+         Left            =   4572
+         TabIndex        =   35
+         Tag             =   "E"
+         Top             =   828
+         Width           =   1452
+         Begin VB.CommandButton cmdCopyPic 
+            Enabled         =   0   'False
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   375
+            Index           =   3
+            Left            =   930
+            Picture         =   "ptpPrintFnPrintPrevDialog.pgx":0004
+            Style           =   1  'Graphical
+            TabIndex        =   39
+            Tag             =   "E"
+            ToolTipText     =   "Clear Picture"
+            Top             =   930
+            Width           =   375
+         End
+         Begin VB.PictureBox picImg 
+            AutoRedraw      =   -1  'True
+            AutoSize        =   -1  'True
+            BackColor       =   &H00C0C0C0&
+            BorderStyle     =   0  'None
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   540
+            Index           =   3
+            Left            =   180
+            ScaleHeight     =   45
+            ScaleMode       =   3  'Pixel
+            ScaleWidth      =   45
+            TabIndex        =   38
+            TabStop         =   0   'False
+            Top             =   270
+            Width           =   540
+         End
+         Begin VB.CommandButton cmdBrowsePic 
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   375
+            Index           =   3
+            Left            =   930
+            Picture         =   "ptpPrintFnPrintPrevDialog.pgx":058E
+            Style           =   1  'Graphical
+            TabIndex        =   37
+            Tag             =   "E"
+            ToolTipText     =   "Browse Picture"
+            Top             =   150
+            Width           =   375
+         End
+         Begin VB.CommandButton cmdDeletePic 
+            Enabled         =   0   'False
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   375
+            Index           =   3
+            Left            =   930
+            Picture         =   "ptpPrintFnPrintPrevDialog.pgx":06D8
+            Style           =   1  'Graphical
+            TabIndex        =   36
+            Tag             =   "E"
+            ToolTipText     =   "Clear Picture"
+            Top             =   540
+            Width           =   375
+         End
+      End
+      Begin VB.Frame FramePic 
+         Caption         =   "36:"
+         Height          =   1380
+         Index           =   4
+         Left            =   6084
+         TabIndex        =   30
+         Tag             =   "E"
+         Top             =   828
+         Width           =   1452
+         Begin VB.CommandButton cmdCopyPic 
+            Enabled         =   0   'False
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   375
+            Index           =   4
+            Left            =   930
+            Picture         =   "ptpPrintFnPrintPrevDialog.pgx":0822
+            Style           =   1  'Graphical
+            TabIndex        =   34
+            Tag             =   "E"
+            ToolTipText     =   "Clear Picture"
+            Top             =   930
+            Width           =   375
+         End
+         Begin VB.PictureBox picImg 
+            AutoRedraw      =   -1  'True
+            AutoSize        =   -1  'True
+            BackColor       =   &H00C0C0C0&
+            BorderStyle     =   0  'None
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   540
+            Index           =   4
+            Left            =   180
+            ScaleHeight     =   45
+            ScaleMode       =   3  'Pixel
+            ScaleWidth      =   45
+            TabIndex        =   33
+            TabStop         =   0   'False
+            Top             =   270
+            Width           =   540
+         End
+         Begin VB.CommandButton cmdBrowsePic 
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   375
+            Index           =   4
+            Left            =   930
+            Picture         =   "ptpPrintFnPrintPrevDialog.pgx":0DAC
+            Style           =   1  'Graphical
+            TabIndex        =   32
+            Tag             =   "E"
+            ToolTipText     =   "Browse Picture"
+            Top             =   150
+            Width           =   375
+         End
+         Begin VB.CommandButton cmdDeletePic 
+            Enabled         =   0   'False
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   375
+            Index           =   4
+            Left            =   930
+            Picture         =   "ptpPrintFnPrintPrevDialog.pgx":0EF6
+            Style           =   1  'Graphical
+            TabIndex        =   31
+            Tag             =   "E"
+            ToolTipText     =   "Clear Picture"
+            Top             =   540
+            Width           =   375
+         End
+      End
+      Begin VB.Frame FramePic 
+         Caption         =   "24:"
+         Height          =   1380
+         Index           =   2
+         Left            =   3060
+         TabIndex        =   25
+         Tag             =   "E"
+         Top             =   828
+         Width           =   1452
+         Begin VB.CommandButton cmdDeletePic 
+            Enabled         =   0   'False
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   375
+            Index           =   2
+            Left            =   930
+            Picture         =   "ptpPrintFnPrintPrevDialog.pgx":1040
+            Style           =   1  'Graphical
+            TabIndex        =   29
+            Tag             =   "E"
+            ToolTipText     =   "Clear Picture"
+            Top             =   540
+            Width           =   375
+         End
+         Begin VB.CommandButton cmdBrowsePic 
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   375
+            Index           =   2
+            Left            =   930
+            Picture         =   "ptpPrintFnPrintPrevDialog.pgx":118A
+            Style           =   1  'Graphical
+            TabIndex        =   28
+            Tag             =   "E"
+            ToolTipText     =   "Browse Picture"
+            Top             =   150
+            Width           =   375
+         End
+         Begin VB.PictureBox picImg 
+            AutoRedraw      =   -1  'True
+            AutoSize        =   -1  'True
+            BackColor       =   &H00C0C0C0&
+            BorderStyle     =   0  'None
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   540
+            Index           =   2
+            Left            =   180
+            ScaleHeight     =   45
+            ScaleMode       =   3  'Pixel
+            ScaleWidth      =   45
+            TabIndex        =   27
+            TabStop         =   0   'False
+            Top             =   270
+            Width           =   540
+         End
+         Begin VB.CommandButton cmdCopyPic 
+            Enabled         =   0   'False
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   375
+            Index           =   2
+            Left            =   930
+            Picture         =   "ptpPrintFnPrintPrevDialog.pgx":12D4
+            Style           =   1  'Graphical
+            TabIndex        =   26
+            Tag             =   "E"
+            ToolTipText     =   "Clear Picture"
+            Top             =   930
+            Width           =   375
+         End
+      End
+      Begin VB.Frame FramePic 
+         Caption         =   "20:"
+         Height          =   1380
+         Index           =   1
+         Left            =   1584
+         TabIndex        =   20
+         Tag             =   "E"
+         Top             =   828
+         Width           =   1452
+         Begin VB.CommandButton cmdDeletePic 
+            Enabled         =   0   'False
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   375
+            Index           =   1
+            Left            =   930
+            Picture         =   "ptpPrintFnPrintPrevDialog.pgx":185E
+            Style           =   1  'Graphical
+            TabIndex        =   24
+            Tag             =   "E"
+            ToolTipText     =   "Clear Picture"
+            Top             =   540
+            Width           =   375
+         End
+         Begin VB.CommandButton cmdBrowsePic 
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   375
+            Index           =   1
+            Left            =   930
+            Picture         =   "ptpPrintFnPrintPrevDialog.pgx":19A8
+            Style           =   1  'Graphical
+            TabIndex        =   23
+            Tag             =   "E"
+            ToolTipText     =   "Browse Picture"
+            Top             =   150
+            Width           =   375
+         End
+         Begin VB.PictureBox picImg 
+            AutoRedraw      =   -1  'True
+            AutoSize        =   -1  'True
+            BackColor       =   &H00C0C0C0&
+            BorderStyle     =   0  'None
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   540
+            Index           =   1
+            Left            =   180
+            ScaleHeight     =   45
+            ScaleMode       =   3  'Pixel
+            ScaleWidth      =   45
+            TabIndex        =   22
+            TabStop         =   0   'False
+            Top             =   270
+            Width           =   540
+         End
+         Begin VB.CommandButton cmdCopyPic 
+            Enabled         =   0   'False
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   375
+            Index           =   1
+            Left            =   930
+            Picture         =   "ptpPrintFnPrintPrevDialog.pgx":1AF2
+            Style           =   1  'Graphical
+            TabIndex        =   21
+            Tag             =   "E"
+            ToolTipText     =   "Clear Picture"
+            Top             =   930
+            Width           =   375
+         End
+      End
+      Begin VB.Frame FramePic 
+         Caption         =   "16:"
+         Height          =   1380
+         Index           =   0
+         Left            =   72
+         TabIndex        =   15
+         Tag             =   "E"
+         Top             =   828
+         Width           =   1452
+         Begin VB.CommandButton cmdDeletePic 
+            Enabled         =   0   'False
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   375
+            Index           =   0
+            Left            =   930
+            Picture         =   "ptpPrintFnPrintPrevDialog.pgx":207C
+            Style           =   1  'Graphical
+            TabIndex        =   19
+            Tag             =   "E"
+            ToolTipText     =   "Clear Picture"
+            Top             =   540
+            Width           =   375
+         End
+         Begin VB.CommandButton cmdBrowsePic 
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   375
+            Index           =   0
+            Left            =   930
+            Picture         =   "ptpPrintFnPrintPrevDialog.pgx":21C6
+            Style           =   1  'Graphical
+            TabIndex        =   18
+            Tag             =   "E"
+            ToolTipText     =   "Browse Picture"
+            Top             =   150
+            Width           =   375
+         End
+         Begin VB.PictureBox picImg 
+            AutoRedraw      =   -1  'True
+            AutoSize        =   -1  'True
+            BackColor       =   &H00C0C0C0&
+            BorderStyle     =   0  'None
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   540
+            Index           =   0
+            Left            =   120
+            ScaleHeight     =   45
+            ScaleMode       =   3  'Pixel
+            ScaleWidth      =   45
+            TabIndex        =   17
+            TabStop         =   0   'False
+            Top             =   270
+            Width           =   540
+         End
+         Begin VB.CommandButton cmdCopyPic 
+            Enabled         =   0   'False
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   7.8
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   375
+            Index           =   0
+            Left            =   930
+            Picture         =   "ptpPrintFnPrintPrevDialog.pgx":2310
+            Style           =   1  'Graphical
+            TabIndex        =   16
+            Tag             =   "E"
+            ToolTipText     =   "Clear Picture"
+            Top             =   930
+            Width           =   375
+         End
+      End
+      Begin VB.TextBox txtFormatButtonToolTipText 
+         Height          =   300
+         Left            =   2208
+         TabIndex        =   13
+         Top             =   216
+         Width           =   3432
+      End
+      Begin VB.Label lblFormatButtonToolTipText 
+         Caption         =   "FormatButtonToolTipText:"
+         Height          =   228
+         Left            =   336
+         TabIndex        =   12
+         Top             =   252
+         Width           =   1884
+      End
+      Begin VB.Label Label1 
+         Caption         =   "FormatButtonPicture:"
+         Height          =   192
+         Left            =   72
+         TabIndex        =   14
+         Top             =   576
+         Width           =   1992
+      End
+   End
+   Begin vbExtra.ToolBarDA tbrScaleIcons 
+      Height          =   396
+      Left            =   4536
+      Top             =   1332
+      Width           =   2040
+      _ExtentX        =   3598
+      _ExtentY        =   699
+      ButtonsCount    =   5
+      ButtonEnabled1  =   0   'False
+      ButtonKey1      =   "DecreaseScale"
+      ButtonEnabled2  =   0   'False
+      ButtonKey2      =   "IncreaseScale"
+      ButtonStyle3    =   4
+      ButtonEnabled4  =   0   'False
+      ButtonKey4      =   "DecreaseScaleAlt"
+      ButtonEnabled5  =   0   'False
+      ButtonKey5      =   "IncreaseScaleAlt"
+   End
+   Begin VB.CheckBox chkPrintPrevUseAltScaleIcons 
+      Caption         =   "PrintPrevUseAltScaleIcons"
+      Height          =   228
+      Left            =   2412
+      TabIndex        =   9
+      Top             =   1440
+      Value           =   2  'Grayed
+      Width           =   2172
+   End
+   Begin VB.CheckBox chkPageSetupButtonVisible 
+      Caption         =   "PageSetupButtonVisible"
+      Height          =   228
+      Left            =   72
+      TabIndex        =   2
+      Top             =   576
+      Width           =   2280
+   End
+   Begin VB.CheckBox chkAllowUserChangeOrientation 
+      Caption         =   "AllowUserChangeOrientation"
+      Height          =   228
+      Left            =   2412
+      TabIndex        =   5
+      Top             =   864
+      Width           =   2388
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "PrintPrevToolBarIconsSize:"
+      Height          =   336
+      Left            =   252
+      TabIndex        =   0
+      Top             =   252
+      Width           =   2148
+   End
+   Begin VB.Label Label3 
+      Caption         =   "(Selected icons shown colored)"
+      ForeColor       =   &H00FF0000&
+      Height          =   588
+      Left            =   6660
+      TabIndex        =   10
+      Top             =   1260
+      Width           =   948
+   End
+End
+Attribute VB_Name = "ptpPrintFnPrintPrevDialog"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private mFormatButtonPicture(4) As Object
+Private mLoading As Boolean
+Private mCtrlTypeIsFlexFn As Boolean
+
+Private Sub cboPrintPrevToolBarIconsSize_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkAllowUserChangeScale_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkAllowUserChangeOrientation_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkAllowUserChangePaper_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkPrintPrevUseOneToolBar_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkFormatButtonVisible_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkPageSetupButtonVisible_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkPageNumbersButtonVisible_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub chkPrintPrevUseAltScaleIcons_Click()
+    Dim B As Boolean
+    
+    If Not mLoading Then Changed = True
+    
+    B = (chkPrintPrevUseAltScaleIcons.Value = 0)
+    tbrScaleIcons.Buttons("DecreaseScale").Enabled = B
+    tbrScaleIcons.Buttons("IncreaseScale").Enabled = B
+    tbrScaleIcons.Buttons("DecreaseScaleAlt").Enabled = Not B
+    tbrScaleIcons.Buttons("IncreaseScaleAlt").Enabled = Not B
+End Sub
+
+Private Sub cmdBrowsePic_Click(Index As Integer)
+    Dim iDlg As New CommonDialogExObject
+    
+    iDlg.Filter = "Bitmap files|*.bmp"
+    iDlg.ShowOpen
+    If Not iDlg.Canceled Then
+        Changed = True
+        On Error Resume Next
+        Set mFormatButtonPicture(Index) = LoadPicture(iDlg.FileName)
+        If Err.Number <> 0 Then
+            MsgBox "Error: " & Err.Number & ", " & Err.Description, vbCritical
+            On Error GoTo 0
+        End If
+        On Error GoTo 0
+        UpdatePicsControls
+    End If
+
+End Sub
+
+Private Sub cmdCopyPic_Click(Index As Integer)
+    If Not mFormatButtonPicture(Index) Is Nothing Then
+        Clipboard.Clear
+        Clipboard.SetData mFormatButtonPicture(Index)
+    End If
+End Sub
+
+Private Sub cmdDeletePic_Click(Index As Integer)
+    Changed = True
+    Set mFormatButtonPicture(Index) = Nothing
+    UpdatePicsControls
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    Dim c As Long
+    
+    If cboPrintPrevToolBarIconsSize.ListIndex > -1 Then
+        SelectedControls(0).PrintPrevToolBarIconsSize = cboPrintPrevToolBarIconsSize.ItemData(cboPrintPrevToolBarIconsSize.ListIndex)
+    End If
+    SelectedControls(0).AllowUserChangeScale = CBool(chkAllowUserChangeScale.Value)
+    SelectedControls(0).AllowUserChangeOrientation = CBool(chkAllowUserChangeOrientation.Value)
+    SelectedControls(0).AllowUserChangePaper = CBool(chkAllowUserChangePaper.Value)
+    SelectedControls(0).PrintPrevUseOneToolBar = CBool(chkPrintPrevUseOneToolBar.Value)
+    SelectedControls(0).PrintPrevUseAltScaleIcons = CBool(chkPrintPrevUseAltScaleIcons.Value)
+    SelectedControls(0).PageSetupButtonVisible = CBool(chkPageSetupButtonVisible.Value)
+    SelectedControls(0).FormatButtonVisible = CBool(chkFormatButtonVisible.Value)
+    If Not mCtrlTypeIsFlexFn Then
+        SelectedControls(0).FormatButtonToolTipText = txtFormatButtonToolTipText.Text
+        For c = 0 To 4
+            Set SelectedControls(0).FormatButtonPicture(c) = mFormatButtonPicture(c)
+        Next c
+        SelectedControls(0).PageNumbersButtonVisible = CBool(chkPageNumbersButtonVisible.Value)
+    End If
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    Dim c As Long
+    Dim iFrm As frmPrintPreview
+    
+    mLoading = True
+    mCtrlTypeIsFlexFn = TypeName(SelectedControls(0)) = "FlexFn"
+    Set iFrm = New frmPrintPreview
+    iFrm.DoNotLoad = True
+    Load iFrm
+    For c = 0 To 4
+        Set tbrScaleIcons.Buttons("DecreaseScale").Picture(c) = iFrm.tbrTop.Buttons("DecreaseScale").Picture(c)
+        Set tbrScaleIcons.Buttons("IncreaseScale").Picture(c) = iFrm.tbrTop.Buttons("IncreaseScale").Picture(c)
+        Set tbrScaleIcons.Buttons("DecreaseScaleAlt").Picture(c) = iFrm.tbrTop.Buttons("DecreaseScale").PictureAlt(c)
+        Set tbrScaleIcons.Buttons("IncreaseScaleAlt").Picture(c) = iFrm.tbrTop.Buttons("IncreaseScale").PictureAlt(c)
+    Next c
+    Unload iFrm
+    Set iFrm = Nothing
+    LoadSettingsInCombo
+    SelectInComboByItemData cboPrintPrevToolBarIconsSize, SelectedControls(0).PrintPrevToolBarIconsSize
+    chkAllowUserChangeScale.Value = Abs(CLng(SelectedControls(0).AllowUserChangeScale))
+    chkAllowUserChangeOrientation.Value = Abs(CLng(SelectedControls(0).AllowUserChangeOrientation))
+    chkAllowUserChangePaper.Value = Abs(CLng(SelectedControls(0).AllowUserChangePaper))
+    chkPrintPrevUseOneToolBar.Value = Abs(CLng(SelectedControls(0).PrintPrevUseOneToolBar))
+    chkPrintPrevUseAltScaleIcons.Value = CLng(SelectedControls(0).PrintPrevUseAltScaleIcons) * -1
+    chkPageSetupButtonVisible.Value = CLng(SelectedControls(0).PageSetupButtonVisible) * -1
+    chkFormatButtonVisible.Value = CLng(SelectedControls(0).FormatButtonVisible) * -1
+    If mCtrlTypeIsFlexFn Then
+        fraFormatButton.Visible = False
+        chkPageNumbersButtonVisible.Visible = False
+    Else
+        txtFormatButtonToolTipText.Text = SelectedControls(0).FormatButtonToolTipText
+        For c = 0 To 4
+            Set mFormatButtonPicture(c) = SelectedControls(0).FormatButtonPicture(c)
+        Next c
+        UpdatePicsControls
+        chkPageNumbersButtonVisible.Value = CLng(SelectedControls(0).PageNumbersButtonVisible) * -1
+    End If
+    mLoading = False
+End Sub
+
+Private Sub txtFormatButtonToolTipText_Change()
+    If Not mLoading Then Changed = True
+End Sub
+
+Private Sub UpdatePicsControls()
+    Dim c As Long
+    
+    For c = 0 To 4
+        Set picImg(c).Picture = mFormatButtonPicture(c)
+        cmdDeletePic(c).Enabled = Not mFormatButtonPicture(c) Is Nothing
+        cmdCopyPic(c).Enabled = cmdDeletePic(c).Enabled
+    Next c
+End Sub
+
+Private Sub txtFormatButtonToolTipText_GotFocus()
+    If txtFormatButtonToolTipText.SelStart = 0 Then txtFormatButtonToolTipText.SelStart = Len(txtFormatButtonToolTipText.Text)
+End Sub
+
+Private Sub LoadSettingsInCombo()
+    Dim iLi As Long
+    
+    ' PrintPrevToolBarIconsSize
+    iLi = cboPrintPrevToolBarIconsSize.ListIndex
+    cboPrintPrevToolBarIconsSize.Clear
+    cboPrintPrevToolBarIconsSize.AddItem vxPPTIAppDefault & " - vxPPTIAppDefault": cboPrintPrevToolBarIconsSize.ItemData(cboPrintPrevToolBarIconsSize.NewIndex) = vxPPTIAppDefault
+    cboPrintPrevToolBarIconsSize.AddItem vxPPTIconsSmall & " - vxPPTIconsSmall": cboPrintPrevToolBarIconsSize.ItemData(cboPrintPrevToolBarIconsSize.NewIndex) = vxPPTIconsSmall
+    cboPrintPrevToolBarIconsSize.AddItem vxPPTIconsMedium & " - vxPPTIconsMedium": cboPrintPrevToolBarIconsSize.ItemData(cboPrintPrevToolBarIconsSize.NewIndex) = vxPPTIconsMedium
+    cboPrintPrevToolBarIconsSize.AddItem vxPPTIconsBig & " - vxPPTIconsBig": cboPrintPrevToolBarIconsSize.ItemData(cboPrintPrevToolBarIconsSize.NewIndex) = vxPPTIconsBig
+    cboPrintPrevToolBarIconsSize.AddItem vxPPTIconsAuto & " - vxPPTIconsAuto": cboPrintPrevToolBarIconsSize.ItemData(cboPrintPrevToolBarIconsSize.NewIndex) = vxPPTIconsAuto
+    cboPrintPrevToolBarIconsSize.AddItem vxPPTIconsSmallAndUserCanChange & " - vxPPTIconsSmallAndUserCanChange": cboPrintPrevToolBarIconsSize.ItemData(cboPrintPrevToolBarIconsSize.NewIndex) = vxPPTIconsSmallAndUserCanChange
+    cboPrintPrevToolBarIconsSize.AddItem vxPPTIconsMediumAndUserCanChange & " - vxPPTIconsMediumAndUserCanChange": cboPrintPrevToolBarIconsSize.ItemData(cboPrintPrevToolBarIconsSize.NewIndex) = vxPPTIconsMediumAndUserCanChange
+    cboPrintPrevToolBarIconsSize.AddItem vxPPTIconsBigAndUserCanChange & " - vxPPTIconsBigAndUserCanChange": cboPrintPrevToolBarIconsSize.ItemData(cboPrintPrevToolBarIconsSize.NewIndex) = vxPPTIconsBigAndUserCanChange
+    If iLi > -1 Then
+        cboPrintPrevToolBarIconsSize.ListIndex = iLi
+    End If
+End Sub

@@ -818,13 +818,16 @@ Public Sub Refresh()
         
         If iButton.Visible And Not iButton.Hidden Then
             mVisibleButtonsCount = mVisibleButtonsCount + 1
+            iButton.Left = iCurrentLeft
             Select Case iButton.Style
                 Case vxTBSeparator
+                    iButton.Width = 120
                     iCurrentLeft = iCurrentLeft + 120
                 Case vxTBPlaceholder
                     iCurrentLeft = iCurrentLeft + iButton.Width
                     iButton.SetParentToolBarDAAndButtonControl Me, Nothing
                 Case Else
+                    iButton.Width = mButtonWidth
                     c2 = c2 + 1
                     If c2 > btnButton.Count Then
                         Load btnButton(c2 - 1)
@@ -980,7 +983,6 @@ Public Property Let Redraw(nValue As Boolean)
             SetWindowRedraw UserControl.hWnd, False
         End If
     End If
-                
 End Property
 
 Public Property Get Redraw() As Boolean
@@ -1110,11 +1112,20 @@ Attribute AutoSize.VB_MemberFlags = "200"
 End Property
 
 Friend Sub EnsureDrawn()
+    Dim iRedrawDisabled As Boolean
+    
     If tmrFirstResize.Enabled Then
         tmrFirstResize_Timer
     End If
     If mRefreshPending Then
+        If Not mRedraw Then
+            iRedrawDisabled = True
+            mRedraw = True
+        End If
         Refresh
+        If iRedrawDisabled Then
+            mRedraw = False
+        End If
     End If
 End Sub
 

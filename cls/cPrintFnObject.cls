@@ -68,6 +68,8 @@ Private mPageNumbersButtonHiddenAutomatically As Long ' 0: normal, 1: hidden aut
 Private mAllowUserChangeScale As Boolean
 Private mAllowUserChangeOrientation As Boolean
 Private mAllowUserChangePaper As Boolean
+Private mPrintPrevUseOneToolBar As Boolean
+Private mPrintPrevDialogCaption As String
 Private mScalePercent As Long
 Private mMinScalePercent As Long
 Private mMaxScalePercent As Long
@@ -296,11 +298,13 @@ Public Sub ShowPrintPreview(Optional DocKey As String)
         mDocKey = DocKey
         Set mfrmPrintPreview = New frmPrintPreview
         Set mfrmPrintPreview.PrePrintCtrlObj = Me
+        mfrmPrintPreview.Loading = True
+        mfrmPrintPreview.ToolBarIconsSize = mPrintPrevToolBarIconsSize
         mfrmPrintPreview.MinScalePercent = mMinScalePercent
         mfrmPrintPreview.MaxScalePercent = mMaxScalePercent
+        mfrmPrintPreview.UseOneToolBar = mPrintPrevUseOneToolBar
         mfrmPrintPreview.FormatButtonVisible = mFormatButtonVisible
         mfrmPrintPreview.UseAltScaleIcons = mPrintPrevUseAltScaleIcons
-        mfrmPrintPreview.ToolBarIconsSize = mPrintPrevToolBarIconsSize
         If mFormatButtonVisible Then
             If mFormatButtonToolTipText <> "" Then
                 mfrmPrintPreview.FormatButtonToolTipText = mFormatButtonToolTipText
@@ -314,11 +318,23 @@ Public Sub ShowPrintPreview(Optional DocKey As String)
         mfrmPrintPreview.PageSetupButtonVisible = mPageSetupButtonVisible
         mfrmPrintPreview.PageNumbersButtonVisible = mPageNumbersButtonVisible
         mfrmPrintPreview.AllowUserChangeScale = mAllowUserChangeScale And Not (mMinScalePercent = mMaxScalePercent)
-        mfrmPrintPreview.AllowUserChangeOrientation = mAllowUserChangeOrientation
-        
+        mfrmPrintPreview.PageOrientationButtonsVisible = mAllowUserChangeOrientation
         mfrmPrintPreview.ScalePercent = mScalePercent
+        If mPrintPrevDialogCaption = "" Then
+            If mPrintPrevUseOneToolBar And (mDocumentName <> "") Then
+                mfrmPrintPreview.Caption = ClientProductName & " - " & mDocumentName
+            Else
+                mfrmPrintPreview.Caption = ClientProductName & " - " & GetLocalizedString(efnGUIStr_frmPrintPreview_Caption)
+            End If
+        Else
+            mfrmPrintPreview.Caption = mPrintPrevDialogCaption
+        End If
+
+        mfrmPrintPreview.Loading = False
+        mfrmPrintPreview.ToolBarIconsSize = mPrintPrevToolBarIconsSize
+        mfrmPrintPreview.PositionControls
         
-        ShowModal mfrmPrintPreview
+        mfrmPrintPreview.Show vbModal
         Set mfrmPrintPreview.PrePrintCtrlObj = Nothing
         Set mfrmPrintPreview = Nothing
         mPrinted = PrinterEx.Printed
@@ -353,6 +369,7 @@ Private Sub Class_Initialize()
     mAllowUserChangeScale = True
     mAllowUserChangeOrientation = True
     mAllowUserChangePaper = True
+    mPrintPrevUseOneToolBar = False
     mMinScalePercent = cPrintPreviewDefaultMinScale
     mMaxScalePercent = cPrintPreviewDefaultMaxScale
     mScalePercent = 100
@@ -822,7 +839,7 @@ Public Property Let FormatButtonToolTipText(ByVal nValue As String)
 End Property
 
 
-Public Property Get FormatButtonPicture(ByVal nSizeIdentifier As VBExToobarDAButtonIconSizeConstants) As StdPicture
+Public Property Get FormatButtonPicture(ByVal nSizeIdentifier As VBExToolbarDAButtonIconSizeConstants) As StdPicture
     Dim iFrm As frmPrintPreview
     Dim iWritingProps As Boolean
     Static sDefaultFormatButtonPicture(vxIZ36) As Object
@@ -853,7 +870,7 @@ Public Property Get FormatButtonPicture(ByVal nSizeIdentifier As VBExToobarDABut
     End If
 End Property
 
-Public Property Set FormatButtonPicture(ByVal nSizeIdentifier As VBExToobarDAButtonIconSizeConstants, nPic As StdPicture)
+Public Property Set FormatButtonPicture(ByVal nSizeIdentifier As VBExToolbarDAButtonIconSizeConstants, nPic As StdPicture)
     If (nSizeIdentifier < vxIZ16) Or (nSizeIdentifier > vxIZ36) Then
         RaiseError 381, TypeName(Me) ' Invalid property array index
         Exit Property
@@ -887,7 +904,7 @@ Public Property Let AllowUserChangeOrientation(ByVal nValue As Boolean)
     If mAllowUserChangeOrientation <> nValue Then
         mAllowUserChangeOrientation = nValue
         If Not mfrmPrintPreview Is Nothing Then
-            mfrmPrintPreview.AllowUserChangeOrientation = mAllowUserChangeOrientation
+            mfrmPrintPreview.PageOrientationButtonsVisible = mAllowUserChangeOrientation
         End If
     End If
 End Property
@@ -900,6 +917,34 @@ End Property
 Public Property Let AllowUserChangePaper(ByVal nValue As Boolean)
     If mAllowUserChangePaper <> nValue Then
         mAllowUserChangePaper = nValue
+    End If
+End Property
+
+
+Public Property Get PrintPrevUseOneToolBar() As Boolean
+    PrintPrevUseOneToolBar = mPrintPrevUseOneToolBar
+End Property
+
+Public Property Let PrintPrevUseOneToolBar(ByVal nValue As Boolean)
+    If mPrintPrevUseOneToolBar <> nValue Then
+        mPrintPrevUseOneToolBar = nValue
+        If Not mfrmPrintPreview Is Nothing Then
+            mfrmPrintPreview.UseOneToolBar = mPrintPrevUseOneToolBar
+        End If
+    End If
+End Property
+
+
+Public Property Get PrintPrevDialogCaption() As String
+    PrintPrevDialogCaption = mPrintPrevDialogCaption
+End Property
+
+Public Property Let PrintPrevDialogCaption(ByVal nValue As String)
+    If mPrintPrevDialogCaption <> nValue Then
+        mPrintPrevDialogCaption = nValue
+        If Not mfrmPrintPreview Is Nothing Then
+            mfrmPrintPreview.Caption = mPrintPrevDialogCaption
+        End If
     End If
 End Property
 
