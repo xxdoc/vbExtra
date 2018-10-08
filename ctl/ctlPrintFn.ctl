@@ -21,7 +21,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
 
-Public Event PrepareDoc(ByVal DocKey As String)
+Public Event PrepareDoc(Cancel As Boolean, ByVal DocKey As String)
 Public Event BeforeShowingPageSetupDialog(ByRef CancelDisplay As Boolean)
 Public Event AfterShowingPageSetupDialog()
 Public Event BeforeShowingPrinterDialog(ByRef CancelPrint As Boolean)
@@ -84,7 +84,7 @@ Private Sub mPrintFnObject_EndDoc(ByVal FirstPageIndex As Long, ByVal LastPageIn
 End Sub
 
 Private Sub mPrintFnObject_PrepareDoc(ByRef Cancel As Boolean, ByVal DocKey As String)
-    RaiseEvent PrepareDoc(DocKey)
+    RaiseEvent PrepareDoc(Cancel, DocKey)
 End Sub
 
 Private Sub mPrintFnObject_ScaleChange(NewScalePercent As Integer)

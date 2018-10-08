@@ -200,7 +200,7 @@ Private Declare Function GetDC Lib "user32" (ByVal hWnd As Long) As Long
 Private Const LOGPIXELSX As Long = 88
 Private Const LOGPIXELSY As Long = 90
 
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 Private Declare Function GetForegroundWindow Lib "user32" () As Long
 Private Declare Function ValidateRect Lib "user32" (ByVal hWnd As Long, lpRect As RECT) As Long
 Private Declare Function GetClientRect Lib "user32" (ByVal hWnd As Long, lpRect As RECT) As Long
@@ -482,7 +482,9 @@ Attribute OLEStartDrag.VB_Description = "Occurs when a component's OLEDrag metho
 
 ' Added
 Public Event BeforeClick(ByRef Cancel As Boolean)
+Attribute BeforeClick.VB_Description = "Occurs when the current tab is about to change."
 Public Event ChangeControlBackColor(ControlName As String, ControlTypeName As String, ByRef Cancel As Boolean)
+Attribute ChangeControlBackColor.VB_Description = "Allows to determine individually which controls will have their background changed."
 Public Event RowsChange()
 Attribute RowsChange.VB_Description = "Occurs when the Rows property changes its value."
 Public Event TabBodyResize()
@@ -1872,12 +1874,12 @@ Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, wP
     
     Select Case iMsg
         Case WM_WINDOWPOSCHANGING ' invisible controls, to prevent being moved to the visible space if they are moved by code. Unfortunately the same can't be done to Labels and other windowless controls. But at least the protection acts on windowed controls.
-            Dim iWP As WINDOWPOS
+            Dim iwp As WINDOWPOS
             
-            CopyMemory iWP, ByVal lParam, Len(iWP)
-            If iWP.x > -15000 \ Screen_TwipsPerPixelX Then
-                iWP.x = iWP.x - 75000 \ Screen_TwipsPerPixelX
-                CopyMemory ByVal lParam, iWP, Len(iWP)
+            CopyMemory iwp, ByVal lParam, Len(iwp)
+            If iwp.x > -15000 \ Screen_TwipsPerPixelX Then
+                iwp.x = iwp.x - 75000 \ Screen_TwipsPerPixelX
+                CopyMemory ByVal lParam, iwp, Len(iwp)
             End If
             
         Case WM_NCACTIVATE ' need to update the focus rect
