@@ -1457,7 +1457,7 @@ Public Property Let TabVisible(Index, nValue As Boolean)
             End If
             If (c > -1) And (c < mTabs) Then
                 TabSel = c
-                If mTabSel = c Then ' the change could had been cancelled through the BeforeClick event, in that case TabSel woudn't change
+                If mTabSel = c Then ' the change could had been canceled through the BeforeClick event, in that case TabSel woudn't change
                     mTabData(Index).Visible = nValue
                     mTabData(Index).Selected = False
                 End If
@@ -5363,7 +5363,7 @@ Private Sub SetThemeExtraData()
     Dim iColB_H As Long
     Dim iColB_L As Long
     Dim iColB_S As Long
-    Dim iUmbral As Long
+    Dim iThreshold As Long
     
     If mThemeExtraDataAlreadySet Then Exit Sub
     mThemeExtraDataAlreadySet = True
@@ -5487,21 +5487,21 @@ Private Sub SetThemeExtraData()
         mThemedTabBodyBackColor_B = (iColB \ 65536) And 255
     End If
     
-    iUmbral = 120
+    iThreshold = 120
     mThemedTabBodyBottomShadowPixels = 0
     Do
         For y = picAux.ScaleHeight - 9 To picAux.ScaleHeight - 1
             iCol = GetPixel(picAux.hDC, 15, y)
             ColorRGBToHLS iCol, iCol_H, iCol_L, iCol_S
-            If Abs(iCol_L - iColB_L) > iUmbral Then
+            If Abs(iCol_L - iColB_L) > iThreshold Then
                 mThemedTabBodyBottomShadowPixels = picAux.ScaleHeight - y - 1
                 Exit For
             End If
         Next y
         If mThemedTabBodyBottomShadowPixels = 0 Then
-            iUmbral = iUmbral - 10
-            If iUmbral < 1 Then
-                iUmbral = 20
+            iThreshold = iThreshold - 10
+            If iThreshold < 1 Then
+                iThreshold = 20
                 Exit Do
             End If
         End If
@@ -5512,7 +5512,7 @@ Private Sub SetThemeExtraData()
         iCol = GetPixel(picAux.hDC, x, 15)
         ColorRGBToHLS iCol, iCol_H, iCol_L, iCol_S
         'Debug.Print x, Abs(iCol_L - iColB_L)
-        If Abs(iCol_L - iColB_L) > iUmbral Then
+        If Abs(iCol_L - iColB_L) > iThreshold Then
             mThemedTabBodyRightShadowPixels = picAux.ScaleWidth - x - 1
             Exit For
         End If
