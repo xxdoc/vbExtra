@@ -16,6 +16,7 @@ Option Explicit
 Private mCollection As New Collection
 
 Public Sub Remove(nHwnd As Long)
+    On Error Resume Next
     mCollection.Remove CStr(nHwnd)
 End Sub
 
@@ -27,3 +28,7 @@ Public Function GetInstance(nObjectWithHwnd As Object) As Object
     On Error Resume Next
     Set GetInstance = mCollection(CStr(nObjectWithHwnd.hWnd))
 End Function
+
+Public Property Get Count()
+    Count = mCollection.Count
+End Property

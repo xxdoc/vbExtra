@@ -282,7 +282,23 @@ Public Enum gfnScrollWithMouseWheelSettings
     gfnScrollOnlyOnFocus = 2&
 End Enum
 
- 
+Public Enum vbExWindowsVersion
+    vx98 = 5
+    vx2000 = 10
+    vxXP = 15
+    vxVista = 20
+    vx7 = 25
+    vx8 = 30
+    vx81 = 35
+    vx10 = 40
+End Enum
+
+Public Enum vbExShowFormConstants
+    vbModeless = 0
+    vbModal = 1
+    vbModalEx = 2
+End Enum
+
 Private Sub Class_Initialize()
     InitGlobal
 End Sub
@@ -306,6 +322,10 @@ End Function
 
 Public Sub ShowModal(nForm As Object, Optional nWaitWithDoevents As Boolean = True, Optional nSetIcon As Boolean = True, Optional nFormsHwndToKeepEnabled As Variant, Optional nKeepEnabledTaskBarWindows As Boolean = True, Optional nNoOwner As Boolean)
     mGlobals.ShowModal nForm, nWaitWithDoevents, nSetIcon, nFormsHwndToKeepEnabled, nKeepEnabledTaskBarWindows, nNoOwner
+End Sub
+
+Public Sub ShowForm(nForm As Object, Optional Modal As vbExShowFormConstants = vbModeless, Optional OwnerForm)
+    mGlobals.ShowForm nForm, Modal, OwnerForm
 End Sub
 
 Public Sub ShowNoActivate(nForm As Object, Optional nOwnerForm, Optional nSetIcon As Boolean = True, Optional nSetActiveFormAsOwner As Boolean)
@@ -826,3 +846,8 @@ End Function
 Public Function SetColorToSameHue(nColor As Long, nReferenceColor As Long) As Long
     SetColorToSameHue = MPicStretch.SetColorToSameHue(nColor, nReferenceColor)
 End Function
+
+Public Function IsWindowsVersionOrMore(nRequiredVersion As vbExWindowsVersion) As Boolean
+    IsWindowsVersionOrMore = mGlobals.IsWindowsVersionOrMore(nRequiredVersion)
+End Function
+

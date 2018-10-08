@@ -4284,7 +4284,7 @@ Private Sub mPrintFnObject_BeforeShowingPrinterDialog(CancelPrint As Boolean)
     mPrinterExEvents.RaiseEvent_BeforeShowingPrinterDialog CancelPrint
 End Sub
 
-Private Sub mPrintFnObject_FormatOptionsClick(Canceled As Boolean)
+Private Sub mPrintFnObject_FormatOptionsClick(ByRef Canceled As Boolean)
     Dim ifrmPrintGridFormatOptions As New frmPrintGridFormatOptions
     Dim iDSPLarger As Boolean
     Dim iDSPSmaller As Boolean
@@ -6905,25 +6905,31 @@ Public Sub PrintRichTextBox(nRTB As Object)
     ' Loop printing each page until done
     p = 0
     Do
-         p = p + 1
-         fr.RC = rcMeasure
-         Call SendMessage(nRTB.hWnd, EM_FORMATRANGE, 0&, fr)
-         rcMeasure = fr.RC
-         fr.RC = rcDrawTo
-         If p > 1 Then
-             fr.RC.Top = Me.PageTopMargin
-         End If
-         ' PrintEx the page by sending EM_FORMATRANGE message
-         iNextCharPosition = SendMessage(nRTB.hWnd, EM_FORMATRANGE, True, fr)
-         If iNextCharPosition >= iTextLength Then Exit Do  'If done then exit
-         fr.chrg.cpMin = iNextCharPosition ' Starting position for next page
-         Printer_NewPage                  ' Move on to next page
-         PrintText Space(1), , , , , , False  ' Re-initialize hDC
-         Printer_CurrentX = 0
-         fr.hDC = Printer_hDC
-         fr.hdcTarget = Printer_hDC
-         rcDrawTo.Left = Me.PageLeftMargin + iCx
-         rcDrawTo.Top = Me.PageTopMargin
+        p = p + 1
+        fr.RC = rcMeasure
+        Call SendMessage(nRTB.hWnd, EM_FORMATRANGE, 0&, fr)
+        rcMeasure = fr.RC
+        fr.RC = rcDrawTo
+        If p > 1 Then
+            fr.RC.Top = Me.PageTopMargin
+        End If
+        ' PrintEx the page by sending EM_FORMATRANGE message
+        iNextCharPosition = SendMessage(nRTB.hWnd, EM_FORMATRANGE, True, fr)
+        If iNextCharPosition >= iTextLength Then
+            If p > 1 Then
+                Exit Do  'If done then exit
+            End If
+        Else
+            fr.chrg.cpMin = iNextCharPosition ' Starting position for next page
+            Printer_NewPage                  ' Move on to next page
+        End If
+        PrintText Space(1), , , , , , False  ' Re-initialize hDC
+        Printer_CurrentX = 0
+        fr.hDC = Printer_hDC
+        fr.hdcTarget = Printer_hDC
+        rcDrawTo.Left = Me.PageLeftMargin + iCx
+        rcDrawTo.Top = Me.PageTopMargin
+        If iNextCharPosition >= iTextLength Then Exit Do  'If done then exit
     Loop
     
     ' Allow the nRTB to free up memory

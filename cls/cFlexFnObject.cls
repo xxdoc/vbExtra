@@ -40,7 +40,7 @@ Public Event PersonalizeDefaultReportStyle(GridName As String, nRS As GridReport
 Public Event BeforeCopyingToClipboard(ByVal GridName As String, ByRef TextBefore As String, ByRef TextAfter As String)
 Public Event AfterSettingColumnsWidths(ByVal GridName As String, WidthsWereAdjusted As Boolean)
 Public Event CellTextChange(ByVal GridName As String, Row As Long, Col As Long)
-Public Event BeforeTextEdit(ByVal GridName As String, Cancel As Boolean)
+Public Event BeforeTextEdit(ByVal GridName As String, ByRef Cancel As Boolean)
 Public Event OrientationChange(ByVal NewOrientation As Long)
 Public Event DocPrinted()
 Public Event GridContentChange(ByVal GridName As String)
@@ -164,6 +164,7 @@ Private mAmbientUserMode As Boolean
 Private mHwndGridHandledIndividually As Long
 Private mGridExplicitelySetIsTypeSupported As Boolean
 Private mDrawingGridFromPrinterEx As Boolean
+Private mRaisingEvent As Boolean
 
 Private Property Set CurrentGrid(nGrid As Object)
     If Not nGrid Is mCurrentGrid Then
@@ -189,6 +190,10 @@ End Property
 
 Public Property Set Grid(nGrid As Object)
     If Not CurrentGrid Is nGrid Then
+        If mRaisingEvent Then
+            RaiseError 1435, TypeName(Me), "Cannot change grid in this context."
+            Exit Property
+        End If
         If mGridExplicitelySet Then
             If Not CurrentGrid Is Nothing Then
                 RemoveGridHandler CurrentGrid
@@ -211,6 +216,10 @@ End Property
 
 Public Property Get Grid() As Object
     Set Grid = CurrentGrid
+End Property
+
+Public Property Let Grid(nGrid As Object)
+    Set Grid = nGrid
 End Property
 
 
@@ -360,7 +369,9 @@ Private Sub Class_Terminate()
 End Sub
 
 Private Sub mCurrentGridHandler_GridContentChange()
+    mRaisingEvent = True
     RaiseEvent GridContentChange(mCurrentGridHandler.Grid.Name)
+    mRaisingEvent = False
     Set mGridPrintingData = Nothing
 End Sub
 
@@ -605,6 +616,9 @@ Public Sub PrintNow(Optional nGrid As Object, Optional nGridName, Optional nRepo
 End Sub
 
 Public Sub ShowPrint(Optional nGrid As Object, Optional nGridName, Optional nReportID, Optional nHeading, Optional nSubheading, Optional nMiddleText, Optional nFinalText, Optional nOrientation As gfnOrientation = -1, Optional nScalePercent, Optional nPrintWithDefaultSettings As Boolean)
+    Dim iAuxPrinterExCurrentDocument As cPrinterEx
+    
+    Set iAuxPrinterExCurrentDocument = PrinterExCurrentDocument
     
     SavePreviousGeneralSettings
     SetCurrentGrid nGrid, nGridName
@@ -661,9 +675,14 @@ Public Sub ShowPrint(Optional nGrid As Object, Optional nGridName, Optional nRep
     
     RestorePreviousGeneralSettings
     ResetPrinter2
+    
+    Set PrinterExCurrentDocument = iAuxPrinterExCurrentDocument
 End Sub
     
 Public Sub ShowPrintPreview(Optional nGrid As Object, Optional nGridName, Optional nReportID, Optional nHeading, Optional nSubheading, Optional nMiddleText, Optional nFinalText, Optional nOrientation As gfnOrientation = -1, Optional nScalePercent)
+    Dim iAuxPrinterExCurrentDocument As cPrinterEx
+    
+    Set iAuxPrinterExCurrentDocument = PrinterExCurrentDocument
     
     SavePreviousGeneralSettings
     SetCurrentGrid nGrid, nGridName
@@ -719,6 +738,8 @@ Public Sub ShowPrintPreview(Optional nGrid As Object, Optional nGridName, Option
     
     RestorePreviousGeneralSettings
     ResetPrinter2
+    
+    Set PrinterExCurrentDocument = iAuxPrinterExCurrentDocument
 End Sub
 
 Public Sub SaveAsExcelFile(Optional nGrid As Object, Optional nGridName, Optional nReportID, Optional nFileName, Optional nHeading, Optional nSubheading, Optional nMiddleText, Optional nFinalText, Optional nDefaultFolderPath)
@@ -889,7 +910,9 @@ Private Sub LoadUserSettings()
         If Not mCurrentGrid Is Nothing Then
             iStr = mCurrentGrid.Name
         End If
+        mRaisingEvent = True
         RaiseEvent PersonalizeDefaultReportStyle(iStr, mGridReportStyle)
+        mRaisingEvent = False
     Else
         Set mGridReportStyle = GetGridReportStyle(iStyleID)
     End If
@@ -1159,7 +1182,7 @@ Again:
         Do Until R = mCurrentGrid.Rows - 1
             R = R + 1
             If mCurrentGrid.RowHeight(R) <> 0 Then
-                Do Until c = mCurrentGrid.cols - 1
+                Do Until c = mCurrentGrid.Cols - 1
                     c = c + 1
                     If mCurrentGrid.ColWidth(c) <> 0 Then
                         If InStr(LCase$(mCurrentGrid.TextMatrix(R, c)), iTextToFind) > 0 Then
@@ -1211,7 +1234,9 @@ Again:
                             'mCurrentGrid.RowSel = R
                             'mCurrentGrid.ColSel = c
                             
+                            mRaisingEvent = True
                             RaiseEvent TextFound(R, c, iTextToFind)
+                            mRaisingEvent = False
                             GoTo TheExit:
                         End If
                     End If
@@ -1355,16 +1380,16 @@ Again:
         Dim ContFil As Long
         
         Screen.MousePointer = vbHourglass
-        ReDim iCellsFontNumber(mCurrentGrid.cols - 1, mCurrentGrid.Rows - 1)
-        ReDim iCellsAlignment(mCurrentGrid.cols - 1, mCurrentGrid.Rows - 1)
-        ReDim iCellsTexts(mCurrentGrid.cols - 1, mCurrentGrid.Rows - 1)
+        ReDim iCellsFontNumber(mCurrentGrid.Cols - 1, mCurrentGrid.Rows - 1)
+        ReDim iCellsAlignment(mCurrentGrid.Cols - 1, mCurrentGrid.Rows - 1)
+        ReDim iCellsTexts(mCurrentGrid.Cols - 1, mCurrentGrid.Rows - 1)
         ReDim iFontsInGrid(0)
-        ReDim iColumns(mCurrentGrid.cols - 1)
+        ReDim iColumns(mCurrentGrid.Cols - 1)
         
         iCol1 = 0
         iCol2 = 0
         iVisibleCols = 0
-        For c = 0 To mCurrentGrid.cols - 1
+        For c = 0 To mCurrentGrid.Cols - 1
             If mCurrentGrid.ColWidth(c) <> 0 Then
                 iVisibleCols = iVisibleCols + 1
                 If iCol1 = 0 Then
@@ -1387,7 +1412,7 @@ Again:
         Next ContFil
         ' asigna una matriz y un array, iFontsInGrid para la lista de fuentes en la grilla, y iCellsFontNumber para saber a cual corresponde cada celda
         iCcv = -1
-        For ContCol = 0 To mCurrentGrid.cols - 1
+        For ContCol = 0 To mCurrentGrid.Cols - 1
             mCurrentGrid.Col = ContCol
             If mCurrentGrid.ColWidth(ContCol) <> 0 Then
                 iCcv = iCcv + 1
@@ -1542,7 +1567,7 @@ Again:
             mCurrentGrid.Parent.Controls.Remove "iAuxPicGGCE"
             
             ' cuenta en cuantas celdas es usada cada fuente
-            For ContCol = 0 To mCurrentGrid.cols - 1
+            For ContCol = 0 To mCurrentGrid.Cols - 1
                 If iColumns(ContCol) <> -1 Then
                     For ContFil = 0 To mCurrentGrid.Rows - 1
                         If mCurrentGrid.RowHeight(ContFil) <> 0 Then
@@ -1715,7 +1740,7 @@ Again:
             Next
             
             ' asigna los anchos de las columnas
-            For c = 0 To mCurrentGrid.cols - 1
+            For c = 0 To mCurrentGrid.Cols - 1
                 If iColumns(c) <> -1 Then
                     iCw = mCurrentGrid.ColWidth(c)
                     If iCw = -1 Then
@@ -1770,7 +1795,7 @@ Again:
                 End If
             End If
             
-            For ContCol = 0 To mCurrentGrid.cols - 1
+            For ContCol = 0 To mCurrentGrid.Cols - 1
                 If iColumns(ContCol) <> -1 Then
                     For ContFil = 0 To mCurrentGrid.Rows - 1
                         If mCurrentGrid.RowHeight(ContFil) <> 0 Then
@@ -2098,10 +2123,12 @@ Private Function CopyGridToClipboard() As Boolean
     If Not mCurrentGrid Is Nothing Then
         iStr = mCurrentGrid.Name
     End If
+    mRaisingEvent = True
     RaiseEvent BeforeCopyingToClipboard(iStr, iTextBefore, iTextAfter)
+    mRaisingEvent = False
     iStr = ""
     
-    ReDim iCopyColumn(mCurrentGrid.cols - 1)
+    ReDim iCopyColumn(mCurrentGrid.Cols - 1)
     If mCopyToClipboardMode = 0 Then
         ifrmCopyGridTextOptions.SpecialSeparatorCharacters = mSpecialSeparatorCharacters
         ifrmCopyGridTextOptions.SetGrid mCurrentGrid, Context
@@ -2114,7 +2141,7 @@ Private Function CopyGridToClipboard() As Boolean
             iContinue = True
             mCopyToClipboardMode = ifrmCopyGridTextOptions.CopyToClipboardMode
             mSpecialSeparatorCharacters = ifrmCopyGridTextOptions.SpecialSeparatorCharacters
-            For c = 0 To mCurrentGrid.cols - 1
+            For c = 0 To mCurrentGrid.Cols - 1
                 iCopyColumn(c) = ifrmCopyGridTextOptions.CopyColumn(c)
                 If iCopyColumn(c) Then
                     iLastCopyColumn = c
@@ -2130,10 +2157,10 @@ Private Function CopyGridToClipboard() As Boolean
             Set iFont = mCurrentGrid.Font
         End If
         iContinue = True
-        For c = 0 To mCurrentGrid.cols - 1
+        For c = 0 To mCurrentGrid.Cols - 1
             iCopyColumn(c) = True
         Next c
-        iLastCopyColumn = mCurrentGrid.cols - 1
+        iLastCopyColumn = mCurrentGrid.Cols - 1
     End If
     If iContinue Then
         CopyGridToClipboard = True
@@ -2150,7 +2177,7 @@ Private Function CopyGridToClipboard() As Boolean
         Select Case mCopyToClipboardMode
             Case gfnSeparateWithTabs, gfnSeparateWithSpecialCharacters
                 For R = 0 To UBound(iTextMatrix, 1)
-                    For c = 0 To mCurrentGrid.cols - 1
+                    For c = 0 To mCurrentGrid.Cols - 1
                         If iCopyColumn(c) Then
                             If mCurrentGrid.ColWidth(c) <> 0 Then
                                 iConcat.AddString CStr(iTextMatrix(R, c))
@@ -2167,7 +2194,7 @@ Private Function CopyGridToClipboard() As Boolean
                 iNeedNormalization = False
                 ' too long cell text must be splitted into lines
                 For R = 0 To UBound(iTextMatrix, 1)
-                    For c = 0 To mCurrentGrid.cols - 1
+                    For c = 0 To mCurrentGrid.Cols - 1
                         'If the text of the cell is longer than the max allowed for a column
                         If (Len(iTextMatrix(R, c)) > cMaxFixedTextLenght) Or (InStr(iTextMatrix(R, c), vbCrLf) > 0) Then
                             iNeedNormalization = True
@@ -2236,8 +2263,8 @@ Private Function CopyGridToClipboard() As Boolean
                     iTextMatrix = GridTextMatrixNormalized(iTextMatrix)
                 End If
                 
-                ReDim iLongestColumnText(mCurrentGrid.cols - 1)
-                For c = 0 To mCurrentGrid.cols - 1
+                ReDim iLongestColumnText(mCurrentGrid.Cols - 1)
+                For c = 0 To mCurrentGrid.Cols - 1
                     If iCopyColumn(c) Then
                         If mCurrentGrid.ColWidth(c) <> 0 Then
                             For R = 0 To UBound(iTextMatrix, 1)
@@ -2252,7 +2279,7 @@ Private Function CopyGridToClipboard() As Boolean
                 Next c
                 
                 For R = 0 To UBound(iTextMatrix, 1)
-                    For c = 0 To mCurrentGrid.cols - 1
+                    For c = 0 To mCurrentGrid.Cols - 1
                         If iCopyColumn(c) Then
                             If mCurrentGrid.ColWidth(c) <> 0 Then
                                 iStr = iTextMatrix(R, c)
@@ -2272,9 +2299,9 @@ Private Function CopyGridToClipboard() As Boolean
                 Set mCurrentGrid.Parent.Font = iFont
                 iMaxVariableFontTextWidth = mCurrentGrid.Parent.TextWidth(String$(cMaxFixedTextLenght, "a"))
                 iSpaceWidth = mCurrentGrid.Parent.TextWidth(Space$(100)) / 100
-                ReDim iTextWidths(UBound(iTextMatrix, 1), mCurrentGrid.cols - 1)
+                ReDim iTextWidths(UBound(iTextMatrix, 1), mCurrentGrid.Cols - 1)
                 For R = 0 To UBound(iTextMatrix, 1)
-                    For c = 0 To mCurrentGrid.cols - 1
+                    For c = 0 To mCurrentGrid.Cols - 1
                         If iCopyColumn(c) Then
                             iTextWidths(R, c) = mCurrentGrid.Parent.TextWidth(iTextMatrix(R, c))
                         End If
@@ -2283,7 +2310,7 @@ Private Function CopyGridToClipboard() As Boolean
                 
                 ' too long cell text must be splitted into lines
                 For R = 0 To UBound(iTextMatrix, 1)
-                    For c = 0 To mCurrentGrid.cols - 1
+                    For c = 0 To mCurrentGrid.Cols - 1
                         'If the text of the cell is longer than the max allowed for a column
                         If (iTextWidths(R, c) > iMaxVariableFontTextWidth) Or (InStr(iTextMatrix(R, c), vbCrLf) > 0) Then
                             
@@ -2392,7 +2419,7 @@ Private Function CopyGridToClipboard() As Boolean
                 If iNeedNormalization Then
                     iTextMatrix = GridTextMatrixNormalized(iTextMatrix, iTextWidths)
                     For R = 0 To UBound(iTextMatrix, 1)
-                        For c = 0 To mCurrentGrid.cols - 1
+                        For c = 0 To mCurrentGrid.Cols - 1
                             If iTextWidths(R, c) = 0 Then
                                 If iTextMatrix(R, c) <> "" Then
                                     iTextWidths(R, c) = mCurrentGrid.Parent.TextWidth(iTextMatrix(R, c))
@@ -2404,8 +2431,8 @@ Private Function CopyGridToClipboard() As Boolean
                 Set mCurrentGrid.Parent.Font = iFontPrev
                 
                 ' find the longest texts for each column
-                ReDim iLongestColumnTextWidth(mCurrentGrid.cols - 1)
-                For c = 0 To mCurrentGrid.cols - 1
+                ReDim iLongestColumnTextWidth(mCurrentGrid.Cols - 1)
+                For c = 0 To mCurrentGrid.Cols - 1
                     If iCopyColumn(c) Then
                         If mCurrentGrid.ColWidth(c) <> 0 Then
                             For R = 0 To UBound(iTextMatrix, 1)
@@ -2417,8 +2444,8 @@ Private Function CopyGridToClipboard() As Boolean
                     End If
                 Next c
                 
-                ReDim iColPosRigth(mCurrentGrid.cols - 1)
-                For c = 0 To mCurrentGrid.cols - 1
+                ReDim iColPosRigth(mCurrentGrid.Cols - 1)
+                For c = 0 To mCurrentGrid.Cols - 1
                     If c = 0 Then
                         iColPosRigth(c) = iLongestColumnTextWidth(c) + iSpaceWidth * 5
                     Else
@@ -2428,9 +2455,9 @@ Private Function CopyGridToClipboard() As Boolean
                 
                 ' add the necessary spaces to each text
                 ReDim iTextWidthCopied(UBound(iTextMatrix, 1))
-                ReDim iColPosRightOfLastRow(mCurrentGrid.cols - 1)
+                ReDim iColPosRightOfLastRow(mCurrentGrid.Cols - 1)
                 For R = 0 To UBound(iTextMatrix, 1)
-                    For c = 0 To mCurrentGrid.cols - 1
+                    For c = 0 To mCurrentGrid.Cols - 1
                         If iCopyColumn(c) Then
                             If mCurrentGrid.ColWidth(c) <> 0 Then
                                 iStr = iTextMatrix(R, c)
@@ -2509,12 +2536,12 @@ Private Function CopyGridTextMatrix(nGrid As Object) As Variant
     iMergeCols = (nGrid.MergeCells = flexMergeFree) Or (nGrid.MergeCells = flexMergeRestrictColumns)
     iMergeRows = (nGrid.MergeCells = flexMergeFree) Or (nGrid.MergeCells = flexMergeRestrictRows)
     
-    ReDim iCopyGridTextMatrix(nGrid.Rows - 1, nGrid.cols - 1)
+    ReDim iCopyGridTextMatrix(nGrid.Rows - 1, nGrid.Cols - 1)
     r2 = -1
     For R = 0 To nGrid.Rows - 1
         If nGrid.RowHeight(R) <> 0 Then
             r2 = r2 + 1
-            For c = 0 To nGrid.cols - 1
+            For c = 0 To nGrid.Cols - 1
                 iCopy = True
                 If iMergeRows And nGrid.MergeRow(R) Then
                     If c > 0 Then
@@ -2555,9 +2582,9 @@ Private Function CopyGridTextMatrix(nGrid As Object) As Variant
     
     If r2 = -1 Then r2 = 0
     
-    ReDim iCopyGridTextMatrix2(r2, nGrid.cols - 1)
+    ReDim iCopyGridTextMatrix2(r2, nGrid.Cols - 1)
     For R = 0 To r2
-        For c = 0 To nGrid.cols - 1
+        For c = 0 To nGrid.Cols - 1
             iCopyGridTextMatrix2(R, c) = iCopyGridTextMatrix(R, c)
         Next c
     Next R
@@ -2719,7 +2746,9 @@ End Property
 Private Sub mPrintFnObject_OrientationChange(ByVal NewOrientation As Long)
     mOrientationChangedToLandscapeAutomatically = False
     mAuxAllowAutoOrientation = False
+    mRaisingEvent = True
     RaiseEvent OrientationChange(NewOrientation)
+    mRaisingEvent = False
 End Sub
 
 Private Sub mPrintGridFormatSettings_ScalePercentChange()
@@ -3111,7 +3140,7 @@ Public Property Get AutoSelect125PercentScaleOnSmallGrids() As Boolean
 End Property
 
 
-Friend Sub DrawGrid(nCanceled As Boolean)
+Friend Sub DrawGrid(ByRef nCanceled As Boolean)
     Dim c As Long
     Dim iGridNormalWidth As Long
     Dim iGridWidthProportion As Single
@@ -3226,7 +3255,7 @@ Start:
     iFontsProportion = 1 ' mPrintGridFormatSettings.ScalePercent / 100 * mScalePercent / 100
     mPrintFnObject.HandleMargins = True
   '  mPrintFnObject.ScalePercent = mPrintGridFormatSettings.ScalePercent
-    iGridCols = iGrid.cols
+    iGridCols = iGrid.Cols
     iGridRows = iGrid.Rows
     iFixedRows = iGrid.FixedRows
     iFixedCols = iGrid.FixedCols
@@ -4260,8 +4289,10 @@ Part2:
     If Not mDrawingGridFromPrinterEx Then
         Set iAuxCurFont = Printer2.Font
         Set Printer2.Font = iDefAuxFont
+        mRaisingEvent = True
         RaiseEvent StartDocument(iGrid.Name)
         RaiseEvent StartPage(iGrid.Name)
+        mRaisingEvent = False
         Set Printer2.Font = iAuxCurFont
     End If
     mPrintFnObject.DocumentName = FileName2
@@ -4293,7 +4324,9 @@ Part2:
     If Not mDrawingGridFromPrinterEx Then
         Set iAuxCurFont = Printer2.Font
         Set Printer2.Font = iDefAuxFont
+        mRaisingEvent = True
         RaiseEvent BeforePrintGrid(iGrid.Name)
+        mRaisingEvent = False
         Set Printer2.Font = iAuxCurFont
     End If
     
@@ -4358,7 +4391,7 @@ Part2:
     
     iColsAreMerged = False
     If ((mCurrentGrid.MergeCells = flexMergeFree) Or (mCurrentGrid.MergeCells = flexMergeRestrictColumns)) Then
-        If mCurrentGrid.cols > 1 Then
+        If mCurrentGrid.Cols > 1 Then
             If mCurrentGrid.MergeCol(1) Then
                 iColsAreMerged = True
             End If
@@ -4549,8 +4582,10 @@ Part2:
             Set iAuxCurFont = Printer2.Font
             Set Printer2.Font = iDefAuxFont
             PrinterEx.HandleMargins = False
+            mRaisingEvent = True
             RaiseEvent EndPage(iGrid.Name)
             PrinterEx.HandleMargins = True
+            mRaisingEvent = False
             Set Printer2.Font = iAuxCurFont
         End If
         
@@ -4559,7 +4594,9 @@ Part2:
         If Not mDrawingGridFromPrinterEx Then
             Set iAuxCurFont = Printer2.Font
             Set Printer2.Font = iDefAuxFont
+            mRaisingEvent = True
             RaiseEvent StartPage(iGrid.Name)
+            mRaisingEvent = False
             Set Printer2.Font = iAuxCurFont
         End If
         
@@ -4778,7 +4815,9 @@ MakeNewPage:
                     Set iAuxCurFont = Printer2.Font
                     Set Printer2.Font = iDefAuxFont
                     PrinterEx.HandleMargins = False
+                    mRaisingEvent = True
                     RaiseEvent EndPage(iGrid.Name)
+                    mRaisingEvent = False
                     PrinterEx.HandleMargins = True
                     Set Printer2.Font = iAuxCurFont
                 End If
@@ -4788,7 +4827,9 @@ MakeNewPage:
                 If Not mDrawingGridFromPrinterEx Then
                     Set iAuxCurFont = Printer2.Font
                     Set Printer2.Font = iDefAuxFont
+                    mRaisingEvent = True
                     RaiseEvent StartPage(iGrid.Name)
+                    mRaisingEvent = False
                     Set Printer2.Font = iAuxCurFont
                 End If
                 
@@ -4977,12 +5018,16 @@ TheExit:
         Set Printer2.Font = iDefAuxFont
         iCY = Printer2.CurrentY
         PrinterEx.HandleMargins = False
+        mRaisingEvent = True
         RaiseEvent EndPage(iGrid.Name)
+        mRaisingEvent = False
         PrinterEx.HandleMargins = True
         Printer2.CurrentY = iCY
         Printer2.CurrentX = 0
         Set Printer2.Font = iDefAuxFont
+        mRaisingEvent = True
         RaiseEvent EndDocument(iGrid.Name)
+        mRaisingEvent = False
     End If
     
 '    On Error Resume Next
@@ -5423,6 +5468,10 @@ Public Property Let GridName(nValue As String)
     Dim iGridHwnd As Long
     
     If nValue <> mGridName Then
+        If mRaisingEvent Then
+            RaiseError 1435, TypeName(Me), "Cannot change grid in this context."
+            Exit Property
+        End If
         mGridName = nValue
         mGridExplicitelySet = mGridName <> ""
         If Not mForm Is Nothing Then
@@ -5903,6 +5952,7 @@ Attribute EventRaise.VB_MemberFlags = "40"
     Dim iCancel As Boolean
     Dim iAuxBool As Boolean
     
+    mRaisingEvent = True
     Select Case nEventName
         Case "BeforeOrderingByColumn"
             iAuxBool = CBool(nParameter4)
@@ -5918,6 +5968,7 @@ Attribute EventRaise.VB_MemberFlags = "40"
             RaiseEvent BeforeTextEdit(nParameter1, iCancel)
             nParameter2 = Abs(CLng(iCancel))
     End Select
+    mRaisingEvent = False
 End Sub
 
 Public Function IsShowingVerticalScrollBar(Optional nGrid As Object) As Boolean
@@ -6480,6 +6531,7 @@ End Property
 
 Friend Function GetAuxTextBox() As Object
     Dim iTb As Object
+    
     RaiseEvent GetAuxTextBox(iTb)
     Set GetAuxTextBox = iTb
 End Function

@@ -83,7 +83,7 @@ Private mPrintPrevUseAltScaleIcons As Boolean
 Private mPrinterFlags As cdeCommonDialogExPrinterFlagsConstants
 Private mPageSetupFlags As cdeCommonDialogExPageSetupFlagsConstants
 
-Private mDocPrepared As Boolean
+'Private mDocPrepared As Boolean
 Private mParent As Object
 Private mPrinted As Boolean
 Private WithEvents mPrinterExEvents As PrinterExEvents
@@ -120,8 +120,8 @@ Public Sub ShowPageSetup()
         mCanceled = mDlg.Canceled
         If Not mCanceled Then
             If iOrientationPrev <> mDlg.Orientation Then
-                ResetPrinter2
-                Printer2.Orientation = mDlg.Orientation
+'                ResetPrinter2
+'                Printer2.Orientation = mDlg.Orientation
                 RaiseEvent OrientationChange(mDlg.Orientation)
             End If
             RaiseEvent AfterShowingPageSetupDialog
@@ -156,6 +156,9 @@ Public Sub ShowPrint(Optional DocKey As String)
     Dim iAuxPrintQuality As Long
     Dim iFlags_Prev As Long
     Dim iDocKey_Prev As String
+    Dim iAuxPrinterExCurrentDocument As cPrinterEx
+    
+    Set iAuxPrinterExCurrentDocument = PrinterExCurrentDocument
     
     mDocKey = DocKey
     mCanceled = False
@@ -278,10 +281,14 @@ Public Sub ShowPrint(Optional DocKey As String)
     
 TheExit:
     mDlg.Flags = iFlags_Prev
+    Set PrinterExCurrentDocument = iAuxPrinterExCurrentDocument
 End Sub
 
 Public Sub ShowPrintPreview(Optional DocKey As String)
     Dim c As Long
+    Dim iAuxPrinterExCurrentDocument As cPrinterEx
+    
+    Set iAuxPrinterExCurrentDocument = PrinterExCurrentDocument
     
     mPrinted = False
     If Printers.Count = 0 Then
@@ -334,11 +341,13 @@ Public Sub ShowPrintPreview(Optional DocKey As String)
         mfrmPrintPreview.ToolBarIconsSize = mPrintPrevToolBarIconsSize
         mfrmPrintPreview.PositionControls
         
-        mfrmPrintPreview.Show vbModal
+        ShowModal mfrmPrintPreview, , , , False
         Set mfrmPrintPreview.PrePrintCtrlObj = Nothing
         Set mfrmPrintPreview = Nothing
         mPrinted = PrinterEx.Printed
     End If
+    
+    Set PrinterExCurrentDocument = iAuxPrinterExCurrentDocument
 End Sub
 
 Public Property Get Canceled() As Boolean
@@ -377,9 +386,9 @@ Private Sub Class_Initialize()
     mPrintPrevUseAltScaleIcons = False
 End Sub
 
-Private Sub Class_Terminate()
-    If mDocPrepared Then ResetPrinter2
-End Sub
+'Private Sub Class_Terminate()
+'    If mDocPrepared Then ResetPrinter2
+'End Sub
 
 Private Sub mfrmPrintPreview_PrepareDoc(Cancel As Boolean)
     ResetPrinter2
@@ -1041,7 +1050,7 @@ Public Property Get Copies() As Long
 End Property
 
 
-Private Sub RaiseEventPrepareDoc(nCancel As Boolean)
+Private Sub RaiseEventPrepareDoc(ByRef nCancel As Boolean)
     Dim iCancel As Boolean
     Dim iDocKey_Prev As String
     
@@ -1080,7 +1089,7 @@ Private Sub RaiseEventPrepareDoc(nCancel As Boolean)
     Set mPrinterExEvents = Nothing
     
     gPrinterExFromPrintFn = gPrinterExFromPrintFn - 1
-    mDocPrepared = True
+'    mDocPrepared = True
 End Sub
 
 Public Property Let ScalePercent(ByVal nValue As Long)
@@ -1334,3 +1343,9 @@ Friend Sub EnsurePageNumberFormatInList(nFormatString As String)
         mPredefinedPageNumbersFormatStrings(UBound(mPredefinedPageNumbersFormatStrings)) = nFormatString
     End If
 End Sub
+
+Public Property Get PrintPrevDialoghWnd() As Long
+    If Not mfrmPrintPreview Is Nothing Then
+        PrintPrevDialoghWnd = mfrmPrintPreview.hWnd
+    End If
+End Property
