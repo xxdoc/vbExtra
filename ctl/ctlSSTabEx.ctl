@@ -481,10 +481,8 @@ Public Event OLEStartDrag(Data As DataObject, AllowedEffects As Long)
 Attribute OLEStartDrag.VB_Description = "Occurs when a component's OLEDrag method is performed, or when a component initiates an OLE drag/drop operation when the OLEDragMode property is set to Automatic."
 
 ' Added
-Public Event BeforeClick(Cancel As Boolean)
-Attribute BeforeClick.VB_Description = "Occurs when the current tab is about to change."
-Public Event ChangeControlBackColor(ControlName As String, ControlTypeName As String, Cancel As Boolean)
-Attribute ChangeControlBackColor.VB_Description = "Allows to determine individually which controls will have their background changed."
+Public Event BeforeClick(ByRef Cancel As Boolean)
+Public Event ChangeControlBackColor(ControlName As String, ControlTypeName As String, ByRef Cancel As Boolean)
 Public Event RowsChange()
 Attribute RowsChange.VB_Description = "Occurs when the Rows property changes its value."
 Public Event TabBodyResize()
@@ -647,6 +645,7 @@ Private mDPIX As Long
 Private mDPIY As Long
 Private mXCorrection As Single
 Private mYCorrection As Single
+'Private mIsWindows8OrMore As Boolean
 
 ' Colors
 Private m3DDKShadow As Long
@@ -2216,6 +2215,7 @@ Private Sub UserControl_Initialize()
     Set mSubclassedControlsForPaintingHwnds = New Collection
     Set mSubclassedFramesHwnds = New Collection
     Set mSubclassedControlsForMoveHwnds = New Collection
+'    mIsWindows8OrMore = IsWindowsVersionOrMore(vx8)
     mRedraw = True
     mTabOrientation_Prev = -1
     SetDPI
@@ -3574,7 +3574,9 @@ Private Sub Draw()
                             If mAppearanceIsPP Then
                                 iLng = iLng - 2
                                 If mControlIsThemed Then
-                                   iLng = iLng - 1
+                                    If (iTabWidthStyle <> ssTWSJustified) Or iTabData.Selected Then
+                                        iLng = iLng - 1
+                                    End If
                                 End If
                             End If
                             If t = mTabSel Then
@@ -3648,7 +3650,9 @@ Private Sub Draw()
                             If mAppearanceIsPP Then
                                 iLng = iLng + 2 + IIf(mControlIsThemed, mThemedTabBodyRightShadowPixels - 2, 0)
                             End If
-                            DrawInactiveTabBodyPart iRowPerspectiveSpace * (mRows - mTabData(t).RowPos - 1) + 3, mTabData(t).TabRect.Bottom + 5, mTabBodyWidth - iLng, CLng(mTabBodyHeight), iLng, 1
+                            If iTabWidthStyle <> ssTWSJustified Then
+                                DrawInactiveTabBodyPart iRowPerspectiveSpace * (mRows - mTabData(t).RowPos - 1) + 3, mTabData(t).TabRect.Bottom + 5, mTabBodyWidth - iLng, CLng(mTabBodyHeight), iLng, 1
+                            End If
                         End If
                         If mAppearanceIsPP Then
                             mTabData(t).TabRect.Top = mTabData(t).TabRect.Top + 2
@@ -3854,8 +3858,13 @@ Private Sub DrawTab(nTab As Long)
             If Not (mEnabled And iTabData.Enabled) Then
                 iState = TIS_DISABLED
             ElseIf ((iActive And ControlHasFocus) And (Not mShowFocusRect) And mAmbientUserMode) Or iActive And ((mTabOrientation = ssTabOrientationBottom) Or (mTabOrientation = ssTabOrientationRight)) Then
-                iState = TIS_FOCUSED
-            ElseIf iActive And mAmbientUserMode Then
+'                If mIsWindows8OrMore Then
+                    iState = TIS_SELECTED ' I had to put TIS_SELECTED instead of TIS_FOCUSED
+'                Else
+'                    iState = TIS_FOCUSED
+'                End If
+            'ElseIf iActive And mAmbientUserMode Then
+            ElseIf iActive Then
                 iState = TIS_SELECTED
             ElseIf iHighlighted Then
                 iState = TIS_HOT
@@ -5352,6 +5361,7 @@ Private Sub SetThemeExtraData()
     Dim iColB_H As Long
     Dim iColB_L As Long
     Dim iColB_S As Long
+    Dim iUmbral As Long
     
     If mThemeExtraDataAlreadySet Then Exit Sub
     mThemeExtraDataAlreadySet = True
@@ -5475,22 +5485,33 @@ Private Sub SetThemeExtraData()
         mThemedTabBodyBackColor_B = (iColB \ 65536) And 255
     End If
     
+    iUmbral = 120
     mThemedTabBodyBottomShadowPixels = 0
-    For y = picAux.ScaleHeight - 9 To picAux.ScaleHeight - 1
-        iCol = GetPixel(picAux.hDC, 15, y)
-        ColorRGBToHLS iCol, iCol_H, iCol_L, iCol_S
-        If Abs(iCol_L - iColB_L) > 50 Then
-            mThemedTabBodyBottomShadowPixels = picAux.ScaleHeight - y - 1
-            Exit For
+    Do
+        For y = picAux.ScaleHeight - 9 To picAux.ScaleHeight - 1
+            iCol = GetPixel(picAux.hDC, 15, y)
+            ColorRGBToHLS iCol, iCol_H, iCol_L, iCol_S
+            If Abs(iCol_L - iColB_L) > iUmbral Then
+                mThemedTabBodyBottomShadowPixels = picAux.ScaleHeight - y - 1
+                Exit For
+            End If
+        Next y
+        If mThemedTabBodyBottomShadowPixels = 0 Then
+            iUmbral = iUmbral - 10
+            If iUmbral < 1 Then
+                iUmbral = 20
+                Exit Do
+            End If
         End If
-    Next y
+    Loop While mThemedTabBodyBottomShadowPixels = 0
     
     mThemedTabBodyRightShadowPixels = 0
     For x = picAux.ScaleWidth - 9 To picAux.ScaleWidth - 1
         iCol = GetPixel(picAux.hDC, x, 15)
         ColorRGBToHLS iCol, iCol_H, iCol_L, iCol_S
-        If Abs(iCol_L - iColB_L) > 50 Then
-            mThemedTabBodyRightShadowPixels = picAux.ScaleHeight - y - 1
+        'Debug.Print x, Abs(iCol_L - iColB_L)
+        If Abs(iCol_L - iColB_L) > iUmbral Then
+            mThemedTabBodyRightShadowPixels = picAux.ScaleWidth - x - 1
             Exit For
         End If
     Next x

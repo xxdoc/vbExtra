@@ -185,7 +185,7 @@ Public Event PersonalizeDefaultPrintGridFormatSettings(nRF As PrintGridFormatSet
 Public Event BeforeCopyingToClipboard(ByVal GridName As String, ByRef TextBefore As String, ByRef TextAfter As String)
 Public Event AfterSettingColumnsWidths(ByVal GridName As String, WidthsWereAdjusted As Boolean)
 Public Event CellTextChange(ByVal GridName As String, Row As Long, Col As Long)
-Public Event BeforeTextEdit(ByVal GridName As String, Cancel As Boolean)
+Public Event BeforeTextEdit(ByVal GridName As String, ByRef Cancel As Boolean)
 Public Event OrientationChange(ByVal NewOrientation As Long)
 Public Event GridHasDataCheck(ByVal GridName As String, ByRef GridHasData As Boolean)
 Public Event EnabledFunctionsUpdated()
@@ -768,7 +768,7 @@ Private Sub mFlexFnObject_BeforePrintGrid(ByVal GridName As String)
     RaiseEvent BeforePrintGrid(GridName)
 End Sub
 
-Private Sub mFlexFnObject_BeforeTextEdit(ByVal GridName As String, Cancel As Boolean)
+Private Sub mFlexFnObject_BeforeTextEdit(ByVal GridName As String, ByRef Cancel As Boolean)
     RaiseEvent BeforeTextEdit(GridName, Cancel)
 End Sub
 
@@ -1508,6 +1508,7 @@ Private Sub SetStyle()
     End If
 End Sub
 
+
 Public Property Set Grid(nGrid As Object)
     Set mFlexFnObject.Grid = nGrid
     If Not nGrid Is Nothing Then
@@ -1519,6 +1520,10 @@ End Property
 
 Public Property Get Grid() As Object
     Set Grid = mFlexFnObject.Grid
+End Property
+
+Public Property Let Grid(nGrid As Object)
+    Set Grid = nGrid
 End Property
 
 

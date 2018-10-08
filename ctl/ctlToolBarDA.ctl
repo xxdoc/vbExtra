@@ -307,6 +307,7 @@ Private Sub UserControl_Resize()
     
     If mUsercontrolWidth = -1 Then
         UserControl.Width = 0
+        UserControl.Height = GetButtonsHeight - DecreaseButtonHeight
     ElseIf mAlign = efnTBAlignNone Then
         If (mUsercontrolHeight <> 0) And (mUsercontrolWidth <> 0) Then
             On Error Resume Next
@@ -765,13 +766,17 @@ Public Sub Refresh()
             iWidthGained = 0
             For c = 1 To mButtons.Count * 3
                 For c2 = 1 To mButtons.Count
-                    If mButtons(c2).OrderToHide = c Then
-                        mButtons(c2).Hidden = True
-                        iWidthGained = iWidthGained + mButtons(c2).Width
-                        mHiddenButtonsCount = mHiddenButtonsCount + 1
+                    If mButtons(c2).Visible Then
+                        If mButtons(c2).OrderToHide = c Then
+                            mButtons(c2).Hidden = True
+                            iWidthGained = iWidthGained + mButtons(c2).Width
+                            mHiddenButtonsCount = mHiddenButtonsCount + 1
+                        End If
                     End If
                 Next c2
-                If iWidthGained >= iWidthToGain Then Exit For
+                If iWidthGained >= iWidthToGain Then
+                    Exit For
+                End If
             Next c
             If iWidthGained < iWidthToGain Then
                 mNeedToHide = True
@@ -785,8 +790,10 @@ Public Sub Refresh()
     End If
     iVisibleButtonsCount = 0
     For c = 1 To mButtons.Count
-        If Not mButtons(c).Hidden Then
-            iVisibleButtonsCount = iVisibleButtonsCount + 1
+        If mButtons(c).Visible Then
+            If Not mButtons(c).Hidden Then
+                iVisibleButtonsCount = iVisibleButtonsCount + 1
+            End If
         End If
     Next c
     If iVisibleButtonsCount = 0 Then

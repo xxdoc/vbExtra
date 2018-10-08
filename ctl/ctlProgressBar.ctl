@@ -167,23 +167,23 @@ Private Declare Function LoadCursor Lib "user32" Alias "LoadCursorW" (ByVal hIns
 Private Declare Function SetCursor Lib "user32" (ByVal hCursor As Long) As Long
 Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hDC As Long, ByVal nIndex As Long) As Long
 Private Declare Function ReleaseDC Lib "user32" (ByVal hWnd As Long, ByVal hDC As Long) As Long
-Private Declare Function LoadLibrary Lib "kernel32" Alias "LoadLibraryW" (ByVal lpLibFileName As Long) As Long
+Private Declare Function LoadLibrary Lib "Kernel32" Alias "LoadLibraryW" (ByVal lpLibFileName As Long) As Long
 Private Declare Function InitCommonControlsEx Lib "comctl32" (ByRef ICCEX As TINITCOMMONCONTROLSEX) As Long
 Private Declare Function ActivateVisualStyles Lib "uxtheme" Alias "SetWindowTheme" (ByVal hWnd As Long, Optional ByVal pszSubAppName As Long = 0, Optional ByVal pszSubIdList As Long = 0) As Long
 Private Declare Function RemoveVisualStyles Lib "uxtheme" Alias "SetWindowTheme" (ByVal hWnd As Long, Optional ByRef pszSubAppName As String = " ", Optional ByRef pszSubIdList As String = " ") As Long
 Private Declare Function OleTranslateColor Lib "oleaut32" (ByVal Color As Long, ByVal hPal As Long, ByRef RGBResult As Long) As Long
 Private Declare Function GetDC Lib "user32" (ByVal hWnd As Long) As Long
 Private Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As Integer
-Private Declare Function FreeLibrary Lib "kernel32" (ByVal hLibModule As Long) As Long
+Private Declare Function FreeLibrary Lib "Kernel32" (ByVal hLibModule As Long) As Long
 Private Declare Function IsThemeActive Lib "uxtheme" () As Long
 Private Declare Function IsAppThemed Lib "uxtheme" () As Long
 Private Declare Function GetThemeAppProperties Lib "uxtheme" () As Long
 Private Declare Function DllGetVersion Lib "comctl32" (ByRef pdvi As DLLVERSIONINFO) As Long
 Private Declare Function SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
-Private Declare Function GetSystemDefaultLangID Lib "kernel32" () As Integer
-Private Declare Function GetUserDefaultLangID Lib "kernel32" () As Integer
-Private Declare Function GetUserDefaultUILanguage Lib "kernel32" () As Integer
-Private Declare Function GetLocaleInfo Lib "kernel32" ()
+Private Declare Function GetSystemDefaultLangID Lib "Kernel32" () As Integer
+Private Declare Function GetUserDefaultLangID Lib "Kernel32" () As Integer
+Private Declare Function GetUserDefaultUILanguage Lib "Kernel32" () As Integer
+Private Declare Function GetLocaleInfo Lib "Kernel32" ()
 Private Declare Function InvalidateRect Lib "user32" (ByVal hWnd As Long, ByRef lpRect As Any, ByVal bErase As Long) As Long
 Private Declare Function DispCallFunc Lib "oleaut32" (ByVal pvInstance As IUnknown, ByVal oVft As Long, ByVal CallConv As Long, ByVal vtReturn As Integer, ByVal cActuals As Long, ByVal prgvt As Long, ByVal prgpvarg As Long, ByRef pvargResult As Variant) As Long
 

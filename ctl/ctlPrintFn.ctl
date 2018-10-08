@@ -83,7 +83,7 @@ Private Sub mPrintFnObject_EndDoc(ByVal FirstPageIndex As Long, ByVal LastPageIn
     RaiseEvent EndDoc(FirstPageIndex, LastPageIndex, DocKey)
 End Sub
 
-Private Sub mPrintFnObject_PrepareDoc(Cancel As Boolean, ByVal DocKey As String)
+Private Sub mPrintFnObject_PrepareDoc(ByRef Cancel As Boolean, ByVal DocKey As String)
     RaiseEvent PrepareDoc(DocKey)
 End Sub
 
