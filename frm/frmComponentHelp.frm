@@ -314,7 +314,7 @@ Public Sub ShowItem(ByVal nItem As String)
     Next
 End Sub
 
-Private Sub PrintFn1_PrepareDoc(ByVal DocKey As String)
+Private Sub PrintFn1_PrepareDoc(ByRef Cancel As Boolean, ByVal DocKey As String)
     Dim iTb As TextBox
     
     Set iTb = GetTextBoxOfTab(sst1.TabSel)
