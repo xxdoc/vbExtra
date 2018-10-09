@@ -27,7 +27,7 @@ End Type
 
 Public Declare Function CreateFontIndirectW Lib "gdi32" (ByRef lpLogFont As LOGFONTW) As Long
 
-Private Declare Function GetLocaleInfo Lib "Kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
+Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
 Private Const LOCALE_USER_DEFAULT = &H400
 Private Const LOCALE_SDECIMAL = &HE
 
@@ -73,15 +73,15 @@ Private Type OFSTRUCT
     szPathName(OFS_MAXPATHNAME) As Byte
 End Type
 
-Private Declare Function LocalFileTimeToFileTime Lib "Kernel32" (lpFileTime As FileTime, lpLocalFileTime As FileTime) As Long
+Private Declare Function LocalFileTimeToFileTime Lib "kernel32" (lpFileTime As FileTime, lpLocalFileTime As FileTime) As Long
 Private Declare Function VariantTimeToSystemTime Lib "oleaut32.dll" (ByVal vtime As Date, lpSystemTime As SYSTEMTIME) As Long
-Private Declare Function OpenFile Lib "Kernel32" (ByVal lpFileName As String, lpReOpenBuff As OFSTRUCT, ByVal wStyle As Long) As Long
-Private Declare Function GetFileTime Lib "Kernel32" (ByVal hFile As Long, lpCreationTime As FileTime, lpLastAccessTime As FileTime, lpLastWriteTime As FileTime) As Long
-Private Declare Function SetFileTime Lib "Kernel32" (ByVal hFile As Long, lpCreationTime As FileTime, lpLastAccessTime As FileTime, lpLastWriteTime As FileTime) As Long
-Private Declare Function SystemTimeToFileTime Lib "Kernel32" (lpSystemTime As SYSTEMTIME, lpFileTime As FileTime) As Long
-Private Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
+Private Declare Function OpenFile Lib "kernel32" (ByVal lpFileName As String, lpReOpenBuff As OFSTRUCT, ByVal wStyle As Long) As Long
+Private Declare Function GetFileTime Lib "kernel32" (ByVal hFile As Long, lpCreationTime As FileTime, lpLastAccessTime As FileTime, lpLastWriteTime As FileTime) As Long
+Private Declare Function SetFileTime Lib "kernel32" (ByVal hFile As Long, lpCreationTime As FileTime, lpLastAccessTime As FileTime, lpLastWriteTime As FileTime) As Long
+Private Declare Function SystemTimeToFileTime Lib "kernel32" (lpSystemTime As SYSTEMTIME, lpFileTime As FileTime) As Long
+Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
-Private Declare Function SetCurrentDirectory Lib "Kernel32" Alias "SetCurrentDirectoryA" (ByVal PathName As String) As Long
+Private Declare Function SetCurrentDirectory Lib "kernel32" Alias "SetCurrentDirectoryA" (ByVal PathName As String) As Long
 Public Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
 
 Private Const VK_LBUTTON = &H1
@@ -163,7 +163,7 @@ Private Type TIME_ZONE_INFORMATION
     DaylightBias As Long
 End Type
 
-Private Declare Function GetTimeZoneInformation Lib "Kernel32" (lpTimeZoneInformation As TIME_ZONE_INFORMATION) As Long
+Private Declare Function GetTimeZoneInformation Lib "kernel32" (lpTimeZoneInformation As TIME_ZONE_INFORMATION) As Long
 
 Private Const GENERIC_READ As Long = &H80000000
 Private Const GENERIC_WRITE As Long = &H40000000
@@ -176,16 +176,16 @@ Private Const OPEN_EXISTING = 3
 Private Const FILE_SHARE_READ = &H1
 Private Const FILE_SHARE_WRITE = &H2
 
-Private Declare Function CreateFile Lib "Kernel32" Alias "CreateFileA" (ByVal lpFileName As String, ByVal dwDesiredAccess As Long, ByVal dwShareMode As Long, ByVal lpSecurityAttributes As Long, ByVal dwCreationDisposition As Long, ByVal dwFlagsAndAttributes As Long, ByVal hTemplateFile As Long) As Long
-Private Declare Function SetFilePointer Lib "Kernel32" (ByVal hFile As Long, ByVal lDistanceToMove As Long, lpDistanceToMoveHigh As Long, ByVal dwMoveMethod As Long) As Long
-Private Declare Function SetEndOfFile Lib "Kernel32" (ByVal hFile As Long) As Long
+Private Declare Function CreateFile Lib "kernel32" Alias "CreateFileA" (ByVal lpFileName As String, ByVal dwDesiredAccess As Long, ByVal dwShareMode As Long, ByVal lpSecurityAttributes As Long, ByVal dwCreationDisposition As Long, ByVal dwFlagsAndAttributes As Long, ByVal hTemplateFile As Long) As Long
+Private Declare Function SetFilePointer Lib "kernel32" (ByVal hFile As Long, ByVal lDistanceToMove As Long, lpDistanceToMoveHigh As Long, ByVal dwMoveMethod As Long) As Long
+Private Declare Function SetEndOfFile Lib "kernel32" (ByVal hFile As Long) As Long
 
 '* These are used in every form to ensure focus rectangle visibility
 Private Const WM_CHANGEUISTATE As Long = &H127
 Private Const UIS_CLEAR As Integer = &H2
 Private Const UISF_HIDEFOCUS As Integer = &H1
 
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 Private Const CB_GETMINVISIBLE As Long = &H1702&
 
@@ -338,7 +338,7 @@ Public Const FW_BOLD = 700
 Public Const FW_EXTRABOLD = 800
 Public Const FW_HEAVY = 900
 
-Private Declare Sub CopyMemoryAny1 Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemoryAny1 Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 Private Const SPI_GETNONCLIENTMETRICS = 41
 Private Const SPI_GETICONTITLELOGFONT = 31
@@ -444,19 +444,19 @@ Private Const PROCESS_VM_READ = 16
 Private Declare Function OpenProcess Lib "kernel32.dll" (ByVal dwDesiredAccessas As Long, ByVal bInheritHandle As Long, ByVal dwProcId As Long) As Long
 Private Declare Function EnumProcessModules Lib "psapi.dll" (ByVal hProcess As Long, ByRef lphModule As Long, ByVal cb As Long, ByRef cbNeeded As Long) As Long
 Private Declare Function GetModuleFileNameExA Lib "psapi.dll" (ByVal hProcess As Long, ByVal hModule As Long, ByVal ModuleName As String, ByVal nSize As Long) As Long
-Private Declare Function CreateToolhelp32Snapshot Lib "Kernel32" (ByVal dwFlags As Long, ByVal th32ProcessID As Long) As Long
-Private Declare Function Process32First Lib "Kernel32" (ByVal hSnapshot As Long, lppe As Any) As Long
-Private Declare Function Process32Next Lib "Kernel32" (ByVal hSnapshot As Long, lppe As Any) As Long
-Private Declare Function CloseHandle Lib "Kernel32" (ByVal hObject As Long) As Long
-Private Declare Function GetCurrentProcessId Lib "Kernel32" () As Long
+Private Declare Function CreateToolhelp32Snapshot Lib "kernel32" (ByVal dwFlags As Long, ByVal th32ProcessID As Long) As Long
+Private Declare Function Process32First Lib "kernel32" (ByVal hSnapshot As Long, lppe As Any) As Long
+Private Declare Function Process32Next Lib "kernel32" (ByVal hSnapshot As Long, lppe As Any) As Long
+Private Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
+Private Declare Function GetCurrentProcessId Lib "kernel32" () As Long
 
 Private Declare Function GetFileVersionInfoSize Lib "Version.dll" Alias "GetFileVersionInfoSizeA" (ByVal lptstrFilename As String, lpdwHandle As Long) As Long
 Private Declare Function GetFileVersionInfo Lib "Version.dll" Alias "GetFileVersionInfoA" (ByVal lptstrFilename As String, ByVal dwHandle As Long, ByVal dwLen As Long, lpData As Any) As Long
 
-Private Declare Function GlobalAlloc Lib "Kernel32" (ByVal Flags As Long, ByVal lengh As Long) As Long
-Private Declare Function GlobalLock Lib "Kernel32" (ByVal hMem As Long) As Long
-Private Declare Function GlobalUnlock Lib "Kernel32" (ByVal hMem As Long) As Long
-Private Declare Sub RtlMoveMemory Lib "Kernel32" (ByVal pDest As Long, ByVal pSource As Long, ByVal lengh As Long)
+Private Declare Function GlobalAlloc Lib "kernel32" (ByVal Flags As Long, ByVal lengh As Long) As Long
+Private Declare Function GlobalLock Lib "kernel32" (ByVal hMem As Long) As Long
+Private Declare Function GlobalUnlock Lib "kernel32" (ByVal hMem As Long) As Long
+Private Declare Sub RtlMoveMemory Lib "kernel32" (ByVal pDest As Long, ByVal pSource As Long, ByVal lengh As Long)
 
 Private Const CF_UNICODETEXT = &HD&
 Private Const GMEM_MOVEABLE = &O2&
@@ -486,7 +486,7 @@ Private Type OSVERSIONINFO 'for GetVersionEx API call
     szCSDVersion As String * 128
 End Type
 
-Private Declare Function GetVersionEx Lib "Kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
+Private Declare Function GetVersionEx Lib "kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
 
 Private Type OSVERSIONINFOEX
         dwOSVersionInfoSize As Long
@@ -502,16 +502,16 @@ Private Type OSVERSIONINFOEX
         bReserved As Byte                   ' Reserved
 End Type
 
-Private Declare Function GetOSVersionEx Lib "Kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFOEX) As Long
+Private Declare Function GetOSVersionEx Lib "kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFOEX) As Long
 
 'Private Const VER_NT_WORKSTATION As Long = &H1
 Private Const VER_NT_DOMAIN_CONTROLLER As Long = &H2
 Private Const VER_NT_SERVER As Long = &H3
 
-Private Declare Function GetModuleHandle Lib "Kernel32" Alias "GetModuleHandleA" (ByVal lpModuleName As String) As Long
-Private Declare Function IsWow64Process Lib "Kernel32" (ByVal hProc As Long, ByRef bWow64Process As Boolean) As Long
-Private Declare Function GetProcAddress Lib "Kernel32" (ByVal hModule As Long, ByVal lpProcName As String) As Long
-Private Declare Function GetCurrentProcess Lib "Kernel32" () As Long
+Private Declare Function GetModuleHandle Lib "kernel32" Alias "GetModuleHandleA" (ByVal lpModuleName As String) As Long
+Private Declare Function IsWow64Process Lib "kernel32" (ByVal hProc As Long, ByRef bWow64Process As Boolean) As Long
+Private Declare Function GetProcAddress Lib "kernel32" (ByVal hModule As Long, ByVal lpProcName As String) As Long
+Private Declare Function GetCurrentProcess Lib "kernel32" () As Long
 
 Private Declare Function IsAppThemed Lib "uxtheme.dll" () As Long
 Private Declare Function IsThemeActive Lib "uxtheme" () As Long
@@ -586,8 +586,8 @@ Public Const WM_PAINT As Long = &HF&
 Public Const WM_MOVING As Long = &H216&
 Public Const WM_PARENTNOTIFY As Long = &H210&
 
-Private Declare Function GetTempPath Lib "Kernel32" Alias "GetTempPathA" (ByVal nBufferLength As Long, ByVal lpBuffer As String) As Long
-Private Declare Function GetTempFileName Lib "Kernel32" Alias "GetTempFileNameA" (ByVal lpszPath As String, ByVal lpPrefixString As String, ByVal wUnique As Long, ByVal lpTempFileName As String) As Long
+Private Declare Function GetTempPath Lib "kernel32" Alias "GetTempPathA" (ByVal nBufferLength As Long, ByVal lpBuffer As String) As Long
+Private Declare Function GetTempFileName Lib "kernel32" Alias "GetTempFileNameA" (ByVal lpszPath As String, ByVal lpPrefixString As String, ByVal wUnique As Long, ByVal lpTempFileName As String) As Long
 
 Private Declare Function SystemParametersInfo Lib "user32" Alias "SystemParametersInfoA" (ByVal uAction As Long, ByVal uParam As Long, lpvParam As Any, ByVal fuWinIni As Long) As Long
 Private Declare Function SystemParametersInfoW Lib "user32" (ByVal uAction As Long, ByVal uParam As Long, ByRef pvParam As Any, ByVal fWinIni As Long) As Long
@@ -1639,14 +1639,14 @@ Public Function IsWindowsServer() As Boolean
     IsWindowsServer = (sValue = 2)
 End Function
 
-Public Function IsWindows64Bit() As Boolean
+Public Function IsWindows64Bits() As Boolean
     Dim iHandle As Long
-    Dim iIs64Bit As Boolean
+    Dim iIs64Bits As Boolean
     Static sValue As Long
     
     If sValue = 0 Then
         ' Assume initially that this is not a WOW64 process
-        iIs64Bit = False
+        iIs64Bits = False
     
         ' Then try to prove that wrong by attempting to load the
         ' IsWow64Process function dynamically
@@ -1654,18 +1654,18 @@ Public Function IsWindows64Bit() As Boolean
     
         ' The function exists, so call it
         If iHandle <> 0 Then
-            IsWow64Process GetCurrentProcess(), iIs64Bit
+            IsWow64Process GetCurrentProcess(), iIs64Bits
         End If
     
         ' Return the value
-        If iIs64Bit Then
+        If iIs64Bits Then
             sValue = 2
         Else
             sValue = 1
         End If
     End If
     
-    IsWindows64Bit = (sValue = 2)
+    IsWindows64Bits = (sValue = 2)
 End Function
 
 Public Function WindowUnderMouseHwnd() As Long
