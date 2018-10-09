@@ -1,11 +1,11 @@
 VERSION 5.00
-Object = "{F22668DE-E08D-467B-8E41-13900013BD5F}#2.0#0"; "vbExtra2.ocx"
+Object = "{F22668DE-E08D-467B-8E41-13900013BD5F}#2.7#0"; "vbExtra2.ocx"
 Begin VB.Form frmTest 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Test SSTabEx"
    ClientHeight    =   7020
-   ClientLeft      =   5232
-   ClientTop       =   2436
+   ClientLeft      =   3300
+   ClientTop       =   2256
    ClientWidth     =   12156
    BeginProperty Font 
       Name            =   "Arial"
@@ -22,11 +22,45 @@ Begin VB.Form frmTest
    MinButton       =   0   'False
    ScaleHeight     =   7020
    ScaleWidth      =   12156
+   Begin VB.CheckBox chkTabHoverEffect 
+      Caption         =   "TabHoverEffect"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   264
+      Left            =   8010
+      TabIndex        =   59
+      Top             =   3852
+      Width           =   1776
+   End
+   Begin VB.CheckBox chkShowFocusRect 
+      Caption         =   "ShowFocusRect"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   264
+      Left            =   9840
+      TabIndex        =   56
+      Top             =   3564
+      Width           =   1740
+   End
    Begin VB.CheckBox chkSoftEdges 
       Caption         =   "SoftEdges"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8
+         Size            =   7.8
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -60,7 +94,7 @@ Begin VB.Form frmTest
       Left            =   6780
       List            =   "frmTest.frx":0002
       Style           =   2  'Dropdown List
-      TabIndex        =   85
+      TabIndex        =   86
       Top             =   5940
       Width           =   2712
    End
@@ -77,7 +111,7 @@ Begin VB.Form frmTest
       EndProperty
       Height          =   276
       Left            =   11685
-      TabIndex        =   83
+      TabIndex        =   84
       Top             =   4860
       Width           =   330
    End
@@ -86,7 +120,7 @@ Begin VB.Form frmTest
       Left            =   11070
       ScaleHeight     =   252
       ScaleWidth      =   540
-      TabIndex        =   82
+      TabIndex        =   83
       Top             =   4860
       Width           =   588
    End
@@ -103,7 +137,7 @@ Begin VB.Form frmTest
       Left            =   6780
       ScaleHeight     =   252
       ScaleWidth      =   540
-      TabIndex        =   63
+      TabIndex        =   64
       Top             =   4500
       Width           =   588
    End
@@ -120,7 +154,7 @@ Begin VB.Form frmTest
       EndProperty
       Height          =   276
       Left            =   7440
-      TabIndex        =   64
+      TabIndex        =   65
       Top             =   4512
       Width           =   330
    End
@@ -246,7 +280,7 @@ Begin VB.Form frmTest
       Height          =   300
       Left            =   6780
       MaxLength       =   3
-      TabIndex        =   76
+      TabIndex        =   77
       Top             =   5580
       Width           =   588
    End
@@ -263,7 +297,7 @@ Begin VB.Form frmTest
       EndProperty
       Height          =   276
       Left            =   9660
-      TabIndex        =   74
+      TabIndex        =   75
       Top             =   5220
       Width           =   330
    End
@@ -280,7 +314,7 @@ Begin VB.Form frmTest
       Height          =   300
       Left            =   6780
       Locked          =   -1  'True
-      TabIndex        =   73
+      TabIndex        =   74
       Top             =   5220
       Width           =   2820
    End
@@ -288,7 +322,7 @@ Begin VB.Form frmTest
       Caption         =   "Test side by side with SSTab"
       Height          =   336
       Left            =   7860
-      TabIndex        =   78
+      TabIndex        =   79
       Top             =   6516
       Width           =   2544
    End
@@ -296,7 +330,7 @@ Begin VB.Form frmTest
       Caption         =   "Help"
       Height          =   336
       Left            =   6780
-      TabIndex        =   77
+      TabIndex        =   78
       Top             =   6516
       Width           =   1000
    End
@@ -305,7 +339,7 @@ Begin VB.Form frmTest
       Left            =   8940
       ScaleHeight     =   252
       ScaleWidth      =   540
-      TabIndex        =   70
+      TabIndex        =   71
       Top             =   4860
       Width           =   588
    End
@@ -322,7 +356,7 @@ Begin VB.Form frmTest
       EndProperty
       Height          =   276
       Left            =   9555
-      TabIndex        =   71
+      TabIndex        =   72
       Top             =   4860
       Width           =   330
    End
@@ -339,7 +373,7 @@ Begin VB.Form frmTest
       EndProperty
       Height          =   276
       Left            =   7440
-      TabIndex        =   68
+      TabIndex        =   69
       Top             =   4872
       Width           =   330
    End
@@ -348,7 +382,7 @@ Begin VB.Form frmTest
       Left            =   6780
       ScaleHeight     =   252
       ScaleWidth      =   540
-      TabIndex        =   67
+      TabIndex        =   68
       Top             =   4860
       Width           =   588
    End
@@ -406,8 +440,8 @@ Begin VB.Form frmTest
          Strikethrough   =   0   'False
       EndProperty
       Height          =   300
-      Left            =   6780
-      TabIndex        =   60
+      Left            =   6804
+      TabIndex        =   61
       Top             =   4140
       Width           =   588
    End
@@ -423,7 +457,7 @@ Begin VB.Form frmTest
       EndProperty
       Height          =   300
       Left            =   6780
-      TabIndex        =   57
+      TabIndex        =   58
       Top             =   3780
       Width           =   588
    End
@@ -457,7 +491,7 @@ Begin VB.Form frmTest
       EndProperty
       Height          =   264
       Left            =   8010
-      TabIndex        =   61
+      TabIndex        =   62
       Top             =   4140
       Width           =   2892
    End
@@ -476,7 +510,7 @@ Begin VB.Form frmTest
       Left            =   8010
       TabIndex        =   55
       Top             =   3564
-      Width           =   1950
+      Width           =   1776
    End
    Begin VB.CheckBox chkTabSelHighlight 
       Caption         =   "TabSelHighlight"
@@ -508,7 +542,7 @@ Begin VB.Form frmTest
       EndProperty
       Height          =   264
       Left            =   8010
-      TabIndex        =   65
+      TabIndex        =   66
       Top             =   4500
       Width           =   1740
    End
@@ -596,23 +630,6 @@ Begin VB.Form frmTest
       Left            =   9840
       TabIndex        =   50
       Top             =   2988
-      Width           =   1740
-   End
-   Begin VB.CheckBox chkShowFocusRect 
-      Caption         =   "ShowFocusRect"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   264
-      Left            =   8010
-      TabIndex        =   58
-      Top             =   3852
       Width           =   1740
    End
    Begin VB.CheckBox chkVisualStyles 
@@ -770,7 +787,7 @@ Begin VB.Form frmTest
          Left            =   -84972
          ScaleHeight     =   12
          ScaleWidth      =   12
-         TabIndex        =   87
+         TabIndex        =   88
          Top             =   216
          Width           =   12
       End
@@ -781,7 +798,7 @@ Begin VB.Form frmTest
          Left            =   -74820
          ScaleHeight     =   1596
          ScaleWidth      =   3720
-         TabIndex        =   80
+         TabIndex        =   81
          Top             =   936
          Width           =   3720
          Begin VB.Label lblThemedIDE 
@@ -790,7 +807,7 @@ Begin VB.Form frmTest
             Caption         =   "The SSTabEx is themed now in the IDE just for testing, normally it won't be themed in the IDE"
             Height          =   984
             Left            =   468
-            TabIndex        =   81
+            TabIndex        =   82
             Top             =   216
             Width           =   2784
          End
@@ -846,7 +863,7 @@ Begin VB.Form frmTest
          Left            =   -74784
          ScaleHeight     =   2928
          ScaleWidth      =   3720
-         TabIndex        =   79
+         TabIndex        =   80
          TabStop         =   0   'False
          Top             =   828
          Width           =   3720
@@ -963,7 +980,7 @@ Begin VB.Form frmTest
       EndProperty
       Height          =   225
       Left            =   4635
-      TabIndex        =   86
+      TabIndex        =   87
       Top             =   5970
       Width           =   2055
    End
@@ -981,7 +998,7 @@ Begin VB.Form frmTest
       EndProperty
       Height          =   225
       Left            =   9900
-      TabIndex        =   84
+      TabIndex        =   85
       Top             =   4890
       Width           =   1035
    End
@@ -999,7 +1016,7 @@ Begin VB.Form frmTest
       EndProperty
       Height          =   225
       Left            =   5205
-      TabIndex        =   62
+      TabIndex        =   63
       Top             =   4530
       Width           =   1485
    End
@@ -1018,7 +1035,7 @@ Begin VB.Form frmTest
       Caption         =   "Tab Count:"
       Height          =   225
       Left            =   5205
-      TabIndex        =   75
+      TabIndex        =   76
       Top             =   5610
       Width           =   1485
    End
@@ -1036,7 +1053,7 @@ Begin VB.Form frmTest
       EndProperty
       Height          =   225
       Left            =   5205
-      TabIndex        =   72
+      TabIndex        =   73
       Top             =   5250
       Width           =   1485
    End
@@ -1054,7 +1071,7 @@ Begin VB.Form frmTest
       EndProperty
       Height          =   225
       Left            =   7815
-      TabIndex        =   69
+      TabIndex        =   70
       Top             =   4890
       Width           =   1005
    End
@@ -1072,14 +1089,14 @@ Begin VB.Form frmTest
       EndProperty
       Height          =   225
       Left            =   5205
-      TabIndex        =   66
+      TabIndex        =   67
       Top             =   4890
       Width           =   1485
    End
    Begin VB.Label lblFocus 
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8
+         Size            =   7.8
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -1143,7 +1160,7 @@ Begin VB.Form frmTest
       EndProperty
       Height          =   225
       Left            =   5205
-      TabIndex        =   59
+      TabIndex        =   60
       Top             =   4170
       Width           =   1485
    End
@@ -1161,7 +1178,7 @@ Begin VB.Form frmTest
       EndProperty
       Height          =   225
       Left            =   5205
-      TabIndex        =   56
+      TabIndex        =   57
       Top             =   3810
       Width           =   1485
    End
@@ -1363,12 +1380,12 @@ Private Sub chkShowFocusRect_Click()
     SSTabEx1.ShowFocusRect = chkShowFocusRect.Value = 1
 End Sub
 
-Private Sub chkTabEnabled_Click()
-    
-End Sub
-
 Private Sub chkSoftEdges_Click()
     SSTabEx1.SoftEdges = chkSoftEdges.Value = 1
+End Sub
+
+Private Sub chkTabHoverEffect_Click()
+    SSTabEx1.TabHoverEffect = chkTabHoverEffect.Value = 1
 End Sub
 
 Private Sub chkTabHoverHighlight_Click()
@@ -1389,6 +1406,7 @@ Private Sub chkVisualStyles_Click()
         chkVisualStyles.Value = 0
     End If
     chkTabSelHighlight.Enabled = Not SSTabEx1.VisualStyles
+    chkTabHoverEffect.Enabled = Not SSTabEx1.VisualStyles
     lblTabAppearance.Enabled = chkTabSelHighlight.Enabled
     cboTabAppearance.Enabled = chkTabSelHighlight.Enabled
     chkShowDisabledState.Enabled = chkTabSelHighlight.Enabled
@@ -1594,6 +1612,7 @@ Private Sub Form_Load()
     chkWordWrap.Value = Abs(SSTabEx1.WordWrap)
     chkUseMaskColor.Value = Abs(SSTabEx1.UseMaskColor)
     chkTabHoverHighlight.Value = Abs(SSTabEx1.TabHoverHighlight)
+    chkTabHoverEffect.Value = Abs(SSTabEx1.TabHoverEffect)
     chkShowDisabledState.Value = Abs(SSTabEx1.ShowDisabledState)
     chkSoftEdges.Value = Abs(SSTabEx1.SoftEdges)
     picMaskColor.BackColor = SSTabEx1.MaskColor
