@@ -4,8 +4,8 @@ Begin VB.Form frmTest
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Test SSTabEx"
    ClientHeight    =   7020
-   ClientLeft      =   3300
-   ClientTop       =   2256
+   ClientLeft      =   -360
+   ClientTop       =   2136
    ClientWidth     =   12156
    BeginProperty Font 
       Name            =   "Arial"
@@ -60,7 +60,7 @@ Begin VB.Form frmTest
       Caption         =   "SoftEdges"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   7.8
+         Size            =   9
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
