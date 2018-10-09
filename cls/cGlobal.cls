@@ -475,8 +475,8 @@ Public Function IsWindowsServer() As Boolean
     IsWindowsServer = mGlobals.IsWindowsServer
 End Function
     
-Public Function IsWindows64Bit() As Boolean
-    IsWindows64Bit = mGlobals.IsWindows64Bit
+Public Function IsWindows64Bits() As Boolean
+    IsWindows64Bits = mGlobals.IsWindows64Bits
 End Function
 
 Public Function ThemeColor(nThemeID As String) As Long
