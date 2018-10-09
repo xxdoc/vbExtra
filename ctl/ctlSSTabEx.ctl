@@ -10,6 +10,12 @@ Begin VB.UserControl SSTabEx
    ScaleHeight     =   2880
    ScaleWidth      =   3840
    ToolboxBitmap   =   "ctlSSTabEx.ctx":0048
+   Begin VB.Timer tmrTabHoverEffect 
+      Enabled         =   0   'False
+      Interval        =   50
+      Left            =   396
+      Top             =   2268
+   End
    Begin VB.Timer tmrSubclassControls 
       Enabled         =   0   'False
       Interval        =   1
@@ -126,18 +132,6 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
 
-' ****** License ********
-' This is free software, you are allowed to do whatever you want with this code, but:
-' You cannot legally claim to be the author (you could still claim authorship only on the changes that you make). It means that you cannot sue anyone because she/he is using and/or distributing this code.
-' ****** End of license ********
-
-' Release history:
-' First release: 22 Nov 2017
-' Second release: 06 Feb 2018: several bugs fixed and some features added.
-' Update: 13 Feb 2018: fixed bugs with some controls that don't have Width property, or Left property can't be changed at run time.
-' Update: 17 Feb 2018: fixed DPI at non integer settings of TwipsPerPixelsX/Y
-' Update: 26 Feb 2018: fixed DPI at non integer settings of TwipsPerPixelsX/Y part 2
-
 ' Uncomment the line below for IDE protection when running uncompiled (some features will be lost in the IDE when it is uncommented)
 ' #Const NOSUBCLASSINIDE = True
 
@@ -200,7 +194,7 @@ Private Declare Function GetDC Lib "user32" (ByVal hWnd As Long) As Long
 Private Const LOGPIXELSX As Long = 88
 Private Const LOGPIXELSY As Long = 90
 
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 Private Declare Function GetForegroundWindow Lib "user32" () As Long
 Private Declare Function ValidateRect Lib "user32" (ByVal hWnd As Long, lpRect As RECT) As Long
 Private Declare Function GetClientRect Lib "user32" (ByVal hWnd As Long, lpRect As RECT) As Long
@@ -580,6 +574,7 @@ Private mAutoRelocateControls As vbExAutoRelocateControlsConstants
 Private mEndOfTabs As Single
 Private mSoftEdges As Boolean
 Private mMinSpaceNeeded As Single
+Private mTabHoverEffect As Boolean
 
 ' Variables
 Private mTabBodyStart As Long ' in Pixels
@@ -647,7 +642,9 @@ Private mDPIX As Long
 Private mDPIY As Long
 Private mXCorrection As Single
 Private mYCorrection As Single
-'Private mIsWindows8OrMore As Boolean
+Private mHoverEffectColors(5) As Long
+Private mTabHoverEffect_Step As Long
+Private mGlowColor_Bk As Long
 
 ' Colors
 Private m3DDKShadow As Long
@@ -920,6 +917,10 @@ Public Property Let TabSel(nValue As Integer)
             SetVisibleControls iPrev2
             If iWv Then SendMessage mUserControlHwnd, WM_SETREDRAW, True, 0&
             mSubclassControlsPaintingPending = True
+            If tmrTabHoverEffect.Enabled Then
+                tmrTabHoverEffect.Enabled = False
+                mGlowColor = mGlowColor_Bk
+            End If
             Draw
             If iWv Then RedrawWindow mUserControlHwnd, ByVal 0&, 0&, RDW_INVALIDATE Or RDW_ALLCHILDREN
             RaiseEvent TabSelChange
@@ -1705,6 +1706,7 @@ Public Property Let ShowDisabledState(nValue As Boolean)
     End If
 End Property
 
+
 Public Property Get Redraw() As Boolean
 Attribute Redraw.VB_Description = "Returns/sets a value that determines if the drawing of the control is enabled."
 Attribute Redraw.VB_MemberFlags = "400"
@@ -2143,6 +2145,16 @@ Private Sub tmrSubclassControls_Timer()
     SubclassControlsPainting
 End Sub
 
+Private Sub tmrTabHoverEffect_Timer()
+    mTabHoverEffect_Step = mTabHoverEffect_Step + 1
+    mGlowColor = mHoverEffectColors(mTabHoverEffect_Step)
+    Draw
+    If mTabHoverEffect_Step = 5 Then
+        tmrTabHoverEffect.Enabled = False
+        mGlowColor = mGlowColor_Bk
+    End If
+End Sub
+
 Private Sub tmrTabMouseLeave_Timer()
     Dim iPt As POINTAPI
     Dim iHwnd As Long
@@ -2217,7 +2229,6 @@ Private Sub UserControl_Initialize()
     Set mSubclassedControlsForPaintingHwnds = New Collection
     Set mSubclassedFramesHwnds = New Collection
     Set mSubclassedControlsForMoveHwnds = New Collection
-'    mIsWindows8OrMore = IsWindowsVersionOrMore(vx8)
     mRedraw = True
     mTabOrientation_Prev = -1
     SetDPI
@@ -2266,6 +2277,7 @@ Private Sub UserControl_InitProperties()
     mVisualStyles = True
     mTabBackColor = vbButtonFace
     mShowDisabledState = False
+    mTabHoverEffect = True
     mTabSelFontBold = ssYNAuto
     mChangeControlsBackColor = True
     mTabSelHighlight = False
@@ -2661,6 +2673,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mTabPictureAlignment = PropBag.ReadProperty("TabPictureAlignment", ssPicAlignBeforeCaption)
     mAutoRelocateControls = PropBag.ReadProperty("AutoRelocateControls", ssRelocateAlways)
     mSoftEdges = PropBag.ReadProperty("SoftEdges", False)
+    mTabHoverEffect = PropBag.ReadProperty("TabHoverEffect", True)
     
     Set UserControl.MouseIcon = mMouseIcon
     UserControl.MousePointer = mMousePointer
@@ -2870,7 +2883,8 @@ Private Sub UserControl_Terminate()
     tmrTabMouseLeave.Enabled = False
     tmrDraw.Enabled = False
     tmrCancelDoubleClick.Enabled = False
-    tmrCheckContainedControlsAdditionDesignTime = False
+    tmrCheckContainedControlsAdditionDesignTime.Enabled = False
+    tmrTabHoverEffect.Enabled = False
     
     Set mParentControlsTabStop = Nothing
     Set mParentControlsUseMnemonic = Nothing
@@ -2938,6 +2952,7 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     PropBag.WriteProperty "TabPictureAlignment", mTabPictureAlignment, ssPicAlignBeforeCaption
     PropBag.WriteProperty "AutoRelocateControls", mAutoRelocateControls, ssRelocateAlways
     PropBag.WriteProperty "SoftEdges", mSoftEdges, False
+    PropBag.WriteProperty "TabHoverEffect", mTabHoverEffect, True
     
     For c = 0 To mTabs - 1
         PropBag.WriteProperty "TabPicture(" & CStr(c) & ")", mTabData(c).Picture, Nothing
@@ -3860,12 +3875,7 @@ Private Sub DrawTab(nTab As Long)
             If Not (mEnabled And iTabData.Enabled) Then
                 iState = TIS_DISABLED
             ElseIf ((iActive And ControlHasFocus) And (Not mShowFocusRect) And mAmbientUserMode) Or iActive And ((mTabOrientation = ssTabOrientationBottom) Or (mTabOrientation = ssTabOrientationRight)) Then
-'                If mIsWindows8OrMore Then
-                    iState = TIS_SELECTED ' I had to put TIS_SELECTED instead of TIS_FOCUSED
-'                Else
-'                    iState = TIS_FOCUSED
-'                End If
-            'ElseIf iActive And mAmbientUserMode Then
+                iState = TIS_SELECTED ' I had to put TIS_SELECTED instead of TIS_FOCUSED before
             ElseIf iActive Then
                 iState = TIS_SELECTED
             ElseIf iHighlighted Then
@@ -4864,6 +4874,7 @@ Private Sub SetColors()
     Dim iTabBackColor_H As Long
     Dim iTabBackColor_L As Long
     Dim iTabBackColor_S As Long
+    Dim c As Long
     
     ResetAllPicsDisabled
     mTabBodyReset = True
@@ -4961,7 +4972,40 @@ Private Sub SetColors()
         mGlowColor = ColorHLSToRGB(iTabBackColor_H, iCol_L, iCol_S)
     End If
 
+    For c = 1 To 5
+        mHoverEffectColors(c) = MixColors(mGlowColor, mTabBackColor, 20 * c)
+    Next c
+    mGlowColor_Bk = mGlowColor
+    
 End Sub
+
+Private Function MixColors(nColor1 As Long, nColor2 As Long, ByVal nPercentageColor1 As Long) As Long
+    Dim iColor1 As Long
+    Dim iColor2 As Long
+    Dim iColor1_R  As Byte
+    Dim iColor1_G   As Byte
+    Dim iColor1_B   As Byte
+    Dim iColor2_R  As Byte
+    Dim iColor2_G   As Byte
+    Dim iColor2_B   As Byte
+    
+    iColor1 = TranslatedColor(nColor1)
+    iColor2 = TranslatedColor(nColor2)
+    
+    iColor1_R = iColor1 And 255
+    iColor1_G = (iColor1 \ 256) And 255
+    iColor1_B = (iColor1 \ 65536) And 255
+    iColor2_R = iColor2 And 255
+    iColor2_G = (iColor2 \ 256) And 255
+    iColor2_B = (iColor2 \ 65536) And 255
+    
+    If nPercentageColor1 > 100 Then nPercentageColor1 = 100
+    If nPercentageColor1 < 0 Then nPercentageColor1 = 0
+    
+    MixColors = RGB((iColor1_R * nPercentageColor1 + iColor2_R * (100 - nPercentageColor1)) / 100, (iColor1_G * nPercentageColor1 + iColor2_G * (100 - nPercentageColor1)) / 100, (iColor1_B * nPercentageColor1 + iColor2_B * (100 - nPercentageColor1)) / 100)
+    
+End Function
+
 
 
 Public Property Get TabBodyLeft() As Single
@@ -5167,6 +5211,12 @@ End Sub
 Private Sub RaiseEvent_TabMouseEnter(nTab As Integer)
     mTabData(nTab).Hovered = True
     RaiseEvent TabMouseEnter(nTab)
+    If mTabHoverEffect And Not mControlIsThemed And mTabHoverHighlight Then
+        tmrTabHoverEffect.Enabled = False
+        tmrTabHoverEffect.Enabled = True
+        mTabHoverEffect_Step = 1
+        mGlowColor = mHoverEffectColors(mTabHoverEffect_Step)
+    End If
     If mTabHoverHighlight Then PostDrawMessage
     
     If mThereAreTabsToolTipTexts Then
@@ -5175,6 +5225,10 @@ Private Sub RaiseEvent_TabMouseEnter(nTab As Integer)
 End Sub
 
 Private Sub RaiseEvent_TabMouseLeave(nTab As Integer)
+    If tmrTabHoverEffect.Enabled Then
+        tmrTabHoverEffect.Enabled = False
+        mGlowColor = mGlowColor_Bk
+    End If
     mTabData(nTab).Hovered = False
     RaiseEvent TabMouseLeave(nTab)
     If nTab <> mTabSel Then
@@ -7002,3 +7056,16 @@ End Function
 Public Property Get Object() As Object
     Set Object = Me
 End Property
+
+Public Property Get TabHoverEffect() As Boolean
+Attribute TabHoverEffect.VB_Description = "Returns/sets a value that determines if the tabs will show an effect when they are being highlighted with the mouse over them."
+    TabHoverEffect = mTabHoverEffect
+End Property
+
+Public Property Let TabHoverEffect(nValue As Boolean)
+    If nValue <> mTabHoverEffect Then
+        mTabHoverEffect = nValue
+        PropertyChanged "TabHoverEffect"
+    End If
+End Property
+
