@@ -503,7 +503,7 @@ Private Const VK_LBUTTON = &H1
 Private Const VK_RBUTTON = &H2
 Private Const SM_SWAPBUTTON = 23&
 
-Private Const cMsgBugIcons As String = "Note: If you are going to load *.ico files, do it from the property window (not from here). There seems to be a bug in VB6 that cause them to lose the tabsparency." & vbCrLf & "This operation will be cancelled." & vbCrLf & "To load pictures for different tabs in the property window (the one that appears pressing F4 on a control), select the appropriate tab with the TabSel property and then load the picture in the Picture property (or Pic16, Pic20 and Pic24)."
+Private Const cMsgBugIcons As String = "Note: If you are going to load *.ico files, do it from the property window (not from here). There seems to be a bug in VB6 that cause them to lose the tabsparency." & vbCrLf & "This operation will be canceled." & vbCrLf & "To load pictures for different tabs in the property window (the one that appears pressing F4 on a control), select the appropriate tab with the TabSel property and then load the picture in the Picture property (or Pic16, Pic20 and Pic24)."
 
 Private mLoading As Boolean
 

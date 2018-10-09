@@ -19,12 +19,20 @@ Begin VB.PropertyPage ptpSSTabExGeneral
    PaletteMode     =   0  'Halftone
    ScaleHeight     =   6324
    ScaleWidth      =   6420
+   Begin VB.CheckBox chkTabHoverEffect 
+      Caption         =   "TabHoverEffect"
+      Height          =   264
+      Left            =   2664
+      TabIndex        =   36
+      Top             =   4140
+      Width           =   1740
+   End
    Begin VB.CheckBox chkSoftEdges 
       Caption         =   "SoftEdges"
       Height          =   264
       Left            =   4584
       TabIndex        =   33
-      Top             =   3864
+      Top             =   3852
       Width           =   1740
    End
    Begin VB.CommandButton cmdHelp 
@@ -43,7 +51,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Left            =   1740
       List            =   "ptpSSTabExGeneral.pgx":0002
       Style           =   2  'Dropdown List
-      TabIndex        =   43
+      TabIndex        =   44
       Top             =   5190
       Width           =   4620
    End
@@ -58,8 +66,8 @@ Begin VB.PropertyPage ptpSSTabExGeneral
    Begin VB.CheckBox chkShowFocusRect 
       Caption         =   "ShowFocusRect"
       Height          =   264
-      Left            =   2664
-      TabIndex        =   36
+      Left            =   4584
+      TabIndex        =   37
       Top             =   4140
       Width           =   1740
    End
@@ -68,7 +76,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Height          =   264
       Left            =   4584
       TabIndex        =   29
-      Top             =   3576
+      Top             =   3564
       Width           =   1740
    End
    Begin VB.CheckBox chkUseMaskColor 
@@ -84,7 +92,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Height          =   264
       Left            =   2664
       TabIndex        =   28
-      Top             =   3576
+      Top             =   3564
       Width           =   1740
    End
    Begin VB.CheckBox chkTabHoverHighlight 
@@ -92,14 +100,14 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Height          =   264
       Left            =   2664
       TabIndex        =   32
-      Top             =   3864
+      Top             =   3852
       Width           =   1740
    End
    Begin VB.CheckBox chkChangeControlsBackColor 
       Caption         =   "ChangeControlsBackColor"
       Height          =   264
       Left            =   2664
-      TabIndex        =   39
+      TabIndex        =   40
       Top             =   4428
       Width           =   2208
    End
@@ -136,7 +144,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Left            =   1740
       List            =   "ptpSSTabExGeneral.pgx":0006
       Style           =   2  'Dropdown List
-      TabIndex        =   41
+      TabIndex        =   42
       Top             =   4830
       Width           =   4620
    End
@@ -173,7 +181,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Left            =   1740
       List            =   "ptpSSTabExGeneral.pgx":0012
       Style           =   2  'Dropdown List
-      TabIndex        =   47
+      TabIndex        =   48
       Top             =   5916
       Width           =   4620
    End
@@ -183,14 +191,14 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Left            =   1740
       List            =   "ptpSSTabExGeneral.pgx":0016
       Style           =   2  'Dropdown List
-      TabIndex        =   45
+      TabIndex        =   46
       Top             =   5556
       Width           =   4620
    End
    Begin VB.TextBox txtTabMinWidth 
       Height          =   300
       Left            =   1740
-      TabIndex        =   38
+      TabIndex        =   39
       Top             =   4425
       Width           =   588
    End
@@ -294,7 +302,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Height          =   312
       Left            =   2664
       Style           =   2  'Dropdown List
-      TabIndex        =   48
+      TabIndex        =   49
       Top             =   0
       Width           =   3680
    End
@@ -303,7 +311,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "AutoRelocateControls:"
       Height          =   228
       Left            =   0
-      TabIndex        =   42
+      TabIndex        =   43
       Top             =   5196
       Width           =   1680
    End
@@ -312,7 +320,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "TabPictureAlignment:"
       Height          =   228
       Left            =   96
-      TabIndex        =   40
+      TabIndex        =   41
       Top             =   4860
       Width           =   1572
    End
@@ -348,7 +356,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "OLEDropMode:"
       Height          =   228
       Left            =   192
-      TabIndex        =   46
+      TabIndex        =   47
       Top             =   5940
       Width           =   1488
    End
@@ -357,7 +365,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "MousePointer:"
       Height          =   228
       Left            =   192
-      TabIndex        =   44
+      TabIndex        =   45
       Top             =   5580
       Width           =   1488
    End
@@ -366,7 +374,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "TabMinWidth:"
       Height          =   228
       Left            =   192
-      TabIndex        =   37
+      TabIndex        =   38
       Top             =   4476
       Width           =   1488
    End
@@ -536,6 +544,10 @@ Private Sub chkSoftEdges_Click()
     If Not mLoading Then Changed = True
 End Sub
 
+Private Sub chkTabHoverEffect_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
 Private Sub chkTabHoverHighlight_Click()
     If Not mLoading Then Changed = True
 End Sub
@@ -587,6 +599,7 @@ Private Sub PropertyPage_ApplyChanges()
     SelectedControls(0).UseMaskColor = CBool(chkUseMaskColor.Value)
     SelectedControls(0).TabSelHighlight = CBool(chkTabSelHighlight.Value)
     SelectedControls(0).TabHoverHighlight = CBool(chkTabHoverHighlight.Value)
+    SelectedControls(0).TabHoverEffect = CBool(chkTabHoverEffect.Value)
     SelectedControls(0).ShowFocusRect = CBool(chkShowFocusRect.Value)
     SelectedControls(0).ShowDisabledState = CBool(chkShowDisabledState.Value)
     SelectedControls(0).ChangeControlsBackColor = CBool(chkChangeControlsBackColor.Value)
@@ -754,6 +767,7 @@ Private Sub PropertyPage_SelectionChanged()
     chkUseMaskColor.Value = IIf(SelectedControls(0).UseMaskColor, 1, 0)
     chkTabSelHighlight.Value = IIf(SelectedControls(0).TabSelHighlight, 1, 0)
     chkTabHoverHighlight.Value = IIf(SelectedControls(0).TabHoverHighlight, 1, 0)
+    chkTabHoverEffect.Value = IIf(SelectedControls(0).TabHoverEffect, 1, 0)
     chkShowFocusRect.Value = IIf(SelectedControls(0).ShowFocusRect, 1, 0)
     chkShowDisabledState.Value = IIf(SelectedControls(0).ShowDisabledState, 1, 0)
     chkChangeControlsBackColor.Value = IIf(SelectedControls(0).ChangeControlsBackColor, 1, 0)
