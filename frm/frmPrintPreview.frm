@@ -772,7 +772,7 @@ Private mMinScalePercent As Long
 Private mMaxScalePercent As Long
 Private mUseOneToolBar As Boolean
 
-Public Event PrepareDoc(Cancel As Boolean)
+Public Event PrepareDoc(ByRef Cancel As Boolean)
 Public Event FormatOptionsClick(ByRef Canceled As Boolean)
 Public Event PageNumbersOptionsClick(ByRef Canceled As Boolean)
 Public Event ScaleChange(NewScalePercent As Integer)
@@ -1152,7 +1152,7 @@ Private Sub Form_Load()
     
     tbrBottom.Buttons(2).Enabled = False
     tbrBottom.Buttons(3).Enabled = False
-    Me.Move 0, 0, Screen.Width, ScreenUsableHeight
+    PositionForm
     
     mCurrentPageNumber = 1
     If mPrintFnObject.FromPage > 0 Then
@@ -2357,9 +2357,11 @@ Private Sub RaiseEventPrepareDoc()
     End If
     
     'picPageNumber.Visible = False
-    PositionPicStatus
     
+    lblStatus.Visible = False
     lblStatus.Caption = GetLocalizedString(efnGUIStr_frmPrintPreview_PreparingDoc_Caption)
+    PositionPicStatus
+    lblStatus.Visible = True
 '    lblStatus.Top = tbrBottom.Height / 2 - lblStatus.Height / 2
     If lblStatus.Left + lblStatus.Width + 100 > tbrBottom.Buttons("FirstPage").Left Then
         lblStatus.Caption = ""
@@ -2723,6 +2725,8 @@ Public Sub PositionControls()
     lblScalePercent.Left = cboScalePercent.Left - lblScalePercent.Width - 60
     
     lblStatus.FontSize = iFontSize
+    picStatus.Font = lblStatus.Font
+    picStatus.FontSize = lblStatus.FontSize
     
     If mUseOneToolBar Then
         If Not picPageNumber.Container Is tbrTop Then
@@ -2807,30 +2811,22 @@ Public Sub PositionControls()
         
     mpicPageNumberVisible = mpicPageNumberVisible And (Me.ScaleWidth - iPosEndpicPageNumber - 30) > 0
     
-    If Not mpicPageNumberVisible Then
-        ' check to hide more things
-        If mAllowUserChangeScale Then
-            If mUseOneToolBar Then
-                If (Me.ScaleWidth - iPosEndGotoPageLastButton - 30) < 0 Then
-                    tbrTop.Buttons("DecreaseScale").Visible = False
-                    tbrTop.Buttons("IncreaseScale").Visible = False
-                    iLastToolBarElementPos = tbrTop.Buttons("ScaleSpace").Left + tbrTop.Buttons("ScaleSpace").Width
-                End If
-            Else
+    If mUseOneToolBar Then
+        If Not mpicPageNumberVisible Then
+            ' check to hide more things
+            If mAllowUserChangeScale Then
                 If (Me.ScaleWidth - iPosEndButtonIncreaseScale - 30) < 0 Then
                     tbrTop.Buttons("DecreaseScale").Visible = False
                     tbrTop.Buttons("IncreaseScale").Visible = False
                     iLastToolBarElementPos = tbrTop.Buttons("ScaleSpace").Left + tbrTop.Buttons("ScaleSpace").Width
                 End If
             End If
-        End If
-        
-        If mUseOneToolBar Then
+            
             If (Me.ScaleWidth - (tbrTop.Buttons("LastPage").Left + tbrTop.Buttons("LastPage").Width) - 30) < 0 Then
                 tbrTop.Buttons("FirstPage").Visible = False
                 tbrTop.Buttons("LastPage").Visible = False
                 iLastToolBarElementPos = tbrTop.Buttons("NextPage").Left + tbrTop.Buttons("NextPage").Width
-                tbrTop.Buttons("ScaleSpace").Width = tbrTop.Buttons("ScaleSpace").Width - 250
+                'tbrTop.Buttons("ScaleSpace").Width = tbrTop.Buttons("ScaleSpace").Width - 250
             End If
             If (Me.ScaleWidth - (tbrTop.Buttons("NextPage").Left + tbrTop.Buttons("NextPage").Width) - 30) < 0 Then
                 tbrTop.Buttons("PreviousPage").Visible = False
@@ -2840,6 +2836,14 @@ Public Sub PositionControls()
                 Else
                     iLastToolBarElementPos = iPosEndButtonViewSeveralPages
                 End If
+            End If
+        End If
+    Else
+        If mAllowUserChangeScale Then
+            If (Me.ScaleWidth - iPosEndButtonIncreaseScale - 30) < 0 Then
+                tbrTop.Buttons("DecreaseScale").Visible = False
+                tbrTop.Buttons("IncreaseScale").Visible = False
+                iLastToolBarElementPos = tbrTop.Buttons("ScaleSpace").Left + tbrTop.Buttons("ScaleSpace").Width
             End If
         End If
     End If
@@ -3121,6 +3125,8 @@ End Property
 
 Private Sub PositionPicStatus()
     Dim iTop As Long
+    Dim iLng As Long
+    Dim iLng2 As Long
     
     If Not mUseOneToolBar Then
         If HScroll1.Visible Then
@@ -3135,6 +3141,37 @@ Private Sub PositionPicStatus()
             iTop = Me.ScaleHeight - picStatus.Height
         End If
     End If
+    
     picStatus.Move 200, iTop
+    iLng = picPagesContainer.Left + picPage(0).Left - picStatus.Left - 2 * Screen.TwipsPerPixelX
+    iLng2 = picStatus.TextWidth(lblStatus.Caption & " ")
+    If iLng > 3648 Then
+        iLng = 3648
+    End If
+    If iLng < iLng2 Then
+        iLng = iLng2
+    End If
+    picStatus.Width = iLng
+End Sub
 
+Private Sub PositionForm()
+    Dim iHwndActiveWindow As Long
+    Dim iMonitor As Long
+    Dim iMi As MONITORINFO
+    
+    iHwndActiveWindow = GetActiveWindowHwnd
+    If iHwndActiveWindow <> 0 Then
+        iMonitor = MonitorFromWindow(iHwndActiveWindow, MONITOR_DEFAULTTOPRIMARY)
+    End If
+    If iMonitor <> 0 Then
+        iMi.cbSize = Len(iMi)
+        GetMonitorInfo iMonitor, iMi
+        If (iMi.rcWork.Bottom - iMi.rcWork.Top) <> 0 Then
+            Me.Move iMi.rcWork.Left * Screen.TwipsPerPixelX, iMi.rcWork.Top * Screen.TwipsPerPixelY, (iMi.rcWork.Right - iMi.rcWork.Left) * Screen.TwipsPerPixelX, (iMi.rcWork.Bottom - iMi.rcWork.Top + 1) * Screen.TwipsPerPixelY
+        Else
+            Me.Move 0, 0, Screen.Width, ScreenUsableHeight
+        End If
+    Else
+        Me.Move 0, 0, Screen.Width, ScreenUsableHeight
+    End If
 End Sub

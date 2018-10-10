@@ -1,6 +1,8 @@
 Attribute VB_Name = "mGlobals"
 Option Explicit
 
+Private Declare Function GetForegroundWindow Lib "user32" () As Long
+
 Private Declare Function rtcCallByName Lib "msvbvm60" (ByRef vRet As Variant, ByVal cObj As Object, ByVal sMethod As Long, ByVal eCallType As VbCallType, ByRef pArgs() As Variant, ByVal LCID As Long) As Long
 Private Declare Function rtcCallByNameIDE Lib "vba6" Alias "rtcCallByName" (ByRef vRet As Variant, ByVal cObj As Object, ByVal sMethod As Long, ByVal eCallType As VbCallType, ByRef pArgs() As Variant, ByVal LCID As Long) As Long
 
@@ -25,7 +27,7 @@ End Type
 
 Public Declare Function CreateFontIndirectW Lib "gdi32" (ByRef lpLogFont As LOGFONTW) As Long
 
-Private Declare Function GetLocaleInfo Lib "Kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
+Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
 Private Const LOCALE_USER_DEFAULT = &H400
 Private Const LOCALE_SDECIMAL = &HE
 
@@ -71,15 +73,15 @@ Private Type OFSTRUCT
     szPathName(OFS_MAXPATHNAME) As Byte
 End Type
 
-Private Declare Function LocalFileTimeToFileTime Lib "Kernel32" (lpFileTime As FileTime, lpLocalFileTime As FileTime) As Long
+Private Declare Function LocalFileTimeToFileTime Lib "kernel32" (lpFileTime As FileTime, lpLocalFileTime As FileTime) As Long
 Private Declare Function VariantTimeToSystemTime Lib "oleaut32.dll" (ByVal vtime As Date, lpSystemTime As SYSTEMTIME) As Long
-Private Declare Function OpenFile Lib "Kernel32" (ByVal lpFileName As String, lpReOpenBuff As OFSTRUCT, ByVal wStyle As Long) As Long
-Private Declare Function GetFileTime Lib "Kernel32" (ByVal hFile As Long, lpCreationTime As FileTime, lpLastAccessTime As FileTime, lpLastWriteTime As FileTime) As Long
-Private Declare Function SetFileTime Lib "Kernel32" (ByVal hFile As Long, lpCreationTime As FileTime, lpLastAccessTime As FileTime, lpLastWriteTime As FileTime) As Long
-Private Declare Function SystemTimeToFileTime Lib "Kernel32" (lpSystemTime As SYSTEMTIME, lpFileTime As FileTime) As Long
-Private Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
+Private Declare Function OpenFile Lib "kernel32" (ByVal lpFileName As String, lpReOpenBuff As OFSTRUCT, ByVal wStyle As Long) As Long
+Private Declare Function GetFileTime Lib "kernel32" (ByVal hFile As Long, lpCreationTime As FileTime, lpLastAccessTime As FileTime, lpLastWriteTime As FileTime) As Long
+Private Declare Function SetFileTime Lib "kernel32" (ByVal hFile As Long, lpCreationTime As FileTime, lpLastAccessTime As FileTime, lpLastWriteTime As FileTime) As Long
+Private Declare Function SystemTimeToFileTime Lib "kernel32" (lpSystemTime As SYSTEMTIME, lpFileTime As FileTime) As Long
+Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
-Private Declare Function SetCurrentDirectory Lib "Kernel32" Alias "SetCurrentDirectoryA" (ByVal PathName As String) As Long
+Private Declare Function SetCurrentDirectory Lib "kernel32" Alias "SetCurrentDirectoryA" (ByVal PathName As String) As Long
 Public Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
 
 Private Const VK_LBUTTON = &H1
@@ -161,7 +163,7 @@ Private Type TIME_ZONE_INFORMATION
     DaylightBias As Long
 End Type
 
-Private Declare Function GetTimeZoneInformation Lib "Kernel32" (lpTimeZoneInformation As TIME_ZONE_INFORMATION) As Long
+Private Declare Function GetTimeZoneInformation Lib "kernel32" (lpTimeZoneInformation As TIME_ZONE_INFORMATION) As Long
 
 Private Const GENERIC_READ As Long = &H80000000
 Private Const GENERIC_WRITE As Long = &H40000000
@@ -174,16 +176,16 @@ Private Const OPEN_EXISTING = 3
 Private Const FILE_SHARE_READ = &H1
 Private Const FILE_SHARE_WRITE = &H2
 
-Private Declare Function CreateFile Lib "Kernel32" Alias "CreateFileA" (ByVal lpFileName As String, ByVal dwDesiredAccess As Long, ByVal dwShareMode As Long, ByVal lpSecurityAttributes As Long, ByVal dwCreationDisposition As Long, ByVal dwFlagsAndAttributes As Long, ByVal hTemplateFile As Long) As Long
-Private Declare Function SetFilePointer Lib "Kernel32" (ByVal hFile As Long, ByVal lDistanceToMove As Long, lpDistanceToMoveHigh As Long, ByVal dwMoveMethod As Long) As Long
-Private Declare Function SetEndOfFile Lib "Kernel32" (ByVal hFile As Long) As Long
+Private Declare Function CreateFile Lib "kernel32" Alias "CreateFileA" (ByVal lpFileName As String, ByVal dwDesiredAccess As Long, ByVal dwShareMode As Long, ByVal lpSecurityAttributes As Long, ByVal dwCreationDisposition As Long, ByVal dwFlagsAndAttributes As Long, ByVal hTemplateFile As Long) As Long
+Private Declare Function SetFilePointer Lib "kernel32" (ByVal hFile As Long, ByVal lDistanceToMove As Long, lpDistanceToMoveHigh As Long, ByVal dwMoveMethod As Long) As Long
+Private Declare Function SetEndOfFile Lib "kernel32" (ByVal hFile As Long) As Long
 
 '* These are used in every form to ensure focus rectangle visibility
 Private Const WM_CHANGEUISTATE As Long = &H127
 Private Const UIS_CLEAR As Integer = &H2
 Private Const UISF_HIDEFOCUS As Integer = &H1
 
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 Private Const CB_GETMINVISIBLE As Long = &H1702&
 
@@ -240,12 +242,21 @@ End Type
 
 Public Declare Function GetMonitorInfo Lib "user32.dll" Alias "GetMonitorInfoA" (ByVal hMonitor As Long, ByRef lpmi As MONITORINFO) As Long
 
-'Private Const MONITORINFOF_PRIMARY = &H1
-'Private Const MONITOR_DEFAULTTONEAREST = &H2
-Private Const MONITOR_DEFAULTTONULL = &H0
-'Private Const MONITOR_DEFAULTTOPRIMARY = &H1
+Private Const WS_CAPTION = &HC00000
+Private Const SM_CMONITORS As Long = 80
+Private Const SM_XVIRTUALSCREEN = 76
+Private Const SM_YVIRTUALSCREEN = 77
+Private Const SM_CXVIRTUALSCREEN = 78
+Private Const SM_CYVIRTUALSCREEN = 79
 
-Private Declare Function MonitorFromWindow Lib "user32.dll" (ByVal hWnd As Long, ByVal dwFlags As Long) As Long
+'Private Const MONITORINFOF_PRIMARY = &H1
+'Public Const MONITOR_DEFAULTTONEAREST = &H2
+Public Const MONITOR_DEFAULTTONULL = &H0
+Public Const MONITOR_DEFAULTTOPRIMARY = &H1
+
+Public Declare Function MonitorFromWindow Lib "user32.dll" (ByVal hWnd As Long, ByVal dwFlags As Long) As Long
+Public Declare Function MonitorFromPoint Lib "user32.dll" (ByVal x As Long, ByVal y As Long, ByVal dwFlags As Long) As Long
+
 Private Declare Function ScreenToClient Lib "user32" (ByVal hWnd As Long, lpPoint As POINTAPI) As Long
 Private Declare Function RealChildWindowFromPoint Lib "user32" (ByVal hWndParent As Long, ByVal xPoint As Long, ByVal yPoint As Long) As Long
 'Private Const GW_OWNER = &H4
@@ -253,7 +264,7 @@ Private Declare Function RealChildWindowFromPoint Lib "user32" (ByVal hWndParent
 Private Declare Function GetParent Lib "user32" (ByVal hWnd As Long) As Long
 'Private Declare Function GetAncestor Lib "user32.dll" (ByVal hWnd As Long, ByVal gaFlags As Long) As Long
 
-'Private Declare Function GetDesktopWindow Lib "user32" () As Long
+Private Declare Function GetDesktopWindow Lib "user32" () As Long
 
 Private Const WM_SETREDRAW As Long = &HB&
 
@@ -327,7 +338,7 @@ Public Const FW_BOLD = 700
 Public Const FW_EXTRABOLD = 800
 Public Const FW_HEAVY = 900
 
-Private Declare Sub CopyMemoryAny1 Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemoryAny1 Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 Private Const SPI_GETNONCLIENTMETRICS = 41
 Private Const SPI_GETICONTITLELOGFONT = 31
@@ -433,19 +444,19 @@ Private Const PROCESS_VM_READ = 16
 Private Declare Function OpenProcess Lib "kernel32.dll" (ByVal dwDesiredAccessas As Long, ByVal bInheritHandle As Long, ByVal dwProcId As Long) As Long
 Private Declare Function EnumProcessModules Lib "psapi.dll" (ByVal hProcess As Long, ByRef lphModule As Long, ByVal cb As Long, ByRef cbNeeded As Long) As Long
 Private Declare Function GetModuleFileNameExA Lib "psapi.dll" (ByVal hProcess As Long, ByVal hModule As Long, ByVal ModuleName As String, ByVal nSize As Long) As Long
-Private Declare Function CreateToolhelp32Snapshot Lib "Kernel32" (ByVal dwFlags As Long, ByVal th32ProcessID As Long) As Long
-Private Declare Function Process32First Lib "Kernel32" (ByVal hSnapshot As Long, lppe As Any) As Long
-Private Declare Function Process32Next Lib "Kernel32" (ByVal hSnapshot As Long, lppe As Any) As Long
-Private Declare Function CloseHandle Lib "Kernel32" (ByVal hObject As Long) As Long
-Private Declare Function GetCurrentProcessId Lib "Kernel32" () As Long
+Private Declare Function CreateToolhelp32Snapshot Lib "kernel32" (ByVal dwFlags As Long, ByVal th32ProcessID As Long) As Long
+Private Declare Function Process32First Lib "kernel32" (ByVal hSnapshot As Long, lppe As Any) As Long
+Private Declare Function Process32Next Lib "kernel32" (ByVal hSnapshot As Long, lppe As Any) As Long
+Private Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
+Private Declare Function GetCurrentProcessId Lib "kernel32" () As Long
 
 Private Declare Function GetFileVersionInfoSize Lib "Version.dll" Alias "GetFileVersionInfoSizeA" (ByVal lptstrFilename As String, lpdwHandle As Long) As Long
 Private Declare Function GetFileVersionInfo Lib "Version.dll" Alias "GetFileVersionInfoA" (ByVal lptstrFilename As String, ByVal dwHandle As Long, ByVal dwLen As Long, lpData As Any) As Long
 
-Private Declare Function GlobalAlloc Lib "Kernel32" (ByVal Flags As Long, ByVal lengh As Long) As Long
-Private Declare Function GlobalLock Lib "Kernel32" (ByVal hMem As Long) As Long
-Private Declare Function GlobalUnlock Lib "Kernel32" (ByVal hMem As Long) As Long
-Private Declare Sub RtlMoveMemory Lib "Kernel32" (ByVal pDest As Long, ByVal pSource As Long, ByVal lengh As Long)
+Private Declare Function GlobalAlloc Lib "kernel32" (ByVal Flags As Long, ByVal lengh As Long) As Long
+Private Declare Function GlobalLock Lib "kernel32" (ByVal hMem As Long) As Long
+Private Declare Function GlobalUnlock Lib "kernel32" (ByVal hMem As Long) As Long
+Private Declare Sub RtlMoveMemory Lib "kernel32" (ByVal pDest As Long, ByVal pSource As Long, ByVal lengh As Long)
 
 Private Const CF_UNICODETEXT = &HD&
 Private Const GMEM_MOVEABLE = &O2&
@@ -475,7 +486,7 @@ Private Type OSVERSIONINFO 'for GetVersionEx API call
     szCSDVersion As String * 128
 End Type
 
-Private Declare Function GetVersionEx Lib "Kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
+Private Declare Function GetVersionEx Lib "kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
 
 Private Type OSVERSIONINFOEX
         dwOSVersionInfoSize As Long
@@ -491,16 +502,16 @@ Private Type OSVERSIONINFOEX
         bReserved As Byte                   ' Reserved
 End Type
 
-Private Declare Function GetOSVersionEx Lib "Kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFOEX) As Long
+Private Declare Function GetOSVersionEx Lib "kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFOEX) As Long
 
 'Private Const VER_NT_WORKSTATION As Long = &H1
 Private Const VER_NT_DOMAIN_CONTROLLER As Long = &H2
 Private Const VER_NT_SERVER As Long = &H3
 
-Private Declare Function GetModuleHandle Lib "Kernel32" Alias "GetModuleHandleA" (ByVal lpModuleName As String) As Long
-Private Declare Function IsWow64Process Lib "Kernel32" (ByVal hProc As Long, ByRef bWow64Process As Boolean) As Long
-Private Declare Function GetProcAddress Lib "Kernel32" (ByVal hModule As Long, ByVal lpProcName As String) As Long
-Private Declare Function GetCurrentProcess Lib "Kernel32" () As Long
+Private Declare Function GetModuleHandle Lib "kernel32" Alias "GetModuleHandleA" (ByVal lpModuleName As String) As Long
+Private Declare Function IsWow64Process Lib "kernel32" (ByVal hProc As Long, ByRef bWow64Process As Boolean) As Long
+Private Declare Function GetProcAddress Lib "kernel32" (ByVal hModule As Long, ByVal lpProcName As String) As Long
+Private Declare Function GetCurrentProcess Lib "kernel32" () As Long
 
 Private Declare Function IsAppThemed Lib "uxtheme.dll" () As Long
 Private Declare Function IsThemeActive Lib "uxtheme" () As Long
@@ -575,8 +586,8 @@ Public Const WM_PAINT As Long = &HF&
 Public Const WM_MOVING As Long = &H216&
 Public Const WM_PARENTNOTIFY As Long = &H210&
 
-Private Declare Function GetTempPath Lib "Kernel32" Alias "GetTempPathA" (ByVal nBufferLength As Long, ByVal lpBuffer As String) As Long
-Private Declare Function GetTempFileName Lib "Kernel32" Alias "GetTempFileNameA" (ByVal lpszPath As String, ByVal lpPrefixString As String, ByVal wUnique As Long, ByVal lpTempFileName As String) As Long
+Private Declare Function GetTempPath Lib "kernel32" Alias "GetTempPathA" (ByVal nBufferLength As Long, ByVal lpBuffer As String) As Long
+Private Declare Function GetTempFileName Lib "kernel32" Alias "GetTempFileNameA" (ByVal lpszPath As String, ByVal lpPrefixString As String, ByVal wUnique As Long, ByVal lpTempFileName As String) As Long
 
 Private Declare Function SystemParametersInfo Lib "user32" Alias "SystemParametersInfoA" (ByVal uAction As Long, ByVal uParam As Long, lpvParam As Any, ByVal fuWinIni As Long) As Long
 Private Declare Function SystemParametersInfoW Lib "user32" (ByVal uAction As Long, ByVal uParam As Long, ByRef pvParam As Any, ByVal fWinIni As Long) As Long
@@ -639,7 +650,6 @@ Public Const flexAlignRightCenter = 7
 Public Const flexAlignRightBottom = 8
 Public Const flexAlignGeneral = 9
 
-
 Private mGetActiveFormHwnd As Long
 Private mNotOwned As Boolean
 Private mStartAtHwnd As Long
@@ -673,6 +683,7 @@ Private mLogFilePath As String
 Private mLogging As Boolean
 Private mModalFormsHwnd() As Long
 Private mCommonButtonsAccelerators As String
+Private mFormsTracker As New cFormsTracker
 
 Public Function GetActiveFormHwnd(Optional nNotOwned As Boolean, Optional nStartAtHwnd As Long) As Long
     Dim iDo As Boolean
@@ -781,42 +792,42 @@ Public Function NumberOfOwnedForms(nHwndOwner As Long) As Long
 End Function
     
     
-Private Function EnumCallback(ByVal app_hWnd As Long, ByVal param As Long) As Long
+Private Function EnumCallback(ByVal nEnumHwnd As Long, ByVal param As Long) As Long
     Dim iFound As Boolean
     Dim iIgnore As Boolean
     
     Select Case mEnumMode
         Case efnEWM_GetActiveFormHwnd
             On Error GoTo TheExit:
-            If GetParent(app_hWnd) = 0 Then
-                If IsWindowLocal(app_hWnd) Then
-                    If WindowIsForm(app_hWnd) Then
-                        If mStartAtHwnd <> 0 Then
-                            iIgnore = True
-                        End If
-                        If IsWindowVisible(app_hWnd) <> 0 Then
+            If GetParent(nEnumHwnd) = 0 Then
+                If IsWindowLocal(nEnumHwnd) Then
+                    If IsWindowVisible(nEnumHwnd) <> 0 Then
+                        If WindowIsForm(nEnumHwnd) Then
+                            If mStartAtHwnd <> 0 Then
+                                iIgnore = True
+                            End If
                             If mNotOwned Then
-                                If Not FormIsOwned(app_hWnd) Then
+                                If Not FormIsOwned(nEnumHwnd) Then
                                     iFound = True
                                 Else
-                                    If GetProp(app_hWnd, "ShownModal") = 1 Then
+                                    If GetProp(nEnumHwnd, "ShownModal") = 1 Then
                                         iFound = True
                                     End If
                                 End If
                             Else
                                 iFound = True
                             End If
-                        End If
-                        If iFound Then
-                            If mStartAtHwnd <> 0 Then
-                                If app_hWnd = mStartAtHwnd Then
-                                    mStartAtHwnd = 0
+                            If iFound Then
+                                If mStartAtHwnd <> 0 Then
+                                    If nEnumHwnd = mStartAtHwnd Then
+                                        mStartAtHwnd = 0
+                                    End If
                                 End If
-                            End If
-                            If Not iIgnore Then
-                                mGetActiveFormHwnd = app_hWnd
-                                EnumCallback = 0
-                                Exit Function
+                                If Not iIgnore Then
+                                    mGetActiveFormHwnd = nEnumHwnd
+                                    EnumCallback = 0
+                                    Exit Function
+                                End If
                             End If
                         End If
                     End If
@@ -827,21 +838,21 @@ Private Function EnumCallback(ByVal app_hWnd As Long, ByVal param As Long) As Lo
             On Error GoTo TheExit:
             iIgnore = False
             If mOnlyVisibleWindows Then
-                If IsWindowVisible(app_hWnd) = 0 Then
+                If IsWindowVisible(nEnumHwnd) = 0 Then
                     iIgnore = True
                 End If
             End If
             If Not iIgnore Then
-                If GetParent(app_hWnd) = 0 Then
-                    If IsWindowLocal(app_hWnd) Then
-                        If WindowIsForm(app_hWnd) Then
+                If GetParent(nEnumHwnd) = 0 Then
+                    If IsWindowLocal(nEnumHwnd) Then
+                        If WindowIsForm(nEnumHwnd) Then
                             If mGetActiveFormHwnd = 0 Then
-                                If IsWindowVisible(app_hWnd) <> 0 Then
-                                    mGetActiveFormHwnd = app_hWnd
+                                If IsWindowVisible(nEnumHwnd) <> 0 Then
+                                    mGetActiveFormHwnd = nEnumHwnd
                                 End If
                             End If
                             ReDim Preserve mFormsHwnds(UBound(mFormsHwnds) + 1)
-                            mFormsHwnds(UBound(mFormsHwnds)) = app_hWnd
+                            mFormsHwnds(UBound(mFormsHwnds)) = nEnumHwnd
                         End If
                     End If
                 End If
@@ -849,13 +860,13 @@ Private Function EnumCallback(ByVal app_hWnd As Long, ByVal param As Long) As Lo
             EnumCallback = 1
         Case efnEWM_NumberOfOwnedForms
             On Error GoTo TheExit:
-            If GetParent(app_hWnd) = 0 Then
-                If IsWindowLocal(app_hWnd) Then
-                    If WindowIsForm(app_hWnd) Then
-                        If IsWindowVisible(app_hWnd) <> 0 Then
-                            If FormIsOwned(app_hWnd) Then
-                                'Debug.Print app_hWnd, GetOwnerHwnd(app_hWnd), mHwndOwner_ForNumberOfOwnedForms
-                                If GetOwnerHwnd(app_hWnd) = mHwndOwner_ForNumberOfOwnedForms Then
+            If GetParent(nEnumHwnd) = 0 Then
+                If IsWindowLocal(nEnumHwnd) Then
+                    If WindowIsForm(nEnumHwnd) Then
+                        If IsWindowVisible(nEnumHwnd) <> 0 Then
+                            If FormIsOwned(nEnumHwnd) Then
+                                'Debug.Print nEnumHwnd, GetOwnerHwnd(nEnumHwnd), mHwndOwner_ForNumberOfOwnedForms
+                                If GetOwnerHwnd(nEnumHwnd) = mHwndOwner_ForNumberOfOwnedForms Then
                                     mNumberOfOwnedForms = mNumberOfOwnedForms + 1
                                 End If
                             End If
@@ -865,9 +876,9 @@ Private Function EnumCallback(ByVal app_hWnd As Long, ByVal param As Long) As Lo
             End If
             EnumCallback = 1
         Case efnEWM_BroadcastUILanguageChange
-            If IsWindowLocal(app_hWnd) Then
-                If WindowIsForm(app_hWnd) Then
-                    BroadcastUILanguageChangeToChildControls app_hWnd
+            If IsWindowLocal(nEnumHwnd) Then
+                If WindowIsForm(nEnumHwnd) Then
+                    BroadcastUILanguageChangeToChildControls nEnumHwnd
                 End If
             End If
             EnumCallback = 1
@@ -1413,6 +1424,9 @@ End Function
 Public Sub ShowNoActivate(nForm As Object, Optional nOwnerForm, Optional nSetIcon As Boolean = True, Optional nSetActiveFormAsOwner As Boolean)
     Dim iFormShownNA As cFormShownNA
     
+    HandleMonitor nForm
+    AddFormToTracker nForm
+    
     Set iFormShownNA = mFormShownNACollection.GetInstance(nForm)
     If iFormShownNA Is Nothing Then
         Set iFormShownNA = New cFormShownNA
@@ -1429,6 +1443,7 @@ Public Function IsWindowsNT() As Boolean
     If sValue = 0 Then
         Dim osinfo As OSVERSIONINFO
         Dim retvalue As Integer
+        
         osinfo.dwOSVersionInfoSize = 148
         osinfo.szCSDVersion = Space$(128)
         retvalue = GetVersionEx(osinfo)
@@ -1448,11 +1463,12 @@ Public Function IsWindows98OrMore() As Boolean
     If sValue = 0 Then
         Dim osinfo As OSVERSIONINFO
         Dim retvalue As Integer
+        
         osinfo.dwOSVersionInfoSize = 148
         osinfo.szCSDVersion = Space$(128)
         retvalue = GetVersionEx(osinfo)
         sValue = 1
-        If osinfo.dwPlatformID = 2 Then ' si es nt
+        If osinfo.dwPlatformID = 2 Then ' if it is NT
             If osinfo.dwMajorVersion > 4 Then ' más que NT4 (o sea win 2000, 2003, XP o Vista, etc)
                 sValue = 2
             End If
@@ -1472,6 +1488,7 @@ Public Function IsWindows2000OrMore() As Boolean
     If sValue = 0 Then
         Dim osinfo As OSVERSIONINFO
         Dim retvalue As Integer
+        
         osinfo.dwOSVersionInfoSize = 148
         osinfo.szCSDVersion = Space$(128)
         retvalue = GetVersionEx(osinfo)
@@ -1491,11 +1508,12 @@ Public Function IsWindowsXPOrMore() As Boolean
     If sValue = 0 Then
         Dim osinfo As OSVERSIONINFO
         Dim retvalue As Integer
+        
         osinfo.dwOSVersionInfoSize = 148
         osinfo.szCSDVersion = Space$(128)
         retvalue = GetVersionEx(osinfo)
         sValue = 1
-        If osinfo.dwPlatformID = 2 Then ' si es nt
+        If osinfo.dwPlatformID = 2 Then ' if it is NT
             If (osinfo.dwMajorVersion = 5) And (osinfo.dwMinorVersion >= 1) Or (osinfo.dwMajorVersion > 5) Then
                 sValue = 2
             End If
@@ -1511,11 +1529,12 @@ Public Function IsWindowsXP() As Boolean
     If sValue = 0 Then
         Dim osinfo As OSVERSIONINFO
         Dim retvalue As Integer
+        
         osinfo.dwOSVersionInfoSize = 148
         osinfo.szCSDVersion = Space$(128)
         retvalue = GetVersionEx(osinfo)
         sValue = 1
-        If osinfo.dwPlatformID = 2 Then ' si es nt
+        If osinfo.dwPlatformID = 2 Then ' if it is NT
             If (osinfo.dwMajorVersion = 5) And (osinfo.dwMinorVersion = 1) Then
                 sValue = 2
             End If
@@ -1531,12 +1550,13 @@ Public Function IsWindowsVistaOrMore() As Boolean
     If sValue = 0 Then
         Dim osinfo As OSVERSIONINFO
         Dim retvalue As Integer
+        
         osinfo.dwOSVersionInfoSize = 148
         osinfo.szCSDVersion = Space$(128)
         retvalue = GetVersionEx(osinfo)
         sValue = 1
-        If osinfo.dwPlatformID = 2 Then ' si es nt
-            If osinfo.dwMajorVersion >= 6 Then ' Vista es 6
+        If osinfo.dwPlatformID = 2 Then ' if it is NT
+            If osinfo.dwMajorVersion >= 6 Then ' Vista is 6
                 sValue = 2
             End If
         End If
@@ -1551,11 +1571,12 @@ Public Function IsWindows7OrMore() As Boolean
     If sValue = 0 Then
         Dim osinfo As OSVERSIONINFO
         Dim retvalue As Integer
+        
         osinfo.dwOSVersionInfoSize = 148
         osinfo.szCSDVersion = Space$(128)
         retvalue = GetVersionEx(osinfo)
         sValue = 1
-        If osinfo.dwPlatformID = 2 Then ' si es nt
+        If osinfo.dwPlatformID = 2 Then ' if it is NT
             If osinfo.dwMajorVersion > 6 Then
                 sValue = 2
             Else
@@ -1577,11 +1598,12 @@ Public Function IsWindows8OrMore() As Boolean
     If sValue = 0 Then
         Dim osinfo As OSVERSIONINFO
         Dim retvalue As Integer
+        
         osinfo.dwOSVersionInfoSize = 148
         osinfo.szCSDVersion = Space$(128)
         retvalue = GetVersionEx(osinfo)
         sValue = 1
-        If osinfo.dwPlatformID = 2 Then ' si es nt
+        If osinfo.dwPlatformID = 2 Then ' if it is NT
             If osinfo.dwMajorVersion > 6 Then
                 sValue = 2
             Else
@@ -1603,11 +1625,12 @@ Public Function IsWindowsServer() As Boolean
     If sValue = 0 Then
         Dim osinfo As OSVERSIONINFOEX
         Dim retvalue As Integer
+        
         osinfo.dwOSVersionInfoSize = Len(osinfo)
         osinfo.szCSDVersion = Space$(128)
         retvalue = GetOSVersionEx(osinfo)
         sValue = 1
-        If osinfo.dwPlatformID = 2 Then ' si es nt
+        If osinfo.dwPlatformID = 2 Then ' if it is NT
             If (osinfo.bProductType = VER_NT_SERVER) Or (osinfo.bProductType = VER_NT_DOMAIN_CONTROLLER) Then
                 sValue = 2
             End If
@@ -1616,14 +1639,14 @@ Public Function IsWindowsServer() As Boolean
     IsWindowsServer = (sValue = 2)
 End Function
 
-Public Function IsWindows64Bit() As Boolean
+Public Function IsWindows64Bits() As Boolean
     Dim iHandle As Long
-    Dim iIs64Bit As Boolean
+    Dim iIs64Bits As Boolean
     Static sValue As Long
     
     If sValue = 0 Then
         ' Assume initially that this is not a WOW64 process
-        iIs64Bit = False
+        iIs64Bits = False
     
         ' Then try to prove that wrong by attempting to load the
         ' IsWow64Process function dynamically
@@ -1631,18 +1654,18 @@ Public Function IsWindows64Bit() As Boolean
     
         ' The function exists, so call it
         If iHandle <> 0 Then
-            IsWow64Process GetCurrentProcess(), iIs64Bit
+            IsWow64Process GetCurrentProcess(), iIs64Bits
         End If
     
         ' Return the value
-        If iIs64Bit Then
+        If iIs64Bits Then
             sValue = 2
         Else
             sValue = 1
         End If
     End If
     
-    IsWindows64Bit = (sValue = 2)
+    IsWindows64Bits = (sValue = 2)
 End Function
 
 Public Function WindowUnderMouseHwnd() As Long
@@ -1836,7 +1859,7 @@ Public Function IsWindowVisibleOnScreen(nHwnd As Long, Optional AtLeastPartially
     Dim iRect As RECT
     Dim iHwnd As Long
     Dim ihMonitor As Long
-    Dim iMI As MONITORINFO
+    Dim iMi As MONITORINFO
     
     GetWindowRect nHwnd, iRect
     
@@ -1883,9 +1906,9 @@ Public Function IsWindowVisibleOnScreen(nHwnd As Long, Optional AtLeastPartially
             If nHwnd = iHwnd Then
                 ihMonitor = MonitorFromWindow(nHwnd, MONITOR_DEFAULTTONULL)
                 If ihMonitor <> 0 Then
-                    iMI.cbSize = Len(iMI)
-                    GetMonitorInfo ihMonitor, iMI
-                    If (iRect.Right > iMI.rcWork.Left) And (iRect.Bottom > iMI.rcWork.Top) And (iRect.Left < iMI.rcWork.Right) And (iRect.Top < iMI.rcWork.Bottom) Then
+                    iMi.cbSize = Len(iMi)
+                    GetMonitorInfo ihMonitor, iMi
+                    If (iRect.Right > iMi.rcWork.Left) And (iRect.Bottom > iMi.rcWork.Top) And (iRect.Left < iMi.rcWork.Right) And (iRect.Top < iMi.rcWork.Bottom) Then
                         IsWindowVisibleOnScreen = True
                     End If
                 End If
@@ -1900,7 +1923,7 @@ Public Sub PersistForm(nForm As Object, nForms As Object, Optional nInitialCente
     Set iFormPersist = mFormPersistCollection.GetInstance(nForm)
     If iFormPersist Is Nothing Then
         Set iFormPersist = New cFormPersist
-        iFormPersist.SetForm nForm, nForms, , nInitialCentered, nInitialLeft, nInitialTop, nInitialWidth, nInitialHeight, nPersistLeft, nPersistTop, nPersistWidth, nPersistHeight, nMaxTop, nPersistMinimizedState, nContext
+        iFormPersist.SetForm nForm, nForms, , nInitialCentered, nInitialLeft, nInitialTop, nInitialWidth, nInitialHeight, nPersistLeft, nPersistTop, nPersistWidth, nPersistHeight, nMaxTop, nPersistMinimizedState, nContext, mFormPersistCollection
         If mFormPersistCollection.GetInstance(nForm) Is Nothing Then
             mFormPersistCollection.Add iFormPersist, nForm.hWnd
         End If
@@ -1937,8 +1960,73 @@ End Function
 
 Public Sub ShowModal(nForm As Object, Optional nWaitWithDoevents As Boolean = True, Optional nSetIcon As Boolean = True, Optional nFormsHwndToKeepEnabled As Variant, Optional nKeepEnabledTaskBarWindows As Boolean = True, Optional nNoOwner As Boolean)
     Dim iMF As New cFormModal
-
+    
+    HandleMonitor nForm
+    AddFormToTracker nForm
     iMF.Show nForm, nWaitWithDoevents, nSetIcon, nFormsHwndToKeepEnabled, nKeepEnabledTaskBarWindows, nNoOwner
+End Sub
+
+Private Sub AddFormToTracker(nForm As Object)
+    If WindowHasCaption(nForm.hWnd) Then
+        mFormsTracker.AddForm nForm
+    Else
+        mFormsTracker.Update  ' to ensure the monitor set with mouse location with the first form
+    End If
+End Sub
+
+Private Sub HandleMonitor(nForm As Form)
+    Dim iMonitorForm As Long
+    Dim iMICurrent As MONITORINFO
+    Dim iMIForm As MONITORINFO
+    Dim iAuxMonitor As Long
+    Dim iLng As Long
+    
+    If (MonitorCount > 1) And GetSetting(AppNameForRegistry, "MInfo", Base64Encode(nForm.Name) & ".MI", "0") = "0" Then
+        iMonitorForm = MonitorFromWindow(nForm.hWnd, MONITOR_DEFAULTTOPRIMARY)
+        If mFormsTracker.CurrentMonitor <> iMonitorForm Then
+            iMICurrent.cbSize = Len(iMICurrent)
+            iMIForm.cbSize = Len(iMIForm)
+            GetMonitorInfo mFormsTracker.CurrentMonitor, iMICurrent
+            GetMonitorInfo iMonitorForm, iMIForm
+            If ((iMICurrent.rcWork.Bottom - iMICurrent.rcWork.Top) <> 0) And ((iMIForm.rcWork.Bottom - iMIForm.rcWork.Top) <> 0) Then
+                nForm.Move nForm.Left + (iMICurrent.rcWork.Left - iMIForm.rcWork.Left) * Screen.TwipsPerPixelX, nForm.Top + (iMICurrent.rcWork.Top - iMIForm.rcWork.Top) * Screen.TwipsPerPixelY
+                If nForm.Left < (iMICurrent.rcWork.Left * Screen.TwipsPerPixelX) Then
+                    nForm.Left = iMICurrent.rcWork.Left * Screen.TwipsPerPixelX
+                End If
+                If nForm.Top < (iMICurrent.rcWork.Top * Screen.TwipsPerPixelY) Then
+                    nForm.Top = iMICurrent.rcWork.Top * Screen.TwipsPerPixelY
+                End If
+                If nForm.BorderStyle = vbSizable Then
+                    If nForm.Height > (iMICurrent.rcWork.Bottom - iMICurrent.rcWork.Top) * Screen.TwipsPerPixelY Then
+                        nForm.Height = (iMICurrent.rcWork.Bottom - iMICurrent.rcWork.Top) * Screen.TwipsPerPixelY
+                    End If
+                    If nForm.Width > (iMICurrent.rcWork.Right - iMICurrent.rcWork.Left) * Screen.TwipsPerPixelX Then
+                        nForm.Width = (iMICurrent.rcWork.Right - iMICurrent.rcWork.Left) * Screen.TwipsPerPixelX
+                    End If
+                    If (nForm.Left + nForm.Width) / Screen.TwipsPerPixelX > VirtualScreenRight Then
+                        iLng = VirtualScreenRight - nForm.Width / Screen.TwipsPerPixelX
+                        nForm.Left = iLng * Screen.TwipsPerPixelX
+                    End If
+                    If (nForm.Top + nForm.Height) / Screen.TwipsPerPixelY > VirtualScreenBottom Then
+                        iLng = VirtualScreenBottom - nForm.Height / Screen.TwipsPerPixelY
+                        nForm.Top = iLng * Screen.TwipsPerPixelY
+                    End If
+                    iLng = iMICurrent.rcWork.Right - nForm.Width / Screen.TwipsPerPixelX
+                    If (nForm.Left / Screen.TwipsPerPixelX) > iLng Then
+                        If MonitorFromPoint((nForm.Left + nForm.Width) / Screen.TwipsPerPixelX, (nForm.Top + nForm.Height) / Screen.TwipsPerPixelY, MONITOR_DEFAULTTONULL) = 0 Then ' if there is no monitor covering that point
+                            nForm.Left = iLng * Screen.TwipsPerPixelX
+                        End If
+                    End If
+                    iLng = iMICurrent.rcWork.Bottom - nForm.Height / Screen.TwipsPerPixelY
+                    If (nForm.Top / Screen.TwipsPerPixelY) > iLng Then
+                        If MonitorFromPoint((nForm.Left + nForm.Width) / Screen.TwipsPerPixelX, (nForm.Top + nForm.Height) / Screen.TwipsPerPixelY, MONITOR_DEFAULTTONULL) = 0 Then ' if there is no monitor covering that point
+                            nForm.Top = iLng * Screen.TwipsPerPixelY
+                        End If
+                    End If
+                End If
+            End If
+        End If
+    End If
 End Sub
 
 Public Function SetMinMax(nForm As Object, Optional nMinWidth, Optional nMinHeight, Optional nMaxWidth, Optional nMaxHeight, Optional ScaleMode As Integer = vbTwips) As FormMinMax
@@ -2871,34 +2959,92 @@ Public Function WithoutConsecutiveSpaces(nText As String) As String
     Loop
 End Function
 
-Public Sub CenterForm(frm As Object, Optional TrueCenter As Boolean = False)
+Public Sub CenterForm(nForm As Object, Optional TrueCenter As Boolean = False)
     Dim iTop As Long
     Dim iLeft As Long
+    Dim iInPrimaryMonitor As Boolean
+    Dim iMonitor As Long
+    Dim iMi As MONITORINFO
     
-    If frm.WindowState <> vbNormal Then Exit Sub
-    If TrueCenter Then
-        iTop = Screen.Height \ 2 - frm.Height \ 2
-        iLeft = Screen.Width \ 2 - frm.Width \ 2
+    If nForm.WindowState <> vbNormal Then Exit Sub
+    
+    iInPrimaryMonitor = True
+    
+    If MonitorCount > 1 Then
+'        If WindowHasCaption(nForm.hWnd) And (Not IsWindowOwned(nForm.hWnd)) Then
+        If WindowHasCaption(nForm.hWnd) Then
+            iMi.cbSize = Len(iMi)
+            GetMonitorInfo mFormsTracker.CurrentMonitor, iMi
+            If (iMi.rcWork.Bottom - iMi.rcWork.Top) <> 0 Then
+                If (iMi.rcWork.Left <> 0) Or (iMi.rcWork.Top <> 0) Then
+                    iInPrimaryMonitor = False
+                End If
+            End If
+        End If
+    End If
+    
+    If iInPrimaryMonitor Then
+        If TrueCenter Then
+            iTop = Screen.Height \ 2 - nForm.Height \ 2
+            iLeft = Screen.Width \ 2 - nForm.Width \ 2
+        Else
+            iTop = (Screen.Height * 0.9) \ 2 - nForm.Height \ 2
+            iLeft = Screen.Width \ 2 - nForm.Width \ 2
+            If iTop < 0 Then
+                iTop = Screen.Height \ 2 - nForm.Height \ 2
+            End If
+        End If
+    
+        If iLeft < 0 Then iLeft = 0
+        If iTop < 0 Then iTop = 0
+    
+        If nForm.BorderStyle = vbSizable Then
+            If nForm.Height > ScreenUsableHeight Then
+                nForm.Height = ScreenUsableHeight
+            End If
+            If nForm.Width > Screen.Width Then
+                nForm.Width = Screen.Width
+            End If
+        End If
+    
     Else
-        iTop = (Screen.Height * 0.9) \ 2 - frm.Height \ 2
-        iLeft = Screen.Width \ 2 - frm.Width \ 2
+        If TrueCenter Then
+            iTop = (iMi.rcWork.Bottom + iMi.rcWork.Top) / 2 * Screen.TwipsPerPixelY - nForm.Height \ 2
+            iLeft = (iMi.rcWork.Right + iMi.rcWork.Left) / 2 * Screen.TwipsPerPixelX - nForm.Width \ 2
+        Else
+            iTop = (iMi.rcWork.Bottom + iMi.rcWork.Top) * 0.9 / 2 * Screen.TwipsPerPixelY - nForm.Height \ 2
+            iLeft = (iMi.rcWork.Right + iMi.rcWork.Left) / 2 * Screen.TwipsPerPixelX - nForm.Width \ 2
+            If iTop < 0 Then
+                iTop = (iMi.rcWork.Bottom + iMi.rcWork.Top) / 2 * Screen.TwipsPerPixelY - nForm.Height \ 2
+            End If
+        End If
+        
+        If iLeft < VirtualScreenLeft Then iLeft = VirtualScreenLeft
+        If iTop < VirtualScreenTop Then iTop = VirtualScreenTop
+               
+        If nForm.BorderStyle = vbSizable Then
+            If nForm.Height > VirtualScreenHeight Then
+                nForm.Height = VirtualScreenHeight
+            End If
+            If nForm.Width > VirtualScreenWidth Then
+                nForm.Width = VirtualScreenWidth
+            End If
+        End If
+               
     End If
     
-    If iLeft < 0 Then iLeft = 0
-    If iTop < 0 Then iTop = 0
+    nForm.Top = iTop
+    nForm.Left = iLeft
     
-    frm.Top = iTop
-    frm.Left = iLeft
-    
-    If frm.BorderStyle = vbSizable Then
-        If frm.Height > ScreenUsableHeight Then
-            frm.Height = ScreenUsableHeight
-        End If
-        If frm.Width > Screen.Width Then
-            frm.Width = Screen.Width
-        End If
-    End If
 End Sub
+
+Public Function MonitorCount() As Long
+    MonitorCount = GetSystemMetrics(SM_CMONITORS)
+End Function
+
+Public Function WindowHasCaption(nHwnd As Long) As Boolean
+    WindowHasCaption = (GetWindowLong(nHwnd, GWL_STYLE) And WS_CAPTION) <> 0
+End Function
 
 Public Function IsFormLoaded(nFormNameOrObject As Object) As Boolean
     Dim frm As Form
@@ -3235,6 +3381,7 @@ Public Sub InitGlobal()
         gToolbarsButtonsStyle = vxInstallShieldToolbar
         gToolbarsDefaultIconsSize = vxIconsMedium
         sInitialized = True
+        mFormsTracker.Update  ' to set the current monitor with mouse location as soon as possible when the program starts
     End If
 End Sub
 
@@ -3481,6 +3628,14 @@ Public Function GetTopZOrderFormHwnd(nForms As Object, Optional nFromOwnerFormHw
             Loop
         End If
     End If
+End Function
+
+Public Function GetOwner(nHwnd As Long)
+    GetOwner = GetWindowLong(nHwnd, GWL_HWNDPARENT)
+End Function
+
+Public Function IsWindowOwned(nHwnd As Long)
+    IsWindowOwned = GetOwner(nHwnd) = 0
 End Function
 
 Public Function GetOwnerFormHwnd(nFormHwnd As Long, nForms As Object) As Long
@@ -4316,3 +4471,243 @@ Private Function CallByName2(ByVal cObject As Object, ByRef sProcName As String,
     End If
     
 End Function
+
+Public Function IsWindowsVersionOrMore(nRequiredVersion As vbExWindowsVersion) As Boolean
+    Static sPlatformID As Long
+    Static sMajorVersion As Long
+    Static sMinorVersion As Long
+    
+    If sMajorVersion = 0 Then
+        Dim osinfo As OSVERSIONINFO
+        Dim retvalue As Integer
+        
+        osinfo.dwOSVersionInfoSize = 148
+        osinfo.szCSDVersion = Space$(128)
+        retvalue = GetVersionEx(osinfo)
+        
+        sPlatformID = osinfo.dwPlatformID
+        sMajorVersion = osinfo.dwMajorVersion
+        sMinorVersion = osinfo.dwMinorVersion
+    End If
+    
+    If nRequiredVersion = vx98 Then
+        If sPlatformID = 2 Then ' if it is NT
+            If sMajorVersion > 4 Then ' more than NT4 (win 2000, 2003, XP or Vista, etc)
+                IsWindowsVersionOrMore = True
+            End If
+        Else ' if isn't NT
+            If (sMajorVersion >= 4) And (sMinorVersion >= 10) Then  ' If it is 98, ME...
+                IsWindowsVersionOrMore = True
+            End If
+        End If
+    ElseIf nRequiredVersion = vx2000 Then
+        If sPlatformID = 2 Then ' if it is NT
+            If sMajorVersion >= 5 Then
+                IsWindowsVersionOrMore = True
+            End If
+        End If
+    ElseIf nRequiredVersion = vxXP Then
+        If osinfo.dwPlatformID = 2 Then ' if it is NT
+            If (sMajorVersion = 5) And (sMinorVersion >= 1) Or (sMajorVersion > 5) Then
+                IsWindowsVersionOrMore = True
+            End If
+        End If
+    ElseIf nRequiredVersion = vxVista Then
+        If osinfo.dwPlatformID = 2 Then ' if it is NT
+            If sMajorVersion >= 6 Then
+                IsWindowsVersionOrMore = True
+            End If
+        End If
+    ElseIf nRequiredVersion = vx7 Then
+        If osinfo.dwPlatformID = 2 Then ' if it is NT
+            If sMajorVersion > 6 Then
+                IsWindowsVersionOrMore = True
+            Else
+                If sMajorVersion = 6 Then
+                    If sMinorVersion >= 1 Then
+                        IsWindowsVersionOrMore = True
+                    End If
+                End If
+            End If
+        End If
+    ElseIf nRequiredVersion = vx8 Then
+        If osinfo.dwPlatformID = 2 Then ' if it is NT
+            If sMajorVersion > 6 Then
+                IsWindowsVersionOrMore = True
+            Else
+                If sMajorVersion = 6 Then
+                    If sMinorVersion >= 2 Then
+                        IsWindowsVersionOrMore = True
+                    End If
+                End If
+            End If
+        End If
+    ElseIf nRequiredVersion = vx81 Then
+        If osinfo.dwPlatformID = 2 Then ' if it is NT
+            If sMajorVersion > 6 Then
+                IsWindowsVersionOrMore = True
+            Else
+                If sMajorVersion = 6 Then
+                    If sMinorVersion >= 3 Then
+                        IsWindowsVersionOrMore = True
+                    End If
+                End If
+            End If
+        End If
+    ElseIf nRequiredVersion = vx10 Then
+        If osinfo.dwPlatformID = 2 Then ' if it is NT
+            If sMajorVersion > 10 Then
+                IsWindowsVersionOrMore = True
+            End If
+        End If
+    End If
+End Function
+
+Public Sub ShowForm(nForm As Object, Optional Modal As vbExShowFormConstants = vbModeless, Optional OwnerForm)
+    Dim iHwndOwnerForm As Long
+    Dim iMonitorOwner As Long
+    Dim iMonitorForm As Long
+    Dim iMICurrent As MONITORINFO
+    Dim iMIForm As MONITORINFO
+    Dim iLng As Long
+    
+    If Not IsMissing(OwnerForm) Then
+        If Not OwnerForm Is Nothing Then
+            On Error Resume Next
+            iHwndOwnerForm = OwnerForm.hWnd
+            On Error GoTo 0
+        End If
+    End If
+    
+    If iHwndOwnerForm <> 0 Then
+        iMonitorOwner = MonitorFromWindow(iHwndOwnerForm, MONITOR_DEFAULTTOPRIMARY)
+        If iMonitorOwner <> 0 Then
+            iMonitorForm = MonitorFromWindow(nForm.hWnd, MONITOR_DEFAULTTOPRIMARY)
+            If iMonitorForm <> iMonitorOwner Then
+                iMICurrent.cbSize = Len(iMICurrent)
+                iMIForm.cbSize = Len(iMIForm)
+                GetMonitorInfo iMonitorOwner, iMICurrent
+                GetMonitorInfo iMonitorForm, iMIForm
+                If ((iMICurrent.rcWork.Bottom - iMICurrent.rcWork.Top) <> 0) And ((iMIForm.rcWork.Bottom - iMIForm.rcWork.Top) <> 0) Then
+                    nForm.Move nForm.Left + (iMICurrent.rcWork.Left - iMIForm.rcWork.Left) * Screen.TwipsPerPixelX, nForm.Top + (iMICurrent.rcWork.Top - iMIForm.rcWork.Top) * Screen.TwipsPerPixelY
+                    If nForm.Left < (iMICurrent.rcWork.Left * Screen.TwipsPerPixelX) Then
+                        nForm.Left = iMICurrent.rcWork.Left * Screen.TwipsPerPixelX
+                    End If
+                    If nForm.Top < (iMICurrent.rcWork.Top * Screen.TwipsPerPixelY) Then
+                        nForm.Top = iMICurrent.rcWork.Top * Screen.TwipsPerPixelY
+                    End If
+                    If nForm.BorderStyle = vbSizable Then
+                        If nForm.Height > (iMICurrent.rcWork.Bottom - iMICurrent.rcWork.Top) * Screen.TwipsPerPixelY Then
+                            nForm.Height = (iMICurrent.rcWork.Bottom - iMICurrent.rcWork.Top) * Screen.TwipsPerPixelY
+                        End If
+                        If nForm.Width > (iMICurrent.rcWork.Right - iMICurrent.rcWork.Left) * Screen.TwipsPerPixelX Then
+                            nForm.Width = (iMICurrent.rcWork.Right - iMICurrent.rcWork.Left) * Screen.TwipsPerPixelX
+                        End If
+                        
+                        iLng = iMICurrent.rcWork.Right - nForm.Width / Screen.TwipsPerPixelX
+                        If (nForm.Left / Screen.TwipsPerPixelX) > iLng Then
+                            If MonitorFromPoint((nForm.Left + nForm.Width) / Screen.TwipsPerPixelX, (nForm.Top + nForm.Height) / Screen.TwipsPerPixelY, MONITOR_DEFAULTTONULL) = 0 Then ' if there is no monitor covering that point
+                                nForm.Left = iLng * Screen.TwipsPerPixelX
+                            End If
+                        End If
+                        iLng = iMICurrent.rcWork.Bottom - nForm.Height / Screen.TwipsPerPixelY
+                        If (nForm.Top / Screen.TwipsPerPixelY) > iLng Then
+                            If MonitorFromPoint((nForm.Left + nForm.Width) / Screen.TwipsPerPixelX, (nForm.Top + nForm.Height) / Screen.TwipsPerPixelY, MONITOR_DEFAULTTONULL) = 0 Then ' if there is no monitor covering that point
+                                nForm.Top = iLng * Screen.TwipsPerPixelY
+                            End If
+                        End If
+                    
+                    End If
+                End If
+            End If
+        End If
+    End If
+    
+    If Modal = vbModalEx Then
+        ShowModal nForm
+    Else
+        If MonitorCount > 1 And GetSetting(AppNameForRegistry, "MInfo", Base64Encode(nForm.Name) & ".MI", "0") = "0" Then
+            iMonitorForm = MonitorFromWindow(nForm.hWnd, MONITOR_DEFAULTTONULL)
+            If iMonitorForm <> 0 Then
+                If mFormsTracker.CurrentMonitor <> iMonitorForm Then
+                    iMICurrent.cbSize = Len(iMICurrent)
+                    iMIForm.cbSize = Len(iMIForm)
+                    GetMonitorInfo mFormsTracker.CurrentMonitor, iMICurrent
+                    GetMonitorInfo iMonitorForm, iMIForm
+                    If ((iMICurrent.rcWork.Bottom - iMICurrent.rcWork.Top) <> 0) And ((iMIForm.rcWork.Bottom - iMIForm.rcWork.Top) <> 0) Then
+                        nForm.Move nForm.Left + (iMICurrent.rcWork.Left - iMIForm.rcWork.Left) * Screen.TwipsPerPixelX, nForm.Top + (iMICurrent.rcWork.Top - iMIForm.rcWork.Top) * Screen.TwipsPerPixelY
+                        If nForm.Left < (iMICurrent.rcWork.Left * Screen.TwipsPerPixelX) Then
+                            nForm.Left = iMICurrent.rcWork.Left * Screen.TwipsPerPixelX
+                        End If
+                        If nForm.Top < (iMICurrent.rcWork.Top * Screen.TwipsPerPixelY) Then
+                            nForm.Top = iMICurrent.rcWork.Top * Screen.TwipsPerPixelY
+                        End If
+                        If nForm.BorderStyle = vbSizable Then
+                            If nForm.Height > (iMICurrent.rcWork.Bottom - iMICurrent.rcWork.Top) * Screen.TwipsPerPixelY Then
+                                nForm.Height = (iMICurrent.rcWork.Bottom - iMICurrent.rcWork.Top) * Screen.TwipsPerPixelY
+                            End If
+                            If nForm.Width > (iMICurrent.rcWork.Right - iMICurrent.rcWork.Left) * Screen.TwipsPerPixelX Then
+                                nForm.Width = (iMICurrent.rcWork.Right - iMICurrent.rcWork.Left) * Screen.TwipsPerPixelX
+                            End If
+                        End If
+                    End If
+                End If
+            End If
+        End If
+'        If WindowHasCaption(nForm.hWnd) And (Not IsWindowOwned(nForm.hWnd)) And (iHwndOwnerForm = 0) Then
+        If WindowHasCaption(nForm.hWnd) Then
+            mFormsTracker.AddForm nForm
+        Else
+            mFormsTracker.Update  ' to ensure the monitor set with mouse location with the first form
+        End If
+        If Modal = vbModeless Then
+            If IsMissing(OwnerForm) Then
+                nForm.Show
+            Else
+                nForm.Show , OwnerForm
+            End If
+        Else
+            If IsMissing(OwnerForm) Then
+                nForm.Show vbModal
+            Else
+                nForm.Show vbModal, OwnerForm
+            End If
+        End If
+    End If
+    
+End Sub
+
+Public Function GetActiveWindowHwnd() As Long
+    GetActiveWindowHwnd = GetActiveFormHwnd
+    If GetActiveWindowHwnd = 0 Then
+        GetActiveWindowHwnd = GetForegroundWindow
+        If GetWindowThreadProcessId(GetActiveWindowHwnd, 0&) <> App.ThreadID Then
+            GetActiveWindowHwnd = 0
+        End If
+    End If
+End Function
+
+Public Function VirtualScreenLeft() As Long
+    VirtualScreenLeft = GetSystemMetrics(SM_XVIRTUALSCREEN)
+End Function
+
+Public Function VirtualScreenTop() As Long
+    VirtualScreenTop = GetSystemMetrics(SM_YVIRTUALSCREEN)
+End Function
+
+Public Function VirtualScreenWidth() As Long
+    VirtualScreenWidth = GetSystemMetrics(SM_CXVIRTUALSCREEN)
+End Function
+
+Public Function VirtualScreenHeight() As Long
+    VirtualScreenHeight = GetSystemMetrics(SM_CYVIRTUALSCREEN)
+End Function
+
+Public Function VirtualScreenRight() As Long
+    VirtualScreenRight = GetSystemMetrics(SM_XVIRTUALSCREEN) + GetSystemMetrics(SM_CXVIRTUALSCREEN)
+End Function
+
+Public Function VirtualScreenBottom() As Long
+    VirtualScreenBottom = GetSystemMetrics(SM_YVIRTUALSCREEN) + GetSystemMetrics(SM_CYVIRTUALSCREEN)
+End Function
+    

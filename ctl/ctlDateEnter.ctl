@@ -93,6 +93,21 @@ Option Explicit
 
 Implements ISubclass
 
+Private Type DATETIMEPICKERINFO
+    cbSize As Long
+    rcCheck As RECT
+    stateCheck As Long
+    rcButton As RECT
+    stateButton As Long
+    hwndEdit As Long
+    hwndUD As Long
+    hwndDropDown As Long
+End Type
+
+Private Const DTM_FIRST As Long = &H1000
+Private Const DTM_GETDATETIMEPICKERINFO As Long = DTM_FIRST + 14
+
+Private Const EM_REPLACESEL As Long = &HC2
 Private Const WM_UILANGCHANGED As Long = WM_USER + 12
 Private Const WM_KILLFOCUS As Long = &H8&
 Private Const WM_SETFOCUS As Long = &H7
@@ -201,6 +216,7 @@ Private mSetFocus2Control As Variant
 Private mOnFocus As Boolean
 Private mInsideValidate1 As Boolean
 Private mSettingIncompleteValue As Boolean
+Private mSettingNullDateFromDTPicker1ChangeEvent As Boolean
 
 Private WithEvents mForm As Form
 Attribute mForm.VB_VarHelpID = -1
@@ -312,7 +328,7 @@ End Sub
 
 Private Sub tmrSetFocusDTPickerDroppedDown_Timer()
     tmrSetFocusDTPickerDroppedDown.Enabled = False
-    SetFocusAPI DTPicker1.hWndDTPicker
+    SetFocusAPI DTPicker1.hWnd
 End Sub
 
 Private Sub tmrSetFocusToMasked_Timer()
@@ -348,6 +364,7 @@ Private Sub txtMasked_Change()
     Static sLastDate As Variant
     Dim iDateAnt As Variant
     
+    If mSettingNullDateFromDTPicker1ChangeEvent Then Exit Sub
     If mInsideKeyPress Then Exit Sub
     If sInside Then Exit Sub
     sInside = True
@@ -632,7 +649,9 @@ Private Sub DTPicker1_Change()
             Value = DTPicker1.Value
         End If
     Else
+        mSettingNullDateFromDTPicker1ChangeEvent = True
         Value = Null
+        mSettingNullDateFromDTPicker1ChangeEvent = False
     End If
 End Sub
 
@@ -756,6 +775,10 @@ End Sub
 
 Private Sub UserControl_Resize()
     Dim iAuxSng As Single
+    Dim iDTPInfo As DATETIMEPICKERINFO
+    Dim iTop As Long
+    Dim iLeft As Long
+    Dim iHeight As Long
     
     If UserControl.Width < 800 Then UserControl.Width = 800
     
@@ -772,10 +795,21 @@ Private Sub UserControl_Resize()
     DTPicker1.Top = 0
     DTPicker1.Width = UserControl.ScaleWidth
     DTPicker1.Height = UserControl.ScaleHeight
-    txtMasked.Left = 3 * Screen.TwipsPerPixelX
-    txtMasked.Top = 3 * Screen.TwipsPerPixelY
-    txtMasked.Height = UserControl.ScaleHeight - 5 * Screen.TwipsPerPixelY
-    txtMasked.Width = UserControl.ScaleWidth - (6.49 + GetSystemMetrics(SM_CXVSCROLL)) * Screen.TwipsPerPixelX
+    iDTPInfo.cbSize = Len(iDTPInfo)
+    SendMessage DTPicker1.hWnd, DTM_GETDATETIMEPICKERINFO, 0&, VarPtr(iDTPInfo)
+    iTop = 3
+    iLeft = 3
+    If iDTPInfo.rcCheck.Left < iLeft Then iLeft = iDTPInfo.rcCheck.Left
+    If iDTPInfo.rcCheck.Top < iTop Then iTop = iDTPInfo.rcCheck.Top
+    
+    txtMasked.Left = iLeft * Screen.TwipsPerPixelX
+    txtMasked.Top = iTop * Screen.TwipsPerPixelY
+    
+    iHeight = UserControl.ScaleHeight - 5 * Screen.TwipsPerPixelY
+    If iHeight < (iDTPInfo.rcCheck.Bottom * Screen.TwipsPerPixelY - txtMasked.Top) Then iHeight = iDTPInfo.rcCheck.Bottom * Screen.TwipsPerPixelY - txtMasked.Top
+    
+    txtMasked.Height = iHeight
+    txtMasked.Width = UserControl.ScaleWidth - (iDTPInfo.rcButton.Right - iDTPInfo.rcButton.Left + 2) * Screen.TwipsPerPixelX
     
     lblBorder.Move Screen.TwipsPerPixelX, 0, UserControl.ScaleWidth - (3 + mVerticalScrollbarWidth) * Screen.TwipsPerPixelX, UserControl.ScaleHeight - Screen.TwipsPerPixelY
 End Sub
@@ -791,7 +825,13 @@ Public Property Let Value(nDate As Variant)
         mValue = Null
     End If
     If IsNull(mValue) Or (Not IsValidDate(mValue)) Then
-        txtMasked.Text = mEmptyDate
+        If mSettingNullDateFromDTPicker1ChangeEvent Then
+            txtMasked.SelStart = 0
+            txtMasked.SelLength = Len(txtMasked.Text)
+            SendMessage txtMasked.hWnd, EM_REPLACESEL, ByVal 1&, ByVal mEmptyDate
+        Else
+            txtMasked.Text = mEmptyDate
+        End If
         txtMasked.Visible = True
         DTPicker1.TabStop = False
         txtMasked.Refresh
@@ -2053,3 +2093,10 @@ Public Property Let DateFormat(nValue As vbExDateFormatConstants)
     End If
 End Property
 
+Public Property Get hWndTextBox() As Long
+    hWndTextBox = txtMasked.hWnd
+End Property
+
+Public Property Get hWndDTPicker() As Long
+    hWndDTPicker = DTPicker1.hWnd
+End Property

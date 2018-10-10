@@ -1,7 +1,7 @@
 Type=Exe
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#F:\WINDOWS\system32\stdole2.tlb#OLE Automation
-Object={BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0; TabCtl32.Ocx
-Object={F22668DE-E08D-467B-8E41-13900013BD5F}#2.0#0; vbExtra2.ocx
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\Windows\SysWOW64\stdole2.tlb#OLE Automation
+Object={BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0; TABCTL32.OCX
+Object={F22668DE-E08D-467B-8E41-13900013BD5F}#2.7#0; vbExtra2.ocx
 Form=frmTest.frm
 Form=frmHelp.frm
 Form=frmTestSBS.frm

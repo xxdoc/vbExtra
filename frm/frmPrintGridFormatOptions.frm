@@ -1032,13 +1032,8 @@ Private Sub fpcPageNumbers_Change()
 End Sub
 
 Private Sub Form_Load()
-    Dim iPt As POINTAPI
-    
-    GetCursorPos iPt
-    iPt.x = iPt.x - 15
-    If iPt.x < 10 Then iPt.x = 10
-    iPt.y = iPt.y + 20
-    Me.Move ScaleX(iPt.x, vbPixels, ScaleMode), ScaleY(iPt.y, vbPixels, ScaleMode)
+        
+    PositionForm
     
     mLoading = True
     LoadGUICaptions
@@ -1050,7 +1045,7 @@ Private Sub Form_Load()
     SetTextBoxNumeric txtLineWidth
     SetTextBoxNumeric txtLineWidthHeadersSeparatorLine
     
-    PersistForm Me, Forms
+'    PersistForm Me, Forms
     CreateFonts
     LoadPageNumbersFormatStrings
     LoadDefaultSettings
@@ -1704,7 +1699,7 @@ Private Sub SetContainerElementsVisibility(nContainer As Control, nVisible As Bo
     Next iCtl
 End Sub
 
-Private Sub sst1_ChangeControlBackColor(ControlName As String, ControlTypeName As String, Cancel As Boolean)
+Private Sub sst1_ChangeControlBackColor(ControlName As String, ControlTypeName As String, ByRef Cancel As Boolean)
     If ControlTypeName = "ButtonEx" Then Cancel = True
 End Sub
 
@@ -1984,3 +1979,22 @@ End Sub
 Public Property Let FromFlexFnObject(nValue As Boolean)
     mFromFlexFnObject = nValue
 End Property
+
+Private Sub PositionForm()
+    Dim iAFHwnd As Long
+    Dim iRc As RECT
+    Dim iPt As POINTAPI
+    
+    iAFHwnd = GetActiveFormHwnd
+    If iAFHwnd <> 0 Then
+        GetWindowRect iAFHwnd, iRc
+        Me.Move ScaleX(iRc.Left + 100, vbPixels, vbTwips), ScaleY(iRc.Top + 100, vbPixels, vbTwips)
+    Else
+        GetCursorPos iPt
+        iPt.x = iPt.x - 15
+        If iPt.x < 10 Then iPt.x = 10
+        iPt.y = iPt.y + 20
+        Me.Move ScaleX(iPt.x, vbPixels, vbTwips), ScaleY(iPt.y, vbPixels, vbTwips)
+    End If
+End Sub
+

@@ -676,6 +676,3 @@ Private Sub txtScalePercent_GotFocus()
     If txtScalePercent.SelStart = 0 Then txtScalePercent.SelStart = Len(txtScalePercent.Text)
 End Sub
 
-Private Sub txtScalePercent_KeyDown(KeyCode As Integer, Shift As Integer)
-
-End Sub

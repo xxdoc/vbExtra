@@ -61,7 +61,7 @@ Private Declare Function EbIsResettingVBA6 Lib "vba6" Alias "EbIsResetting" () A
 Private Const GWL_WNDPROC = (-4)
 Private Const WM_DESTROY = &H2
 Private Const WM_NCDESTROY As Long = &H82&
-Private Const WM_UAHDESTROYWINDOW As Long = &H90& 'Undocumented.
+'Private Const WM_UAHDESTROYWINDOW As Long = &H90& 'Undocumented.
 
 ' SubTimer is independent of VBCore, so it hard codes error handling
 
@@ -468,7 +468,8 @@ Private Function WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, ByVal wParam
         End If
     Else
         ' Not handled:
-        If (iMsg = WM_DESTROY) Or (iMsg = WM_NCDESTROY) Or (iMsg = WM_UAHDESTROYWINDOW) Then
+'        If (iMsg = WM_DESTROY) Or (iMsg = WM_NCDESTROY) Or (iMsg = WM_UAHDESTROYWINDOW) Then
+        If (iMsg = WM_DESTROY) Or (iMsg = WM_NCDESTROY) Then
             ' If WM_DESTROY isn't handled already, we should
             ' clear up any subclass
             If GetWindowLong(hWnd, GWL_WNDPROC) = mAddressOfWindowProc Then ' if we are at the top of the subclassing chain
@@ -479,7 +480,8 @@ Private Function WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, ByVal wParam
                 If GetWindowLong(hWnd, GWL_WNDPROC) = mAddressOfWindowProc Then ' it did
                     pClearUp hWnd, uIdSubclass
                 Else
-                    If (iMsg = WM_NCDESTROY) Or (iMsg = WM_UAHDESTROYWINDOW) Then ' in these cases we will unsubclass anyway, but for WM_DESTROY we will wait for the WM_NCDESTROY message
+'                    If (iMsg = WM_NCDESTROY) Or (iMsg = WM_UAHDESTROYWINDOW) Then ' in these cases we will unsubclass anyway, but for WM_DESTROY we will wait for the WM_NCDESTROY message
+                    If (iMsg = WM_NCDESTROY) Then  ' in these cases we will unsubclass anyway, but for WM_DESTROY we will wait for the WM_NCDESTROY message
                         pClearUp hWnd, uIdSubclass
                     End If
                 End If

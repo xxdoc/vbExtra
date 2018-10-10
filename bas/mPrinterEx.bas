@@ -94,3 +94,6 @@ Public Property Get PrinterExCurrentDocument() As cPrinterEx
     Set PrinterExCurrentDocument = mPrinterExCurrentDocument
 End Property
 
+Public Property Set PrinterExCurrentDocument(nPrinterExCurrentDocument As cPrinterEx)
+    Set mPrinterExCurrentDocument = nPrinterExCurrentDocument
+End Property

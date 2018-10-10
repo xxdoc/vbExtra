@@ -775,12 +775,16 @@ End Function
 '----------------------------------------------------------------------------------------------------------------
 
 Public Property Get hWnd() As Long
-    hWnd = UserControl.hWnd
+    hWnd = mDTPickerHwnd
 End Property
 
-Public Property Get hWndDTPicker() As Long
-    hWndDTPicker = mDTPickerHwnd
+Public Property Get hWndUserControl() As Long
+    hWndUserControl = UserControl.hWnd
 End Property
+
+'Public Property Get hWndDTPicker() As Long
+'    hWndDTPicker = mDTPickerHwnd
+'End Property
 
 Public Property Get UpDown() As Boolean
     UpDown = mUpDown

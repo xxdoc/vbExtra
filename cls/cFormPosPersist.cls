@@ -41,7 +41,7 @@ Private mNameAndContext As String
 Private mCollection As cObjectHandlersCollection
 Private mPersistMinimized As Boolean
 
-Public Sub SetForm(nForm As Form, nForms As Object, Optional nConsiderContext As Boolean = True, Optional nCenterFormTheFirstTime As Boolean = True, Optional nInitialLeft, Optional nInitialTop, Optional nInitialWidth, Optional nInitialHeight, Optional nPersistLeft As Boolean = True, Optional nPersistTop As Boolean = True, Optional nPersistWidth As Boolean = True, Optional nPersistHeight As Boolean = True, Optional nMaxTop, Optional nPersistMinimizedState As Boolean, Optional nContext As String, Optional nParent As cObjectHandlersCollection)
+Public Sub SetForm(nForm As Object, nForms As Object, Optional nConsiderContext As Boolean = True, Optional nCenterFormTheFirstTime As Boolean = True, Optional nInitialLeft, Optional nInitialTop, Optional nInitialWidth, Optional nInitialHeight, Optional nPersistLeft As Boolean = True, Optional nPersistTop As Boolean = True, Optional nPersistWidth As Boolean = True, Optional nPersistHeight As Boolean = True, Optional nMaxTop, Optional nPersistMinimizedState As Boolean, Optional nContext As String, Optional nParent As cObjectHandlersCollection)
     Dim iWP As WINDOWPLACEMENT
     Dim iRect1 As RECT
     Dim iRect2 As RECT
@@ -222,35 +222,6 @@ Public Sub SetForm(nForm As Form, nForms As Object, Optional nConsiderContext As
 
 End Sub
 
-Private Sub CenterForm(frm As Form, Optional TrueCenter As Boolean = False)
-    Dim iTop As Long
-    Dim iLeft As Long
-    
-    If frm.WindowState <> vbNormal Then Exit Sub
-    If TrueCenter Then
-        iTop = Screen.Height \ 2 - frm.Height \ 2
-        iLeft = Screen.Width \ 2 - frm.Width \ 2
-    Else
-        iTop = (Screen.Height * 0.9) \ 2 - frm.Height \ 2
-        iLeft = Screen.Width \ 2 - frm.Width \ 2
-    End If
-    
-    If iLeft < 0 Then iLeft = 0
-    If iTop < 0 Then iTop = 0
-    
-    frm.Top = iTop
-    frm.Left = iLeft
-    
-    If frm.BorderStyle = vbSizable Then
-        If frm.Height > ScreenUsableHeight Then
-            frm.Height = ScreenUsableHeight
-        End If
-        If frm.Width > Screen.Width Then
-            frm.Width = Screen.Width
-        End If
-    End If
-End Sub
-
 Private Sub mForm_Activate()
     Static sFirst As Boolean
     
@@ -335,17 +306,28 @@ End Sub
 
 Private Sub mTimerPosition_ThatTime()
     Dim iRect As RECT
+    Dim iMonitorForm As Long
+    Dim iMIForm As MONITORINFO
     
     mTimerPosition.Interval = 0
     Set mTimerPosition = Nothing
     If Not mForm Is Nothing Then
         If IsWindow(mFormHwnd) <> 0 Then
             If IsWindowVisible(mFormHwnd) <> 0 Then
-                GetWindowRect mFormHwnd, iRect
-                If ((iRect.Left + 50) > (Screen.Width / Screen.TwipsPerPixelX)) Or ((iRect.Top + 70) > (Screen.Height / Screen.TwipsPerPixelY)) Then
-                    CenterForm mForm
-                End If
-                If ((iRect.Right - 50) < 0) Or ((iRect.Bottom - 70) < 0) Then
+                iMonitorForm = MonitorFromWindow(mForm.hWnd, MONITOR_DEFAULTTONULL)
+                If iMonitorForm <> 0 Then
+                    iMIForm.cbSize = Len(iMIForm)
+                    GetMonitorInfo iMonitorForm, iMIForm
+                    If ((iMIForm.rcWork.Bottom - iMIForm.rcWork.Top) <> 0) Then
+                        GetWindowRect mFormHwnd, iRect
+                        If ((iRect.Left + 4) > iMIForm.rcWork.Right) Or ((iRect.Top + 6) > iMIForm.rcWork.Bottom) Then
+                            CenterForm mForm
+                        End If
+                        If ((iRect.Right - 50) < 0) Or ((iRect.Bottom - 70) < 0) Then
+                            CenterForm mForm
+                        End If
+                    End If
+                Else
                     CenterForm mForm
                 End If
             End If

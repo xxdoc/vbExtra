@@ -1,4 +1,4 @@
-ÿy^Introduction:
+ÿï_Introduction:
 
 This control is a direct replacement of the original SSTab control that comes with VB6. 
 All the code for the control is in the file uscSSTabEx.ctl, the other files are for property pages and subclassing.
@@ -23,7 +23,7 @@ Before editing the *.frm files, make a backup copy of your project for being abl
 
 After you successfully replaced the control and opened your project with the new control, there is still something else that you need to change:
 The original property Tab (that returns or sets the selected -or currently active- tab) now was renamed to TabSel. You need to replace in all the places that appears ControlName.Tab with ControlName.TabSel (if there is any in your code).
-When Style is set to ssStylePropertyPage, the TabMaxWidth property setting is no longer ignored (as it was in the original SSTab). So if Style is set to ssStylePropertyPage, ensure that TabMaxWidth is set to 0 (zero) when upgrading.
+When Style is set to efnStylePropertyPage, the TabMaxWidth property setting is no longer ignored (as it was in the original SSTab). So if Style is set to efnStylePropertyPage, ensure that TabMaxWidth is set to 0 (zero) when upgrading.
 
 
 Reference:
@@ -74,6 +74,7 @@ TabControls:			---R
 TabEnabled:			O---
 TabHeight:			ODP-
 TabHoverHighlight:		-D--
+TabHoverEffect:                 -D--
 TabMaxWidth:			ODP-
 TabMinWidth:			-DP-
 TabOrientation:			ODP-
@@ -102,9 +103,9 @@ Description:
 AutoRelocateControls:
 Returns or sets a value that determines if the contained controls will be automatically relocated when the tab body changes in size or position.
 Values:
-ssRelocateOnTabOrientatioChange: The contained controls will be automatically relocated when TabOrientation changes.
-ssRelocateAlways: The contained controls will be automatically relocated when TabOrientation changes and also when the tab space changes in height.
-ssRelocateNever:  The contained controls will never be automatically relocated. Choose this value if you are relocating the controls by code in the Form_Resize or SSTabEx_TabBodyResize events.
+efnRelocateOnTabOrientatioChange: The contained controls will be automatically relocated when TabOrientation changes.
+efnRelocateAlways: The contained controls will be automatically relocated when TabOrientation changes and also when the tab space changes in height.
+efnRelocateNever:  The contained controls will never be automatically relocated. Choose this value if you are relocating the controls by code in the Form_Resize or SSTabEx_TabBodyResize events.
 
 BackColor:
 Returns or sets the background color. The background color is not the color of the background of the tabs (that color is handled by the TabBackColor property), but the color ouside the tabs.
@@ -145,10 +146,10 @@ MaskColor:
 Returns or sets the color that will be transparent for the bitmaps that are in the TabPicture, TabPic16, TabPic20 and TabPic24 properties.
 
 MinWidthNeeded, MinHeightNeeded:
-When TabStyleWidth is set to ssNonJustified, it returns the minimun Width of the control needed to show all the tab captions without wrapping them into another line (when WordWrap is set to True) or without showing an elipsis (when WordWrap is set to False).
-According to TabOrientation, use MinWidthNeeded for ssTabOrientationTop and ssTabOrientationBottom, and MinHeightNeeded for ssTabOrientationLeft and ssTabOrientationRight.
-When TabStyleWidth is set to other than ssNonJustified, it returns 0 (zero).
-Note: TabWidthStyle is set automatically to ssNonJustified (internally) when Style is set to ssStylePropertyPage and TabWidthStyle is set to ssTwsAuto.
+When TabStyleWidth is set to efnTWSNonJustified, it returns the minimun Width of the control needed to show all the tab captions without wrapping them into another line (when WordWrap is set to True) or without showing an elipsis (when WordWrap is set to False).
+According to TabOrientation, use MinWidthNeeded for efnTabOrientationTop and efnTabOrientationBottom, and MinHeightNeeded for efnTabOrientationLeft and efnTabOrientationRight.
+When TabStyleWidth is set to other than efnTWSNonJustified, it returns 0 (zero).
+Note: TabWidthStyle is set automatically to efnTWSNonJustified (internally) when Style is set to efnStylePropertyPage and TabWidthStyle is set to efnTWSAuto.
 
 MouseIcon:
 Returns or sets the icon used as the mouse pointer when the MousePointer property is set to 99 (custom).
@@ -171,7 +172,7 @@ Returns or sets a value that determines if the drawing of the control has to be 
 
 Rows:
 Returns the number of rows of tabs.
-The Rows property value can change its value when new tabs are dinamically added or, when TabWidthStyle is set to ssFixed or ssNonJustified and TabsPerRow was changed, or TabWidthStyle is set to ssJustified and the Width of the control changed or the captions of the tabs changed or the Font setting has changed.
+The Rows property value can change its value when new tabs are dinamically added or, when TabWidthStyle is set to efnTWSFixed or efnTWSNonJustified and TabsPerRow was changed, or TabWidthStyle is set to efnTWSJustified and the Width of the control changed or the captions of the tabs changed or the Font setting has changed.
 You can use the RowsChange event to properly set the position of the contained controls.
 
 ShowDisabledState:
@@ -183,7 +184,7 @@ Returns or sets a value that determines if the focus rectangle is visible on a t
 
 ShowRowsInPerspective:
 Returns or sets a value that determines when the control has more that one row of tabs, if they will be drawn changing the horizontal position on each row.
-If the value is ssYNAuto, the behavior will be determined by the Style property setting in this way: for ssStyleTabbedDialog and ssStylePropertyPage the rows will be drawn is perspective, and for ssStyleTabStrip without.
+If the value is efnYNAuto, the behavior will be determined by the Style property setting in this way: for efnStyleTabbedDialog and efnStylePropertyPage the rows will be drawn is perspective, and for efnStyleTabStrip without.
 
 SoftEdges:
 Returns or sets a value that determines if the edges will be displayed with less contrast: lighter and more colored.
@@ -193,19 +194,19 @@ Returns or sets the style of the tabs.
 This property acts as a meta-property. It means that it sets at once certain features that can be set individually through other properties.
 It performs internal settings for TabAppearance, TabWidthStyle, ShowRowsInPerspective and TabSelFontBold as long as these properties are set to Auto.
 Values:
-ssStyleTabbedDialog: (Default) TabAppearance is set to ssTaTabbedDialog, TabWidthStyle to ssFixed, ShowRowsInPerspective to ssYes and TabSelFontBold to ssYes.
-ssStylePropertyPage: TabAppearance is set to ssTaPropertyPage, TabWidthStyle to ssNonJustified, ShowRowsInPerspective to ssYes and TabSelFontBold to ssNo.
-ssStyleTabStrip:  TabAppearance is set to ssTaPropertyPage, TabWidthStyle to ssJustified, ShowRowsInPerspective to ssNo and TabSelFontBold to ssNo. This setting wasn't available in the original SSTab.
+efnStyleTabbedDialog: (Default) TabAppearance is set to efnTATabbedDialog, TabWidthStyle to efnTWSFixed, ShowRowsInPerspective to efnYes and TabSelFontBold to efnYes.
+efnStylePropertyPage: TabAppearance is set to efnTAPropertyPage, TabWidthStyle to efnTWSNonJustified, ShowRowsInPerspective to efnYes and TabSelFontBold to efnNo.
+efnStyleTabStrip:  TabAppearance is set to efnTAPropertyPage, TabWidthStyle to efnTWSJustified, ShowRowsInPerspective to efnNo and TabSelFontBold to efnNo. This setting wasn't available in the original SSTab.
 The changes are internal, they are not reflected on these properties values (they remain set to Auto).
 
 TabAppearance:
 Returns or sets a value that determines the appearance of the tabs. When the control is themed, the theme defines the appearance.
 Values:
-ssTaTabbedDialog: The appearance if of the original SSTab control when the Style property is left with the default value.
-ssTaPropertyPage:  The appearance if of the original SSTab control when the Style property is set to ssStylePropertyPage.
-ssTaTabbedDialogRounded: As ssTaTabbedDialog, but the tabs have the corners rounded.
-ssTaPropertyPageRounded: As ssTaPropertyPage, but the tabs have the corners rounded.
-ssTaAuto: The appearance is defined by the Style property (setting it to ssTaTabbedDialog or to ssTaPropertyPage).
+efnTATabbedDialog: The appearance if of the original SSTab control when the Style property is left with the default value.
+efnTAPropertyPage:  The appearance if of the original SSTab control when the Style property is set to efnStylePropertyPage.
+efnTATaTabbedDialogRounded: As efnTATabbedDialog, but the tabs have the corners rounded.
+efnTAPropertyPageRounded: As efnTAPropertyPage, but the tabs have the corners rounded.
+efnTAAuto: The appearance is defined by the Style property (setting it to efnTATabbedDialog or to efnTAPropertyPage).
 
 TabBackColor:
 Returns or sets the background color of the tabs including the tab body (the space were the contained controls are located).
@@ -233,12 +234,15 @@ Returns or sets the height of the tabs.
 TabHoverHighlight:
 Returns or sets a value that determines if the tabs will appear highlighted when the mouse is over them.
 
+TabHoverEffect:
+Returns/sets a value that determines if the tabs will show an effect when they are being highlighted with the mouse over them.
+
 TabMaxWidth:
 Returns or sets the maximum width of each tab. If set to 0 (zero), it means no maximun.
-When the TabWidthStyle property setting is ssFixed and the TabMaxWidth property is set to 0 (zero), the control automatically sizes the tabs, based on the TabsPerRow property, to fit evenly across the control.
-Unlike the original SSTab, this property is no longer ignored when Style setting is ssStylePropertyPage.
-If TabWidthStyle property setting is ssNonJustified or ssJustified, It determines the maximun width that a tab can have, regardeless of the lenght of the caption. When a tab caption doesn't fit in the available width, if WordWrap is set to True it will have an additional line, and if WordWrap is set to False it will cut the caption text and add an ellipsis.
-In the case when TabWidthStyle setting is ssJustified and it is needed more space than TabMaxWidth * Rows to fill all the rows space, then the tabs can have more width than the specified in the TabMaxWidth setting.
+When the TabWidthStyle property setting is efnTWSFixed and the TabMaxWidth property is set to 0 (zero), the control automatically sizes the tabs, based on the TabsPerRow property, to fit evenly across the control.
+Unlike the original SSTab, this property is no longer ignored when Style setting is efnStylePropertyPage.
+If TabWidthStyle property setting is efnTWSNonJustified or efnTWSJustified, It determines the maximun width that a tab can have, regardeless of the lenght of the caption. When a tab caption doesn't fit in the available width, if WordWrap is set to True it will have an additional line, and if WordWrap is set to False it will cut the caption text and add an ellipsis.
+In the case when TabWidthStyle setting is efnTWSJustified and it is needed more space than TabMaxWidth * Rows to fill all the rows space, then the tabs can have more width than the specified in the TabMaxWidth setting.
 
 TabMinWidth:
 Returns or sets the minimun width of each tab. If set to 0 (zero), it means no minimun.
@@ -268,11 +272,11 @@ In the original SSTab control its name was "Tab", but VB6 doesn't allow that nam
 
 TabSelExtraHeight:
 Returns or sets a value that determines if the active tab will be higher than the others. The value must be between 0 (zero) and twice the TabHeight setting.
-Note: If TabAppearance is set to ssTaPropertyPage or ssTaPropertyPageRounded, or the control is themed, the active tab is already two pixels taller than the inactive ones.
+Note: If TabAppearance is set to efnTAPropertyPage or efnTAPropertyPageRounded, or the control is themed, the active tab is already two pixels taller than the inactive ones.
 
 TabSelFontBold:
 Returns or sets a value that determines if the font of the caption in currently selected tab will be bold.
-If the setting is ssYNAuto and TabAppearance setting is ssTaTabbedDialog or ssTaTabbedDialogRounded, the caption in the selected tab will be bolded. Otherwise it will be bolded only if all the tabs are bolded according to the Font setting.
+If the setting is efnYNAuto and TabAppearance setting is efnTATabbedDialog or efnTATabbedDialogRounded, the caption in the selected tab will be bolded. Otherwise it will be bolded only if all the tabs are bolded according to the Font setting.
 
 TabSelHighlight:
 Returns or sets a value that determines if the selected tab will be highlighted.
@@ -284,7 +288,7 @@ When the control is themed, values less than two pixels are ignored, since the t
 
 TabsPerRow:
 Returns or sets the number of tabs for each row.
-If TabWidthStyle setting is ssJustified, this setting has no effect.
+If TabWidthStyle setting is efnTWSJustified, this setting has no effect.
 
 TabToolTipText:
 Returns or sets the text that will be shown as tooltip text when the mouse pointer is over the tab identified by the Index parameter.
@@ -295,10 +299,10 @@ Returns or sets a value that determines whether the tab identified by the Index 
 
 TabWidthStyle:
 Returns or sets a value that determines the justification or width of the tabs.
-ssFixed: All tabs has the same width. If TabMaxWidth is 0 (zero), the tab width will be the available space / TabsPerRow. If TabMaxWidth is greater than 0 (zero), that setting will determine the tabs width.
-ssNonJustified: The width of the tabs will be determined by the size of the caption + the size of the tab picture (if any). TabMinWidth and TabMaxWidth settings can set a boundary for the width that a tab can have. Unlike the original SSTab control, if the sum of the widths of all the tabs in a row exceeds the available space, the widths of the tabs in that row are shrunken to fit in the available space.
-ssJustified: If there is more than one row, each tab is wide enough to accommodate its contents and, if needed, the width of each tab is increased so that each row of tabs spans the width of the control. If all the tabs fit in one row, the tabs are not justified (it works the same as tabNonJustified).
-ssTwsAuto: The behavior is defined by the Style property setting.
+efnTWSFixed: All tabs has the same width. If TabMaxWidth is 0 (zero), the tab width will be the available space / TabsPerRow. If TabMaxWidth is greater than 0 (zero), that setting will determine the tabs width.
+efnTWSNonJustified: The width of the tabs will be determined by the size of the caption + the size of the tab picture (if any). TabMinWidth and TabMaxWidth settings can set a boundary for the width that a tab can have. Unlike the original SSTab control, if the sum of the widths of all the tabs in a row exceeds the available space, the widths of the tabs in that row are shrunken to fit in the available space.
+efnTWSJustified: If there is more than one row, each tab is wide enough to accommodate its contents and, if needed, the width of each tab is increased so that each row of tabs spans the width of the control. If all the tabs fit in one row, the tabs are not justified (it works the same as tabNonJustified).
+efnTWSAuto: The behavior is defined by the Style property setting.
 
 UseMaskColor:
 Returns or sets a value that determines whether the color assigned in the MaskColor property is used as a mask. (That is, used to create transparent regions.)
@@ -368,7 +372,7 @@ Generated when the control is first drawn or when its size changes.
 
 Event RowsChange()
 This event is generated when the control is first drawn or when the Rows property changes its value.
-The Rows property value can change its value when new tabs are dinamically added or, when TabWidthStyle is set to ssFixed or ssNonJustified and TabsPerRow was changed, or TabWidthStyle is set to ssJustified and the Width of the control changed or the captions of the tabs changed or the Font setting has changed.
+The Rows property value can change its value when new tabs are dinamically added or, when TabWidthStyle is set to efnTWSFixed or efnTWSNonJustified and TabsPerRow was changed, or TabWidthStyle is set to efnTWSJustified and the Width of the control changed or the captions of the tabs changed or the Font setting has changed.
 You can use this event along with TabBodyStart to properly set the Top (or Left, depending on TabOrientation) of the contained controls.
 
 Event TabBodyResize()
@@ -389,6 +393,7 @@ The X and Y parameters return a number that specifies the current location of th
 
 TabSelChange:
 Generated after the selected (or "current") tab has already changed. For the events that occur before, see BeforeClick and Click.
+This event is also generated when the control is first shown.
 
 
 Methods and functions:

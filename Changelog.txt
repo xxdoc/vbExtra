@@ -1,38 +1,45 @@
-09/26/2018 Chinese GUI captions update and small performance inprovement when printing FlexGrid
-09/24/2018 better handle of mouse wheel and navigation of pages through the keyboard in the Print preview dialog
-09/24/2018 added to FlexFn the property PrintCellsFormatting and a parameter with the same name to PrinterEx.PrintFlexGrid method that allows to ignore the (data) cells formatting when printing a FlexGrid
-09/24/2018 added to PrinterEx, PrintFn and FlexFn the property PrintPrevUseOneToolBar that allows to have just one toolbar instead of two in the Print preview dialog
-09/17/2018 fixed a bug in PrinterEx related to Tab positions and some other small fixes.
-09/13/2018 fixed a bug in the PaintPicture method of Printer object
-09/13/2018 fixed bugs in FlexFn
-09/12/2018 fixed bugs and added functions to GridReportStyle's management
-09/10/2018 fixed a bug in PaintPicture related to right margin
-09/10/2018 added PrintFlexGrid method to PrinterEx
-09/06/2018 added a feature that broke the binary compatibility so there is a version change. Now the call to PrinterEx.ShowPrintPreview can have parameters to send to the printing procedure.
-09/04/2018 important update to PrinterEx object
-08/31/2018 updated TrayIcon control
-08/31/2018 updated DateEnter control
-08/31/2018 updated SizeGrip control
-08/31/2018 updated MouseWheelEnabler control
-08/30/2018 updated PopupList control
-08/29/2018 cGridHandler, FlexFn and FlexFnObject updated
-08/28/2018 FlexFn: ptpFlexFnOtherFunctions was not configured
-08/28/2018 cGridHandler: fixed a bug in Sub UpdateGridColumnsWidthsStretched
-08/28/2018 Some minor fixes in ScrollableConatiner and changes in cGlobal.cls (and related files)
-08/27/2018 Added custom message to ctlTrayIcon.ctl and cActivatePrevInstance.cls
-08/26/2018 cPrinterEx: fixed a bug in PrintText function when CurrentX is out of the page ScaleWidth
-08/25/2018 PrintFnObject: set Max(page) to the actual page count, and check that ToPage is not greater than the actual page count
-08/25/2018 cPrinterEx: FromPage and ToPage were not set up in IPrinterEx_ShowPrintPreview
-08/25/2018 CommonDialogExObject fixed a bug with cdlPDPageNums Flag
-08/25/2018 cPrinterEx and PrintFn CommonDialogFlags property replaced by PrinterFlags and PageSetupFlags
-08/25/2018 cPrinterEx: nFlags parameter in Sub IPrinterEx_ShowPrint and Sub IPrinterEx_ShowPageSetup wasn't taken into account.
-08/23/2018 Changed folder names in the project: Bin ==> lib; Release ==> bin
-08/17/2018 GUI localized captions for Chinese language updated
-08/16/2018 Added more Unicode support for fonts names and CommonDialogEx
-08/16/2018 SSTabEx code updated. Due to a VB6 bug, Single type numbers are localized in the properties saved (commas intead of points), so I decided to round them to integers when they are saved to avoid the problem.
-08/15/2018 Added Unicode support for font names in PrinterEx
-08/15/2018 Fixed FontCount property get in cPrinterEx
-08/14/2018 Added Chinese Simplified GUI language support.
-08/14/2018 in frmPrintPreview.frm, Sub ShowPages: fixed when showing 12 pages landscaped (they went outside the screen space)
-08/14/2018 in ctlPopupList.ctl: fixed that the button appeared as pressed after the list was clicked
-08/13/2018: First release
+09/Oct/2018 added TabHoverEffect property to SSTabEx control
+08/Oct/2018 added better support for multiple monitors set ups
+08/Oct/2018 fixed a bug in PrintFn control
+06/Oct/2018 fixed a bug in DateEnter control
+06/Oct/2018 fixed a bug in ToolBarDA control
+01/Oct/2018 fixed bugs in SSTabEx control in Sub SetThemeExtraData and Sub DrawTab in Windows 10
+01/Oct/2018 fixed a bug in PrinterEx, Sub PrintRichTextBox. It didn't work if it was only one page.
+26/Sep/2018 Chinese GUI captions update and small performance inprovement when printing FlexGrid
+24/Sep/2018 better handle of mouse wheel and navigation of pages through the keyboard in the Print preview dialog
+24/Sep/2018 added to FlexFn the property PrintCellsFormatting and a parameter with the same name to PrinterEx.PrintFlexGrid method that allows to ignore the (data) cells formatting when printing a FlexGrid
+24/Sep/2018 added to PrinterEx, PrintFn and FlexFn the property PrintPrevUseOneToolBar that allows to have just one toolbar instead of two in the Print preview dialog
+17/Sep/2018 fixed a bug in PrinterEx related to Tab positions and some other small fixes.
+13/Sep/2018 fixed a bug in the PaintPicture method of Printer object
+13/Sep/2018 fixed bugs in FlexFn
+12/Sep/2018 fixed bugs and added functions to GridReportStyle's management
+10/Sep/2018 fixed a bug in PaintPicture related to right margin
+10/Sep/2018 added PrintFlexGrid method to PrinterEx
+06/Sep/2018 added a feature that broke the binary compatibility so there is a version change. Now the call to PrinterEx.ShowPrintPreview can have parameters to send to the printing procedure.
+04/Sep/2018 important update to PrinterEx object
+31/Aug/2018 updated TrayIcon control
+31/Aug/2018 updated DateEnter control
+31/Aug/2018 updated SizeGrip control
+31/Aug/2018 updated MouseWheelEnabler control
+30/Aug/2018 updated PopupList control
+29/Aug/2018 cGridHandler, FlexFn and FlexFnObject updated
+28/Aug/2018 FlexFn: ptpFlexFnOtherFunctions was not configured
+28/Aug/2018 cGridHandler: fixed a bug in Sub UpdateGridColumnsWidthsStretched
+28/Aug/2018 Some minor fixes in ScrollableConatiner and changes in cGlobal.cls (and related files)
+27/Aug/2018 Added custom message to ctlTrayIcon.ctl and cActivatePrevInstance.cls
+26/Aug/2018 cPrinterEx: fixed a bug in PrintText function when CurrentX is out of the page ScaleWidth
+25/Aug/2018 PrintFnObject: set Max(page) to the actual page count, and check that ToPage is not greater than the actual page count
+25/Aug/2018 cPrinterEx: FromPage and ToPage were not set up in IPrinterEx_ShowPrintPreview
+25/Aug/2018 CommonDialogExObject fixed a bug with cdlPDPageNums Flag
+25/Aug/2018 cPrinterEx and PrintFn CommonDialogFlags property replaced by PrinterFlags and PageSetupFlags
+25/Aug/2018 cPrinterEx: nFlags parameter in Sub IPrinterEx_ShowPrint and Sub IPrinterEx_ShowPageSetup wasn't taken into account.
+23/Aug/2018 Changed folder names in the project: Bin ==> lib; Release ==> bin
+17/Aug/2018 GUI localized captions for Chinese language updated
+16/Aug/2018 Added more Unicode support for fonts names and CommonDialogEx
+16/Aug/2018 SSTabEx code updated. Due to a VB6 bug, Single type numbers are localized in the properties saved (commas intead of points), so I decided to round them to integers when they are saved to avoid the problem.
+15/Aug/2018 Added Unicode support for font names in PrinterEx
+15/Aug/2018 Fixed FontCount property get in cPrinterEx
+14/Aug/2018 Added Chinese Simplified GUI language support.
+14/Aug/2018 in frmPrintPreview.frm, Sub ShowPages: fixed when showing 12 pages landscaped (they went outside the screen space)
+14/Aug/2018 in ctlPopupList.ctl: fixed that the button appeared as pressed after the list was clicked
+13/Aug/2018: First release
