@@ -190,11 +190,12 @@ End Type
 
 Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hDC As Long, ByVal nIndex As Long) As Long
 Private Declare Function GetDC Lib "user32" (ByVal hWnd As Long) As Long
+Private Declare Function ReleaseDC Lib "user32" (ByVal hWnd As Long, ByVal hDC As Long) As Long
 
 Private Const LOGPIXELSX As Long = 88
 Private Const LOGPIXELSY As Long = 90
 
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 Private Declare Function GetForegroundWindow Lib "user32" () As Long
 Private Declare Function ValidateRect Lib "user32" (ByVal hWnd As Long, lpRect As RECT) As Long
 Private Declare Function GetClientRect Lib "user32" (ByVal hWnd As Long, lpRect As RECT) As Long
@@ -7028,6 +7029,7 @@ Private Function pScaleY(Height, Optional ByVal FromScale As Variant, Optional B
             pScaleY = UserControl.ScaleY(Height, FromScale, ToScale)
     End Select
 End Function
+
 Private Sub SetDPI()
     Dim iDC As Long
     Dim iTx As Single
@@ -7036,12 +7038,14 @@ Private Sub SetDPI()
     iDC = GetDC(0)
     mDPIX = GetDeviceCaps(iDC, LOGPIXELSX)
     mDPIY = GetDeviceCaps(iDC, LOGPIXELSY)
+    ReleaseDC 0, iDC
     
     iTx = 1440 / mDPIX
     iTY = 1440 / mDPIY
     
     mXCorrection = iTx / Screen.TwipsPerPixelX
     mYCorrection = iTY / Screen.TwipsPerPixelY
+    
 End Sub
 
 Private Function Screen_TwipsPerPixelX() As Single
