@@ -21,10 +21,10 @@ Private Type FileTime
         dwLowDateTime As Long
         dwHighDateTime As Long
 End Type
-Private Declare Function GetProcessTimes Lib "kernel32" (ByVal hProcess As Long, lpCreationTime As FileTime, lpExitTime As FileTime, lpKernelTime As FileTime, lpUserTime As FileTime) As Long
+Private Declare Function GetProcessTimes Lib "Kernel32" (ByVal hProcess As Long, lpCreationTime As FileTime, lpExitTime As FileTime, lpKernelTime As FileTime, lpUserTime As FileTime) As Long
 
 Private Declare Function IsIconic Lib "user32" (ByVal hWnd As Long) As Long
-Private Declare Function GetCurrentProcessId Lib "kernel32" () As Long
+Private Declare Function GetCurrentProcessId Lib "Kernel32" () As Long
 
 Private Const TH32CS_SNAPHEAPLIST = &H1
 Private Const TH32CS_SNAPPROCESS = &H2
@@ -59,16 +59,16 @@ Private Declare Function GetWindowPlacement Lib "user32" (ByVal hWnd As Long, lp
 Private Const SW_SHOWMINIMIZED = 2
 Private Const SW_RESTORE = 9
 
-Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+Private Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
 Private Declare Function GetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal hWnd As Long, ByVal lpString As String, ByVal cch As Long) As Long
 
-Private Declare Function Process32First Lib "kernel32" (ByVal hSnapshot As Long, lppe As PROCESSENTRY32) As Long
-Private Declare Function Process32Next Lib "kernel32" (ByVal hSnapshot As Long, lppe As PROCESSENTRY32) As Long
+Private Declare Function Process32First Lib "Kernel32" (ByVal hSnapshot As Long, lppe As PROCESSENTRY32) As Long
+Private Declare Function Process32Next Lib "Kernel32" (ByVal hSnapshot As Long, lppe As PROCESSENTRY32) As Long
 Private Declare Function CloseHandle Lib "kernel32.dll" (ByVal Handle As Long) As Long
 Private Declare Function EnumProcesses Lib "psapi.dll" (ByRef lpidProcess As Long, ByVal cb As Long, ByRef cbNeeded As Long) As Long
 Private Declare Function GetModuleFileNameExA Lib "psapi.dll" (ByVal hProcess As Long, ByVal hModule As Long, ByVal ModuleName As String, ByVal nSize As Long) As Long
 Private Declare Function EnumProcessModules Lib "psapi.dll" (ByVal hProcess As Long, ByRef lphModule As Long, ByVal cb As Long, ByRef cbNeeded As Long) As Long
-Private Declare Function CreateToolhelp32Snapshot Lib "kernel32" (ByVal dwFlags As Long, ByVal th32ProcessID As Long) As Long
+Private Declare Function CreateToolhelp32Snapshot Lib "Kernel32" (ByVal dwFlags As Long, ByVal th32ProcessID As Long) As Long
 Private Declare Function SetForegroundWindow& Lib "user32" (ByVal hWnd&)
 Private Declare Function GetWindowThreadProcessId Lib "user32" (ByVal hWnd As Long, ByRef lpdwProcessId As Long) As Long
 Private Declare Function AttachThreadInput Lib "user32" (ByVal idAttach&, ByVal idAttachTo&, ByVal bAttach&) As Long
@@ -95,7 +95,7 @@ Private Declare Function GetWindow Lib "user32" (ByVal hWnd As Long, ByVal wCmd 
 
 Private Const GW_HWNDNEXT = 2
 
-Private Declare Function GetVersionEx Lib "kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
+Private Declare Function GetVersionEx Lib "Kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
 
 Private Declare Function OpenProcess Lib "kernel32.dll" (ByVal dwDesiredAccessas As Long, ByVal bInheritHandle As Long, ByVal dwProcId As Long) As Long
 Private Const PROCESS_QUERY_INFORMATION = 1024
@@ -107,13 +107,13 @@ Const WM_NULL = &H0
 Const PROCESS_ALL_ACCESS = &H1F0FFF
 
 Private Declare Function SendMessageTimeout Lib "user32" Alias "SendMessageTimeoutA" (ByVal hWnd As Long, ByVal msg As Long, ByVal wParam As Long, ByVal lParam As Long, ByVal fuFlags As Long, ByVal uTimeout As Long, lpdwResult As Long) As Long
-Private Declare Function TerminateProcess Lib "kernel32" (ByVal hProcess As Long, ByVal uExitCode As Long) As Long
+Private Declare Function TerminateProcess Lib "Kernel32" (ByVal hProcess As Long, ByVal uExitCode As Long) As Long
 
 Private mWM_RESTORE_FROM_SYSTEM_TRAY As Long
 
 Private mCurrentProcessExe As String
 
-Private Function BringAppOnFront(Optional nExePath As String, Optional nProcessID As Long, Optional nCaptionPart As String, Optional nTimeoutCheckHangedSeconds As Long, Optional nTerminateHanged As Boolean, Optional nWaitForHavingWindowsTimeoutSeconds As Long, Optional nTerminateWidndowless As Boolean, Optional nOnlyProcessesStartedEarlier As Boolean) As Boolean
+Private Function BringAppOnFront(Optional nExePath As String, Optional nProcessID As Long, Optional nCaptionPart As String, Optional nTimeoutCheckHangedSeconds As Long, Optional nTerminateHanged As Boolean, Optional nWaitForHavingWindowsTimeoutSeconds As Long, Optional nTerminateWidndowless As Boolean, Optional nOnlyProcessesStartedEarlier As Boolean, Optional nDoNotActivate) As Boolean
     Dim WinEst As WINDOWPLACEMENT
     Dim rtn As Long
     Dim iHwnd As Long
@@ -129,7 +129,7 @@ Private Function BringAppOnFront(Optional nExePath As String, Optional nProcessI
     Dim iLng As Long
     Dim hProcess As Long
     
-    iT2 = timer
+    iT2 = Timer
     
 StartAgain:
     BringAppOnFront = True
@@ -151,7 +151,7 @@ StartAgain:
         Next iC
     End If
     If UBound(iAllHwnds) = 0 Then
-        If ((timer - iT2) > nWaitForHavingWindowsTimeoutSeconds) Or (nWaitForHavingWindowsTimeoutSeconds = 0) Then
+        If ((Timer - iT2) > nWaitForHavingWindowsTimeoutSeconds) Or (nWaitForHavingWindowsTimeoutSeconds = 0) Then
             If nTerminateWidndowless Then
                 iLng = GetProcessID(nExePath, , , True)
                 Do While iLng <> 0
@@ -177,6 +177,25 @@ StartAgain:
             End If
         End If
     End If
+    
+    If nDoNotActivate Then
+        For iC = UBound(iAllHwnds) To 1 Step -1
+            If iAllHwnds(iC) <> 0 Then
+                If Not WindowsIsResponding(iAllHwnds(iC), nTimeoutCheckHangedSeconds) Then
+                    If nTerminateHanged Then
+                        TerminateProcessHangedWindow iAllHwnds(iC)
+                        Sleep 100
+                        GoTo StartAgain:
+                    Else
+                        BringAppOnFront = False
+                        Exit Function
+                    End If
+                End If
+            End If
+        Next iC
+        Exit Function
+    End If
+    
     If mWM_RESTORE_FROM_SYSTEM_TRAY = 0 Then mWM_RESTORE_FROM_SYSTEM_TRAY = RegisterWindowMessage("WM_RESTORE_FROM_SYSTEM_TRAY")
     For iC = UBound(iAllHwnds) To 1 Step -1
         If iAllHwnds(iC) <> 0 Then
@@ -185,7 +204,7 @@ StartAgain:
             rtn = GetWindowPlacement(iAllHwnds(iC), WinEst)
 '            If WinEst.showCmd = SW_SHOWMINIMIZED Then
             If nTimeoutCheckHangedSeconds > 0 Then
-                iT1 = timer
+                iT1 = Timer
                 If Not WindowsIsResponding(iAllHwnds(iC), nTimeoutCheckHangedSeconds) Then
                     If nTerminateHanged Then
                         TerminateProcessHangedWindow iAllHwnds(iC)
@@ -197,7 +216,7 @@ StartAgain:
                     End If
                 End If
                 If iTimes < 5 Then
-                    If (timer - iT1) > 2 Then
+                    If (Timer - iT1) > 2 Then
                         iTimes = iTimes + 1
                         GoTo StartAgain:
                     End If
@@ -573,8 +592,8 @@ Private Function WindowsIsResponding(nHwnd As Long, nTimeoutSeconds As Long) As 
     WindowsIsResponding = SendMessageTimeout(nHwnd, WM_NULL, 0&, 0&, SMTO_ABORTIFHUNG And SMTO_BLOCK, nTimeoutSeconds * 1000, lngResult)
 End Function
 
-Public Function PrevInstanceActivated(nTimeoutCheckHangedSeconds As Long, nTerminateHanged As Boolean, nWaitForHavingWindowsTimeoutSeconds As Long, nTerminateWindowless As Boolean) As Boolean
-    PrevInstanceActivated = BringAppOnFront(CurrentProcessExe, , , nTimeoutCheckHangedSeconds, nTerminateHanged, nWaitForHavingWindowsTimeoutSeconds, nTerminateWindowless, True)
+Public Function PrevInstanceActivated(nTimeoutCheckHangedSeconds As Long, nTerminateHanged As Boolean, nWaitForHavingWindowsTimeoutSeconds As Long, nTerminateWindowless As Boolean, Optional nDoNotActivate As Boolean) As Boolean
+    PrevInstanceActivated = BringAppOnFront(CurrentProcessExe, , , nTimeoutCheckHangedSeconds, nTerminateHanged, nWaitForHavingWindowsTimeoutSeconds, nTerminateWindowless, True, nDoNotActivate)
 End Function
 
 
@@ -625,13 +644,13 @@ Private Function ExeByProcessId(nThreadId As Long) As String
 End Function
 
 Public Property Get CurrentProcessExe() As String
-'    If mCurrentProcessExe = "" Then
+    If mCurrentProcessExe = "" Then
 '        If InIDE Then
-'            mCurrentProcessExe = "D:\Programas\vbExtra, sampes que no andan\App\ActivatePrevInstance\Project1.exe"
+'            mCurrentProcessExe = "D:\Programas\vbExtra, samples que no andan\App\ActivatePrevInstance\Project1.exe"
 '        Else
             mCurrentProcessExe = ExeByProcessId(GetCurrentProcessId)
 '        End If
-'    End If
+    End If
     CurrentProcessExe = mCurrentProcessExe
 End Property
 
