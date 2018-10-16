@@ -223,7 +223,7 @@ Private Sub PropertyPage_SelectionChanged()
     
     cboGridName.Clear
     cboGridName.AddItem "[Auto]"
-    cboGridName.AddItem "[No]"
+    cboGridName.AddItem "[None]"
     If Not iParent Is Nothing Then
         If TypeOf iParent Is Form Then
             For Each iCtl In iParent.Controls
