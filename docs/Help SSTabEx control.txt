@@ -74,7 +74,6 @@ TabControls:			---R
 TabEnabled:			O---
 TabHeight:			ODP-
 TabHoverHighlight:		-D--
-TabHoverEffect:                 -D--
 TabMaxWidth:			ODP-
 TabMinWidth:			-DP-
 TabOrientation:			ODP-
@@ -233,10 +232,7 @@ Returns or sets the height of the tabs.
 
 TabHoverHighlight:
 Returns or sets a value that determines if the tabs will appear highlighted when the mouse is over them.
-
-TabHoverEffect:
-Returns/sets a value that determines if the tabs will show an effect when they are being highlighted with the mouse over them.
-It only works when the control is displayed without visual styles.
+ssTHHEffect setting only works when the control is not themed. When it is set to ssTHHEffect, the tabs will show an effect when they are being highlighted. 
 
 TabMaxWidth:
 Returns or sets the maximum width of each tab. If set to 0 (zero), it means no maximun.
