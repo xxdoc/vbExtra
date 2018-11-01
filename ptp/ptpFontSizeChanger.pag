@@ -125,7 +125,7 @@ Private Sub PropertyPage_ApplyChanges()
     Dim iSng As Single
     Dim iStr As String
     
-    If cboBoundControlName.Text = "[No]" Then
+    If (cboBoundControlName.Text = "[None]") Then
         SelectedControls(0).BoundControlName = ""
     Else
         SelectedControls(0).BoundControlName = cboBoundControlName.Text
@@ -178,7 +178,7 @@ Private Sub PropertyPage_SelectionChanged()
     On Error GoTo 0
     
     cboBoundControlName.Clear
-    cboBoundControlName.AddItem "[No]"
+    cboBoundControlName.AddItem "[None]"
     If Not iParent Is Nothing Then
         For Each iCtl In iParent.Controls
             On Error Resume Next
@@ -193,7 +193,7 @@ Private Sub PropertyPage_SelectionChanged()
         Next
     End If
     If SelectedControls(0).BoundControlName = "" Then
-        cboBoundControlName.Text = "[No]"
+        cboBoundControlName.Text = "[None]"
     Else
         cboBoundControlName.Text = SelectedControls(0).BoundControlName
     End If

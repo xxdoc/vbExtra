@@ -138,7 +138,7 @@ Private Sub PropertyPage_SelectionChanged()
     
     cboComboBoxName.Clear
     cboComboBoxName.AddItem "[Auto]"
-    cboComboBoxName.AddItem "[No]"
+    cboComboBoxName.AddItem "[None]"
     If Not iParent Is Nothing Then
         For Each iCtl In iParent.Controls
             If TypeName(iCtl) = "ComboBox" Then

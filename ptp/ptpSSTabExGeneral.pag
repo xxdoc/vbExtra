@@ -19,19 +19,21 @@ Begin VB.PropertyPage ptpSSTabExGeneral
    PaletteMode     =   0  'Halftone
    ScaleHeight     =   6324
    ScaleWidth      =   6420
-   Begin VB.CheckBox chkTabHoverEffect 
-      Caption         =   "TabHoverEffect"
-      Height          =   264
-      Left            =   2664
-      TabIndex        =   36
-      Top             =   4140
-      Width           =   1740
+   Begin VB.ComboBox cboTabHoverHighlight 
+      Height          =   288
+      ItemData        =   "ptpSSTabExGeneral.pgx":0000
+      Left            =   1740
+      List            =   "ptpSSTabExGeneral.pgx":0002
+      Style           =   2  'Dropdown List
+      TabIndex        =   40
+      Top             =   4464
+      Width           =   4620
    End
    Begin VB.CheckBox chkSoftEdges 
       Caption         =   "SoftEdges"
       Height          =   264
       Left            =   4584
-      TabIndex        =   33
+      TabIndex        =   35
       Top             =   3852
       Width           =   1740
    End
@@ -47,9 +49,9 @@ Begin VB.PropertyPage ptpSSTabExGeneral
    End
    Begin VB.ComboBox cboAutoRelocateControls 
       Height          =   300
-      ItemData        =   "ptpSSTabExGeneral.pgx":0000
+      ItemData        =   "ptpSSTabExGeneral.pgx":0004
       Left            =   1740
-      List            =   "ptpSSTabExGeneral.pgx":0002
+      List            =   "ptpSSTabExGeneral.pgx":0006
       Style           =   2  'Dropdown List
       TabIndex        =   44
       Top             =   5190
@@ -59,23 +61,23 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "VisualStyles"
       Height          =   264
       Left            =   2664
-      TabIndex        =   26
+      TabIndex        =   28
       Top             =   3276
       Width           =   1740
    End
    Begin VB.CheckBox chkShowFocusRect 
       Caption         =   "ShowFocusRect"
       Height          =   264
-      Left            =   4584
-      TabIndex        =   37
-      Top             =   4140
+      Left            =   2664
+      TabIndex        =   34
+      Top             =   3852
       Width           =   1740
    End
    Begin VB.CheckBox chkWordWrap 
       Caption         =   "WordWrap"
       Height          =   264
       Left            =   4584
-      TabIndex        =   29
+      TabIndex        =   31
       Top             =   3564
       Width           =   1740
    End
@@ -83,7 +85,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "UseMaskColor"
       Height          =   264
       Left            =   4584
-      TabIndex        =   27
+      TabIndex        =   29
       Top             =   3276
       Width           =   1740
    End
@@ -91,31 +93,23 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "TabSelHighlight"
       Height          =   264
       Left            =   2664
-      TabIndex        =   28
+      TabIndex        =   30
       Top             =   3564
-      Width           =   1740
-   End
-   Begin VB.CheckBox chkTabHoverHighlight 
-      Caption         =   "TabHoverHighlight"
-      Height          =   264
-      Left            =   2664
-      TabIndex        =   32
-      Top             =   3852
       Width           =   1740
    End
    Begin VB.CheckBox chkChangeControlsBackColor 
       Caption         =   "ChangeControlsBackColor"
       Height          =   264
       Left            =   2664
-      TabIndex        =   40
-      Top             =   4428
+      TabIndex        =   38
+      Top             =   4140
       Width           =   2208
    End
    Begin VB.CheckBox chkShowDisabledState 
       Caption         =   "ShowDisabledState"
       Height          =   264
       Left            =   4584
-      TabIndex        =   23
+      TabIndex        =   25
       Top             =   2988
       Width           =   1740
    End
@@ -139,10 +133,10 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Width           =   312
    End
    Begin VB.ComboBox cboTabPictureAlignment 
-      Height          =   315
-      ItemData        =   "ptpSSTabExGeneral.pgx":0004
+      Height          =   288
+      ItemData        =   "ptpSSTabExGeneral.pgx":0008
       Left            =   1740
-      List            =   "ptpSSTabExGeneral.pgx":0006
+      List            =   "ptpSSTabExGeneral.pgx":000A
       Style           =   2  'Dropdown List
       TabIndex        =   42
       Top             =   4830
@@ -150,36 +144,36 @@ Begin VB.PropertyPage ptpSSTabExGeneral
    End
    Begin VB.TextBox txtTabHeight 
       Height          =   300
-      Left            =   1740
-      TabIndex        =   25
-      Top             =   3345
+      Left            =   3645
+      TabIndex        =   10
+      Top             =   750
       Width           =   588
    End
    Begin VB.ComboBox cboTabAppearance 
-      Height          =   315
-      ItemData        =   "ptpSSTabExGeneral.pgx":0008
-      Left            =   3645
-      List            =   "ptpSSTabExGeneral.pgx":000A
-      Style           =   2  'Dropdown List
-      TabIndex        =   13
-      Top             =   1515
-      Width           =   2712
-   End
-   Begin VB.ComboBox cboShowRowsInPerspective 
       Height          =   315
       ItemData        =   "ptpSSTabExGeneral.pgx":000C
       Left            =   3645
       List            =   "ptpSSTabExGeneral.pgx":000E
       Style           =   2  'Dropdown List
-      TabIndex        =   17
+      TabIndex        =   15
+      Top             =   1515
+      Width           =   2712
+   End
+   Begin VB.ComboBox cboShowRowsInPerspective 
+      Height          =   315
+      ItemData        =   "ptpSSTabExGeneral.pgx":0010
+      Left            =   3645
+      List            =   "ptpSSTabExGeneral.pgx":0012
+      Style           =   2  'Dropdown List
+      TabIndex        =   19
       Top             =   2235
       Width           =   2712
    End
    Begin VB.ComboBox cboOLEDropMode 
       Height          =   300
-      ItemData        =   "ptpSSTabExGeneral.pgx":0010
+      ItemData        =   "ptpSSTabExGeneral.pgx":0014
       Left            =   1740
-      List            =   "ptpSSTabExGeneral.pgx":0012
+      List            =   "ptpSSTabExGeneral.pgx":0016
       Style           =   2  'Dropdown List
       TabIndex        =   48
       Top             =   5916
@@ -187,9 +181,9 @@ Begin VB.PropertyPage ptpSSTabExGeneral
    End
    Begin VB.ComboBox cboMousePointer 
       Height          =   300
-      ItemData        =   "ptpSSTabExGeneral.pgx":0014
+      ItemData        =   "ptpSSTabExGeneral.pgx":0018
       Left            =   1740
-      List            =   "ptpSSTabExGeneral.pgx":0016
+      List            =   "ptpSSTabExGeneral.pgx":001A
       Style           =   2  'Dropdown List
       TabIndex        =   46
       Top             =   5556
@@ -198,39 +192,39 @@ Begin VB.PropertyPage ptpSSTabExGeneral
    Begin VB.TextBox txtTabMinWidth 
       Height          =   300
       Left            =   1740
-      TabIndex        =   39
-      Top             =   4425
+      TabIndex        =   37
+      Top             =   4068
       Width           =   588
    End
    Begin VB.TextBox txtTabMaxWidth 
       Height          =   300
       Left            =   1740
-      TabIndex        =   35
-      Top             =   4065
+      TabIndex        =   33
+      Top             =   3708
       Width           =   588
    End
    Begin VB.ComboBox cboTabSelFontBold 
-      Height          =   315
-      ItemData        =   "ptpSSTabExGeneral.pgx":0018
+      Height          =   288
+      ItemData        =   "ptpSSTabExGeneral.pgx":001C
       Left            =   3645
-      List            =   "ptpSSTabExGeneral.pgx":001A
+      List            =   "ptpSSTabExGeneral.pgx":001E
       Style           =   2  'Dropdown List
-      TabIndex        =   19
+      TabIndex        =   21
       Top             =   2595
       Width           =   2712
    End
    Begin VB.TextBox txtTabSelExtraHeight 
       Height          =   300
       Left            =   1740
-      TabIndex        =   31
-      Top             =   3705
+      TabIndex        =   27
+      Top             =   3348
       Width           =   588
    End
    Begin VB.TextBox txtTabSeparation 
       Height          =   300
       Left            =   1740
       MaxLength       =   2
-      TabIndex        =   21
+      TabIndex        =   23
       Top             =   2985
       Width           =   588
    End
@@ -238,27 +232,27 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "Enabled"
       Height          =   264
       Left            =   2664
-      TabIndex        =   22
+      TabIndex        =   24
       Top             =   2988
       Width           =   1740
    End
    Begin VB.ComboBox cboTabWidthStyle 
       Height          =   315
-      ItemData        =   "ptpSSTabExGeneral.pgx":001C
+      ItemData        =   "ptpSSTabExGeneral.pgx":0020
       Left            =   3645
-      List            =   "ptpSSTabExGeneral.pgx":001E
+      List            =   "ptpSSTabExGeneral.pgx":0022
       Style           =   2  'Dropdown List
-      TabIndex        =   15
+      TabIndex        =   17
       Top             =   1875
       Width           =   2712
    End
    Begin VB.ComboBox cboStyle 
       Height          =   315
-      ItemData        =   "ptpSSTabExGeneral.pgx":0020
+      ItemData        =   "ptpSSTabExGeneral.pgx":0024
       Left            =   1740
-      List            =   "ptpSSTabExGeneral.pgx":0022
+      List            =   "ptpSSTabExGeneral.pgx":0026
       Style           =   2  'Dropdown List
-      TabIndex        =   10
+      TabIndex        =   12
       Top             =   1110
       Width           =   4620
    End
@@ -272,9 +266,9 @@ Begin VB.PropertyPage ptpSSTabExGeneral
    End
    Begin VB.ComboBox cboOrientation 
       Height          =   315
-      ItemData        =   "ptpSSTabExGeneral.pgx":0024
+      ItemData        =   "ptpSSTabExGeneral.pgx":0028
       Left            =   1740
-      List            =   "ptpSSTabExGeneral.pgx":0026
+      List            =   "ptpSSTabExGeneral.pgx":002A
       Style           =   2  'Dropdown List
       TabIndex        =   6
       Top             =   390
@@ -306,6 +300,15 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Top             =   0
       Width           =   3680
    End
+   Begin VB.Label Label19 
+      Alignment       =   1  'Right Justify
+      Caption         =   "TabHoverHighlight:"
+      Height          =   228
+      Left            =   96
+      TabIndex        =   39
+      Top             =   4500
+      Width           =   1596
+   End
    Begin VB.Label Label18 
       Alignment       =   1  'Right Justify
       Caption         =   "AutoRelocateControls:"
@@ -328,9 +331,9 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Alignment       =   1  'Right Justify
       Caption         =   "TabHeight:"
       Height          =   228
-      Left            =   672
-      TabIndex        =   24
-      Top             =   3396
+      Left            =   2580
+      TabIndex        =   9
+      Top             =   792
       Width           =   1020
    End
    Begin VB.Label Label8 
@@ -338,7 +341,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "TabAppearance:"
       Height          =   225
       Left            =   1740
-      TabIndex        =   12
+      TabIndex        =   14
       Top             =   1545
       Width           =   1815
    End
@@ -347,7 +350,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "ShowRowsInPerspective:"
       Height          =   228
       Left            =   1488
-      TabIndex        =   16
+      TabIndex        =   18
       Top             =   2268
       Width           =   2064
    End
@@ -374,8 +377,8 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "TabMinWidth:"
       Height          =   228
       Left            =   192
-      TabIndex        =   38
-      Top             =   4476
+      TabIndex        =   36
+      Top             =   4116
       Width           =   1488
    End
    Begin VB.Label Label12 
@@ -383,8 +386,8 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "TabMaxWidth:"
       Height          =   228
       Left            =   192
-      TabIndex        =   34
-      Top             =   4116
+      TabIndex        =   32
+      Top             =   3756
       Width           =   1488
    End
    Begin VB.Label Label11 
@@ -392,7 +395,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "TabSelFontBold:"
       Height          =   225
       Left            =   1740
-      TabIndex        =   18
+      TabIndex        =   20
       Top             =   2625
       Width           =   1815
    End
@@ -401,8 +404,8 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "TabSelExtraHeight:"
       Height          =   228
       Left            =   192
-      TabIndex        =   30
-      Top             =   3756
+      TabIndex        =   26
+      Top             =   3396
       Width           =   1488
    End
    Begin VB.Label Label9 
@@ -410,7 +413,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "TabSeparation:"
       Height          =   228
       Left            =   192
-      TabIndex        =   20
+      TabIndex        =   22
       Top             =   3036
       Width           =   1488
    End
@@ -419,7 +422,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "TabWidthStyle:"
       Height          =   225
       Left            =   1740
-      TabIndex        =   14
+      TabIndex        =   16
       Top             =   1905
       Width           =   1815
    End
@@ -428,7 +431,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "Customize Style:"
       Height          =   228
       Left            =   264
-      TabIndex        =   11
+      TabIndex        =   13
       Top             =   1548
       Width           =   1416
    End
@@ -437,7 +440,7 @@ Begin VB.PropertyPage ptpSSTabExGeneral
       Caption         =   "Style:"
       Height          =   228
       Left            =   192
-      TabIndex        =   9
+      TabIndex        =   11
       Top             =   1152
       Width           =   1488
    End
@@ -512,6 +515,10 @@ Private Sub cboTabAppearance_Click()
     If Not mLoading Then Changed = True
 End Sub
 
+Private Sub cboTabHoverHighlight_Click()
+    If Not mLoading Then Changed = True
+End Sub
+
 Private Sub cboTabPictureAlignment_Click()
     If Not mLoading Then Changed = True
 End Sub
@@ -541,14 +548,6 @@ Private Sub chkShowFocusRect_Click()
 End Sub
 
 Private Sub chkSoftEdges_Click()
-    If Not mLoading Then Changed = True
-End Sub
-
-Private Sub chkTabHoverEffect_Click()
-    If Not mLoading Then Changed = True
-End Sub
-
-Private Sub chkTabHoverHighlight_Click()
     If Not mLoading Then Changed = True
 End Sub
 
@@ -598,12 +597,11 @@ Private Sub PropertyPage_ApplyChanges()
     SelectedControls(0).Enabled = CBool(chkEnabled.Value)
     SelectedControls(0).UseMaskColor = CBool(chkUseMaskColor.Value)
     SelectedControls(0).TabSelHighlight = CBool(chkTabSelHighlight.Value)
-    SelectedControls(0).TabHoverHighlight = CBool(chkTabHoverHighlight.Value)
-    SelectedControls(0).TabHoverEffect = CBool(chkTabHoverEffect.Value)
     SelectedControls(0).ShowFocusRect = CBool(chkShowFocusRect.Value)
     SelectedControls(0).ShowDisabledState = CBool(chkShowDisabledState.Value)
     SelectedControls(0).ChangeControlsBackColor = CBool(chkChangeControlsBackColor.Value)
     SelectedControls(0).SoftEdges = CBool(chkSoftEdges.Value)
+    SelectedControls(0).TabHoverHighlight = cboTabHoverHighlight.ItemData(cboTabHoverHighlight.ListIndex)
     SelectedControls(0).TabPictureAlignment = cboTabPictureAlignment.ItemData(cboTabPictureAlignment.ListIndex)
     SelectedControls(0).AutoRelocateControls = cboAutoRelocateControls.ItemData(cboAutoRelocateControls.ListIndex)
     SelectedControls(0).MousePointer = cboMousePointer.ItemData(cboMousePointer.ListIndex)
@@ -715,6 +713,11 @@ Private Sub PropertyPage_SelectionChanged()
     cboTabSelFontBold.AddItem ssYes & " - Yes": cboTabSelFontBold.ItemData(cboTabSelFontBold.NewIndex) = ssYes
     cboTabSelFontBold.AddItem ssNo & " - No": cboTabSelFontBold.ItemData(cboTabSelFontBold.NewIndex) = ssNo
     
+    cboTabHoverHighlight.Clear
+    cboTabHoverHighlight.AddItem ssTHHNo & " - ssTHHNo": cboTabHoverHighlight.ItemData(cboTabHoverHighlight.NewIndex) = ssTHHNo
+    cboTabHoverHighlight.AddItem ssTHHInstant & " - ssTHHInstant": cboTabHoverHighlight.ItemData(cboTabHoverHighlight.NewIndex) = ssTHHInstant
+    cboTabHoverHighlight.AddItem ssTHHEffect & " - ssTHHEffect": cboTabHoverHighlight.ItemData(cboTabHoverHighlight.NewIndex) = ssTHHEffect
+    
     cboTabPictureAlignment.Clear
     cboTabPictureAlignment.AddItem ssPicAlignBeforeCaption & " - ssPicAlignBeforeCaption": cboTabPictureAlignment.ItemData(cboTabPictureAlignment.NewIndex) = ssPicAlignBeforeCaption
     cboTabPictureAlignment.AddItem ssPicAlignCenteredBeforeCaption & " - ssPicAlignCenteredBeforeCaption": cboTabPictureAlignment.ItemData(cboTabPictureAlignment.NewIndex) = ssPicAlignCenteredBeforeCaption
@@ -766,12 +769,11 @@ Private Sub PropertyPage_SelectionChanged()
     chkEnabled.Value = IIf(SelectedControls(0).Enabled, 1, 0)
     chkUseMaskColor.Value = IIf(SelectedControls(0).UseMaskColor, 1, 0)
     chkTabSelHighlight.Value = IIf(SelectedControls(0).TabSelHighlight, 1, 0)
-    chkTabHoverHighlight.Value = IIf(SelectedControls(0).TabHoverHighlight, 1, 0)
-    chkTabHoverEffect.Value = IIf(SelectedControls(0).TabHoverEffect, 1, 0)
     chkShowFocusRect.Value = IIf(SelectedControls(0).ShowFocusRect, 1, 0)
     chkShowDisabledState.Value = IIf(SelectedControls(0).ShowDisabledState, 1, 0)
     chkChangeControlsBackColor.Value = IIf(SelectedControls(0).ChangeControlsBackColor, 1, 0)
     chkSoftEdges.Value = IIf(SelectedControls(0).SoftEdges, 1, 0)
+    SelectInComboByItemData cboTabHoverHighlight, SelectedControls(0).TabHoverHighlight
     SelectInComboByItemData cboTabPictureAlignment, SelectedControls(0).TabPictureAlignment
     SelectInComboByItemData cboAutoRelocateControls, SelectedControls(0).AutoRelocateControls
     SelectInComboByItemData cboMousePointer, SelectedControls(0).MousePointer

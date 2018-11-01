@@ -20,7 +20,7 @@ Private Declare Function SendMessageLong Lib "user32" Alias "SendMessageA" (ByVa
 Private Const EM_GETLINECOUNT = &HBA&
 
 Private Declare Function SetFocusAPI Lib "user32" Alias "SetFocus" (ByVal hWnd As Long) As Long
-Private Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
+Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 Private Const WM_KILLFOCUS As Long = &H8&
 Private Const WM_LBUTTONDBLCLK As Long = &H203
 Private Const WM_KEYDOWN As Long = &H100
@@ -36,7 +36,7 @@ Private Declare Function SetCursor Lib "user32" (ByVal hCursor As Long) As Long
 Private Declare Function GetCursor Lib "user32" () As Long
 Private Declare Function DestroyCursor Lib "user32" (ByVal hCursor As Long) As Long
 
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 Public Event GridContentChange()
 
@@ -673,14 +673,14 @@ Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, By
                         If mTimerEditCell Is Nothing Then
                             If mGrid.SelectionMode = flexSelectionFree Then
                                 If (mGrid.Row = mGrid.MouseRow) Or (mGrid.HighLight = flexHighlightNever) Then
-                                    If (mGrid.col = mGrid.MouseCol) Or (mGrid.HighLight = flexHighlightNever) Then
+                                    If (mGrid.Col = mGrid.MouseCol) Or (mGrid.HighLight = flexHighlightNever) Then
                                         If mTimerEditCell Is Nothing Then
                                             If mGrid.Row = mGrid.MouseRow Then
                                                 mEditCellRow = mGrid.MouseRow
                                             Else
                                                 mEditCellRow = -1
                                             End If
-                                            If mGrid.col = mGrid.MouseCol Then
+                                            If mGrid.Col = mGrid.MouseCol Then
                                                 mEditCellCol = mGrid.MouseCol
                                             Else
                                                 mEditCellCol = -1
@@ -699,7 +699,7 @@ Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, By
                                         Else
                                             mEditCellRow = -1
                                         End If
-                                        If mGrid.col = mGrid.MouseCol Then
+                                        If mGrid.Col = mGrid.MouseCol Then
                                             mEditCellCol = mGrid.MouseCol
                                         Else
                                             mEditCellCol = -1
@@ -710,14 +710,14 @@ Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, By
                                     End If
                                 End If
                             Else
-                                If (mGrid.col = mGrid.MouseCol) Or (mGrid.HighLight = flexHighlightNever) Then
+                                If (mGrid.Col = mGrid.MouseCol) Or (mGrid.HighLight = flexHighlightNever) Then
                                     If mTimerEditCell Is Nothing Then
                                         If mGrid.Row = mGrid.MouseRow Then
                                             mEditCellRow = mGrid.MouseRow
                                         Else
                                             mEditCellRow = -1
                                         End If
-                                        If mGrid.col = mGrid.MouseCol Then
+                                        If mGrid.Col = mGrid.MouseCol Then
                                             mEditCellCol = mGrid.MouseCol
                                         Else
                                             mEditCellCol = -1
@@ -733,7 +733,7 @@ Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, By
                             Set mTimerEditCell = Nothing
                         End If
                     Else
-                        If (mGrid.Row <> mGrid.MouseRow) Or (mGrid.col <> mGrid.MouseCol) Then
+                        If (mGrid.Row <> mGrid.MouseRow) Or (mGrid.Col <> mGrid.MouseCol) Then
                             RemoveEditCell
                         End If
                     End If
@@ -1319,7 +1319,7 @@ Private Sub SetAuxGridColumsWidths()
     
     ReDim mAuxColWidths(mGrid.Cols - 1)
     iRedraw_Prev = mGrid.Redraw
-    iCol_Prev = mGrid.col
+    iCol_Prev = mGrid.Col
     iColSel_Prev = mGrid.ColSel
     mGrid.Redraw = False
     
@@ -1329,7 +1329,7 @@ Private Sub SetAuxGridColumsWidths()
         Else
             If mDefaultColWidth = 0 Then
                 If mGrid.Rows > 0 Then
-                    mGrid.col = c
+                    mGrid.Col = c
                     mDefaultColWidth = mGrid.CellWidth + Screen.TwipsPerPixelX
                 Else
                     mDefaultColWidth = 960
@@ -1340,7 +1340,7 @@ Private Sub SetAuxGridColumsWidths()
     Next c
     
     On Error Resume Next
-    mGrid.col = iCol_Prev
+    mGrid.Col = iCol_Prev
     mGrid.ColSel = iColSel_Prev
     mGrid.Redraw = iRedraw_Prev Or mGrid.Redraw
 End Sub
@@ -1972,7 +1972,7 @@ Public Sub OrderGridByColumn(Optional nOrderByColumn As Long = -1, Optional nOrd
         
         iRedraw = mGrid.Redraw
         iPrevRow = mGrid.Row
-        iPrevCol = mGrid.col
+        iPrevCol = mGrid.Col
         iPrevRowSel = mGrid.RowSel
         iPrevColSel = mGrid.ColSel
         
@@ -1984,7 +1984,7 @@ Public Sub OrderGridByColumn(Optional nOrderByColumn As Long = -1, Optional nOrd
         
         mGrid.Row = 0
         For c = 0 To mGrid.Cols - 1
-            mGrid.col = c
+            mGrid.Col = c
             Set mGrid.CellPicture = Nothing
         Next c
         
@@ -1994,7 +1994,7 @@ Public Sub OrderGridByColumn(Optional nOrderByColumn As Long = -1, Optional nOrd
             Set iPic = GetGridArrowUpImage(mGrid)
         End If
         
-        mGrid.col = iColClicked
+        mGrid.Col = iColClicked
         mGrid.CellPictureAlignment = flexAlignRightCenter
         Set mGrid.CellPicture = iPic
         
@@ -2016,7 +2016,7 @@ Public Sub OrderGridByColumn(Optional nOrderByColumn As Long = -1, Optional nOrd
             mGrid.Redraw = iRedraw Or mGrid.Redraw
             Exit Sub
         End If
-        mGrid.col = iOrderCol
+        mGrid.Col = iOrderCol
         mGrid.ColSel = iOrderCol ' mGrid.Cols - 1
         If iOrderDescending Then
             mGrid.Sort = flexSortGenericDescending
@@ -2036,7 +2036,7 @@ Public Sub OrderGridByColumn(Optional nOrderByColumn As Long = -1, Optional nOrd
     Else
         mGrid.Row = 0
         mGrid.TopRow = mGrid.FixedRows
-        mGrid.col = iPrevCol
+        mGrid.Col = iPrevCol
     End If
     mGrid.Cols = mGrid.Cols - 1
     mGrid.Redraw = iRedraw Or mGrid.Redraw
@@ -2074,7 +2074,7 @@ Private Sub RestoreSelection(nPrevCol As Long, nPrevColSel As Long)
             End Select
         End If
     Next R
-    mGrid.col = nPrevCol
+    mGrid.Col = nPrevCol
     mGrid.ColSel = nPrevColSel
     If mGrid.Row <> iR Then
         If mGrid.HighLight <> flexHighlightNever Then
@@ -2182,7 +2182,7 @@ Private Sub RemoveOrderArrowsFromGrid()
     
     iRedraw = mGrid.Redraw
     iPrevRow = mGrid.Row
-    iPrevCol = mGrid.col
+    iPrevCol = mGrid.Col
     iPrevRowSel = mGrid.RowSel
     iPrevColSel = mGrid.ColSel
     
@@ -2190,12 +2190,12 @@ Private Sub RemoveOrderArrowsFromGrid()
     
     mGrid.Row = 0
     For c = 0 To mGrid.Cols - 1
-        mGrid.col = c
+        mGrid.Col = c
         Set mGrid.CellPicture = Nothing
     Next c
 
     mGrid.Row = iPrevRow
-    mGrid.col = iPrevCol
+    mGrid.Col = iPrevCol
     mGrid.RowSel = iPrevRowSel
     mGrid.ColSel = iPrevColSel
     mGrid.Redraw = iRedraw Or mGrid.Redraw
@@ -2528,7 +2528,7 @@ Private Sub StoreCellsData()
     
     iRow_Prev = mGrid.Row
     iRowSel_Prev = mGrid.RowSel
-    iCol_Prev = mGrid.col
+    iCol_Prev = mGrid.Col
     iColSel_Prev = mGrid.ColSel
     
     mGrid.Redraw = False
@@ -2536,7 +2536,7 @@ Private Sub StoreCellsData()
     For R = mGrid.FixedRows To mGridRows - 1
         mGrid.Row = R
         For c = mGrid.FixedCols To mGridCols - 1
-            mGrid.col = c
+            mGrid.Col = c
             mCellForeColor(R, c) = mGrid.CellForeColor
             
             On Error Resume Next
@@ -2635,7 +2635,7 @@ Private Sub StoreCellsData()
     
     mGrid.Row = iRow_Prev
     mGrid.RowSel = iRowSel_Prev
-    mGrid.col = iCol_Prev
+    mGrid.Col = iCol_Prev
     mGrid.ColSel = iColSel_Prev
     mGrid.Redraw = True '  iRedraw_Prev Or mGrid.Redraw
     mLast_RowEdited = -1
@@ -2667,6 +2667,7 @@ Private Sub TestWhetherToShowToolTip()
     Dim iFontIndex As Long
     Dim iAuxHeight As Long
     Dim iStr As String
+    Dim iDCCtl As Long
     
     On Error GoTo errorHandler:
     
@@ -2703,7 +2704,9 @@ Private Sub TestWhetherToShowToolTip()
     
     iRectCell.Bottom = mGrid.RowHeight(mRowUnderMouse) / Screen.TwipsPerPixelY
     
-    iDC = CreateCompatibleDC(GetDC(mGridHwnd))
+    iDCCtl = GetDC(mGridHwnd)
+    iDC = CreateCompatibleDC(iDCCtl)
+    ReleaseDC mGridHwnd, iDCCtl
     If iDC = 0 Then Exit Sub
     
     iLOGFONT = StdFontToLogFont_Screen(iDC, iFont)
@@ -2946,27 +2949,27 @@ Private Sub EditCell()
     
     iAuxRedraw = mGrid.Redraw
     mGrid.Redraw = False
-    iAuxCol = mGrid.col
+    iAuxCol = mGrid.Col
     iAuxRow = mGrid.Row
     iAuxColSel = mGrid.ColSel
     iAuxRowSel = mGrid.RowSel
     
     If mGrid.SelectionMode = flexSelectionByRow Then
         mEditCellCol = mGrid.MouseCol
-        mGrid.col = mEditCellCol
+        mGrid.Col = mEditCellCol
         mEditCellRow = mGrid.Row
     ElseIf mGrid.SelectionMode = flexSelectionByColumn Then
-        mEditCellCol = mGrid.col
+        mEditCellCol = mGrid.Col
         mEditCellRow = mGrid.MouseRow
         mGrid.Row = mEditCellRow
     Else
-        mEditCellCol = mGrid.col
+        mEditCellCol = mGrid.Col
         mEditCellRow = mGrid.Row
     End If
     
     Err.Clear
-    If Not mGrid.ColIsVisible(mGrid.col) Then GoTo TheExit:
-    If mGrid.ColWidth(mGrid.col) = 0 Then GoTo TheExit:
+    If Not mGrid.ColIsVisible(mGrid.Col) Then GoTo TheExit:
+    If mGrid.ColWidth(mGrid.Col) = 0 Then GoTo TheExit:
     
     Set iCtl = mGrid.Parent.Controls(mGrid.Name & "_" & "EditCellTextBox")
     If iCtl Is Nothing Then
@@ -3113,7 +3116,7 @@ Private Sub EditCell()
     mGrid.HighLight = 0
     
 TheExit:
-    mGrid.col = iAuxCol
+    mGrid.Col = iAuxCol
     mGrid.Row = iAuxRow
     mGrid.ColSel = iAuxColSel
     mGrid.RowSel = iAuxRowSel

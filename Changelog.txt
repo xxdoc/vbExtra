@@ -1,3 +1,5 @@
+29/Oct/2018 SSTabEx control: enhanced/bug fixed highlight color for TabHoverHighlight and TabSelHighlight effects
+16/Oct/2018 fixed some GDI memory resource leak issues
 09/Oct/2018 added TabHoverEffect property to SSTabEx control
 08/Oct/2018 added better support for multiple monitors set ups
 08/Oct/2018 fixed a bug in PrintFn control

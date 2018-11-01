@@ -74,7 +74,6 @@ TabControls:			---R
 TabEnabled:			O---
 TabHeight:			ODP-
 TabHoverHighlight:		-D--
-TabHoverEffect:                 -D--
 TabMaxWidth:			ODP-
 TabMinWidth:			-DP-
 TabOrientation:			ODP-
@@ -124,7 +123,7 @@ ChangeControlsBackColor:
 Returns or sets a value that determines if the background color of the contained controls will be changed according to the background color of the tabs (the TabBackColor property value).
 If VisualStyles is set to True, the background of the controls are painted with the background of the themed tab body.
 If ChangeControlsBackColor is False, the BackColor of the contained controls is left unchanged.
-If ChangeControlsBackColor is True, and the controls is not themed, changing the TabBackColor propery value will also change the BackColor of the contained controls, but only when their BackColor's has the same color as the previous TabBackColor setting.
+If ChangeControlsBackColor is True, and the control is not themed, changing the TabBackColor propery value will also change the BackColor of the contained controls, but only when their BackColor's has the same color as the previous TabBackColor setting.
 If ChangeControlsBackColor is True, and the control is themed, only the controls that has the BackColor property value set to the same color of TabBackColor are changed.
 
 Enabled:
@@ -233,9 +232,7 @@ Returns or sets the height of the tabs.
 
 TabHoverHighlight:
 Returns or sets a value that determines if the tabs will appear highlighted when the mouse is over them.
-
-TabHoverEffect:
-Returns/sets a value that determines if the tabs will show an effect when they are being highlighted with the mouse over them.
+ssTHHEffect setting only works when the control is not themed. When it is set to ssTHHEffect, the tabs will show an effect when they are being highlighted. 
 
 TabMaxWidth:
 Returns or sets the maximum width of each tab. If set to 0 (zero), it means no maximun.

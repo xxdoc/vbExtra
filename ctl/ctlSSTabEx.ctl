@@ -190,6 +190,7 @@ End Type
 
 Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hDC As Long, ByVal nIndex As Long) As Long
 Private Declare Function GetDC Lib "user32" (ByVal hWnd As Long) As Long
+Private Declare Function ReleaseDC Lib "user32" (ByVal hWnd As Long, ByVal hDC As Long) As Long
 
 Private Const LOGPIXELSX As Long = 88
 Private Const LOGPIXELSY As Long = 90
@@ -434,6 +435,12 @@ Public Enum vbExAutoRelocateControlsConstants
     ssRelocateOnTabOrientationChange = 2
 End Enum
 
+Public Enum vbExTabHoverHighlightConstants
+    ssTHHNo = 0
+    ssTHHInstant = 1
+    ssTHHEffect = 2
+End Enum
+
 ' Events
 ' Original
 Public Event Click(PreviousTab As Integer)
@@ -556,7 +563,7 @@ Private mUseMaskColor As Boolean
 Private mTabSelExtraHeight As Single ' internally  in Himetric
 Private mTabSelFontBold As vbExAutoYesNoConstants
 Private mTabSelHighlight As Boolean
-Private mTabHoverHighlight As Boolean
+Private mTabHoverHighlight As vbExTabHoverHighlightConstants
 Private mVisualStyles As Boolean
 Private mTabBackColor As Long
 Private mShowDisabledState As Boolean
@@ -574,7 +581,6 @@ Private mAutoRelocateControls As vbExAutoRelocateControlsConstants
 Private mEndOfTabs As Single
 Private mSoftEdges As Boolean
 Private mMinSpaceNeeded As Single
-Private mTabHoverEffect As Boolean
 
 ' Variables
 Private mTabBodyStart As Long ' in Pixels
@@ -1613,15 +1619,18 @@ Public Property Let TabSelHighlight(nValue As Boolean)
 End Property
 
 
-Public Property Get TabHoverHighlight() As Boolean
+Public Property Get TabHoverHighlight() As vbExTabHoverHighlightConstants
 Attribute TabHoverHighlight.VB_Description = "Returns/sets a value that determines if the tabs will appear highlighted when the mouse is over them."
 Attribute TabHoverHighlight.VB_MemberFlags = "400"
     TabHoverHighlight = mTabHoverHighlight
 End Property
 
-Public Property Let TabHoverHighlight(nValue As Boolean)
+Public Property Let TabHoverHighlight(nValue As vbExTabHoverHighlightConstants)
     If nValue <> mTabHoverHighlight Then
         mTabHoverHighlight = nValue
+        If (mTabHoverHighlight < ssTHHNo) Or (mTabHoverHighlight > ssTHHEffect) Then
+            mTabHoverHighlight = ssTHHInstant
+        End If
         PropertyChanged "TabHoverHighlight"
         Draw
     End If
@@ -2277,11 +2286,10 @@ Private Sub UserControl_InitProperties()
     mVisualStyles = True
     mTabBackColor = vbButtonFace
     mShowDisabledState = False
-    mTabHoverEffect = True
     mTabSelFontBold = ssYNAuto
     mChangeControlsBackColor = True
     mTabSelHighlight = False
-    mTabHoverHighlight = True
+    mTabHoverHighlight = ssTHHEffect
     mTabWidthStyle = ssTWSAuto
     mShowRowsInPerspective = ssYNAuto
     mTabSeparation = 0
@@ -2660,7 +2668,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mTabSelExtraHeight = PropBag.ReadProperty("TabSelExtraHeight", 0)
     If mTabSelExtraHeight < 0 Then mTabSelExtraHeight = 0
     mTabSelHighlight = PropBag.ReadProperty("TabSelHighlight", False)
-    mTabHoverHighlight = PropBag.ReadProperty("TabHoverHighlight", True)
+    mTabHoverHighlight = PropBag.ReadProperty("TabHoverHighlight", ssTHHEffect)
     mTabSelFontBold = PropBag.ReadProperty("TabSelFontBold", ssYNAuto)
     mVisualStyles = PropBag.ReadProperty("Themed", False)
     mTabBackColor = PropBag.ReadProperty("TabBackColor", vbButtonFace)
@@ -2673,7 +2681,6 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mTabPictureAlignment = PropBag.ReadProperty("TabPictureAlignment", ssPicAlignBeforeCaption)
     mAutoRelocateControls = PropBag.ReadProperty("AutoRelocateControls", ssRelocateAlways)
     mSoftEdges = PropBag.ReadProperty("SoftEdges", False)
-    mTabHoverEffect = PropBag.ReadProperty("TabHoverEffect", True)
     
     Set UserControl.MouseIcon = mMouseIcon
     UserControl.MousePointer = mMousePointer
@@ -2939,7 +2946,7 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     PropBag.WriteProperty "UseMaskColor", mUseMaskColor, True
     PropBag.WriteProperty "TabSelExtraHeight", Round(mTabSelExtraHeight), 0
     PropBag.WriteProperty "TabSelHighlight", mTabSelHighlight, False
-    PropBag.WriteProperty "TabHoverHighlight", mTabHoverHighlight, True
+    PropBag.WriteProperty "TabHoverHighlight", mTabHoverHighlight, ssTHHEffect
     PropBag.WriteProperty "TabSelFontBold", mTabSelFontBold, ssYNAuto
     PropBag.WriteProperty "Themed", mVisualStyles, False
     PropBag.WriteProperty "TabBackColor", mTabBackColor, vbButtonFace
@@ -2952,7 +2959,6 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     PropBag.WriteProperty "TabPictureAlignment", mTabPictureAlignment, ssPicAlignBeforeCaption
     PropBag.WriteProperty "AutoRelocateControls", mAutoRelocateControls, ssRelocateAlways
     PropBag.WriteProperty "SoftEdges", mSoftEdges, False
-    PropBag.WriteProperty "TabHoverEffect", mTabHoverEffect, True
     
     For c = 0 To mTabs - 1
         PropBag.WriteProperty "TabPicture(" & CStr(c) & ")", mTabData(c).Picture, Nothing
@@ -3867,7 +3873,7 @@ Private Sub DrawTab(nTab As Long)
     If iActive Then
         iHighlighted = mTabSelHighlight And mEnabled And iTabData.Enabled
     Else
-        iHighlighted = mTabHoverHighlight And iTabData.Hovered And mEnabled And iTabData.Enabled
+        iHighlighted = (mTabHoverHighlight <> ssTHHNo) And iTabData.Hovered And mEnabled And iTabData.Enabled
     End If
     
     With iTabData.TabRect
@@ -3988,8 +3994,11 @@ Private Sub DrawTab(nTab As Long)
             End If
             
             If iHighlighted And mAmbientUserMode Then
-                Call FillCurvedGradient(.Left, .Top + iTopShift, .Right + iRightShift, .Bottom - (.Bottom - .Top) / 2 + iBottomShift, mTabBackColor2, IIf(iTabData.Selected, mGlowColor_Bk, mGlowColor), iCurv, True, True)
-                Call FillCurvedGradient(.Left, .Bottom - (.Bottom - .Top) / 2 + iTopShift, .Right + iRightShift, .Bottom + iBottomShift, IIf(iTabData.Selected, mGlowColor_Bk, mGlowColor), mTabBackColor2, 0, False, False)
+'                Call FillCurvedGradient(.Left, .Top + iTopShift, .Right + iRightShift, .Bottom + iBottomShift, mTabBackColor2, mGlowColor, iCurv, True, True)
+                Call FillCurvedGradient(.Left, .Top + iTopShift, .Right + iRightShift, (.Bottom + iBottomShift + .Top + iTopShift) / 2, mTabBackColor2, mGlowColor, iCurv, True, True)
+                Call FillCurvedGradient(.Left, (.Bottom + iBottomShift + .Top + iTopShift) / 2, .Right + iRightShift, .Bottom + iBottomShift, mGlowColor, mTabBackColor2, iCurv, True, True)
+                
+                'Call FillCurvedGradient(.Left, .Bottom - (.Bottom - .Top - iBottomShift) / 2 + iTopShift, .Right + iRightShift, .Bottom - iBottomShift, IIf(iTabData.Selected, mGlowColor, mGlowColor), mTabBackColor2, 0, False, False)
             Else
                 Call FillCurvedGradient(.Left, .Top + iTopShift, .Right + iRightShift, .Bottom + iBottomShift, mTabBackColor2, mTabBackColor2, iCurv, True, True)
             End If
@@ -4770,34 +4779,55 @@ Private Sub FillCurvedGradientR(utRect As RECT, ByVal lStartColor As Long, ByVal
 
     Dim sngRedInc As Single, sngGreenInc As Single, sngBlueInc As Single
     Dim sngRed As Single, sngGreen As Single, sngBlue As Single
-
+    
     lStartColor = TranslatedColor(lStartColor)
     lEndColor = TranslatedColor(lEndColor)
 
     Dim intCnt As Integer
-    sngRedInc = (GetRedValue(lEndColor) - GetRedValue(lStartColor)) / (utRect.Bottom - utRect.Top)
-    sngGreenInc = (GetGreenValue(lEndColor) - GetGreenValue(lStartColor)) / (utRect.Bottom - utRect.Top)
-    sngBlueInc = (GetBlueValue(lEndColor) - GetBlueValue(lStartColor)) / (utRect.Bottom - utRect.Top)
-
+    
     sngRed = GetRedValue(lStartColor)
     sngGreen = GetGreenValue(lStartColor)
     sngBlue = GetBlueValue(lStartColor)
+    
+    sngRedInc = (GetRedValue(lEndColor) - sngRed) / (utRect.Bottom - utRect.Top)
+    sngGreenInc = (GetGreenValue(lEndColor) - sngGreen) / (utRect.Bottom - utRect.Top)
+    sngBlueInc = (GetBlueValue(lEndColor) - sngBlue) / (utRect.Bottom - utRect.Top)
 
-    If iCurveValue = -1 Then
+    If sngRed > 255 Then sngRed = 255
+    If sngGreen > 255 Then sngGreen = 255
+    If sngBlue > 255 Then sngBlue = 255
+    If sngRed < 0 Then sngRed = 0
+    If sngGreen < 0 Then sngGreen = 0
+    If sngBlue < 0 Then sngBlue = 0
+
+    If iCurveValue < 1 Then
         For intCnt = utRect.Top To utRect.Bottom
             picDraw.Line (utRect.Left, intCnt)-(utRect.Right, intCnt), RGB(sngRed, sngGreen, sngBlue)
             sngRed = sngRed + sngRedInc
             sngGreen = sngGreen + sngGreenInc
             sngBlue = sngBlue + sngBlueInc
+            
+            If sngRed > 255 Then sngRed = 255
+            If sngGreen > 255 Then sngGreen = 255
+            If sngBlue > 255 Then sngBlue = 255
+            If sngRed < 0 Then sngRed = 0
+            If sngGreen < 0 Then sngGreen = 0
+            If sngBlue < 0 Then sngBlue = 0
         Next
     Else
         If bCurveLeft And bCurveRight Then
             For intCnt = utRect.Top To utRect.Bottom
                 picDraw.Line (utRect.Left + iCurveValue + 1, intCnt)-(utRect.Right - iCurveValue, intCnt), RGB(sngRed, sngGreen, sngBlue)
-
                 sngRed = sngRed + sngRedInc
                 sngGreen = sngGreen + sngGreenInc
                 sngBlue = sngBlue + sngBlueInc
+
+                If sngRed > 255 Then sngRed = 255
+                If sngGreen > 255 Then sngGreen = 255
+                If sngBlue > 255 Then sngBlue = 255
+                If sngRed < 0 Then sngRed = 0
+                If sngGreen < 0 Then sngGreen = 0
+                If sngBlue < 0 Then sngBlue = 0
 
                 If iCurveValue > 0 Then
                     iCurveValue = iCurveValue - 1
@@ -4811,6 +4841,13 @@ Private Sub FillCurvedGradientR(utRect As RECT, ByVal lStartColor As Long, ByVal
                 sngGreen = sngGreen + sngGreenInc
                 sngBlue = sngBlue + sngBlueInc
 
+                If sngRed > 255 Then sngRed = 255
+                If sngGreen > 255 Then sngGreen = 255
+                If sngBlue > 255 Then sngBlue = 255
+                If sngRed < 0 Then sngRed = 0
+                If sngGreen < 0 Then sngGreen = 0
+                If sngBlue < 0 Then sngBlue = 0
+
                 If iCurveValue > 0 Then
                     iCurveValue = iCurveValue - 1
                 End If
@@ -4822,7 +4859,14 @@ Private Sub FillCurvedGradientR(utRect As RECT, ByVal lStartColor As Long, ByVal
                 sngRed = sngRed + sngRedInc
                 sngGreen = sngGreen + sngGreenInc
                 sngBlue = sngBlue + sngBlueInc
-
+                
+                If sngRed > 255 Then sngRed = 255
+                If sngGreen > 255 Then sngGreen = 255
+                If sngBlue > 255 Then sngBlue = 255
+                If sngRed < 0 Then sngRed = 0
+                If sngGreen < 0 Then sngGreen = 0
+                If sngBlue < 0 Then sngBlue = 0
+                
                 If iCurveValue > 0 Then
                     iCurveValue = iCurveValue - 1
                 End If
@@ -4942,24 +4986,47 @@ Private Sub SetColors()
             If iCol_L > 240 Then iCol_L = 240
             mGlowColor = ColorHLSToRGB(iTabBackColor_H, iCol_L, iTabBackColor_S)
         Else
-            iCol_L = iTabBackColor_L + (240 - iTabBackColor_L) * 0.2 + iTabBackColor_L * 0.06 + 5
+            iCol_S = iTabBackColor_S
+            If iTabBackColor_L > 160 Then
+                iCol_L = iTabBackColor_L * 1.15
+            Else
+                iCol_L = iTabBackColor_L + (240 - iTabBackColor_L) * 0.2 + iTabBackColor_L * 0.06 + 5
+            End If
             If iCol_L > 240 Then iCol_L = 240
-            mGlowColor = ColorHLSToRGB(iTabBackColor_H, iCol_L, iTabBackColor_S)
+            If iCol_L > 200 Then
+                If iTabBackColor_L > 210 Then
+                    iCol_S = 1
+                Else
+                    If iCol_S > 100 Then
+                        If ((iTabBackColor_H > 35) And (iTabBackColor_H < 45)) Then
+                            iCol_S = iCol_S - 100
+                            If iCol_S < 1 Then iCol_S = 1
+                            iCol_L = iCol_L + 20
+                            If iCol_L > 240 Then iCol_L = 240
+                        End If
+                    End If
+                End If
+            End If
+            mGlowColor = ColorHLSToRGB(iTabBackColor_H, iCol_L, iCol_S)
         End If
     Else
         If iTabBackColor_S > 60 Then
             Select Case iTabBackColor_H
-                Case 0 To 30, 220 To 240
-                    iCol_L = iTabBackColor_L + (240 - iTabBackColor_L) * 0.2
+                Case 0 To 30, 220 To 240 ' reds
+                    If iTabBackColor_L < 100 Then
+                        iCol_L = iTabBackColor_L + (240 - iTabBackColor_L) * 0.07
+                    Else
+                        iCol_L = iTabBackColor_L
+                    End If
                 Case 200 To 219 ' violet
                     iCol_L = iTabBackColor_L + (240 - iTabBackColor_L) * 0.3
                 Case 31 To 120 ' yellows, greenes, cyanes
-                    iCol_L = iTabBackColor_L + (240 - iTabBackColor_L) * 0.07
+                    iCol_L = iTabBackColor_L + (240 - iTabBackColor_L) * 0.2
                 Case Else ' blues
                     If iTabBackColor_L < 100 Then
-                        iCol_L = iTabBackColor_L + (240 - iTabBackColor_L) * 0.5
+                        iCol_L = iTabBackColor_L + (240 - iTabBackColor_L) * 0.15
                     Else
-                        iCol_L = iTabBackColor_L + (240 - iTabBackColor_L) * 0.4
+                        iCol_L = iTabBackColor_L '+ (240 - iTabBackColor_L) * 0.07
                     End If
             End Select
         Else ' gray
@@ -4967,8 +5034,17 @@ Private Sub SetColors()
         End If
         iCol_L = iCol_L + 15
         If iCol_L > 240 Then iCol_L = 240
-        iCol_S = iTabBackColor_S * 1.1
+        iCol_S = iTabBackColor_S
+        If iCol_S > 200 Then
+            iCol_S = iCol_S * 0.65
+            If iCol_S < 1 Then iCol_S = 1
+            iCol_L = iCol_L * 1.4
+            If iCol_L > 240 Then iCol_L = 240
+        Else
+            iCol_S = iCol_S * 1.1
+        End If
         If iCol_S > 240 Then iCol_S = 240
+        
         mGlowColor = ColorHLSToRGB(iTabBackColor_H, iCol_L, iCol_S)
     End If
 
@@ -5211,13 +5287,13 @@ End Sub
 Private Sub RaiseEvent_TabMouseEnter(nTab As Integer)
     mTabData(nTab).Hovered = True
     RaiseEvent TabMouseEnter(nTab)
-    If mTabHoverEffect And Not mControlIsThemed And mTabHoverHighlight Then
+    If (mTabHoverHighlight = ssTHHEffect) And Not mControlIsThemed Then
         tmrTabHoverEffect.Enabled = False
         tmrTabHoverEffect.Enabled = True
         mTabHoverEffect_Step = 1
         mGlowColor = mHoverEffectColors(mTabHoverEffect_Step)
     End If
-    If mTabHoverHighlight Then PostDrawMessage
+    If (mTabHoverHighlight <> ssTHHNo) Then PostDrawMessage
     
     If mThereAreTabsToolTipTexts Then
         ShowTabTTT nTab
@@ -5232,7 +5308,7 @@ Private Sub RaiseEvent_TabMouseLeave(nTab As Integer)
     mTabData(nTab).Hovered = False
     RaiseEvent TabMouseLeave(nTab)
     If nTab <> mTabSel Then
-        If mTabHoverHighlight Then PostDrawMessage
+        If (mTabHoverHighlight <> ssTHHNo) Then PostDrawMessage
     End If
     
     If mThereAreTabsToolTipTexts Then RestoreExtenderTTT
@@ -5565,84 +5641,11 @@ Private Sub SetThemeExtraData()
     For x = picAux.ScaleWidth - 9 To picAux.ScaleWidth - 1
         iCol = GetPixel(picAux.hDC, x, 15)
         ColorRGBToHLS iCol, iCol_H, iCol_L, iCol_S
-        'Debug.Print x, Abs(iCol_L - iColB_L)
         If Abs(iCol_L - iColB_L) > iThreshold Then
             mThemedTabBodyRightShadowPixels = picAux.ScaleWidth - x - 1
             Exit For
         End If
     Next x
-'    mThemedTabBodyRightShadowPixels = 4
-    
-'    mThemedInactiveTabLeftBorder_TABITEM = 1
-'    iFrom = 0
-'    For x = 0 To 9
-'        iCol = GetPixel(picAux.hDc, x, 15)
-'        ColorRGBToHLS iCol, iCol_H, iCol_L, iCol_S
-'        If (Abs(iCol_H - mThemedInactiveReferenceTabBackColor_H) >= 12) Or (Abs(iCol_L - mThemedInactiveReferenceTabBackColor_L) >= 12) Or (Abs(iCol_S - mThemedInactiveReferenceTabBackColor_S) >= 20) Then
-'            iFrom = x
-'            Exit For
-'        End If
-'    Next x
-'    For x = iFrom To 9
-'        iCol = GetPixel(picAux.hDc, x, 15)
-'        ColorRGBToHLS iCol, iCol_H, iCol_L, iCol_S
-'        If Abs(iCol_H - mThemedInactiveReferenceTabBackColor_H) < 9 Then
-'            If Abs(iCol_L - mThemedInactiveReferenceTabBackColor_L) < 9 Then
-'                If Abs(iCol_S - mThemedInactiveReferenceTabBackColor_S) < 15 Then
-'                    mThemedInactiveTabLeftBorder_TABITEM = x
-'                    Exit For
-'                End If
-'            End If
-'        End If
-'    Next x
-'
-'    mThemedInactiveTabRightBorder_TABITEM = 2
-'    iFrom = 29
-'    For x = 29 To 19 Step -1
-'        iCol = GetPixel(picAux.hDc, x, 15)
-'        ColorRGBToHLS iCol, iCol_H, iCol_L, iCol_S
-'        If (Abs(iCol_H - mThemedInactiveReferenceTabBackColor_H) >= 12) Or (Abs(iCol_L - mThemedInactiveReferenceTabBackColor_L) >= 12) Or (Abs(iCol_S - mThemedInactiveReferenceTabBackColor_S) >= 20) Then
-'            iFrom = x
-'            Exit For
-'        End If
-'    Next x
-'    For x = iFrom To 19 Step -1
-'        iCol = GetPixel(picAux.hDc, x, 15)
-'        ColorRGBToHLS iCol, iCol_H, iCol_L, iCol_S
-'        If Abs(iCol_H - mThemedInactiveReferenceTabBackColor_H) < 9 Then
-'            If Abs(iCol_L - mThemedInactiveReferenceTabBackColor_L) < 9 Then
-'                If Abs(iCol_S - mThemedInactiveReferenceTabBackColor_S) < 15 Then
-'                    mThemedInactiveTabRightBorder_TABITEM = 29 - x - 1
-'                    Exit For
-'                End If
-'            End If
-'        End If
-'    Next x
-'
-'    picAux.Cls
-'    DrawThemeBackground mTheme, picAux.hDc, TABP_TABITEMRIGHTEDGE, TIS_NORMAL, iRect, iRect
-'    mThemedInactiveTabRightBorder_TABITEMRIGHTEDGE = 3
-'    iFrom = 29
-'    For x = 29 To 19 Step -1
-'        iCol = GetPixel(picAux.hDc, x, 15)
-'        ColorRGBToHLS iCol, iCol_H, iCol_L, iCol_S
-'        If (Abs(iCol_H - mThemedInactiveReferenceTabBackColor_H) >= 12) Or (Abs(iCol_L - mThemedInactiveReferenceTabBackColor_L) >= 12) Or (Abs(iCol_S - mThemedInactiveReferenceTabBackColor_S) >= 20) Then
-'            iFrom = x
-'            Exit For
-'        End If
-'    Next x
-'    For x = iFrom To 19 Step -1
-'        iCol = GetPixel(picAux.hDc, x, 15)
-'        ColorRGBToHLS iCol, iCol_H, iCol_L, iCol_S
-'        If Abs(iCol_H - mThemedInactiveReferenceTabBackColor_H) < 9 Then
-'            If Abs(iCol_L - mThemedInactiveReferenceTabBackColor_L) < 9 Then
-'                If Abs(iCol_S - mThemedInactiveReferenceTabBackColor_S) < 15 Then
-'                    mThemedInactiveTabRightBorder_TABITEMRIGHTEDGE = 29 - x - 1
-'                    Exit For
-'                End If
-'            End If
-'        End If
-'    Next x
     
     picAux.Cls
 End Sub
@@ -7028,6 +7031,7 @@ Private Function pScaleY(Height, Optional ByVal FromScale As Variant, Optional B
             pScaleY = UserControl.ScaleY(Height, FromScale, ToScale)
     End Select
 End Function
+
 Private Sub SetDPI()
     Dim iDC As Long
     Dim iTx As Single
@@ -7036,12 +7040,14 @@ Private Sub SetDPI()
     iDC = GetDC(0)
     mDPIX = GetDeviceCaps(iDC, LOGPIXELSX)
     mDPIY = GetDeviceCaps(iDC, LOGPIXELSY)
+    ReleaseDC 0, iDC
     
     iTx = 1440 / mDPIX
     iTY = 1440 / mDPIY
     
     mXCorrection = iTx / Screen.TwipsPerPixelX
     mYCorrection = iTY / Screen.TwipsPerPixelY
+    
 End Sub
 
 Private Function Screen_TwipsPerPixelX() As Single
@@ -7055,17 +7061,5 @@ End Function
 
 Public Property Get Object() As Object
     Set Object = Me
-End Property
-
-Public Property Get TabHoverEffect() As Boolean
-Attribute TabHoverEffect.VB_Description = "Returns/sets a value that determines if the tabs will show an effect when they are being highlighted with the mouse over them."
-    TabHoverEffect = mTabHoverEffect
-End Property
-
-Public Property Let TabHoverEffect(nValue As Boolean)
-    If nValue <> mTabHoverEffect Then
-        mTabHoverEffect = nValue
-        PropertyChanged "TabHoverEffect"
-    End If
 End Property
 

@@ -105,12 +105,15 @@ Private Sub AutoSizeDropDownWidth()
     Dim iP As POINTAPI
     Dim iShowsScrollBar As Boolean
     Dim iMaxItemsWithoutScrollBar As Long
+    Dim iDCCtl As Long
     
     On Error GoTo errorHandler
     
     If TypeName(GetCombo) <> "ComboBox" Then Exit Sub
     
-    iDC = CreateCompatibleDC(GetDC(GetCombo.hWnd))
+    iDCCtl = GetDC(GetCombo.hWnd)
+    iDC = CreateCompatibleDC(iDCCtl)
+    ReleaseDC GetCombo.hWnd, iDCCtl
     If iDC = 0 Then Exit Sub
     
     mListCount = GetCombo.ListCount
@@ -511,12 +514,15 @@ Public Function GetNeededWidth()
     Dim iText As String
     Dim iP As POINTAPI
     Dim iListCount As Long
+    Dim iDCCtl As Long
     
     On Error GoTo errorHandler
     
     If TypeName(GetCombo) <> "ComboBox" Then Exit Function
     
-    iDC = CreateCompatibleDC(GetDC(GetCombo.hWnd))
+    iDCCtl = GetDC(GetCombo.hWnd)
+    iDC = CreateCompatibleDC(iDCCtl)
+    ReleaseDC GetCombo.hWnd, iDCCtl
     If iDC = 0 Then Exit Function
     
     iListCount = GetCombo.ListCount

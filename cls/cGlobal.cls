@@ -358,13 +358,13 @@ Public Property Get ScreenActiveForm(nForms As Object, Optional nNotOwned As Boo
     Set ScreenActiveForm = mGlobals.ScreenActiveForm(nForms, nNotOwned)
 End Property
     
-Public Function ActivatePrevInstance(Optional nTimeoutCheckHangedSeconds As Long = 25, Optional nTerminateHanged As Boolean = True, Optional nWaitForHavingWindowsTimeoutSeconds As Long = 25, Optional nTerminateWindowless As Boolean = True) As Boolean
+Public Function ActivatePrevInstance(Optional nTimeoutCheckHangedSeconds As Long = 25, Optional nTerminateHanged As Boolean = True, Optional nWaitForHavingWindowsTimeoutSeconds As Long = 25, Optional nTerminateWindowless As Boolean = True, Optional nDoNotActivate As Boolean) As Boolean
     Dim iAP As New cActivatePrevInstance
     
     If Not ClientAppIsCompiled Then Exit Function
     
     If iAP.PrevInstance Then
-        ActivatePrevInstance = iAP.PrevInstanceActivated(nTimeoutCheckHangedSeconds, nTerminateHanged, nWaitForHavingWindowsTimeoutSeconds, nTerminateWindowless)
+        ActivatePrevInstance = iAP.PrevInstanceActivated(nTimeoutCheckHangedSeconds, nTerminateHanged, nWaitForHavingWindowsTimeoutSeconds, nTerminateWindowless, nDoNotActivate)
     End If
 End Function
 

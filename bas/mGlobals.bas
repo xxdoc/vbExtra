@@ -117,10 +117,10 @@ Private Declare Function OleCreatePictureIndirect Lib "olepro32" (PicDesc As Pic
 
 Private Const Planes& = 14
 Private Const BITSPIXEL& = 12
-Private Declare Function ReleaseDC& Lib "user32" (ByVal hWnd As Long, ByVal hDC As Long)
 
 Public Declare Function CreateRectRgn Lib "gdi32" (ByVal X1 As Long, ByVal Y1 As Long, ByVal X2 As Long, ByVal Y2 As Long) As Long
 Public Declare Function SetWindowRgn Lib "user32" (ByVal hWnd As Long, ByVal hRgn As Long, ByVal bRedraw As Boolean) As Long
+Public Declare Function ReleaseDC& Lib "user32" (ByVal hWnd As Long, ByVal hDC As Long)
 
 Private Declare Function SetFocusAPI Lib "user32" Alias "SetFocus" (ByVal hWnd As Long) As Long
 
@@ -1722,12 +1722,15 @@ Public Function ControlTextWidth(nControl As Control, Optional ByVal nText As St
     Dim iLOGFONT As LOGFONTW
     Dim iFontHandle As Long
     Dim iOldFont As Long
+    Dim iDCCtl As Long
     
     If nText = "" Then
         nText = nControl.Text
     End If
     
-    iDC = CreateCompatibleDC(GetDC(nControl.hWnd))
+    iDCCtl = GetDC(nControl.hWnd)
+    iDC = CreateCompatibleDC(iDCCtl)
+    ReleaseDC nControl.hWnd, iDCCtl
     If iDC = 0 Then Exit Function
     
     iLOGFONT = StdFontToLogFont_Screen(iDC, nControl.Font)
