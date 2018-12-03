@@ -20,7 +20,7 @@ Private Declare Function SendMessageLong Lib "user32" Alias "SendMessageA" (ByVa
 Private Const EM_GETLINECOUNT = &HBA&
 
 Private Declare Function SetFocusAPI Lib "user32" Alias "SetFocus" (ByVal hWnd As Long) As Long
-Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+Private Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
 Private Const WM_KILLFOCUS As Long = &H8&
 Private Const WM_LBUTTONDBLCLK As Long = &H203
 Private Const WM_KEYDOWN As Long = &H100
@@ -36,7 +36,7 @@ Private Declare Function SetCursor Lib "user32" (ByVal hCursor As Long) As Long
 Private Declare Function GetCursor Lib "user32" () As Long
 Private Declare Function DestroyCursor Lib "user32" (ByVal hCursor As Long) As Long
 
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 Public Event GridContentChange()
 
@@ -2027,18 +2027,23 @@ Public Sub OrderGridByColumn(Optional nOrderByColumn As Long = -1, Optional nOrd
     
     AddEmptyRowsAtTheEnd iRowsRemoved
     
-'    mGrid.Row = iPrevRow
-'    mGrid.Col = iPrevCol
-'    mGrid.RowSel = iPrevRowSel
-'    mGrid.ColSel = iPrevColSel
-    If (iPrevRow <> 0) And (iPrevColSel <> iPrevCol) Then
-        RestoreSelection iPrevCol, iPrevColSel
-    Else
-        mGrid.Row = 0
-        mGrid.TopRow = mGrid.FixedRows
-        mGrid.Col = iPrevCol
-    End If
     mGrid.Cols = mGrid.Cols - 1
+'    mGrid.Row = iPrevRow
+    mGrid.Col = iPrevCol
+'    mGrid.RowSel = iPrevRowSel
+    mGrid.ColSel = iPrevColSel
+    On Error Resume Next
+'    mGrid.Row = 1
+ '   mGrid.RowSel = 0
+    mGrid.TopRow = mGrid.FixedRows
+    On Error GoTo 0
+'    If (iPrevRow <> 0) And (iPrevColSel <> iPrevCol) Then
+'        'RestoreSelection iPrevCol, iPrevColSel
+'    Else
+'        mGrid.Row = 0
+'        mGrid.TopRow = mGrid.FixedRows
+'        mGrid.Col = iPrevCol
+'    End If
     mGrid.Redraw = iRedraw Or mGrid.Redraw
     
     ParentFlexFnObject.EventRaise "AfterOrderingByColumn", mGrid.Name, iColClicked, iOrderCol, CLng(iOrderDescending_Orig)
