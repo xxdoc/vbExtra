@@ -25,60 +25,60 @@ Begin VB.UserControl FlexFn
       Top             =   2160
    End
    Begin vbExtra.ToolBarDA tbrButtons 
-      Height          =   396
+      Height          =   405
       Left            =   0
       Top             =   0
-      Width           =   2532
-      _ExtentX        =   4466
-      _ExtentY        =   699
-      ButtonsCount    =   6
-      ButtonKey1      =   "Print"
-      ButtonPic161    =   "ctlFlexFn.ctx":03D2
-      ButtonPic201    =   "ctlFlexFn.ctx":0724
-      ButtonPic241    =   "ctlFlexFn.ctx":0C26
-      ButtonPic301    =   "ctlFlexFn.ctx":1338
-      ButtonPic361    =   "ctlFlexFn.ctx":1E52
-      ButtonWidth1    =   428
-      ButtonKey2      =   "Copy"
-      ButtonPic162    =   "ctlFlexFn.ctx":2DD4
-      ButtonPic202    =   "ctlFlexFn.ctx":3126
-      ButtonPic242    =   "ctlFlexFn.ctx":3628
-      ButtonPic302    =   "ctlFlexFn.ctx":3D3A
-      ButtonPic362    =   "ctlFlexFn.ctx":4854
-      ButtonWidth2    =   428
-      ButtonKey3      =   "Save"
-      ButtonPic163    =   "ctlFlexFn.ctx":57D6
-      ButtonPic203    =   "ctlFlexFn.ctx":5B28
-      ButtonPic243    =   "ctlFlexFn.ctx":602A
-      ButtonPic303    =   "ctlFlexFn.ctx":673C
-      ButtonPic363    =   "ctlFlexFn.ctx":7256
-      ButtonWidth3    =   428
-      ButtonKey4      =   "Find"
-      ButtonPic164    =   "ctlFlexFn.ctx":81D8
-      ButtonPic204    =   "ctlFlexFn.ctx":852A
-      ButtonPic244    =   "ctlFlexFn.ctx":8A2C
-      ButtonPic304    =   "ctlFlexFn.ctx":913E
-      ButtonPic364    =   "ctlFlexFn.ctx":9C58
-      ButtonWidth4    =   428
-      ButtonKey5      =   "GroupData"
-      ButtonPic165    =   "ctlFlexFn.ctx":ABDA
-      ButtonPic205    =   "ctlFlexFn.ctx":AF2C
-      ButtonPic245    =   "ctlFlexFn.ctx":B42E
-      ButtonPic305    =   "ctlFlexFn.ctx":BB40
-      ButtonPic365    =   "ctlFlexFn.ctx":C65A
-      ButtonWidth5    =   428
-      ButtonKey6      =   "ConfigColumns"
-      ButtonPic166    =   "ctlFlexFn.ctx":D5DC
-      ButtonPic206    =   "ctlFlexFn.ctx":D92E
-      ButtonPic246    =   "ctlFlexFn.ctx":DE30
-      ButtonPic306    =   "ctlFlexFn.ctx":E542
-      ButtonPic366    =   "ctlFlexFn.ctx":F05C
-      ButtonPic16Alt6 =   "ctlFlexFn.ctx":FFDE
-      ButtonPic20Alt6 =   "ctlFlexFn.ctx":10330
-      ButtonPic24Alt6 =   "ctlFlexFn.ctx":10832
-      ButtonPic30Alt6 =   "ctlFlexFn.ctx":10F44
-      ButtonPic36Alt6 =   "ctlFlexFn.ctx":11A5E
-      ButtonWidth6    =   428
+      Width           =   2595
+      _extentx        =   4577
+      _extenty        =   714
+      buttonscount    =   6
+      buttonkey1      =   "Print"
+      buttonpic161    =   "ctlFlexFn.ctx":03D2
+      buttonpic201    =   "ctlFlexFn.ctx":0726
+      buttonpic241    =   "ctlFlexFn.ctx":0C2A
+      buttonpic301    =   "ctlFlexFn.ctx":133E
+      buttonpic361    =   "ctlFlexFn.ctx":1E5A
+      buttonwidth1    =   438
+      buttonkey2      =   "Copy"
+      buttonpic162    =   "ctlFlexFn.ctx":2DDE
+      buttonpic202    =   "ctlFlexFn.ctx":3132
+      buttonpic242    =   "ctlFlexFn.ctx":3636
+      buttonpic302    =   "ctlFlexFn.ctx":3D4A
+      buttonpic362    =   "ctlFlexFn.ctx":4866
+      buttonwidth2    =   438
+      buttonkey3      =   "Save"
+      buttonpic163    =   "ctlFlexFn.ctx":57EA
+      buttonpic203    =   "ctlFlexFn.ctx":5B3E
+      buttonpic243    =   "ctlFlexFn.ctx":6042
+      buttonpic303    =   "ctlFlexFn.ctx":6756
+      buttonpic363    =   "ctlFlexFn.ctx":7272
+      buttonwidth3    =   438
+      buttonkey4      =   "Find"
+      buttonpic164    =   "ctlFlexFn.ctx":81F6
+      buttonpic204    =   "ctlFlexFn.ctx":854A
+      buttonpic244    =   "ctlFlexFn.ctx":8A4E
+      buttonpic304    =   "ctlFlexFn.ctx":9162
+      buttonpic364    =   "ctlFlexFn.ctx":9C7E
+      buttonwidth4    =   438
+      buttonkey5      =   "GroupData"
+      buttonpic165    =   "ctlFlexFn.ctx":AC02
+      buttonpic205    =   "ctlFlexFn.ctx":AF56
+      buttonpic245    =   "ctlFlexFn.ctx":B45A
+      buttonpic305    =   "ctlFlexFn.ctx":BB6E
+      buttonpic365    =   "ctlFlexFn.ctx":C68A
+      buttonwidth5    =   438
+      buttonkey6      =   "ConfigColumns"
+      buttonpic166    =   "ctlFlexFn.ctx":D60E
+      buttonpic206    =   "ctlFlexFn.ctx":D962
+      buttonpic246    =   "ctlFlexFn.ctx":DE66
+      buttonpic306    =   "ctlFlexFn.ctx":E57A
+      buttonpic366    =   "ctlFlexFn.ctx":F096
+      buttonpic16alt6 =   "ctlFlexFn.ctx":1001A
+      buttonpic20alt6 =   "ctlFlexFn.ctx":1036C
+      buttonpic24alt6 =   "ctlFlexFn.ctx":1086E
+      buttonpic30alt6 =   "ctlFlexFn.ctx":10F80
+      buttonpic36alt6 =   "ctlFlexFn.ctx":11A9A
+      buttonwidth6    =   438
    End
    Begin VB.Timer tmrShow 
       Enabled         =   0   'False
@@ -87,11 +87,11 @@ Begin VB.UserControl FlexFn
       Top             =   1710
    End
    Begin VB.Image imgIcon 
-      Height          =   408
-      Left            =   696
-      Picture         =   "ctlFlexFn.ctx":129E0
+      Height          =   510
+      Left            =   690
+      Picture         =   "ctlFlexFn.ctx":12A1C
       Top             =   1680
-      Width           =   408
+      Width           =   510
    End
    Begin VB.Menu mnuPopup 
       Caption         =   ""
@@ -118,6 +118,10 @@ Begin VB.UserControl FlexFn
          End
          Begin VB.Menu mnuCopyAll 
             Caption         =   "# All"
+         End
+         Begin VB.Menu mnuCopySelection 
+            Caption         =   "# Selection"
+            Visible         =   0   'False
          End
       End
       Begin VB.Menu mnuPrint 
@@ -226,6 +230,7 @@ Private mCopyCellMenuCaption As String
 Private mCopyRowMenuCaption As String
 Private mCopyColumnMenuCaption As String
 Private mCopyAllMenuCaption As String
+Private mCopySelectionMenuCaption As String
 
 ' Default tooltip variables
 Private mPrintButton_ToolTipText_Default As String
@@ -240,6 +245,7 @@ Private mCopyCellMenuCaption_Default As String
 Private mCopyRowMenuCaption_Default As String
 Private mCopyColumnMenuCaption_Default As String
 Private mCopyAllMenuCaption_Default As String
+Private mCopySelectionMenuCaption_Default As String
 
 Public Enum gfnFlexFnStyles
     gfnShowToolbar = 0&
@@ -664,6 +670,19 @@ Public Property Get CopyAllMenuCaption() As String
 End Property
 
 
+Public Property Let CopySelectionMenuCaption(nValue As String)
+    If nValue <> mCopySelectionMenuCaption Then
+        mCopySelectionMenuCaption = nValue
+        PropertyChanged "CopySelectionMenuCaption"
+        mnuCopySelection.Caption = nValue
+    End If
+End Property
+
+Public Property Get CopySelectionMenuCaption() As String
+    CopySelectionMenuCaption = mCopySelectionMenuCaption
+End Property
+
+
 Private Function ISubclass_MsgResponse(ByVal hWnd As Long, ByVal iMsg As Long) As EMsgResponse
     ISubclass_MsgResponse = emrPreprocess
 End Function
@@ -724,6 +743,7 @@ Private Sub UILangChange(nPrevLang As Long)
     If mCopyRowMenuCaption = GetLocalizedString(efnGUIStr_FlexFn_CopyRowMenuCaption_Default, , nPrevLang) Then CopyRowMenuCaption = GetLocalizedString(efnGUIStr_FlexFn_CopyRowMenuCaption_Default)
     If mCopyColumnMenuCaption = GetLocalizedString(efnGUIStr_FlexFn_CopyColumnMenuCaption_Default, , nPrevLang) Then CopyColumnMenuCaption = GetLocalizedString(efnGUIStr_FlexFn_CopyColumnMenuCaption_Default)
     If mCopyAllMenuCaption = GetLocalizedString(efnGUIStr_FlexFn_CopyAllMenuCaption_Default, , nPrevLang) Then CopyAllMenuCaption = GetLocalizedString(efnGUIStr_FlexFn_CopyAllMenuCaption_Default)
+    If mCopySelectionMenuCaption = GetLocalizedString(efnGUIStr_FlexFn_CopySelectionMenuCaption_Default, , nPrevLang) Then CopySelectionMenuCaption = GetLocalizedString(efnGUIStr_FlexFn_CopySelectionMenuCaption_Default)
     If mnuCopyParent.Caption = GetLocalizedString(efnGUIStr_FlexFn_mnuCopyParent_Caption, , nPrevLang) Then mnuCopyParent.Caption = GetLocalizedString(efnGUIStr_FlexFn_mnuCopyParent_Caption)
 End Sub
 
@@ -838,6 +858,10 @@ Private Sub mnuCopyRow_Click()
     ClipboardCopyUnicode mRowTextToCopy
 End Sub
 
+Private Sub mnuCopySelection_Click()
+    mnuCopyAll_Click
+End Sub
+
 Private Sub mnuCustomItemAfter_Click(Index As Integer)
     RaiseEvent CustomPopupMenuItemClick(mnuCustomItemAfter(Index).Tag)
 End Sub
@@ -867,6 +891,7 @@ End Sub
 Private Sub mnuPopup_Click()
     mnuPrint.Caption = mPrintButton_ToolTipText
     mnuCopyAll.Caption = mCopyAllMenuCaption
+    mnuCopySelection.Caption = mCopySelectionMenuCaption
     mnuSave.Caption = mSaveButton_ToolTipText
     mnuFind.Caption = mFindButton_ToolTipText
     
@@ -969,6 +994,7 @@ Private Sub UserControl_Initialize()
     mCopyRowMenuCaption_Default = GetLocalizedString(efnGUIStr_FlexFn_CopyRowMenuCaption_Default)
     mCopyColumnMenuCaption_Default = GetLocalizedString(efnGUIStr_FlexFn_CopyColumnMenuCaption_Default)
     mCopyAllMenuCaption_Default = GetLocalizedString(efnGUIStr_FlexFn_CopyAllMenuCaption_Default)
+    mCopySelectionMenuCaption_Default = GetLocalizedString(efnGUIStr_FlexFn_CopySelectionMenuCaption_Default)
     
     ResetCustomPopupMenuItems
 End Sub
@@ -1006,6 +1032,7 @@ Private Sub UserControl_InitProperties()
     mCopyRowMenuCaption = mCopyRowMenuCaption_Default
     mCopyColumnMenuCaption = mCopyColumnMenuCaption_Default
     mCopyAllMenuCaption = mCopyAllMenuCaption_Default
+    mCopySelectionMenuCaption = mCopySelectionMenuCaption_Default
     
     mStyle = 0
     tbrButtons.IconsSize = mIconsSize
@@ -1024,6 +1051,7 @@ Private Sub UserControl_InitProperties()
     mnuCopyRow.Caption = mCopyRowMenuCaption
     mnuCopyColumn.Caption = mCopyColumnMenuCaption
     mnuCopyAll.Caption = mCopyAllMenuCaption
+    mnuCopySelection.Caption = mCopySelectionMenuCaption
     mnuCopyParent.Caption = GetLocalizedString(efnGUIStr_FlexFn_mnuCopyParent_Caption)
     
     SetStyle
@@ -1085,6 +1113,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mCopyRowMenuCaption = PropBag.ReadProperty("CopyRowMenuCaption", mCopyRowMenuCaption_Default)
     mCopyColumnMenuCaption = PropBag.ReadProperty("CopyColumnMenuCaption", mCopyColumnMenuCaption_Default)
     mCopyAllMenuCaption = PropBag.ReadProperty("CopyAllMenuCaption", mCopyAllMenuCaption_Default)
+    mCopySelectionMenuCaption = PropBag.ReadProperty("CopySelectionMenuCaption", mCopySelectionMenuCaption_Default)
     
     mStyle = PropBag.ReadProperty("Style", gfnShowToolbar)
     If Ambient.UserMode Then
@@ -1122,6 +1151,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
     mnuCopyRow.Caption = mCopyRowMenuCaption
     mnuCopyColumn.Caption = mCopyColumnMenuCaption
     mnuCopyAll.Caption = mCopyAllMenuCaption
+    mnuCopySelection.Caption = mCopySelectionMenuCaption
     mnuCopyParent.Caption = GetLocalizedString(efnGUIStr_FlexFn_mnuCopyParent_Caption)
     
     SetStyle
@@ -1299,6 +1329,7 @@ Private Sub UserControl_WriteProperties(PropBag As PropertyBag)
     Call PropBag.WriteProperty("CopyRowMenuCaption", mCopyRowMenuCaption, mCopyRowMenuCaption_Default)
     Call PropBag.WriteProperty("CopyColumnMenuCaption", mCopyColumnMenuCaption, mCopyColumnMenuCaption_Default)
     Call PropBag.WriteProperty("CopyAllMenuCaption", mCopyAllMenuCaption, mCopyAllMenuCaption_Default)
+    Call PropBag.WriteProperty("CopySelectionMenuCaption", mCopySelectionMenuCaption, mCopySelectionMenuCaption_Default)
     
     Call PropBag.WriteProperty("Style", mStyle, gfnShowToolbar)
     Call PropBag.WriteProperty("GridName", mFlexFnObject.GridName, "")
@@ -2219,6 +2250,7 @@ Private Function BuildPopupMenu(nGrid As Object) As Boolean
     Dim iMo As Long
     Dim cb As Long
     Dim ca As Long
+    Dim iCopySelection As Boolean
     
     On Error Resume Next
     iCellText = Trim2(nGrid.TextMatrix(nGrid.MouseRow, nGrid.MouseCol))
@@ -2266,6 +2298,18 @@ Private Function BuildPopupMenu(nGrid As Object) As Boolean
         mnuCopyCell.Visible = False
     End If
     
+    
+    If (nGrid.HighLight <> flexHighlightNever) Then
+        If (nGrid.SelectionMode = flexSelectionByRow) And (nGrid.RowSel > nGrid.Row) Then
+            iCopySelection = True
+        ElseIf (nGrid.SelectionMode = flexSelectionByColumn) And (nGrid.ColSel > nGrid.Col) Then
+            iCopySelection = True
+        ElseIf (nGrid.RowSel > nGrid.Row) Or (nGrid.ColSel > nGrid.Col) Then  ' flexSelectionFree
+            iCopySelection = True
+        End If
+    End If
+    
+    
     On Error Resume Next
     iMo = nGrid.MouseRow
     On Error GoTo 0
@@ -2310,6 +2354,7 @@ Private Function BuildPopupMenu(nGrid As Object) As Boolean
     End If
     If mCopyButtonVisible Then
         mnuCopyAll.Enabled = tbrButtons.Buttons("Copy").Enabled
+        mnuCopySelection.Enabled = tbrButtons.Buttons("Copy").Enabled
     End If
     If mSaveButtonVisible Then
         mnuSave.Enabled = tbrButtons.Buttons("Save").Enabled
@@ -2328,7 +2373,8 @@ Private Function BuildPopupMenu(nGrid As Object) As Boolean
     
     mnuPrint.Visible = mPrintButtonVisible
     mnuFind.Visible = mFindButtonVisible
-    mnuCopyAll.Visible = mCopyButtonVisible
+    mnuCopyAll.Visible = mCopyButtonVisible And Not iCopySelection
+    mnuCopySelection.Visible = mCopyButtonVisible And iCopySelection
     mnuSave.Visible = mSaveButtonVisible
     mnuSep2.Visible = (mFindButtonVisible Or mCopyButtonVisible Or mSaveButtonVisible Or mPrintButtonVisible Or mCopyButtonVisible) And (mGroupDataButtonVisible Or mConfigColumnsButtonVisible)
     If mnuSep2.Visible Then
@@ -2386,6 +2432,7 @@ Private Function BuildPopupMenu(nGrid As Object) As Boolean
     If mnuCustomItemAfter(0).Visible Then mnuSepCustomAfter.Visible = True
     
 End Function
+
 
 Public Sub Action(ActionName As String, Optional nGrid As Object, Optional nExtraParam As Variant)
     Dim iGrid As Object

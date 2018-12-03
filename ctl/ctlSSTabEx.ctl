@@ -3995,7 +3995,7 @@ Private Sub DrawTab(nTab As Long)
             
             If iHighlighted And mAmbientUserMode Then
 '                Call FillCurvedGradient(.Left, .Top + iTopShift, .Right + iRightShift, .Bottom + iBottomShift, mTabBackColor2, mGlowColor, iCurv, True, True)
-                Call FillCurvedGradient(.Left, .Top + iTopShift, .Right + iRightShift, (.Bottom + iBottomShift + .Top + iTopShift) / 2, mTabBackColor2, mGlowColor, iCurv, True, True)
+                Call FillCurvedGradient(.Left, .Top + iTopShift, .Right + iRightShift, (.Bottom + iBottomShift + .Top + iTopShift) / 2 + 1, mTabBackColor2, mGlowColor, iCurv, True, True)
                 Call FillCurvedGradient(.Left, (.Bottom + iBottomShift + .Top + iTopShift) / 2, .Right + iRightShift, .Bottom + iBottomShift, mGlowColor, mTabBackColor2, iCurv, True, True)
                 
                 'Call FillCurvedGradient(.Left, .Bottom - (.Bottom - .Top - iBottomShift) / 2 + iTopShift, .Right + iRightShift, .Bottom - iBottomShift, IIf(iTabData.Selected, mGlowColor, mGlowColor), mTabBackColor2, 0, False, False)

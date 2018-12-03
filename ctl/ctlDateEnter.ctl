@@ -799,17 +799,26 @@ Private Sub UserControl_Resize()
     SendMessage DTPicker1.hWnd, DTM_GETDATETIMEPICKERINFO, 0&, VarPtr(iDTPInfo)
     iTop = 3
     iLeft = 3
-    If iDTPInfo.rcCheck.Left < iLeft Then iLeft = iDTPInfo.rcCheck.Left
-    If iDTPInfo.rcCheck.Top < iTop Then iTop = iDTPInfo.rcCheck.Top
+    
+    If IsWindowsVistaOrMore Then
+        If iDTPInfo.rcCheck.Left < iLeft Then iLeft = iDTPInfo.rcCheck.Left
+        If iDTPInfo.rcCheck.Top < iTop Then iTop = iDTPInfo.rcCheck.Top
+    End If
     
     txtMasked.Left = iLeft * Screen.TwipsPerPixelX
     txtMasked.Top = iTop * Screen.TwipsPerPixelY
     
     iHeight = UserControl.ScaleHeight - 5 * Screen.TwipsPerPixelY
-    If iHeight < (iDTPInfo.rcCheck.Bottom * Screen.TwipsPerPixelY - txtMasked.Top) Then iHeight = iDTPInfo.rcCheck.Bottom * Screen.TwipsPerPixelY - txtMasked.Top
+    If IsWindowsVistaOrMore Then
+        If iHeight < (iDTPInfo.rcCheck.Bottom * Screen.TwipsPerPixelY - txtMasked.Top) Then iHeight = iDTPInfo.rcCheck.Bottom * Screen.TwipsPerPixelY - txtMasked.Top
+    End If
     
     txtMasked.Height = iHeight
-    txtMasked.Width = UserControl.ScaleWidth - (iDTPInfo.rcButton.Right - iDTPInfo.rcButton.Left + 2) * Screen.TwipsPerPixelX
+    If IsWindowsVistaOrMore Then
+        txtMasked.Width = UserControl.ScaleWidth - (iDTPInfo.rcButton.Right - iDTPInfo.rcButton.Left + 2) * Screen.TwipsPerPixelX
+    Else
+        txtMasked.Width = UserControl.ScaleWidth - (6.49 + GetSystemMetrics(SM_CXVSCROLL)) * Screen.TwipsPerPixelX
+    End If
     
     lblBorder.Move Screen.TwipsPerPixelX, 0, UserControl.ScaleWidth - (3 + mVerticalScrollbarWidth) * Screen.TwipsPerPixelX, UserControl.ScaleHeight - Screen.TwipsPerPixelY
 End Sub
