@@ -144,6 +144,7 @@ Public Enum efnGUIString
     efnGUIStr_FlexFn_CopyRowMenuCaption_Default
     efnGUIStr_FlexFn_CopyColumnMenuCaption_Default
     efnGUIStr_FlexFn_CopyAllMenuCaption_Default
+    efnGUIStr_FlexFn_CopySelectionMenuCaption_Default
     efnGUIStr_FlexFn_mnuCopyParent_Caption
     ' History
     efnGUIStr_History_mnuDelete_Caption1
@@ -504,6 +505,8 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "列"
                 Case efnGUIStr_FlexFn_CopyAllMenuCaption_Default
                     GetLocalizedString = "全部"
+                Case efnGUIStr_FlexFn_CopySelectionMenuCaption_Default
+                    GetLocalizedString = "已选择"
                 Case efnGUIStr_FlexFn_mnuCopyParent_Caption
                     GetLocalizedString = "复制..."
                 ' History
@@ -922,6 +925,8 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "Columna"
                 Case efnGUIStr_FlexFn_CopyAllMenuCaption_Default
                     GetLocalizedString = "Todo"
+                Case efnGUIStr_FlexFn_CopySelectionMenuCaption_Default
+                    GetLocalizedString = "Selecci髇"
                 Case efnGUIStr_FlexFn_mnuCopyParent_Caption
                     GetLocalizedString = "Copiar..."
                 ' History
@@ -1341,6 +1346,8 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "Column"
                 Case efnGUIStr_FlexFn_CopyAllMenuCaption_Default
                     GetLocalizedString = "All"
+                Case efnGUIStr_FlexFn_CopySelectionMenuCaption_Default
+                    GetLocalizedString = "Selection"
                 Case efnGUIStr_FlexFn_mnuCopyParent_Caption
                     GetLocalizedString = "Copy..."
                 ' History
@@ -1488,6 +1495,8 @@ Private Function GUILaguageIsSupported(nLang As Long) As Boolean
                 GUILaguageIsSupported = True
         End Select
 End Function
+
+
 
 
 
