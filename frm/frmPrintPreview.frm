@@ -1051,6 +1051,11 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
                             End If
                         End If
                     End If
+                Else
+                    If mCurrentPageNumber > 1 Then
+                        mCurrentPageNumber = mCurrentPageNumber - 1
+                        ShowPages
+                    End If
                 End If
             Else
                 If mCurrentPageNumber > 1 Then

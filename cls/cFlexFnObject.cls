@@ -2177,7 +2177,7 @@ Private Function CopyGridToClipboard() As Boolean
         Select Case mCopyToClipboardMode
             Case gfnSeparateWithTabs, gfnSeparateWithSpecialCharacters
                 For R = 0 To UBound(iTextMatrix, 1)
-                    For c = 0 To mCurrentGrid.Cols - 1
+                    For c = 0 To UBound(iTextMatrix, 2)
                         If iCopyColumn(c) Then
                             If mCurrentGrid.ColWidth(c) <> 0 Then
                                 iConcat.AddString CStr(iTextMatrix(R, c))
@@ -2532,19 +2532,57 @@ Private Function CopyGridTextMatrix(nGrid As Object) As Variant
     Dim iCopy As Boolean
     Dim iLastVisibleText As String
     Dim c2 As Long
+    Dim iStartCol As Long
+    Dim iEndCol As Long
+    Dim iStartRow As Long
+    Dim iEndRow As Long
+    Dim iColCount As Long
+    Dim c3 As Long
     
     iMergeCols = (nGrid.MergeCells = flexMergeFree) Or (nGrid.MergeCells = flexMergeRestrictColumns)
     iMergeRows = (nGrid.MergeCells = flexMergeFree) Or (nGrid.MergeCells = flexMergeRestrictRows)
     
-    ReDim iCopyGridTextMatrix(nGrid.Rows - 1, nGrid.Cols - 1)
+    If (nGrid.HighLight = flexHighlightNever) Then
+        iStartCol = 0
+        iEndCol = nGrid.Cols - 1
+        iStartRow = 0
+        iEndRow = nGrid.Rows - 1
+    Else
+        If (nGrid.SelectionMode = flexSelectionByRow) And (nGrid.RowSel > nGrid.Row) Then
+            iStartCol = 0
+            iEndCol = nGrid.Cols - 1
+            iStartRow = nGrid.Row
+            iEndRow = nGrid.RowSel
+        ElseIf (nGrid.SelectionMode = flexSelectionByColumn) And (nGrid.ColSel > nGrid.Col) Then
+            iStartCol = nGrid.Col
+            iEndCol = nGrid.ColSel
+            iStartRow = 0
+            iEndRow = nGrid.Rows - 1
+        ElseIf (nGrid.RowSel > nGrid.Row) Or (nGrid.ColSel > nGrid.Col) Then  ' flexSelectionFree
+            iStartCol = nGrid.Col
+            iEndCol = nGrid.ColSel
+            iStartRow = nGrid.Row
+            iEndRow = nGrid.RowSel
+        Else
+            iStartCol = 0
+            iEndCol = nGrid.Cols - 1
+            iStartRow = 0
+            iEndRow = nGrid.Rows - 1
+        End If
+    End If
+    iColCount = iEndCol - iStartCol + 1 'nGrid.Cols
+    
+    ReDim iCopyGridTextMatrix(iEndRow - iStartRow + 1, iColCount - 1)
     r2 = -1
-    For R = 0 To nGrid.Rows - 1
+    For R = iStartRow To iEndRow
         If nGrid.RowHeight(R) <> 0 Then
             r2 = r2 + 1
-            For c = 0 To nGrid.Cols - 1
+            c3 = -1
+            For c = iStartCol To iEndCol
+                c3 = c3 + 1
                 iCopy = True
                 If iMergeRows And nGrid.MergeRow(R) Then
-                    If c > 0 Then
+                    If c > (nGrid.FixedCols - 1) Then
                         iLastVisibleText = ""
                         For c2 = c - 1 To 0 Step -1
                             If nGrid.ColWidth(c2) <> 0 Then
@@ -2559,7 +2597,7 @@ Private Function CopyGridTextMatrix(nGrid As Object) As Variant
                 End If
                 If iCopy Then
                     If iMergeCols And nGrid.MergeCol(c) Then
-                        If R > 0 Then
+                        If R > (nGrid.FixedRows - 1) Then
                             iLastVisibleText = ""
                             For c2 = R - 1 To 0 Step -1
                                 If nGrid.RowHeight(c2) <> 0 Then
@@ -2574,23 +2612,25 @@ Private Function CopyGridTextMatrix(nGrid As Object) As Variant
                     End If
                 End If
                 If iCopy Then
-                    iCopyGridTextMatrix(r2, c) = nGrid.TextMatrix(R, c)
+                    iCopyGridTextMatrix(r2, c3) = nGrid.TextMatrix(R, c)
                 End If
             Next c
         End If
     Next R
     
     If r2 = -1 Then r2 = 0
+    If c3 = -1 Then c3 = 0
     
-    ReDim iCopyGridTextMatrix2(r2, nGrid.Cols - 1)
+    ReDim iCopyGridTextMatrix2(r2, c3)
     For R = 0 To r2
-        For c = 0 To nGrid.Cols - 1
+        For c = 0 To c3
             iCopyGridTextMatrix2(R, c) = iCopyGridTextMatrix(R, c)
         Next c
     Next R
     
     CopyGridTextMatrix = iCopyGridTextMatrix2
 End Function
+
 
 Private Function GridTextMatrixNormalized(nTextMatrix, Optional nTextWidths) As Variant
     Dim R As Long

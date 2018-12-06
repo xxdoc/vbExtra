@@ -1004,22 +1004,26 @@ Attribute EnsureControlVisible.VB_Description = "Ensures that the control refere
          Exit Sub
     End If
     
-    iSW = ToContainerSizeX(UserControl.ScaleWidth, vbTwips)
-    If iCtl.Left + iCtl.Width > iSW Then
-        HScrollValue = HScrollValue + iCtl.Left + iCtl.Width + ToContainerSizeX(60, vbTwips) - iSW
-    ElseIf iCtl.Left < 0 Then
-        iVal = HScrollValue + iCtl.Left - ToContainerSizeX(60, vbTwips)
-        If iVal < 0 Then iVal = 0
-        HScrollValue = iVal
+    If mScroll.Visible(efnSBIHorizontal) Then
+        iSW = ToContainerSizeX(UserControl.ScaleWidth, vbTwips)
+        If iCtl.Left + iCtl.Width > iSW Then
+            HScrollValue = HScrollValue + iCtl.Left + iCtl.Width + ToContainerSizeX(60, vbTwips) - iSW
+        ElseIf iCtl.Left < 0 Then
+            iVal = HScrollValue + iCtl.Left - ToContainerSizeX(60, vbTwips)
+            If iVal < 0 Then iVal = 0
+            HScrollValue = iVal
+        End If
     End If
     
-    iSH = ToContainerSizeY(UserControl.ScaleHeight, vbTwips)
-    If iCtl.Top + iCtl.Height > iSH Then
-        VScrollValue = VScrollValue + iCtl.Top + iCtl.Height + ToContainerSizeY(60, vbTwips) - iSH
-    ElseIf iCtl.Top < 0 Then
-        iVal = VScrollValue + iCtl.Top - ToContainerSizeY(60, vbTwips)
-        If iVal < 0 Then iVal = 0
-        VScrollValue = iVal
+    If mScroll.Visible(efnSBIVertical) Then
+        iSH = ToContainerSizeY(UserControl.ScaleHeight, vbTwips)
+        If iCtl.Top + iCtl.Height > iSH Then
+            VScrollValue = VScrollValue + iCtl.Top + iCtl.Height + ToContainerSizeY(60, vbTwips) - iSH
+        ElseIf iCtl.Top < 0 Then
+            iVal = VScrollValue + iCtl.Top - ToContainerSizeY(60, vbTwips)
+            If iVal < 0 Then iVal = 0
+            VScrollValue = iVal
+        End If
     End If
 End Sub
 
