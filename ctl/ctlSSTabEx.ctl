@@ -6239,7 +6239,7 @@ Private Function GetContainerByHwnd(nHwnd As Long) As Object
     
 End Function
 
-Private Function ControlIsContainer(nControlName)
+Private Function ControlIsContainer(nControlName) As Boolean
     Dim iStr As String
     
     On Error Resume Next
