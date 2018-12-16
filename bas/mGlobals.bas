@@ -27,7 +27,7 @@ End Type
 
 Public Declare Function CreateFontIndirectW Lib "gdi32" (ByRef lpLogFont As LOGFONTW) As Long
 
-Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
+Private Declare Function GetLocaleInfo Lib "Kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
 Private Const LOCALE_USER_DEFAULT = &H400
 Private Const LOCALE_SDECIMAL = &HE
 
@@ -73,15 +73,15 @@ Private Type OFSTRUCT
     szPathName(OFS_MAXPATHNAME) As Byte
 End Type
 
-Private Declare Function LocalFileTimeToFileTime Lib "kernel32" (lpFileTime As FileTime, lpLocalFileTime As FileTime) As Long
+Private Declare Function LocalFileTimeToFileTime Lib "Kernel32" (lpFileTime As FileTime, lpLocalFileTime As FileTime) As Long
 Private Declare Function VariantTimeToSystemTime Lib "oleaut32.dll" (ByVal vtime As Date, lpSystemTime As SYSTEMTIME) As Long
-Private Declare Function OpenFile Lib "kernel32" (ByVal lpFileName As String, lpReOpenBuff As OFSTRUCT, ByVal wStyle As Long) As Long
-Private Declare Function GetFileTime Lib "kernel32" (ByVal hFile As Long, lpCreationTime As FileTime, lpLastAccessTime As FileTime, lpLastWriteTime As FileTime) As Long
-Private Declare Function SetFileTime Lib "kernel32" (ByVal hFile As Long, lpCreationTime As FileTime, lpLastAccessTime As FileTime, lpLastWriteTime As FileTime) As Long
-Private Declare Function SystemTimeToFileTime Lib "kernel32" (lpSystemTime As SYSTEMTIME, lpFileTime As FileTime) As Long
-Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+Private Declare Function OpenFile Lib "Kernel32" (ByVal lpFileName As String, lpReOpenBuff As OFSTRUCT, ByVal wStyle As Long) As Long
+Private Declare Function GetFileTime Lib "Kernel32" (ByVal hFile As Long, lpCreationTime As FileTime, lpLastAccessTime As FileTime, lpLastWriteTime As FileTime) As Long
+Private Declare Function SetFileTime Lib "Kernel32" (ByVal hFile As Long, lpCreationTime As FileTime, lpLastAccessTime As FileTime, lpLastWriteTime As FileTime) As Long
+Private Declare Function SystemTimeToFileTime Lib "Kernel32" (lpSystemTime As SYSTEMTIME, lpFileTime As FileTime) As Long
+Private Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
 
-Private Declare Function SetCurrentDirectory Lib "kernel32" Alias "SetCurrentDirectoryA" (ByVal PathName As String) As Long
+Private Declare Function SetCurrentDirectory Lib "Kernel32" Alias "SetCurrentDirectoryA" (ByVal PathName As String) As Long
 Public Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
 
 Private Const VK_LBUTTON = &H1
@@ -163,7 +163,7 @@ Private Type TIME_ZONE_INFORMATION
     DaylightBias As Long
 End Type
 
-Private Declare Function GetTimeZoneInformation Lib "kernel32" (lpTimeZoneInformation As TIME_ZONE_INFORMATION) As Long
+Private Declare Function GetTimeZoneInformation Lib "Kernel32" (lpTimeZoneInformation As TIME_ZONE_INFORMATION) As Long
 
 Private Const GENERIC_READ As Long = &H80000000
 Private Const GENERIC_WRITE As Long = &H40000000
@@ -176,16 +176,16 @@ Private Const OPEN_EXISTING = 3
 Private Const FILE_SHARE_READ = &H1
 Private Const FILE_SHARE_WRITE = &H2
 
-Private Declare Function CreateFile Lib "kernel32" Alias "CreateFileA" (ByVal lpFileName As String, ByVal dwDesiredAccess As Long, ByVal dwShareMode As Long, ByVal lpSecurityAttributes As Long, ByVal dwCreationDisposition As Long, ByVal dwFlagsAndAttributes As Long, ByVal hTemplateFile As Long) As Long
-Private Declare Function SetFilePointer Lib "kernel32" (ByVal hFile As Long, ByVal lDistanceToMove As Long, lpDistanceToMoveHigh As Long, ByVal dwMoveMethod As Long) As Long
-Private Declare Function SetEndOfFile Lib "kernel32" (ByVal hFile As Long) As Long
+Private Declare Function CreateFile Lib "Kernel32" Alias "CreateFileA" (ByVal lpFileName As String, ByVal dwDesiredAccess As Long, ByVal dwShareMode As Long, ByVal lpSecurityAttributes As Long, ByVal dwCreationDisposition As Long, ByVal dwFlagsAndAttributes As Long, ByVal hTemplateFile As Long) As Long
+Private Declare Function SetFilePointer Lib "Kernel32" (ByVal hFile As Long, ByVal lDistanceToMove As Long, lpDistanceToMoveHigh As Long, ByVal dwMoveMethod As Long) As Long
+Private Declare Function SetEndOfFile Lib "Kernel32" (ByVal hFile As Long) As Long
 
 '* These are used in every form to ensure focus rectangle visibility
 Private Const WM_CHANGEUISTATE As Long = &H127
 Private Const UIS_CLEAR As Integer = &H2
 Private Const UISF_HIDEFOCUS As Integer = &H1
 
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 Private Const CB_GETMINVISIBLE As Long = &H1702&
 
@@ -264,13 +264,9 @@ Private Declare Function RealChildWindowFromPoint Lib "user32" (ByVal hWndParent
 Private Declare Function GetParent Lib "user32" (ByVal hWnd As Long) As Long
 'Private Declare Function GetAncestor Lib "user32.dll" (ByVal hWnd As Long, ByVal gaFlags As Long) As Long
 
-Private Declare Function GetDesktopWindow Lib "user32" () As Long
-
 Private Const WM_SETREDRAW As Long = &HB&
 
 Public Const CB_GETDROPPEDSTATE As Long = &H157
-Public Const CB_GETCOMBOBOXINFO As Long = &H164
-Public Const CB_GETDROPPEDCONTROLRECT As Long = &H152
 
 Public Type COMBOBOXINFO
    cbSize As Long
@@ -326,19 +322,11 @@ End Type
 
 Public Const CLEARTYPE_QUALITY As Byte = 6
 Public Const OUT_TT_ONLY_PRECIS As Long = 7
-Public Const DEFAULT_CHARSET As Byte = 1
 
-Public Const FW_THIN = 100
-Public Const FW_EXTRALIGHT = 200
-Public Const FW_LIGHT = 300
 Public Const FW_NORMAL = 400
-Public Const FW_MEDIUM = 500
-Public Const FW_SEMIBOLD = 600
 Public Const FW_BOLD = 700
-Public Const FW_EXTRABOLD = 800
-Public Const FW_HEAVY = 900
 
-Private Declare Sub CopyMemoryAny1 Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemoryAny1 Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 Private Const SPI_GETNONCLIENTMETRICS = 41
 Private Const SPI_GETICONTITLELOGFONT = 31
@@ -358,8 +346,6 @@ Public Const CBS_DROPDOWNLIST = &H3&
 Public Declare Function GetCursorPos Lib "user32" (lpPoint As POINTAPI) As Long
 Public Declare Function GetDeviceCaps Lib "gdi32" (ByVal hDC As Long, ByVal nIndex As Long) As Long
 
-Public Const HORZSIZE As Long = 4
-Public Const VERTSIZE As Long = 6
 Public Const HORZRES As Long = 8
 Public Const VERTRES As Long = 10
 Public Const LOGPIXELSX As Long = 88
@@ -407,7 +393,6 @@ Public Const DT_CENTER As Long = &H1
 Public Const DT_NOPREFIX As Long = &H800
 Public Const DT_TABSTOP As Long = &H80
 Public Const DT_WORDBREAK As Long = &H10
-Public Const DT_NOCLIP As Long = &H100
 Public Const DT_CALCRECT As Long = &H400
 
 Public Declare Function DrawText Lib "user32" Alias "DrawTextA" (ByVal hDC As Long, ByVal lpStr As String, ByVal nCount As Long, lpRect As RECT, ByVal wFormat As Long) As Long
@@ -444,19 +429,19 @@ Private Const PROCESS_VM_READ = 16
 Private Declare Function OpenProcess Lib "kernel32.dll" (ByVal dwDesiredAccessas As Long, ByVal bInheritHandle As Long, ByVal dwProcId As Long) As Long
 Private Declare Function EnumProcessModules Lib "psapi.dll" (ByVal hProcess As Long, ByRef lphModule As Long, ByVal cb As Long, ByRef cbNeeded As Long) As Long
 Private Declare Function GetModuleFileNameExA Lib "psapi.dll" (ByVal hProcess As Long, ByVal hModule As Long, ByVal ModuleName As String, ByVal nSize As Long) As Long
-Private Declare Function CreateToolhelp32Snapshot Lib "kernel32" (ByVal dwFlags As Long, ByVal th32ProcessID As Long) As Long
-Private Declare Function Process32First Lib "kernel32" (ByVal hSnapshot As Long, lppe As Any) As Long
-Private Declare Function Process32Next Lib "kernel32" (ByVal hSnapshot As Long, lppe As Any) As Long
-Private Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
-Private Declare Function GetCurrentProcessId Lib "kernel32" () As Long
+Private Declare Function CreateToolhelp32Snapshot Lib "Kernel32" (ByVal dwFlags As Long, ByVal th32ProcessID As Long) As Long
+Private Declare Function Process32First Lib "Kernel32" (ByVal hSnapshot As Long, lppe As Any) As Long
+Private Declare Function Process32Next Lib "Kernel32" (ByVal hSnapshot As Long, lppe As Any) As Long
+Private Declare Function CloseHandle Lib "Kernel32" (ByVal hObject As Long) As Long
+Private Declare Function GetCurrentProcessId Lib "Kernel32" () As Long
 
 Private Declare Function GetFileVersionInfoSize Lib "Version.dll" Alias "GetFileVersionInfoSizeA" (ByVal lptstrFilename As String, lpdwHandle As Long) As Long
 Private Declare Function GetFileVersionInfo Lib "Version.dll" Alias "GetFileVersionInfoA" (ByVal lptstrFilename As String, ByVal dwHandle As Long, ByVal dwLen As Long, lpData As Any) As Long
 
-Private Declare Function GlobalAlloc Lib "kernel32" (ByVal Flags As Long, ByVal lengh As Long) As Long
-Private Declare Function GlobalLock Lib "kernel32" (ByVal hMem As Long) As Long
-Private Declare Function GlobalUnlock Lib "kernel32" (ByVal hMem As Long) As Long
-Private Declare Sub RtlMoveMemory Lib "kernel32" (ByVal pDest As Long, ByVal pSource As Long, ByVal lengh As Long)
+Private Declare Function GlobalAlloc Lib "Kernel32" (ByVal Flags As Long, ByVal lengh As Long) As Long
+Private Declare Function GlobalLock Lib "Kernel32" (ByVal hMem As Long) As Long
+Private Declare Function GlobalUnlock Lib "Kernel32" (ByVal hMem As Long) As Long
+Private Declare Sub RtlMoveMemory Lib "Kernel32" (ByVal pDest As Long, ByVal pSource As Long, ByVal lengh As Long)
 
 Private Const CF_UNICODETEXT = &HD&
 Private Const GMEM_MOVEABLE = &O2&
@@ -486,7 +471,7 @@ Private Type OSVERSIONINFO 'for GetVersionEx API call
     szCSDVersion As String * 128
 End Type
 
-Private Declare Function GetVersionEx Lib "kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
+Private Declare Function GetVersionEx Lib "Kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
 
 Private Type OSVERSIONINFOEX
         dwOSVersionInfoSize As Long
@@ -502,16 +487,16 @@ Private Type OSVERSIONINFOEX
         bReserved As Byte                   ' Reserved
 End Type
 
-Private Declare Function GetOSVersionEx Lib "kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFOEX) As Long
+Private Declare Function GetOSVersionEx Lib "Kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFOEX) As Long
 
 'Private Const VER_NT_WORKSTATION As Long = &H1
 Private Const VER_NT_DOMAIN_CONTROLLER As Long = &H2
 Private Const VER_NT_SERVER As Long = &H3
 
-Private Declare Function GetModuleHandle Lib "kernel32" Alias "GetModuleHandleA" (ByVal lpModuleName As String) As Long
-Private Declare Function IsWow64Process Lib "kernel32" (ByVal hProc As Long, ByRef bWow64Process As Boolean) As Long
-Private Declare Function GetProcAddress Lib "kernel32" (ByVal hModule As Long, ByVal lpProcName As String) As Long
-Private Declare Function GetCurrentProcess Lib "kernel32" () As Long
+Private Declare Function GetModuleHandle Lib "Kernel32" Alias "GetModuleHandleA" (ByVal lpModuleName As String) As Long
+Private Declare Function IsWow64Process Lib "Kernel32" (ByVal hProc As Long, ByRef bWow64Process As Boolean) As Long
+Private Declare Function GetProcAddress Lib "Kernel32" (ByVal hModule As Long, ByVal lpProcName As String) As Long
+Private Declare Function GetCurrentProcess Lib "Kernel32" () As Long
 
 Private Declare Function IsAppThemed Lib "uxtheme.dll" () As Long
 Private Declare Function IsThemeActive Lib "uxtheme" () As Long
@@ -540,16 +525,9 @@ Public Declare Function RedrawWindow Lib "user32" (ByVal hWnd As Long, lprcUpdat
 ' Redraw window:
 Public Const RDW_ALLCHILDREN = &H80
 Public Const RDW_ERASE = &H4
-Public Const RDW_ERASENOW = &H200
-Public Const RDW_FRAME = &H400
 Public Const RDW_INTERNALPAINT = &H2
 Public Const RDW_INVALIDATE = &H1
-Public Const RDW_NOCHILDREN = &H40
-Public Const RDW_NOERASE = &H20
-Public Const RDW_NOFRAME = &H800
-Public Const RDW_NOINTERNALPAINT = &H10
 Public Const RDW_UPDATENOW = &H100
-Public Const RDW_VALIDATE = &H8
 
 Public Declare Function PostMessage Lib "user32" Alias "PostMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 Public Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
@@ -565,7 +543,6 @@ Public Const SM_CXEDGE As Long = 45
 Public Const SM_CYEDGE As Long = 46
 Public Const SM_CXBORDER  As Long = 5
 Public Const SM_CYBORDER  As Long = 6
-Public Const SM_CYCAPTION As Long = 4
 Public Const SM_CXMINTRACK = 34
 Public Const SM_CYMINTRACK = 35
 
@@ -586,8 +563,8 @@ Public Const WM_PAINT As Long = &HF&
 Public Const WM_MOVING As Long = &H216&
 Public Const WM_PARENTNOTIFY As Long = &H210&
 
-Private Declare Function GetTempPath Lib "kernel32" Alias "GetTempPathA" (ByVal nBufferLength As Long, ByVal lpBuffer As String) As Long
-Private Declare Function GetTempFileName Lib "kernel32" Alias "GetTempFileNameA" (ByVal lpszPath As String, ByVal lpPrefixString As String, ByVal wUnique As Long, ByVal lpTempFileName As String) As Long
+Private Declare Function GetTempPath Lib "Kernel32" Alias "GetTempPathA" (ByVal nBufferLength As Long, ByVal lpBuffer As String) As Long
+Private Declare Function GetTempFileName Lib "Kernel32" Alias "GetTempFileNameA" (ByVal lpszPath As String, ByVal lpPrefixString As String, ByVal wUnique As Long, ByVal lpTempFileName As String) As Long
 
 Private Declare Function SystemParametersInfo Lib "user32" Alias "SystemParametersInfoA" (ByVal uAction As Long, ByVal uParam As Long, lpvParam As Any, ByVal fuWinIni As Long) As Long
 Private Declare Function SystemParametersInfoW Lib "user32" (ByVal uAction As Long, ByVal uParam As Long, ByRef pvParam As Any, ByVal fWinIni As Long) As Long
@@ -1981,7 +1958,6 @@ Private Sub HandleMonitor(nForm As Form)
     Dim iMonitorForm As Long
     Dim iMICurrent As MONITORINFO
     Dim iMIForm As MONITORINFO
-    Dim iAuxMonitor As Long
     Dim iLng As Long
     
     If (MonitorCount > 1) And GetSetting(AppNameForRegistry, "MInfo", Base64Encode(nForm.Name) & ".MI", "0") = "0" Then
@@ -2825,52 +2801,6 @@ Public Function IsControlArray(nControl As Control) As Boolean
     IsControlArray = iIndex <> -1
 End Function
 
-Public Sub WriteTraceLog_Clipboard(nProcedureName As String, Optional nWhere As Long)
-    Dim iStr As String
-    Static sStackOfProceduresCalled() As String
-    Dim iUb As Long
-    Dim iStrs() As String
-    Dim c As Long
-    
-    On Error Resume Next
-    iUb = UBound(sStackOfProceduresCalled)
-    If Err.Number <> 0 Then
-        ReDim sStackOfProceduresCalled(0)
-    End If
-    On Error GoTo 0
-    
-    Select Case nWhere
-        Case 1
-            ReDim Preserve sStackOfProceduresCalled(UBound(sStackOfProceduresCalled) + 1)
-            sStackOfProceduresCalled(UBound(sStackOfProceduresCalled)) = nProcedureName
-        Case 2
-            If nProcedureName = sStackOfProceduresCalled(UBound(sStackOfProceduresCalled)) Then
-                ReDim Preserve sStackOfProceduresCalled(UBound(sStackOfProceduresCalled) - 1)
-            End If
-        Case Else
-            ReDim Preserve sStackOfProceduresCalled(UBound(sStackOfProceduresCalled) + 1)
-            sStackOfProceduresCalled(UBound(sStackOfProceduresCalled)) = nProcedureName
-    End Select
-    iUb = UBound(sStackOfProceduresCalled)
-    If iUb > 30 Then
-        ReDim iStrs(30)
-        For c = 1 To 30
-            iStrs(c) = sStackOfProceduresCalled(iUb - (30 - c))
-        Next c
-        ReDim sStackOfProceduresCalled(30)
-        For c = 1 To 30
-            sStackOfProceduresCalled(c) = iStrs(c)
-        Next c
-    End If
-    
-    iStr = ""
-    For c = 1 To UBound(sStackOfProceduresCalled)
-        iStr = iStr & Space$((c - 1) * 4) & sStackOfProceduresCalled(c) & vbCrLf
-    Next c
-    Clipboard.Clear
-    Clipboard.SetText iStr
-End Sub
-
 Public Sub StartLogging(Optional ByVal nPath As String)
     If nPath <> "" Then
         mLogFilePath = nPath
@@ -2974,7 +2904,6 @@ Public Sub CenterForm(nForm As Object, Optional TrueCenter As Boolean = False)
     iInPrimaryMonitor = True
     
     If MonitorCount > 1 Then
-'        If WindowHasCaption(nForm.hWnd) And (Not IsWindowOwned(nForm.hWnd)) Then
         If WindowHasCaption(nForm.hWnd) Then
             iMi.cbSize = Len(iMi)
             GetMonitorInfo mFormsTracker.CurrentMonitor, iMi
@@ -3635,10 +3564,6 @@ End Function
 
 Public Function GetOwner(nHwnd As Long)
     GetOwner = GetWindowLong(nHwnd, GWL_HWNDPARENT)
-End Function
-
-Public Function IsWindowOwned(nHwnd As Long)
-    IsWindowOwned = GetOwner(nHwnd) = 0
 End Function
 
 Public Function GetOwnerFormHwnd(nFormHwnd As Long, nForms As Object) As Long
@@ -4657,7 +4582,6 @@ Public Sub ShowForm(nForm As Object, Optional Modal As vbExShowFormConstants = v
                 End If
             End If
         End If
-'        If WindowHasCaption(nForm.hWnd) And (Not IsWindowOwned(nForm.hWnd)) And (iHwndOwnerForm = 0) Then
         If WindowHasCaption(nForm.hWnd) Then
             mFormsTracker.AddForm nForm
         Else
@@ -4713,4 +4637,3 @@ End Function
 Public Function VirtualScreenBottom() As Long
     VirtualScreenBottom = GetSystemMetrics(SM_YVIRTUALSCREEN) + GetSystemMetrics(SM_CYVIRTUALSCREEN)
 End Function
-    

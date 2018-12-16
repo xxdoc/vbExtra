@@ -56,7 +56,7 @@ Public Property Get Printer2() As Printer
     Set Printer2 = mPrinterExCurrentDocument
 End Property
 
-Public Property Let Printer2(nValue As Printer)
+Public Property Set Printer2(nValue As Printer)
     ' the original VB.Printer doesn't remember these things when setting a Printer.
     gPrinterExPaperSize = Empty
     gPrinterExPaperSize = Empty

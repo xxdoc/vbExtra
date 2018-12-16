@@ -365,7 +365,7 @@ Function Gaussian_Func(ByVal x#, nGaussianExtent As Long) As Double
 End Function
 
 Public Function AdjustPictureWithHLS(nSourcePic As StdPicture, Optional HAddition As Long, Optional LAddition As Long, Optional SAddition As Long, Optional LFactor As Single = 1, Optional SFactor As Single = 1, Optional ColorToPreserve As Long = -1) As StdPicture
-    Dim iBMP As BITMAP
+    Dim iBmp As BITMAP
     Dim iBMPiH As BITMAPINFOHEADER
     Dim iBits() As Byte
     
@@ -408,9 +408,9 @@ Public Function AdjustPictureWithHLS(nSourcePic As StdPicture, Optional HAdditio
     If nSourcePic Is Nothing Then Exit Function
     If nSourcePic.Handle = 0 Then Exit Function
     
-    GetObject nSourcePic.Handle, Len(iBMP), iBMP
+    GetObject nSourcePic.Handle, Len(iBmp), iBmp
     
-    If iBMP.bmBitsPixel <> 24 Then
+    If iBmp.bmBitsPixel <> 24 Then
         RaiseError 2196, "AdjustPictureWithHLS function", "AdjustPictureWithHLS function only works with 24 bits bitmaps"
         Exit Function
     End If
@@ -419,8 +419,8 @@ Public Function AdjustPictureWithHLS(nSourcePic As StdPicture, Optional HAdditio
         .biSize = Len(iBMPiH) '40
         .biPlanes = 1
         .biBitCount = 24
-        .biWidth = iBMP.bmWidth
-        .biHeight = iBMP.bmHeight
+        .biWidth = iBmp.bmWidth
+        .biHeight = iBmp.bmHeight
         .biSizeImage = ((.biWidth * 3 + 3) And &HFFFFFFFC) * .biHeight
         iPicWidth = .biWidth
         iPicHeight = .biHeight
@@ -430,7 +430,7 @@ Public Function AdjustPictureWithHLS(nSourcePic As StdPicture, Optional HAdditio
     
     iTmpDC = CreateCompatibleDC(0)
     
-    GetDIBits iTmpDC, nSourcePic.Handle, 0, iBMP.bmHeight, iBits(0), iBMPiH, DIB_RGB_COLORS
+    GetDIBits iTmpDC, nSourcePic.Handle, 0, iBmp.bmHeight, iBits(0), iBMPiH, DIB_RGB_COLORS
     
     iMax = iBMPiH.biSizeImage - 1
     
@@ -468,7 +468,7 @@ Public Function AdjustPictureWithHLS(nSourcePic As StdPicture, Optional HAdditio
             If L1 < 0 Then L1 = 0
             If L1 > 240 Then L1 = 240
             
-            S1 = S1 * LFactor
+            S1 = S1 * SFactor
             S1 = S1 + SAddition
             If S1 < 1 Then S1 = 1
             If S1 > 240 Then S1 = 240
@@ -498,7 +498,7 @@ Public Function AdjustPictureWithHLS(nSourcePic As StdPicture, Optional HAdditio
     iBMPInfo.bmiHeader = iBMPiH
     iBitMap = CreateDIBSection(iTmpDC, iBMPInfo, 0, 0, 0, 0)   ' Create a temp blank image
     iOldObj = SelectObject(iTmpDC, iBitMap)
-    SetDIBitsToDevice iTmpDC, 0, 0, iPicWidth, iPicHeight, 0, 0, 0, iBMP.bmHeight, iBits(0), iBMPiH, DIB_RGB_COLORS
+    SetDIBitsToDevice iTmpDC, 0, 0, iPicWidth, iPicHeight, 0, 0, 0, iBmp.bmHeight, iBits(0), iBMPiH, DIB_RGB_COLORS
     'StretchDIBits iTmpDC, 0, 0, iPicWidth, iPicHeight, 0, 0, iBMP.bmWidth, iBMP.bmHeight, iBits(0), iBMPiH, DIB_RGB_COLORS, vbSrcCopy
     
     SelectObject iTmpDC, iOldObj
@@ -547,7 +547,7 @@ Public Function AdjustColorWithHLS(nColor As Long, Optional HAddition As Long, O
     If L1 < 0 Then L1 = 0
     If L1 > 240 Then L1 = 240
     
-    S1 = S1 * LFactor
+    S1 = S1 * SFactor
     S1 = S1 + SAddition
     If S1 < 1 Then S1 = 1
     If S1 > 240 Then S1 = 240
