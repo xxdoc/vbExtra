@@ -18,7 +18,7 @@ Implements ISubclass
 'Private Const CB_GETITEMHEIGHT As Long = &H154
 Private Const CB_GETMINVISIBLE As Long = &H1702&
 
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 Private Declare Function GetFocus Lib "user32" () As Long
 
@@ -503,7 +503,7 @@ TheExit:
 End Sub
 
 
-Public Function GetNeededWidth()
+Public Function GetNeededWidth() As Long
     Dim iDC As Long
     Dim c As Long
     Dim iAuxWidth As Long

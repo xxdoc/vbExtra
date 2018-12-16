@@ -5019,7 +5019,7 @@ Private Sub SetPageSize()
     mTabsStopsInfoUpdated = False
 End Sub
 
-Private Property Get PaperWidthInMillimeters()
+Private Property Get PaperWidthInMillimeters() As Single
     If mPaperWidthInMillimeters = 0 Then
         PaperWidthInMillimeters = mPrinterDefaultPageWidthInMillimeters
     Else
@@ -5027,7 +5027,7 @@ Private Property Get PaperWidthInMillimeters()
     End If
 End Property
 
-Private Property Get PaperHeightInMillimeters()
+Private Property Get PaperHeightInMillimeters() As Single
     If mPaperHeightInMillimeters = 0 Then
         PaperHeightInMillimeters = mPrinterDefaultPageHeightInMillimeters
     Else

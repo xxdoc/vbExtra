@@ -86,7 +86,7 @@ Private mZoom As Long
 Private mFixedImageScale As Single
 Private mDocumentName As String
 
-Public Sub CreatePage(nHdcReference As Long, nWidthInMillimeters, nHeightInMillimeters, nOrientation As Long, nhFont As Long, nDrawStyle As Long, nDrawWidth As Long, nForeColor As Long, nDrawMode As Long, nFontTransparent As Boolean, nFillStyle As Long, nFillColor As Long, nLeftMarginInMillimeters, nTopMarginInMillimeters, nRightMarginInMillimeters, nBottomMarginInMillimeters, nPaperSize As Long, nPaperBin As Long, nPrintQuality As Long, nDuplex As Long, nColorMode As Long, nNonPrintableAreaLeftInPixels, nNonPrintableAreaTopInPixels, nNonPrintableAreaRightInPixels, nNonPrintableAreaBottomInPixels, nDPIX, nDPIY, nZoom As Long, nFixedImageScale As Single, nDocumentName As String)
+Public Sub CreatePage(nHdcReference As Long, nWidthInMillimeters As Single, nHeightInMillimeters As Single, nOrientation As Long, nhFont As Long, nDrawStyle As Long, nDrawWidth As Long, nForeColor As Long, nDrawMode As Long, nFontTransparent As Boolean, nFillStyle As Long, nFillColor As Long, nLeftMarginInMillimeters As Single, nTopMarginInMillimeters As Single, nRightMarginInMillimeters As Single, nBottomMarginInMillimeters As Single, nPaperSize As Long, nPaperBin As Long, nPrintQuality As Long, nDuplex As Long, nColorMode As Long, nNonPrintableAreaLeftInPixels As Long, nNonPrintableAreaTopInPixels As Long, nNonPrintableAreaRightInPixels As Long, nNonPrintableAreaBottomInPixels As Long, nDPIX As Single, nDPIY As Single, nZoom As Long, nFixedImageScale As Single, nDocumentName As String)
     Dim iRect As RECT
     Dim iLb As LOGBRUSH
     

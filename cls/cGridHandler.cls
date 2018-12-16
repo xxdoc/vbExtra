@@ -1442,7 +1442,7 @@ Private Sub SetGridVisibleColumnsWithDataFromVariable()
     Next c
 End Sub
 
-Private Function GetColIndexByColHeader(nColHeader As String)
+Private Function GetColIndexByColHeader(nColHeader As String) As Long
     Dim c As Long
     
     GetColIndexByColHeader = -1
@@ -1862,7 +1862,7 @@ Private Sub SetColumnsRightPos()
 TheExit:
 End Sub
 
-Private Function GetColumnByPosX(nXPos As Long)
+Private Function GetColumnByPosX(nXPos As Long) As Long
     Dim c As Long
     Dim iLC As Long
     Dim iFC As Long
