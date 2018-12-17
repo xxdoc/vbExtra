@@ -116,8 +116,8 @@ Private Declare Function SetProp Lib "user32" Alias "SetPropA" (ByVal hWnd As Lo
 Private Declare Function RemoveProp Lib "user32" Alias "RemovePropA" (ByVal hWnd As Long, ByVal lpString As String) As Long
 Private Declare Function GetSystemMetrics Lib "user32" (ByVal nIndex As Long) As Long
 Private Declare Function GetFocus Lib "user32" () As Long
-Private Declare Function GetLocaleInfo Lib "Kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
-Private Declare Function GetUserDefaultLCID% Lib "Kernel32" ()
+Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
+Private Declare Function GetUserDefaultLCID% Lib "kernel32" ()
 Private Declare Function SetFocusAPI Lib "user32" Alias "SetFocus" (ByVal hWnd As Long) As Long
 Private Declare Function IsWindowVisible Lib "user32" (ByVal hWnd As Long) As Long
 Private Declare Function GetParent Lib "user32" (ByVal hWnd As Long) As Long
@@ -779,6 +779,7 @@ Private Sub UserControl_Resize()
     Dim iTop As Long
     Dim iLeft As Long
     Dim iHeight As Long
+    Dim iIsVistaOrMoreAndThemed As Boolean
     
     If UserControl.Width < 800 Then UserControl.Width = 800
     
@@ -800,7 +801,8 @@ Private Sub UserControl_Resize()
     iTop = 3
     iLeft = 3
     
-    If IsWindowsVistaOrMore Then
+    iIsVistaOrMoreAndThemed = IsWindowsVistaOrMore And IsThemed
+    If iIsVistaOrMoreAndThemed Then
         If iDTPInfo.rcCheck.Left < iLeft Then iLeft = iDTPInfo.rcCheck.Left
         If iDTPInfo.rcCheck.Top < iTop Then iTop = iDTPInfo.rcCheck.Top
     End If
@@ -809,12 +811,12 @@ Private Sub UserControl_Resize()
     txtMasked.Top = iTop * Screen.TwipsPerPixelY
     
     iHeight = UserControl.ScaleHeight - 5 * Screen.TwipsPerPixelY
-    If IsWindowsVistaOrMore Then
+    If iIsVistaOrMoreAndThemed Then
         If iHeight < (iDTPInfo.rcCheck.Bottom * Screen.TwipsPerPixelY - txtMasked.Top) Then iHeight = iDTPInfo.rcCheck.Bottom * Screen.TwipsPerPixelY - txtMasked.Top
     End If
     
     txtMasked.Height = iHeight
-    If IsWindowsVistaOrMore Then
+    If iIsVistaOrMoreAndThemed Then
         txtMasked.Width = UserControl.ScaleWidth - (iDTPInfo.rcButton.Right - iDTPInfo.rcButton.Left + 2) * Screen.TwipsPerPixelX
     Else
         txtMasked.Width = UserControl.ScaleWidth - (6.49 + GetSystemMetrics(SM_CXVSCROLL)) * Screen.TwipsPerPixelX
