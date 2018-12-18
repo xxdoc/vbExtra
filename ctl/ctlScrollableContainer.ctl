@@ -427,6 +427,7 @@ Private Sub UserControl_InitProperties()
     mAutoScrollOnFocus = True
     mBorderColor = cDefaultBorderColor
     mBorderStyle = cDefaultBorderStyle
+    mBottomFreeSpace = cDefaultBottomFreeSpace
     SetBorderStyle
     
     AttachMessage Me, UserControl.hWnd, WM_NCPAINT

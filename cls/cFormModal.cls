@@ -137,7 +137,6 @@ Public Sub Show(nForm As Form, Optional nWaitWithDoevents As Boolean, Optional n
     
     GetAppFormsHwnds mHwnds(), 0&
     ReDim mEnabled(UBound(mHwnds))
-    ReDim mWindowPlacements(UBound(mHwnds))
     
     For c = 1 To UBound(mHwnds)
         mEnabled(c) = IsWindowEnabled(mHwnds(c))

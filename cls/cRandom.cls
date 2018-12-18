@@ -20,7 +20,6 @@ End Enum
 
 ' For Random algorithm
 Private iLast As Long
-Private iSeed As Long
 Private Const a As Long = 48271
 Private Const M As Long = 2147483647
 Private Const Max As Long = 2147483645

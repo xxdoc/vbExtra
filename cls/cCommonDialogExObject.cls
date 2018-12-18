@@ -109,10 +109,6 @@ Private Type T_CHOOSECOLOR
     lpTemplateName As String
 End Type
 
-'constants for LOGFONT
-Private Const LF_FACESIZE As Long = 32
-'Private Const LF_FULLFACESIZE As Long = 64
-
 'Private Const FW_THIN As Long = 100
 'Private Const FW_EXTRALIGHT As Long = 200
 'Private Const FW_LIGHT As Long = 300
@@ -122,24 +118,6 @@ Private Const FW_NORMAL As Long = 400
 Private Const FW_BOLD As Long = 700
 'Private Const FW_EXTRABOLD As Long = 800
 'Private Const FW_HEAVY As Long = 900
-
-'data buffer for the ChooseFont function
-Private Type LOGFONT
-    lfHeight As Long
-    lfWidth As Long
-    lfEscapement As Long
-    lfOrientation As Long
-    lfWeight As Long
-    lfItalic As Byte
-    lfUnderline As Byte
-    lfStrikeOut As Byte
-    lfCharSet As Byte
-    lfOutPrecision As Byte
-    lfClipPrecision As Byte
-    lfQuality As Byte
-    lfPitchAndFamily As Byte
-    lfFaceName(0 To LF_FACESIZE - 1) As Byte
-End Type
 
 'data buffer for the ChooseFont function
 Private Type T_CHOOSEFONT
@@ -1061,8 +1039,6 @@ Public Sub ShowFont(Optional ByVal nFlags As cdeCommonDialogExFontFlagsConstants
             
             mColor = iCF.rgbColors
             
-            'tLogFont.lfFaceName(LF_FACESIZE) As Byte - store to FontName property
-            
             iStr = CStr(tLogFont.lfFaceName)
             iLng = InStr(iStr, Chr(0))
             If iLng > 0 Then
@@ -1384,7 +1360,7 @@ Public Property Let Filter(ByVal nValue As String)
 End Property
 
 
-Private Function sLeftOfNull(ByVal sIn As String)
+Private Function sLeftOfNull(ByVal sIn As String) As String
     'returns the part of sIn preceding Chr$(0)
     Dim lNullPos As Long
     
@@ -1401,7 +1377,7 @@ Private Function sLeftOfNull(ByVal sIn As String)
     
 End Function
 
-Private Function sLeftOfLastNull(ByVal sIn As String)
+Private Function sLeftOfLastNull(ByVal sIn As String) As String
     'returns the part of sIn preceding Chr$(0)
     Dim iNullPos As Long
     Dim iChr As String
@@ -1430,7 +1406,7 @@ Private Function sLeftOfLastNull(ByVal sIn As String)
 End Function
 
 
-Private Function sAPIFilter(sIn)
+Private Function sAPIFilter(sIn) As String
     'prepares sIn for use as a filter string in API common dialog functions
     Dim lChrNdx As Long
     Dim sOneChr As String
@@ -2580,7 +2556,7 @@ End Sub
 Private Function GetDevNameString( _
       ByVal ptrDevNames As Long, _
       ByVal ptrOffset As Long _
-   )
+   ) As String
    Dim Ptr As Long
    Dim lSize As Long
    Dim B() As Byte
@@ -2971,7 +2947,7 @@ Private Function PaperSizeExists(nPaperSizeNumber As Long) As Boolean
     Next c
 End Function
 
-Private Function FindMostSimilarPaperSize(nPaperSize) As Long
+Private Function FindMostSimilarPaperSize(nPaperSize As Long) As Long
     Dim iPaperWidth As Long
     Dim iPaperHeight As Long
     Dim iAuxPrinterEx As Object

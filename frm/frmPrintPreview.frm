@@ -900,21 +900,11 @@ Private Sub cmdClose_2_Click()
     cmdClose_Click
 End Sub
 
-Private Sub cmdClose_2_GotFocus()
-    cmdClose_GotFocus
-End Sub
-
 Private Sub cmdClose_Click()
     If IsFormLoaded(frmSettingGridDataProgress) Then
         frmSettingGridDataProgress.Canceled = True
     Else
         Unload Me
-    End If
-End Sub
-
-Private Sub cmdClose_GotFocus()
-    If IsFormLoaded(frmSettingGridDataProgress) Then
-        frmSettingGridDataProgress.Canceled = True
     End If
 End Sub
 
@@ -1178,7 +1168,6 @@ End Sub
 
 Private Sub Form_Resize()
     Dim iWidth As Long
-    Dim iLng As Long
     
     If DoNotLoad Then Exit Sub
     
@@ -1274,10 +1263,6 @@ End Sub
 
 Private Sub mnuView6p_Click()
     SelectView efnViewButtonSevealPages, 2
-End Sub
-
-Private Sub MouseWheelEnabler1_MouseWheelRotation(Direction As Long)
-
 End Sub
 
 Private Sub picPage_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)

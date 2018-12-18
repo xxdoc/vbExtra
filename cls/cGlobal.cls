@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
 
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 '[Enumerations]
 
@@ -341,7 +341,7 @@ Public Property Get Printer2() As Object
 End Property
 
 Public Property Set Printer2(nPrinter As Object)
-    mPrinterEx.Printer2 = nPrinter
+    Set mPrinterEx.Printer2 = nPrinter
 End Property
 
 Public Property Get PrinterEx() As IPrinterEx

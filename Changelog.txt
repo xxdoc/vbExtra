@@ -1,3 +1,6 @@
+17/Dec/2018 fixed a bug in DateEnter control
+16/Dec/2018 added another sample project for the ScrollableContainer control
+16/Dec/2018 fixed a bug in ScrollableContainer control: the BottomFreeSpace property default setting was not working
 30/Nov/2018 fixed a bug in DateEnter control on Windows XP
 24/Nov/2018 fixed a bug in SSTabEx control
 24/Nov/2018 updated FlexFn control

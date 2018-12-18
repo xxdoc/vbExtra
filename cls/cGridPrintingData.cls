@@ -799,7 +799,7 @@ Public Sub EndMergingColForPrinting(Col As Long)
     mColMergeForPrintingBegunAtRow(Col) = -1
 End Sub
 
-Public Property Get CellIsColMergedInRow(Row, Col) As Long
+Public Property Get CellIsColMergedInRow(Row As Long, Col As Long) As Long
     CellIsColMergedInRow = mRowWhereCellIsMerged(Row, Col)
 End Property
 

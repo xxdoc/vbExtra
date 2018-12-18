@@ -3003,8 +3003,8 @@ Private Function WordWrappedInMax3Lines(nText As String) As String
                 iPos2f = iPos2a
             End If
         End If
-        If Mid$(nText, iPos1f, 1) <> " " Then Stop
-        If Mid$(nText, iPos2f, 1) <> " " Then Stop
+'        If Mid$(nText, iPos1f, 1) <> " " Then Stop
+'        If Mid$(nText, iPos2f, 1) <> " " Then Stop
         WordWrappedInMax3Lines = Left$(nText, iPos1f - 1) & vbCrLf & Mid$(nText, iPos1f + 1, iPos2f - iPos1f - 1) & vbCrLf & Right$(nText, iLen - iPos2f)
     End If
 End Function
@@ -3107,7 +3107,7 @@ Private Property Get FileName2() As String
     FileName2 = ValidFileName(FileName2)
 End Property
     
-Private Function FirstWords(nText As String, ByVal nWords As Long)
+Private Function FirstWords(nText As String, ByVal nWords As Long) As String
     Dim iWords() As String
     Dim c As Long
     

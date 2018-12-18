@@ -25,60 +25,60 @@ Begin VB.UserControl FlexFn
       Top             =   2160
    End
    Begin vbExtra.ToolBarDA tbrButtons 
-      Height          =   405
+      Height          =   396
       Left            =   0
       Top             =   0
-      Width           =   2595
-      _extentx        =   4577
-      _extenty        =   714
-      buttonscount    =   6
-      buttonkey1      =   "Print"
-      buttonpic161    =   "ctlFlexFn.ctx":03D2
-      buttonpic201    =   "ctlFlexFn.ctx":0726
-      buttonpic241    =   "ctlFlexFn.ctx":0C2A
-      buttonpic301    =   "ctlFlexFn.ctx":133E
-      buttonpic361    =   "ctlFlexFn.ctx":1E5A
-      buttonwidth1    =   438
-      buttonkey2      =   "Copy"
-      buttonpic162    =   "ctlFlexFn.ctx":2DDE
-      buttonpic202    =   "ctlFlexFn.ctx":3132
-      buttonpic242    =   "ctlFlexFn.ctx":3636
-      buttonpic302    =   "ctlFlexFn.ctx":3D4A
-      buttonpic362    =   "ctlFlexFn.ctx":4866
-      buttonwidth2    =   438
-      buttonkey3      =   "Save"
-      buttonpic163    =   "ctlFlexFn.ctx":57EA
-      buttonpic203    =   "ctlFlexFn.ctx":5B3E
-      buttonpic243    =   "ctlFlexFn.ctx":6042
-      buttonpic303    =   "ctlFlexFn.ctx":6756
-      buttonpic363    =   "ctlFlexFn.ctx":7272
-      buttonwidth3    =   438
-      buttonkey4      =   "Find"
-      buttonpic164    =   "ctlFlexFn.ctx":81F6
-      buttonpic204    =   "ctlFlexFn.ctx":854A
-      buttonpic244    =   "ctlFlexFn.ctx":8A4E
-      buttonpic304    =   "ctlFlexFn.ctx":9162
-      buttonpic364    =   "ctlFlexFn.ctx":9C7E
-      buttonwidth4    =   438
-      buttonkey5      =   "GroupData"
-      buttonpic165    =   "ctlFlexFn.ctx":AC02
-      buttonpic205    =   "ctlFlexFn.ctx":AF56
-      buttonpic245    =   "ctlFlexFn.ctx":B45A
-      buttonpic305    =   "ctlFlexFn.ctx":BB6E
-      buttonpic365    =   "ctlFlexFn.ctx":C68A
-      buttonwidth5    =   438
-      buttonkey6      =   "ConfigColumns"
-      buttonpic166    =   "ctlFlexFn.ctx":D60E
-      buttonpic206    =   "ctlFlexFn.ctx":D962
-      buttonpic246    =   "ctlFlexFn.ctx":DE66
-      buttonpic306    =   "ctlFlexFn.ctx":E57A
-      buttonpic366    =   "ctlFlexFn.ctx":F096
-      buttonpic16alt6 =   "ctlFlexFn.ctx":1001A
-      buttonpic20alt6 =   "ctlFlexFn.ctx":1036C
-      buttonpic24alt6 =   "ctlFlexFn.ctx":1086E
-      buttonpic30alt6 =   "ctlFlexFn.ctx":10F80
-      buttonpic36alt6 =   "ctlFlexFn.ctx":11A9A
-      buttonwidth6    =   438
+      Width           =   2532
+      _ExtentX        =   4466
+      _ExtentY        =   699
+      ButtonsCount    =   6
+      ButtonKey1      =   "Print"
+      ButtonPic161    =   "ctlFlexFn.ctx":03D2
+      ButtonPic201    =   "ctlFlexFn.ctx":0724
+      ButtonPic241    =   "ctlFlexFn.ctx":0C26
+      ButtonPic301    =   "ctlFlexFn.ctx":1338
+      ButtonPic361    =   "ctlFlexFn.ctx":1E52
+      ButtonWidth1    =   428
+      ButtonKey2      =   "Copy"
+      ButtonPic162    =   "ctlFlexFn.ctx":2DD4
+      ButtonPic202    =   "ctlFlexFn.ctx":3126
+      ButtonPic242    =   "ctlFlexFn.ctx":3628
+      ButtonPic302    =   "ctlFlexFn.ctx":3D3A
+      ButtonPic362    =   "ctlFlexFn.ctx":4854
+      ButtonWidth2    =   428
+      ButtonKey3      =   "Save"
+      ButtonPic163    =   "ctlFlexFn.ctx":57D6
+      ButtonPic203    =   "ctlFlexFn.ctx":5B28
+      ButtonPic243    =   "ctlFlexFn.ctx":602A
+      ButtonPic303    =   "ctlFlexFn.ctx":673C
+      ButtonPic363    =   "ctlFlexFn.ctx":7256
+      ButtonWidth3    =   428
+      ButtonKey4      =   "Find"
+      ButtonPic164    =   "ctlFlexFn.ctx":81D8
+      ButtonPic204    =   "ctlFlexFn.ctx":852A
+      ButtonPic244    =   "ctlFlexFn.ctx":8A2C
+      ButtonPic304    =   "ctlFlexFn.ctx":913E
+      ButtonPic364    =   "ctlFlexFn.ctx":9C58
+      ButtonWidth4    =   428
+      ButtonKey5      =   "GroupData"
+      ButtonPic165    =   "ctlFlexFn.ctx":ABDA
+      ButtonPic205    =   "ctlFlexFn.ctx":AF2C
+      ButtonPic245    =   "ctlFlexFn.ctx":B42E
+      ButtonPic305    =   "ctlFlexFn.ctx":BB40
+      ButtonPic365    =   "ctlFlexFn.ctx":C65A
+      ButtonWidth5    =   428
+      ButtonKey6      =   "ConfigColumns"
+      ButtonPic166    =   "ctlFlexFn.ctx":D5DC
+      ButtonPic206    =   "ctlFlexFn.ctx":D92E
+      ButtonPic246    =   "ctlFlexFn.ctx":DE30
+      ButtonPic306    =   "ctlFlexFn.ctx":E542
+      ButtonPic366    =   "ctlFlexFn.ctx":F05C
+      ButtonPic16Alt6 =   "ctlFlexFn.ctx":FFDE
+      ButtonPic20Alt6 =   "ctlFlexFn.ctx":10330
+      ButtonPic24Alt6 =   "ctlFlexFn.ctx":10832
+      ButtonPic30Alt6 =   "ctlFlexFn.ctx":10F44
+      ButtonPic36Alt6 =   "ctlFlexFn.ctx":11A5E
+      ButtonWidth6    =   428
    End
    Begin VB.Timer tmrShow 
       Enabled         =   0   'False
@@ -87,11 +87,11 @@ Begin VB.UserControl FlexFn
       Top             =   1710
    End
    Begin VB.Image imgIcon 
-      Height          =   510
-      Left            =   690
-      Picture         =   "ctlFlexFn.ctx":12A1C
+      Height          =   408
+      Left            =   696
+      Picture         =   "ctlFlexFn.ctx":129E0
       Top             =   1680
-      Width           =   510
+      Width           =   408
    End
    Begin VB.Menu mnuPopup 
       Caption         =   ""
@@ -2573,8 +2573,7 @@ End Sub
 
 
 Public Sub DeleteOrderByColumnSaved(Optional nGrid As Object)
-    'mFlexFnObject.DeleteOrderByColumnSaved (nGrid)
-    mFlexFnObject.DeleteOrderByColumnSaved
+    mFlexFnObject.DeleteOrderByColumnSaved nGrid
 End Sub
 
 

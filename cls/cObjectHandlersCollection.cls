@@ -29,6 +29,6 @@ Public Function GetInstance(nObjectWithHwnd As Object) As Object
     Set GetInstance = mCollection(CStr(nObjectWithHwnd.hWnd))
 End Function
 
-Public Property Get Count()
+Public Property Get Count() As Long
     Count = mCollection.Count
 End Property
