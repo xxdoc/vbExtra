@@ -193,29 +193,27 @@ Private Const NOERROR = 0
 Private Const gintMAX_PATH_LEN = 260                    ' Maximum allowed path length including path, filename,
 
 Public Enum efnSpecialFolderIDs
-    sfidDESKTOP = &H0
-    sfidPROGRAMS = &H2
-    sfidPERSONAL = &H5
-    sfidFAVORITES = &H6
-    sfidSTARTUP = &H7
-    sfidRECENT = &H8
-    sfidSENDTO = &H9
-    sfidSTARTMENU = &HB
-    sfidDESKTOPDIRECTORY = &H10
-    sfidNETHOOD = &H13
-    sfidFONTS = &H14
-    sfidTEMPLATES = &H15
-    sfidCOMMON_STARTMENU = &H16
-    sfidCOMMON_PROGRAMS = &H17
-    sfidCOMMON_STARTUP = &H18
-    sfidCOMMON_DESKTOPDIRECTORY = &H19
-    sfidAPPDATA = &H1A
-    sfidPRINTHOOD = &H1B
-    sfidLOCAL_APPDATA = &H1C
-    sfidPROFILE = &H28
-    sfidProgramFiles = &H10000
-    sfidCommonFiles = &H10001
-    sfidFlagCreate = &H8000&
+    CSIDL_DESKTOP = &H0
+    CSIDL_PROGRAMS = &H2
+    CSIDL_PERSONAL = &H5
+    CSIDL_FAVORITES = &H6
+    CSIDL_STARTUP = &H7
+    CSIDL_RECENT = &H8
+    CSIDL_SENDTO = &H9
+    CSIDL_STARTMENU = &HB
+    CSIDL_DESKTOPDIRECTORY = &H10
+    CSIDL_NETHOOD = &H13
+    CSIDL_FONTS = &H14
+    CSIDL_TEMPLATES = &H15
+    CSIDL_COMMON_STARTMENU = &H16
+    CSIDL_COMMON_PROGRAMS = &H17
+    CSIDL_COMMON_STARTUP = &H18
+    CSIDL_COMMON_DESKTOPDIRECTORY = &H19
+    CSIDL_APPDATA = &H1A
+    CSIDL_PRINTHOOD = &H1B
+    CSIDL_LOCAL_APPDATA = &H1C
+    CSIDL_PROFILE = &H28
+    CSIDL_FLAG_CREATE = &H8000&
 End Enum
 
 'Private Declare Function SHGetSpecialFolderLocation Lib "shell32" (ByVal hwndOwner As Long, ByVal nFolder As efnSpecialFolderIDs, ByRef pidl As Long) As Long
@@ -1027,7 +1025,7 @@ Public Function GetTempFolder() As String
     AddDirSep GetTempFolder
 End Function
 
-Public Sub AddDirSep(strPathName As String)
+Public Sub AddDirSep(ByRef strPathName As String)
     strPathName = RTrim$(strPathName)
     If Right$(strPathName, Len(gstrSEP_URLDIR)) <> gstrSEP_URLDIR Then
         If Right$(strPathName, Len(gstrSEP_DIR)) <> gstrSEP_DIR Then
@@ -2063,11 +2061,11 @@ Public Function GetSpecialfolder(nFolder As efnSpecialFolderIDs) As String
 End Function
 
 Public Function StringFromBuffer(Buffer As String) As String
-    Dim nPos As Long
+    Dim iPos As Long
 
-    nPos = InStr(Buffer, vbNullChar)
-    If nPos > 0 Then
-        StringFromBuffer = Left$(Buffer, nPos - 1)
+    iPos = InStr(Buffer, vbNullChar)
+    If iPos > 0 Then
+        StringFromBuffer = Left$(Buffer, iPos - 1)
     Else
         StringFromBuffer = Buffer
     End If
@@ -2587,10 +2585,10 @@ Public Function GetProgramDocumentsFolder() As String
     iStr = GetSetting(AppNameForRegistry, "Preferences", "DocsFolder", "")
     On Error Resume Next
     If iStr = "" Then
-        iStr = GetSpecialfolder(sfidPERSONAL Or sfidFlagCreate)
+        iStr = GetSpecialfolder(CSIDL_PERSONAL Or CSIDL_FLAG_CREATE)
     Else
         If Not FolderExists(iStr) Then
-            iStr = GetSpecialfolder(sfidPERSONAL Or sfidFlagCreate)
+            iStr = GetSpecialfolder(CSIDL_PERSONAL Or CSIDL_FLAG_CREATE)
         End If
     End If
     On Error GoTo 0
