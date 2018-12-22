@@ -3,7 +3,7 @@ It is a component for Visual Basic 6 with extra objects, controls and functions.
 
 # Program URL
 
-vbForums: www.vbforums.com/showthread.php?865299
+vbForums: vbforums.com/showthread.php?865299
 
 To read a larger description of the component or to get help please go to vbForums URL.
 
