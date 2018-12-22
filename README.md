@@ -1,10 +1,10 @@
-# vbExtra
+# vbExtra:
 It is a component for Visual Basic 6 with extra objects, controls and functions.
 
 Program URL: vbforums.com/showthread.php?865299
 
 
-# Working with the source code
+# Working with the source code:
 
 "vbExtra (subclassing inside).vbp" and "vbExtra (subclassing outside).vbp", why two project files?
 
