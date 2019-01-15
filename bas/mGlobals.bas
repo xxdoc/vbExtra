@@ -606,7 +606,7 @@ Private Const gstrSEP_DIR$ = "\"                         ' Directory separator c
 'Private Const gstrAT$ = "@"
 Private Const gstrSEP_DRIVE$ = ":"                       ' Driver separater character, e.g., C:\
 Private Const gstrSEP_DIRALT$ = "/"                      ' Alternate directory separator character
-'Private Const gstrSEP_EXT$ = "."                         ' Filename extension separator character
+Private Const gstrSEP_EXT$ = "."                         ' Filename extension separator character
 Private Const gstrSEP_URLDIR$ = "/"                      ' Separator for dividing directories in URL addresses.
 
 Public Const flexSelectionFree = 0
@@ -1080,6 +1080,60 @@ Public Sub SeparatePathAndFileName(FullPath As String, _
     End If
 End Sub
 
+Public Function IsFullPath(ByVal nFileName As String) As Boolean
+    Dim iFolderPath As String
+    Dim iOnlyFile As String
+    Dim nSepPos As Long
+    Dim nSepPos2 As Long
+    Dim fUsingDriveSep As Boolean
+
+    nSepPos = InStrRev(nFileName, gstrSEP_DIR)
+    nSepPos2 = InStrRev(nFileName, gstrSEP_DIRALT)
+    If nSepPos2 > nSepPos Then
+        nSepPos = nSepPos2
+    End If
+    nSepPos2 = InStrRev(nFileName, gstrSEP_DRIVE)
+    
+    If (nSepPos > 0) And (nSepPos2 > 0) Then
+        SeparatePathAndFileName nFileName, iFolderPath, iOnlyFile
+        IsFullPath = (iFolderPath <> "") And (iOnlyFile <> "")
+    End If
+End Function
+
+Public Function StripExtension(ByVal nFileName As String) As String
+    Dim nSepPos As Long
+    Dim nSepPos2 As Long
+
+    nSepPos = InStrRev(nFileName, gstrSEP_DIR)
+    nSepPos2 = InStrRev(nFileName, gstrSEP_DIRALT)
+    If nSepPos2 > nSepPos Then
+        nSepPos = nSepPos2
+    End If
+    nSepPos2 = InStrRev(nFileName, gstrSEP_EXT)
+    If (nSepPos2 > nSepPos) Or (nSepPos = 0) Then
+        If nSepPos2 > 1 Then
+            StripExtension = Left$(nFileName, nSepPos2 - 1)
+        End If
+    End If
+    If StripExtension = "" Then StripExtension = nFileName
+End Function
+
+Public Function FileNameHasExtension(ByVal nFileName As String) As Boolean
+    Dim nSepPos As Long
+    Dim nSepPos2 As Long
+
+    nSepPos = InStrRev(nFileName, gstrSEP_DIR)
+    nSepPos2 = InStrRev(nFileName, gstrSEP_DIRALT)
+    If nSepPos2 > nSepPos Then
+        nSepPos = nSepPos2
+    End If
+    nSepPos2 = InStrRev(nFileName, gstrSEP_EXT)
+    If (nSepPos2 > nSepPos) Or (nSepPos = 0) Then
+        If nSepPos2 > 1 Then
+            FileNameHasExtension = True
+        End If
+    End If
+End Function
 
 Public Function ControlNameWithParent(nControl As Object) As String
     Dim iContainer As Object

@@ -176,6 +176,7 @@ Public Enum efnGUIString
     efnGUIStr_FlexFnObject_FindTextInGrid_InputBoxEnterTextMessageTitle
     efnGUIStr_FlexFnObject_FindTextInGrid_InputBoxEnterTextMessage
     efnGUIStr_FlexFnObject_FindTextInGrid_MsgboxTextNotFound
+    efnGUIStr_FlexFnObject_SaveGridAsExcelFile_iDlg_Filter
     efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox1a
     efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox1b
     efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox2a
@@ -563,6 +564,8 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "请输入要查找的文字:"
                 Case efnGUIStr_FlexFnObject_FindTextInGrid_MsgboxTextNotFound
                     GetLocalizedString = "没有找到要查找的文字."
+                Case efnGUIStr_FlexFnObject_SaveGridAsExcelFile_iDlg_Filter
+                    GetLocalizedString = "文件 Excel (*.xls)|*.xls"
                 Case efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox1a
                     GetLocalizedString = "文件"
                 Case efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox1b
@@ -984,6 +987,8 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "Por favor ingrese el texto a buscar:"
                 Case efnGUIStr_FlexFnObject_FindTextInGrid_MsgboxTextNotFound
                     GetLocalizedString = "Texto no encontrado."
+                Case efnGUIStr_FlexFnObject_SaveGridAsExcelFile_iDlg_Filter
+                    GetLocalizedString = "Archivos de Excel (*.xls)|*.xls"
                 Case efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox1a
                     GetLocalizedString = "El archivo"
                 Case efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox1b
@@ -1405,6 +1410,8 @@ Public Function GetLocalizedString(nID As efnGUIString, Optional nIndex As Long,
                     GetLocalizedString = "Please enter the text to search for:"
                 Case efnGUIStr_FlexFnObject_FindTextInGrid_MsgboxTextNotFound
                     GetLocalizedString = "Text not found."
+                Case efnGUIStr_FlexFnObject_SaveGridAsExcelFile_iDlg_Filter
+                    GetLocalizedString = "Excel files (*.xls)|*.xls"
                 Case efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox1a
                     GetLocalizedString = "The file"
                 Case efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox1b
