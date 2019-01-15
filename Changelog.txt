@@ -1,3 +1,4 @@
+15/Jan/2019 FlexFnObject updated
 17/Dec/2018 fixed a bug in DateEnter control
 16/Dec/2018 added another sample project for the ScrollableContainer control
 16/Dec/2018 fixed a bug in ScrollableContainer control: the BottomFreeSpace property default setting was not working
