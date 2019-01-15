@@ -1311,56 +1311,72 @@ Private Function SaveGridAsExcelFile() As String
     Dim iPrevCol As Long
     Dim iPrevRowSel As Long
     Dim iPrevColSel As Long
+    Dim iSilent As Boolean
     
     On Error GoTo ErrorExit:
     
     If (FileName2 = "") Then
         iFileName = GetLocalizedString(efnGUIStr_mGlobals_ValidFileName_DefaultFileName)
     Else
-        iFileName = FileName2
+        iSilent = IsFullPath(FileName)
+        If iSilent Then
+            iFileName = FileName
+        Else
+            iFileName = FileName2
+        End If
     End If
     
-    iPath1 = GetProgramDocumentsFolder & iFileName & ".xls"
+    If Not FileNameHasExtension(iFileName) Then iFileName = iFileName & ".xls"
+    If iSilent Then
+        iPath1 = iFileName
+    Else
+        iPath1 = GetProgramDocumentsFolder & iFileName
+    End If
 
-Again:
-    iDlg.Flags = cdlOFNPathMustExist
-    iDlg.FileName = iPath1
-    iDlg.Filter = "Archivos de Excel (*.xls)|*.xls"
-    iDlg.CancelError = True
-    On Error Resume Next
-    Set iGH = GetGridHandler(mCurrentGrid)
-    If Not iGH Is Nothing Then iGH.TimerCheckRedrawEnabled = False
-    iDlg.ShowSave
-    If Not iGH Is Nothing Then iGH.TimerCheckRedrawEnabled = True
+ShowSaveFile:
+    If Not iSilent Then
+        iDlg.Flags = cdlOFNPathMustExist
+        iDlg.FileName = iPath1
+        iDlg.Filter = GetLocalizedString(efnGUIStr_FlexFnObject_SaveGridAsExcelFile_iDlg_Filter) ' "Excel files (*.xls)|*.xls"
+        iDlg.CancelError = True
+        On Error Resume Next
+        Set iGH = GetGridHandler(mCurrentGrid)
+        If Not iGH Is Nothing Then iGH.TimerCheckRedrawEnabled = False
+        iDlg.ShowSave
+        If Not iGH Is Nothing Then iGH.TimerCheckRedrawEnabled = True
+    End If
     
-'    DoEvents
-    If Err.Number <> 32755 Then 'si no canceló
+    If Not iDlg.Canceled Then
         iPath1 = iDlg.FileName
         If LCase$(Right$(iPath1, 4)) <> ".xls" Then
             iPath1 = iPath1 & ".xls"
         End If
         
         If FileExists(iPath1) Then
-            Select Case MsgBox(GetLocalizedString(efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox1a) & " " & iPath1 & " " & GetLocalizedString(efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox1b), vbYesNoCancel + vbExclamation, ClientProductName)
-            Case vbYes
-                ' sigue nomás
+            If iSilent Then
                 Kill iPath1
-                Do Until Not FileExists(iPath1)
-                    Select Case MsgBox(GetLocalizedString(efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox2a) & vbCrLf & GetLocalizedString(efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox2b), vbExclamation + vbYesNoCancel, ClientProductName)
-                        Case vbYes
-                            ' nada
-                        Case vbNo
-                            GoTo Again:
-                        Case Else
-                            Exit Function
-                    End Select
+            Else
+                Select Case MsgBox(GetLocalizedString(efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox1a) & " " & iPath1 & " " & GetLocalizedString(efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox1b), vbYesNoCancel + vbExclamation, ClientProductName)
+                Case vbYes
+                    ' sigue nomás
                     Kill iPath1
-                Loop
-            Case vbNo
-                GoTo Again:
-            Case vbCancel
-                Exit Function
-            End Select
+                    Do Until Not FileExists(iPath1)
+                        Select Case MsgBox(GetLocalizedString(efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox2a) & vbCrLf & GetLocalizedString(efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox2b), vbExclamation + vbYesNoCancel, ClientProductName)
+                            Case vbYes
+                                ' nada
+                            Case vbNo
+                                GoTo ShowSaveFile:
+                            Case Else
+                                Exit Function
+                        End Select
+                        Kill iPath1
+                    Loop
+                Case vbNo
+                    GoTo ShowSaveFile:
+                Case vbCancel
+                    Exit Function
+                End Select
+            End If
         End If
         On Error GoTo ErrorExit:
         'SaveSetting AppNameForRegistry, "Preferences", "DocsFolder", GetFolder(iPath1)
@@ -1890,21 +1906,22 @@ Again:
         mCurrentGrid.ColSel = iPrevColSel
         mCurrentGrid.Redraw = iRedraw
         
-        If mAfterSaveAction = gfnOfferToOpen Then
-            If IsExcelInstalled Then
-                If MsgBox(GetLocalizedString(efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox3), vbYesNo + vbQuestion, ClientProductName) = vbYes Then
-                    Dim lHWnd As Long
-                    Dim iRet As Long
-                    
-                    iRet = ShellExecute(lHWnd, "OPEN", SaveGridAsExcelFile, "", "", SW_SHOWMAXIMIZED)
+        If Not iSilent Then
+            If mAfterSaveAction = gfnOfferToOpen Then
+                If IsExcelInstalled Then
+                    If MsgBox(GetLocalizedString(efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox3), vbYesNo + vbQuestion, ClientProductName) = vbYes Then
+                        Dim lHWnd As Long
+                        Dim iRet As Long
+                        
+                        iRet = ShellExecute(lHWnd, "OPEN", SaveGridAsExcelFile, "", "", SW_SHOWMAXIMIZED)
+                    End If
+                End If
+            Else
+                If AfterSaveAction = gfnShowConfirmationMessage Then
+                    MsgBox GetLocalizedString(efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox4) & " " & SaveGridAsExcelFile, , ClientProductName
                 End If
             End If
-        Else
-            If AfterSaveAction = gfnShowConfirmationMessage Then
-                MsgBox GetLocalizedString(efnGUIStr_FlexFnObject_SaveGridAsExcelFile_MsgBox4) & " " & SaveGridAsExcelFile, , ClientProductName
-            End If
         End If
-    
     Else
         SaveGridAsExcelFile = ""
     End If
@@ -3097,7 +3114,14 @@ Public Sub DeleteOrderByColumnSaved(Optional nGrid As Object)
 End Sub
 
 Private Property Get FileName2() As String
-    FileName2 = FileName
+    If FileName <> "" Then
+        If IsFullPath(FileName) Then
+            FileName2 = GetFileName(FileName)
+        Else
+            FileName2 = FileName
+        End If
+    End If
+    
     If FileName2 = "" Then
         FileName2 = mHeading
     End If
@@ -4335,7 +4359,7 @@ Part2:
         mRaisingEvent = False
         Set Printer2.Font = iAuxCurFont
     End If
-    mPrintFnObject.DocumentName = FileName2
+    mPrintFnObject.DocumentName = StripExtension(FileName2)
     If mHeading <> "" Then
         Set Printer2.Font = mPrintGridFormatSettings.HeadingFont
 '        Printer2.FontSize = Printer2.FontSize * mPrintGridFormatSettings.ScalePercent / 100
