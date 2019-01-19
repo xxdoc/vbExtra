@@ -1,3 +1,4 @@
+19/Jan/2019 Fixed a bug in DateEnter control (Change event wasn't fired when changed from a Date to a Null value)
 15/Jan/2019 FlexFnObject updated
 17/Dec/2018 fixed a bug in DateEnter control
 16/Dec/2018 added another sample project for the ScrollableContainer control
