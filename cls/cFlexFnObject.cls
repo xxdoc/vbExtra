@@ -4357,7 +4357,6 @@ Part2:
         RaiseEvent StartDocument(iGrid.Name)
         RaiseEvent StartPage(iGrid.Name)
         mRaisingEvent = False
-        Set Printer2.Font = iAuxCurFont
     End If
     mPrintFnObject.DocumentName = StripExtension(FileName2)
     If mHeading <> "" Then
@@ -4386,7 +4385,6 @@ Part2:
     End If
     
     If Not mDrawingGridFromPrinterEx Then
-        Set iAuxCurFont = Printer2.Font
         Set Printer2.Font = iDefAuxFont
         mRaisingEvent = True
         RaiseEvent BeforePrintGrid(iGrid.Name)

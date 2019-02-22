@@ -1849,12 +1849,27 @@ End Property
 Private Sub Class_Initialize()
     Dim iThereIsAPrinter As Boolean
     Dim iFont As StdFont
+    Dim iAuxDlg As CommonDialogExObject
     
     iThereIsAPrinter = VB.Printers.Count > 0
     If iThereIsAPrinter Then
+        On Error Resume Next
+        Err.Clear
         Set Font = CloneFont(VB.Printer.Font)
+        If Err.Number <> 0 Then
+            Set iAuxDlg = New CommonDialogExObject
+            iAuxDlg.ShowPrinter cdePDReturnDefault
+            Set iAuxDlg = Nothing
+            Err.Clear
+            Set Font = CloneFont(VB.Printer.Font)
+            If Err.Number <> 0 Then
+                iThereIsAPrinter = False
+            End If
+        End If
 '    mLogFont = StdFontToLogFont_Printer(VB.Printer.Font)
-        AssignFontVariables
+        If iThereIsAPrinter Then
+            AssignFontVariables
+        End If
     End If
     ReDim mhFontsUsed(0)
     ReDim mFontsUsed_LogFont(0)
@@ -5245,6 +5260,7 @@ Private Function LogFontToStdFont(lF As LOGFONTW) As iFont
         iFontName = Left$(iFontName, InStr(iFontName, Chr(0)) - 1)
     End If
     
+    On Error Resume Next
     LogFontToStdFont.Name = iFontName
     LogFontToStdFont.Size = -lF.lfHeight / iDPIY * 72
     LogFontToStdFont.Weight = lF.lfWeight
