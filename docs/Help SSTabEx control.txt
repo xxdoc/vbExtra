@@ -13,7 +13,7 @@ If you want to replace the original SSTab in a project with this control, you ca
 Make a backup first.
 Add the SSTabEx to your project, in source code or add the reference to the compiled OCX (To compile the OCX read the file: Readme - Notes.txt).
 If the SSTabEx is not in the same project that you'll use it, then add temporarily an SSTabEx control to a form, just dropping a new control onto it. Save the project and close the IDE.
-Manually edit the *.frm files and replace TabDlg.SSTab with ProjectName.SSTabEx, where "ProjectName" is the name of the project that has the SSTABEx control.
+Manually edit the *.frm files and replace TabDlg.SSTab with ProjectName.SSTabEx, where "ProjectName" is the name of the project that has the SSTabEx control.
 If you have added it to your exe project, it will be the name of your project, but if you are using it from an OCX, it will be the name of that component.
 Re-open the project in the IDE. If you added a temporary control, delete it.
 
@@ -130,7 +130,7 @@ Enabled:
 Returns or sets a value that determines whether a form or control can respond to user-generated events.
 
 EndOfTabs:
-Returns and value that indicates where the last tab ends. Depending on the TabOrientation setting, it can be the rightmost tab (orientation top and bottom), the topmost tab (orientation left) or the bottommost tab (orientation right).
+Returns a value that indicates where the last tab ends. Depending on the TabOrientation setting, it can be the rightmost tab (orientation top and bottom), the topmost tab (orientation left) or the bottommost tab (orientation right).
 
 Font:
 Returns or sets a Font object correspondig to the font that will be used to display the tab captions.
@@ -265,7 +265,7 @@ Returns or sets the total number of tabs.
 
 TabSel:
 Returns or sets the current ("selected" or "active") tab.
-In the original SSTab control its name was "Tab", but VB6 doesn't allow that name for a property because it is a reserved word, so the name was changed to "TabSel".
+In the original SSTab control its name was "Tab", but VB6 doesn't allow that name for a property because it is a reserved word, therefore the name was changed to "TabSel".
 
 TabSelExtraHeight:
 Returns or sets a value that determines if the active tab will be higher than the others. The value must be between 0 (zero) and twice the TabHeight setting.
