@@ -1,3 +1,4 @@
+03/Mar/2019 fixed a bug in PrinterEx
 22/Feb/2019 Updated SSTabEx control
 21/Feb/2019 Fixed a bug in FlexFn control
 21/Feb/2019 Fixed a bug in PrinterEx
