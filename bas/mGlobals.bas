@@ -216,8 +216,8 @@ Public Enum efnSpecialFolderIDs
     CSIDL_FLAG_CREATE = &H8000&
 End Enum
 
-'Private Declare Function SHGetSpecialFolderLocation Lib "shell32" (ByVal hwndOwner As Long, ByVal nFolder As efnSpecialFolderIDs, ByRef pidl As Long) As Long
-Private Declare Function SHGetFolderLocation Lib "shell32" (ByVal hwndOwner As Long, ByVal nFolder As Long, ByVal hToken As Long, ByVal dwReserved As Long, pidl As Long) As Long
+'Private Declare Function SHGetSpecialFolderLocation Lib "shell32" (ByVal hWndOwner As Long, ByVal nFolder As efnSpecialFolderIDs, ByRef pidl As Long) As Long
+Private Declare Function SHGetFolderLocation Lib "shell32" (ByVal hWndOwner As Long, ByVal nFolder As Long, ByVal hToken As Long, ByVal dwReserved As Long, pidl As Long) As Long
 Private Declare Function SHGetPathFromIDListA Lib "shell32" (ByVal pidl As Long, ByVal pszPath As String) As Long
 'Private Declare Function SHGetMalloc Lib "shell32" (ByRef pMalloc As IVBMalloc) As Long
 Private Declare Sub CoTaskMemFree Lib "ole32" (ByVal pvoid As Long)
@@ -271,12 +271,12 @@ Public Type COMBOBOXINFO
    rcItem As RECT
    rcButton As RECT
    stateButton As Long
-   hwndCombo As Long
-   hwndEdit As Long
-   hwndList As Long
+   hWndCombo As Long
+   hWndEdit As Long
+   hWndList As Long
 End Type
 
-Public Declare Function GetComboBoxInfo Lib "user32" (ByVal hwndCombo As Long, CBInfo As COMBOBOXINFO) As Long
+Public Declare Function GetComboBoxInfo Lib "user32" (ByVal hWndCombo As Long, CBInfo As COMBOBOXINFO) As Long
 
 Public Declare Function WindowFromPoint Lib "user32" (ByVal xPoint As Long, ByVal yPoint As Long) As Long
 Public Declare Function IsWindow Lib "user32" (ByVal hWnd As Long) As Long
@@ -424,7 +424,7 @@ Private Const PROCESS_VM_READ = 16
 'Private Const STANDARD_RIGHTS_REQUIRED = &HF0000
 'Private Const SYNCHRONIZE = &H100000
 
-Private Declare Function OpenProcess Lib "kernel32.dll" (ByVal dwDesiredAccessas As Long, ByVal bInheritHandle As Long, ByVal dwProcId As Long) As Long
+Private Declare Function OpenProcess Lib "Kernel32.dll" (ByVal dwDesiredAccessas As Long, ByVal bInheritHandle As Long, ByVal dwProcId As Long) As Long
 Private Declare Function EnumProcessModules Lib "psapi.dll" (ByVal hProcess As Long, ByRef lphModule As Long, ByVal cb As Long, ByRef cbNeeded As Long) As Long
 Private Declare Function GetModuleFileNameExA Lib "psapi.dll" (ByVal hProcess As Long, ByVal hModule As Long, ByVal ModuleName As String, ByVal nSize As Long) As Long
 Private Declare Function CreateToolhelp32Snapshot Lib "Kernel32" (ByVal dwFlags As Long, ByVal th32ProcessID As Long) As Long
@@ -1679,7 +1679,7 @@ Public Function IsWindows64Bits() As Boolean
     
         ' Then try to prove that wrong by attempting to load the
         ' IsWow64Process function dynamically
-        iHandle = GetProcAddress(GetModuleHandle("kernel32"), "IsWow64Process")
+        iHandle = GetProcAddress(GetModuleHandle("Kernel32"), "IsWow64Process")
     
         ' The function exists, so call it
         If iHandle <> 0 Then
@@ -2446,7 +2446,7 @@ Public Function GetComboListHwnd(nCombo As Object) As Long
     
     iCboInf.cbSize = Len(iCboInf)
     GetComboBoxInfo nCombo.hWnd, iCboInf
-    GetComboListHwnd = iCboInf.hwndList
+    GetComboListHwnd = iCboInf.hWndList
 
 End Function
 
@@ -2455,7 +2455,7 @@ Public Function GetComboEditHwnd(nCombo As Object) As Long
     
     iCboInf.cbSize = Len(iCboInf)
     GetComboBoxInfo nCombo.hWnd, iCboInf
-    GetComboEditHwnd = iCboInf.hwndEdit
+    GetComboEditHwnd = iCboInf.hWndEdit
 
 End Function
 
@@ -3779,7 +3779,7 @@ TheExit:
     
 End Function
     
-Public Function GetTopOwnerFormHwnd(nFormHwnd As Long)
+Public Function GetTopOwnerFormHwnd(nFormHwnd As Long) As Long
     Dim iHwnd As Long
     
     iHwnd = GetOwnerHwnd(nFormHwnd)
