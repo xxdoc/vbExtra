@@ -116,8 +116,8 @@ Private Declare Function SetProp Lib "user32" Alias "SetPropA" (ByVal hWnd As Lo
 Private Declare Function RemoveProp Lib "user32" Alias "RemovePropA" (ByVal hWnd As Long, ByVal lpString As String) As Long
 Private Declare Function GetSystemMetrics Lib "user32" (ByVal nIndex As Long) As Long
 Private Declare Function GetFocus Lib "user32" () As Long
-Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
-Private Declare Function GetUserDefaultLCID% Lib "kernel32" ()
+Private Declare Function GetLocaleInfo Lib "Kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
+Private Declare Function GetUserDefaultLCID% Lib "Kernel32" ()
 Private Declare Function SetFocusAPI Lib "user32" Alias "SetFocus" (ByVal hWnd As Long) As Long
 Private Declare Function IsWindowVisible Lib "user32" (ByVal hWnd As Long) As Long
 Private Declare Function GetParent Lib "user32" (ByVal hWnd As Long) As Long
@@ -364,7 +364,13 @@ Private Sub txtMasked_Change()
     Static sLastDate As Variant
     Dim iDateAnt As Variant
     
-    If mSettingNullDateFromDTPicker1ChangeEvent Then Exit Sub
+    If mSettingNullDateFromDTPicker1ChangeEvent Then
+        If Ambient.UserMode Then
+            RaiseEvent_TextChange
+            RaiseEvent Change
+        End If
+        Exit Sub
+    End If
     If mInsideKeyPress Then Exit Sub
     If sInside Then Exit Sub
     sInside = True

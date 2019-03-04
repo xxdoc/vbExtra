@@ -1,18 +1,10 @@
-# vbExtra
-It is a component for Visual Basic 6 with extra objects, controls and functions. One of the main features is to provide a Printer object replacement that has print preview capability.
+# vbExtra:
+It is a component for Visual Basic 6 with extra objects, controls and functions.
 
-# Program URL's
-
-GitHub:
-https://github.com/EduardoVB/vbExtra
-
-vbForums:
-http://www.vbforums.com/showthread.php?865299
-
-To read a larger description of the component or to get help please go to vbForums URL.
+Program URL: vbforums.com/showthread.php?865299
 
 
-# Working with the source code
+# Working with the source code:
 
 "vbExtra (subclassing inside).vbp" and "vbExtra (subclassing outside).vbp", why two project files?
 

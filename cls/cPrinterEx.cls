@@ -83,10 +83,10 @@ Private Declare Function DeleteDC Lib "gdi32.dll" (ByVal hDC As Long) As Long
 Private Declare Function GetStretchBltMode Lib "gdi32" (ByVal hDC As Long) As Long
 Private Declare Function SetStretchBltMode Lib "gdi32" (ByVal hDC As Long, ByVal nStretchMode As Long) As Long
 Private Declare Function StretchBlt Lib "gdi32" (ByVal hdcDest As Long, ByVal XDest As Long, ByVal YDest As Long, ByVal nWidthDest As Long, ByVal nHeightDest As Long, ByVal hdcSrc As Long, ByVal XSrc As Long, ByVal YSrc As Long, ByVal nSrcWidth As Long, ByVal nSrcHeight As Long, ByVal dwRop As Long) As Long
-Private Declare Function GetPixel Lib "gdi32" (ByVal hDC As Long, ByVal x As Long, ByVal y As Long) As Long
-Private Declare Function TransparentBlt Lib "msimg32.dll" (ByVal hDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal XSrc As Long, ByVal YSrc As Long, ByVal nSrcWidth As Long, ByVal nSrcHeight As Long, ByVal crTransparent As Long) As Boolean
-Private Declare Function MoveToEx Lib "gdi32" (ByVal hDC As Long, ByVal x As Long, ByVal y As Long, lpPoint As Any) As Long
-Private Declare Function LineTo Lib "gdi32" (ByVal hDC As Long, ByVal x As Long, ByVal y As Long) As Long
+Private Declare Function GetPixel Lib "gdi32" (ByVal hDC As Long, ByVal X As Long, ByVal Y As Long) As Long
+Private Declare Function TransparentBlt Lib "msimg32.dll" (ByVal hDC As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal XSrc As Long, ByVal YSrc As Long, ByVal nSrcWidth As Long, ByVal nSrcHeight As Long, ByVal crTransparent As Long) As Boolean
+Private Declare Function MoveToEx Lib "gdi32" (ByVal hDC As Long, ByVal X As Long, ByVal Y As Long, lpPoint As Any) As Long
+Private Declare Function LineTo Lib "gdi32" (ByVal hDC As Long, ByVal X As Long, ByVal Y As Long) As Long
 Private Declare Function Arc Lib "gdi32" (ByVal hDC As Long, ByVal nLeftRect As Long, ByVal nTopRect As Long, ByVal nRightRect As Long, ByVal nBottomRect As Long, ByVal nXStartArc As Long, ByVal nYStartArc As Long, ByVal nXEndArc As Long, ByVal nYEndArc As Long) As Long
 Private Declare Function Ellipse Lib "gdi32" (ByVal hDC As Long, ByVal nLeftRect As Long, ByVal nTopRect As Long, ByVal nRightRect As Long, ByVal nBottomRect As Long) As Long
 
@@ -1849,12 +1849,27 @@ End Property
 Private Sub Class_Initialize()
     Dim iThereIsAPrinter As Boolean
     Dim iFont As StdFont
+    Dim iAuxDlg As CommonDialogExObject
     
     iThereIsAPrinter = VB.Printers.Count > 0
     If iThereIsAPrinter Then
+        On Error Resume Next
+        Err.Clear
         Set Font = CloneFont(VB.Printer.Font)
+        If Err.Number <> 0 Then
+            Set iAuxDlg = New CommonDialogExObject
+            iAuxDlg.ShowPrinter cdePDReturnDefault
+            Set iAuxDlg = Nothing
+            Err.Clear
+            Set Font = CloneFont(VB.Printer.Font)
+            If Err.Number <> 0 Then
+                iThereIsAPrinter = False
+            End If
+        End If
 '    mLogFont = StdFontToLogFont_Printer(VB.Printer.Font)
-        AssignFontVariables
+        If iThereIsAPrinter Then
+            AssignFontVariables
+        End If
     End If
     ReDim mhFontsUsed(0)
     ReDim mFontsUsed_LogFont(0)
@@ -2382,7 +2397,7 @@ Public Function PrintText(nText As String, Optional ByVal nLeft, Optional ByVal 
                 mCurrentXPixels = mCurrentXPixels + iRectCalc.Right - iRectCalc.Left
             Else
                 GetTextExtentPoint32 iMetaDC, nText, Len(nText), iTextSize
-                mCurrentXPixels = mCurrentXPixels + iTextSize.x
+                mCurrentXPixels = mCurrentXPixels + iTextSize.X
             End If
         End If
     End If
@@ -2404,7 +2419,7 @@ Private Function FontHeightInternal() As Long
     FontHeightInternal = mFontsUsed_HeightInPixels(mCurrentFontIndex)
     If FontHeightInternal = 0 Then
         GetTextExtentPoint32 iMetaDC, "A", Len("A"), iTextSize
-        mFontsUsed_HeightInPixels(mCurrentFontIndex) = (iTextSize.y)
+        mFontsUsed_HeightInPixels(mCurrentFontIndex) = (iTextSize.Y)
         FontHeightInternal = mFontsUsed_HeightInPixels(mCurrentFontIndex)
     End If
 End Function
@@ -2998,23 +3013,23 @@ Public Sub DrawLine(X1 As Single, Y1 As Single, X2 As Single, Y2 As Single, Opti
     
     If Not B Then
         ' draw line
-        iPoints(0).x = iX1
-        iPoints(0).y = iY1
-        iPoints(1).x = iX2
-        iPoints(1).y = iY2
+        iPoints(0).X = iX1
+        iPoints(0).Y = iY1
+        iPoints(1).X = iX2
+        iPoints(1).Y = iY2
         Polyline iMetaDC, iPoints(0), 2
     Else
         ' draw rectangle
-        iPoints(0).x = iX1
-        iPoints(0).y = iY1
-        iPoints(1).x = iX2
-        iPoints(1).y = iY1
-        iPoints(2).x = iX2
-        iPoints(2).y = iY2
-        iPoints(3).x = iX1
-        iPoints(3).y = iY2
-        iPoints(4).x = iX1
-        iPoints(4).y = iY1
+        iPoints(0).X = iX1
+        iPoints(0).Y = iY1
+        iPoints(1).X = iX2
+        iPoints(1).Y = iY1
+        iPoints(2).X = iX2
+        iPoints(2).Y = iY2
+        iPoints(3).X = iX1
+        iPoints(3).Y = iY2
+        iPoints(4).X = iX1
+        iPoints(4).Y = iY1
         If f Then
             If (iColor <> mFillColorTranslated) Or (mFillStyle <> vbFSSolid) Then
                 iLb.lbStyle = BS_SOLID ' 0
@@ -4445,7 +4460,7 @@ End Sub
 ' Printer Interface
 
 '.Circle [Step] (x, y), radius, [color, start, end, aspect]
-Private Sub Printer_Circle(ByVal Step As Integer, ByVal x As Single, ByVal y As Single, ByVal Radius As Single, ByVal Color As Long, ByVal StartArc As Single, ByVal EndArc As Single, ByVal Aspect As Single)
+Private Sub Printer_Circle(ByVal Step As Integer, ByVal X As Single, ByVal Y As Single, ByVal Radius As Single, ByVal Color As Long, ByVal StartArc As Single, ByVal EndArc As Single, ByVal Aspect As Single)
     Dim iStep As Boolean
     Dim iColor As Long
     Dim iEndArcIsMissing As Boolean
@@ -4462,13 +4477,13 @@ Private Sub Printer_Circle(ByVal Step As Integer, ByVal x As Single, ByVal y As 
     If Aspect = 0 Then Aspect = 1
     
     If iStartArcIsMissing And iEndArcIsMissing Then
-        DrawCircle x, y, Radius, Aspect, iColor, , , iStep
+        DrawCircle X, Y, Radius, Aspect, iColor, , , iStep
     ElseIf iStartArcIsMissing Then
-        DrawCircle x, y, Radius, Aspect, iColor, , EndArc, iStep
+        DrawCircle X, Y, Radius, Aspect, iColor, , EndArc, iStep
     ElseIf iEndArcIsMissing Then
-        DrawCircle x, y, Radius, Aspect, iColor, StartArc, , iStep
+        DrawCircle X, Y, Radius, Aspect, iColor, StartArc, , iStep
     Else
-        DrawCircle x, y, Radius, Aspect, iColor, StartArc, EndArc, iStep
+        DrawCircle X, Y, Radius, Aspect, iColor, StartArc, EndArc, iStep
     End If
 
 End Sub
@@ -4859,7 +4874,7 @@ Private Property Get Printer_PrintQuality() As Integer
 End Property
 
 
-Private Sub Printer_PSet(ByVal Step As Integer, ByVal x As Single, ByVal y As Single, ByVal Color As Long)
+Private Sub Printer_PSet(ByVal Step As Integer, ByVal X As Single, ByVal Y As Single, ByVal Color As Long)
     Dim iStep As Boolean
     Dim iColor As Long
     
@@ -4869,7 +4884,7 @@ Private Sub Printer_PSet(ByVal Step As Integer, ByVal x As Single, ByVal y As Si
     Else
         iColor = -1
     End If
-    DrawPoint x, y, iColor, iStep
+    DrawPoint X, Y, iColor, iStep
 End Sub
 
 
@@ -5004,9 +5019,9 @@ Private Sub SetPageSize()
     Dim iPs As POINTAPI
     
     iPs = GetPaperSize(mPaperSize)
-    If iPs.x > 0 Then
-        mPaperWidthInMillimeters = iPs.x / 10
-        mPaperHeightInMillimeters = iPs.y / 10
+    If iPs.X > 0 Then
+        mPaperWidthInMillimeters = iPs.X / 10
+        mPaperHeightInMillimeters = iPs.Y / 10
     Else
         If mDlg.Units = vbInches Then
             mPaperWidthInMillimeters = ScaleX(mDlg.PaperWidth, vbInches, vbMillimeters)
@@ -5085,12 +5100,12 @@ Private Function GetPaperSize(ByVal nPaperSizeNumber As Long) As POINTAPI
     
     For c = 1 To UBound(iPaperSizesNumbers)
         If iPaperSizesNumbers(c) = nPaperSizeNumber Then
-            GetPaperSize.x = iPaperSizes(c).x
-            GetPaperSize.y = iPaperSizes(c).y
-            If GetPaperSize.x > GetPaperSize.y Then
-                iLng = GetPaperSize.x
-                GetPaperSize.x = GetPaperSize.y
-                GetPaperSize.y = iLng
+            GetPaperSize.X = iPaperSizes(c).X
+            GetPaperSize.Y = iPaperSizes(c).Y
+            If GetPaperSize.X > GetPaperSize.Y Then
+                iLng = GetPaperSize.X
+                GetPaperSize.X = GetPaperSize.Y
+                GetPaperSize.Y = iLng
             End If
             Exit Function
         End If
@@ -5245,6 +5260,7 @@ Private Function LogFontToStdFont(lF As LOGFONTW) As iFont
         iFontName = Left$(iFontName, InStr(iFontName, Chr(0)) - 1)
     End If
     
+    On Error Resume Next
     LogFontToStdFont.Name = iFontName
     LogFontToStdFont.Size = -lF.lfHeight / iDPIY * 72
     LogFontToStdFont.Weight = lF.lfWeight
@@ -5444,7 +5460,7 @@ Private Sub mFont_FontChanged(ByVal PropertyName As String)
     Set Font = mFont
 End Sub
 
-Public Sub DrawPoint(x As Single, y As Single, Optional nColor As Long = -1, Optional nStep As Boolean)
+Public Sub DrawPoint(X As Single, Y As Single, Optional nColor As Long = -1, Optional nStep As Boolean)
     Dim iMetaDC As Long
     Dim iPenPrev As Long
     Dim iPen As Long
@@ -5459,11 +5475,11 @@ Public Sub DrawPoint(x As Single, y As Single, Optional nColor As Long = -1, Opt
     If DocumentTooLong Then Exit Sub
     
     If nStep Then
-        iX = mCurrentXPixels + ScaleX(x, mScaleMode, vbPixels) - mScaleLeftPixels + PageLeftMarginInPixels
-        iY = mCurrentYPixels + ScaleY(y, mScaleMode, vbPixels) - mScaleTopPixels + PageTopMarginInPixels
+        iX = mCurrentXPixels + ScaleX(X, mScaleMode, vbPixels) - mScaleLeftPixels + PageLeftMarginInPixels
+        iY = mCurrentYPixels + ScaleY(Y, mScaleMode, vbPixels) - mScaleTopPixels + PageTopMarginInPixels
     Else
-        iX = ScaleX(x, mScaleMode, vbPixels) - mScaleLeftPixels + PageLeftMarginInPixels
-        iY = ScaleY(y, mScaleMode, vbPixels) - mScaleTopPixels + PageTopMarginInPixels
+        iX = ScaleX(X, mScaleMode, vbPixels) - mScaleLeftPixels + PageLeftMarginInPixels
+        iY = ScaleY(Y, mScaleMode, vbPixels) - mScaleTopPixels + PageTopMarginInPixels
     End If
     
     If nColor <> -1 Then
@@ -5584,14 +5600,16 @@ Private Sub EndDoc()
             mDlg.UpdateDevModeWithCurrentSettings
             
             DevModePtr = mDlg.DevModePtr
-            If mDlg.hDC <> 0 Then
-                PrintDocumentToPrinterDC mDlg.hDC
-            Else
-                iHdc = CreateDCByLong("WINSPOOL", mDeviceName, vbNullString, ByVal mDevModePtr)
-                If iHdc <> 0 Then
-                    PrintDocumentToPrinterDC iHdc
+            If Not mPrinted Then
+                If mDlg.hDC <> 0 Then
+                    PrintDocumentToPrinterDC mDlg.hDC
+                Else
+                    iHdc = CreateDCByLong("WINSPOOL", mDeviceName, vbNullString, ByVal mDevModePtr)
+                    If iHdc <> 0 Then
+                        PrintDocumentToPrinterDC iHdc
+                    End If
+                    DeleteDC iHdc
                 End If
-                DeleteDC iHdc
             End If
             KillDoc
             If gPrinterExDeviceName = "" Then
@@ -5603,7 +5621,7 @@ Private Sub EndDoc()
     End If
 End Sub
 
-Public Sub DrawCircle(x As Single, y As Single, Radius As Single, Optional Aspect As Single, Optional Color As Long = -1, Optional StartArc, Optional EndArc, Optional Step As Boolean)
+Public Sub DrawCircle(X As Single, Y As Single, Radius As Single, Optional Aspect As Single, Optional Color As Long = -1, Optional StartArc, Optional EndArc, Optional Step As Boolean)
     Dim iXStartArc As Long
     Dim iYStartArc As Long
     Dim iXEndArc As Long
@@ -5629,11 +5647,11 @@ Public Sub DrawCircle(x As Single, y As Single, Radius As Single, Optional Aspec
     If DocumentTooLong Then Exit Sub
     
     If Step Then
-        iX = mCurrentXPixels + ScaleX(x, mScaleMode, vbPixels) - mScaleLeftPixels + PageLeftMarginInPixels
-        iY = mCurrentYPixels + ScaleY(y, mScaleMode, vbPixels) - mScaleTopPixels + PageTopMarginInPixels
+        iX = mCurrentXPixels + ScaleX(X, mScaleMode, vbPixels) - mScaleLeftPixels + PageLeftMarginInPixels
+        iY = mCurrentYPixels + ScaleY(Y, mScaleMode, vbPixels) - mScaleTopPixels + PageTopMarginInPixels
     Else
-        iX = ScaleX(x, mScaleMode, vbPixels) - mScaleLeftPixels + PageLeftMarginInPixels
-        iY = ScaleY(y, mScaleMode, vbPixels) - mScaleTopPixels + PageTopMarginInPixels
+        iX = ScaleX(X, mScaleMode, vbPixels) - mScaleLeftPixels + PageLeftMarginInPixels
+        iY = ScaleY(Y, mScaleMode, vbPixels) - mScaleTopPixels + PageTopMarginInPixels
     End If
     
     iRadius = ScaleX(Radius, mScaleMode, vbPixels)

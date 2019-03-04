@@ -193,33 +193,31 @@ Private Const NOERROR = 0
 Private Const gintMAX_PATH_LEN = 260                    ' Maximum allowed path length including path, filename,
 
 Public Enum efnSpecialFolderIDs
-    sfidDESKTOP = &H0
-    sfidPROGRAMS = &H2
-    sfidPERSONAL = &H5
-    sfidFAVORITES = &H6
-    sfidSTARTUP = &H7
-    sfidRECENT = &H8
-    sfidSENDTO = &H9
-    sfidSTARTMENU = &HB
-    sfidDESKTOPDIRECTORY = &H10
-    sfidNETHOOD = &H13
-    sfidFONTS = &H14
-    sfidTEMPLATES = &H15
-    sfidCOMMON_STARTMENU = &H16
-    sfidCOMMON_PROGRAMS = &H17
-    sfidCOMMON_STARTUP = &H18
-    sfidCOMMON_DESKTOPDIRECTORY = &H19
-    sfidAPPDATA = &H1A
-    sfidPRINTHOOD = &H1B
-    sfidLOCAL_APPDATA = &H1C
-    sfidPROFILE = &H28
-    sfidProgramFiles = &H10000
-    sfidCommonFiles = &H10001
-    sfidFlagCreate = &H8000&
+    CSIDL_DESKTOP = &H0
+    CSIDL_PROGRAMS = &H2
+    CSIDL_PERSONAL = &H5
+    CSIDL_FAVORITES = &H6
+    CSIDL_STARTUP = &H7
+    CSIDL_RECENT = &H8
+    CSIDL_SENDTO = &H9
+    CSIDL_STARTMENU = &HB
+    CSIDL_DESKTOPDIRECTORY = &H10
+    CSIDL_NETHOOD = &H13
+    CSIDL_FONTS = &H14
+    CSIDL_TEMPLATES = &H15
+    CSIDL_COMMON_STARTMENU = &H16
+    CSIDL_COMMON_PROGRAMS = &H17
+    CSIDL_COMMON_STARTUP = &H18
+    CSIDL_COMMON_DESKTOPDIRECTORY = &H19
+    CSIDL_APPDATA = &H1A
+    CSIDL_PRINTHOOD = &H1B
+    CSIDL_LOCAL_APPDATA = &H1C
+    CSIDL_PROFILE = &H28
+    CSIDL_FLAG_CREATE = &H8000&
 End Enum
 
-'Private Declare Function SHGetSpecialFolderLocation Lib "shell32" (ByVal hwndOwner As Long, ByVal nFolder As efnSpecialFolderIDs, ByRef pidl As Long) As Long
-Private Declare Function SHGetFolderLocation Lib "shell32" (ByVal hwndOwner As Long, ByVal nFolder As Long, ByVal hToken As Long, ByVal dwReserved As Long, pidl As Long) As Long
+'Private Declare Function SHGetSpecialFolderLocation Lib "shell32" (ByVal hWndOwner As Long, ByVal nFolder As efnSpecialFolderIDs, ByRef pidl As Long) As Long
+Private Declare Function SHGetFolderLocation Lib "shell32" (ByVal hWndOwner As Long, ByVal nFolder As Long, ByVal hToken As Long, ByVal dwReserved As Long, pidl As Long) As Long
 Private Declare Function SHGetPathFromIDListA Lib "shell32" (ByVal pidl As Long, ByVal pszPath As String) As Long
 'Private Declare Function SHGetMalloc Lib "shell32" (ByRef pMalloc As IVBMalloc) As Long
 Private Declare Sub CoTaskMemFree Lib "ole32" (ByVal pvoid As Long)
@@ -273,12 +271,12 @@ Public Type COMBOBOXINFO
    rcItem As RECT
    rcButton As RECT
    stateButton As Long
-   hwndCombo As Long
-   hwndEdit As Long
-   hwndList As Long
+   hWndCombo As Long
+   hWndEdit As Long
+   hWndList As Long
 End Type
 
-Public Declare Function GetComboBoxInfo Lib "user32" (ByVal hwndCombo As Long, CBInfo As COMBOBOXINFO) As Long
+Public Declare Function GetComboBoxInfo Lib "user32" (ByVal hWndCombo As Long, CBInfo As COMBOBOXINFO) As Long
 
 Public Declare Function WindowFromPoint Lib "user32" (ByVal xPoint As Long, ByVal yPoint As Long) As Long
 Public Declare Function IsWindow Lib "user32" (ByVal hWnd As Long) As Long
@@ -426,7 +424,7 @@ Private Const PROCESS_VM_READ = 16
 'Private Const STANDARD_RIGHTS_REQUIRED = &HF0000
 'Private Const SYNCHRONIZE = &H100000
 
-Private Declare Function OpenProcess Lib "kernel32.dll" (ByVal dwDesiredAccessas As Long, ByVal bInheritHandle As Long, ByVal dwProcId As Long) As Long
+Private Declare Function OpenProcess Lib "Kernel32.dll" (ByVal dwDesiredAccessas As Long, ByVal bInheritHandle As Long, ByVal dwProcId As Long) As Long
 Private Declare Function EnumProcessModules Lib "psapi.dll" (ByVal hProcess As Long, ByRef lphModule As Long, ByVal cb As Long, ByRef cbNeeded As Long) As Long
 Private Declare Function GetModuleFileNameExA Lib "psapi.dll" (ByVal hProcess As Long, ByVal hModule As Long, ByVal ModuleName As String, ByVal nSize As Long) As Long
 Private Declare Function CreateToolhelp32Snapshot Lib "Kernel32" (ByVal dwFlags As Long, ByVal th32ProcessID As Long) As Long
@@ -608,7 +606,7 @@ Private Const gstrSEP_DIR$ = "\"                         ' Directory separator c
 'Private Const gstrAT$ = "@"
 Private Const gstrSEP_DRIVE$ = ":"                       ' Driver separater character, e.g., C:\
 Private Const gstrSEP_DIRALT$ = "/"                      ' Alternate directory separator character
-'Private Const gstrSEP_EXT$ = "."                         ' Filename extension separator character
+Private Const gstrSEP_EXT$ = "."                         ' Filename extension separator character
 Private Const gstrSEP_URLDIR$ = "/"                      ' Separator for dividing directories in URL addresses.
 
 Public Const flexSelectionFree = 0
@@ -1027,7 +1025,7 @@ Public Function GetTempFolder() As String
     AddDirSep GetTempFolder
 End Function
 
-Public Sub AddDirSep(strPathName As String)
+Public Sub AddDirSep(ByRef strPathName As String)
     strPathName = RTrim$(strPathName)
     If Right$(strPathName, Len(gstrSEP_URLDIR)) <> gstrSEP_URLDIR Then
         If Right$(strPathName, Len(gstrSEP_DIR)) <> gstrSEP_DIR Then
@@ -1082,6 +1080,60 @@ Public Sub SeparatePathAndFileName(FullPath As String, _
     End If
 End Sub
 
+Public Function IsFullPath(ByVal nFileName As String) As Boolean
+    Dim iFolderPath As String
+    Dim iOnlyFile As String
+    Dim nSepPos As Long
+    Dim nSepPos2 As Long
+    Dim fUsingDriveSep As Boolean
+
+    nSepPos = InStrRev(nFileName, gstrSEP_DIR)
+    nSepPos2 = InStrRev(nFileName, gstrSEP_DIRALT)
+    If nSepPos2 > nSepPos Then
+        nSepPos = nSepPos2
+    End If
+    nSepPos2 = InStrRev(nFileName, gstrSEP_DRIVE)
+    
+    If (nSepPos > 0) And (nSepPos2 > 0) Then
+        SeparatePathAndFileName nFileName, iFolderPath, iOnlyFile
+        IsFullPath = (iFolderPath <> "") And (iOnlyFile <> "")
+    End If
+End Function
+
+Public Function StripExtension(ByVal nFileName As String) As String
+    Dim nSepPos As Long
+    Dim nSepPos2 As Long
+
+    nSepPos = InStrRev(nFileName, gstrSEP_DIR)
+    nSepPos2 = InStrRev(nFileName, gstrSEP_DIRALT)
+    If nSepPos2 > nSepPos Then
+        nSepPos = nSepPos2
+    End If
+    nSepPos2 = InStrRev(nFileName, gstrSEP_EXT)
+    If (nSepPos2 > nSepPos) Or (nSepPos = 0) Then
+        If nSepPos2 > 1 Then
+            StripExtension = Left$(nFileName, nSepPos2 - 1)
+        End If
+    End If
+    If StripExtension = "" Then StripExtension = nFileName
+End Function
+
+Public Function FileNameHasExtension(ByVal nFileName As String) As Boolean
+    Dim nSepPos As Long
+    Dim nSepPos2 As Long
+
+    nSepPos = InStrRev(nFileName, gstrSEP_DIR)
+    nSepPos2 = InStrRev(nFileName, gstrSEP_DIRALT)
+    If nSepPos2 > nSepPos Then
+        nSepPos = nSepPos2
+    End If
+    nSepPos2 = InStrRev(nFileName, gstrSEP_EXT)
+    If (nSepPos2 > nSepPos) Or (nSepPos = 0) Then
+        If nSepPos2 > 1 Then
+            FileNameHasExtension = True
+        End If
+    End If
+End Function
 
 Public Function ControlNameWithParent(nControl As Object) As String
     Dim iContainer As Object
@@ -1627,7 +1679,7 @@ Public Function IsWindows64Bits() As Boolean
     
         ' Then try to prove that wrong by attempting to load the
         ' IsWow64Process function dynamically
-        iHandle = GetProcAddress(GetModuleHandle("kernel32"), "IsWow64Process")
+        iHandle = GetProcAddress(GetModuleHandle("Kernel32"), "IsWow64Process")
     
         ' The function exists, so call it
         If iHandle <> 0 Then
@@ -2063,11 +2115,11 @@ Public Function GetSpecialfolder(nFolder As efnSpecialFolderIDs) As String
 End Function
 
 Public Function StringFromBuffer(Buffer As String) As String
-    Dim nPos As Long
+    Dim iPos As Long
 
-    nPos = InStr(Buffer, vbNullChar)
-    If nPos > 0 Then
-        StringFromBuffer = Left$(Buffer, nPos - 1)
+    iPos = InStr(Buffer, vbNullChar)
+    If iPos > 0 Then
+        StringFromBuffer = Left$(Buffer, iPos - 1)
     Else
         StringFromBuffer = Buffer
     End If
@@ -2394,7 +2446,7 @@ Public Function GetComboListHwnd(nCombo As Object) As Long
     
     iCboInf.cbSize = Len(iCboInf)
     GetComboBoxInfo nCombo.hWnd, iCboInf
-    GetComboListHwnd = iCboInf.hwndList
+    GetComboListHwnd = iCboInf.hWndList
 
 End Function
 
@@ -2403,7 +2455,7 @@ Public Function GetComboEditHwnd(nCombo As Object) As Long
     
     iCboInf.cbSize = Len(iCboInf)
     GetComboBoxInfo nCombo.hWnd, iCboInf
-    GetComboEditHwnd = iCboInf.hwndEdit
+    GetComboEditHwnd = iCboInf.hWndEdit
 
 End Function
 
@@ -2587,10 +2639,10 @@ Public Function GetProgramDocumentsFolder() As String
     iStr = GetSetting(AppNameForRegistry, "Preferences", "DocsFolder", "")
     On Error Resume Next
     If iStr = "" Then
-        iStr = GetSpecialfolder(sfidPERSONAL Or sfidFlagCreate)
+        iStr = GetSpecialfolder(CSIDL_PERSONAL Or CSIDL_FLAG_CREATE)
     Else
         If Not FolderExists(iStr) Then
-            iStr = GetSpecialfolder(sfidPERSONAL Or sfidFlagCreate)
+            iStr = GetSpecialfolder(CSIDL_PERSONAL Or CSIDL_FLAG_CREATE)
         End If
     End If
     On Error GoTo 0
@@ -3727,7 +3779,7 @@ TheExit:
     
 End Function
     
-Public Function GetTopOwnerFormHwnd(nFormHwnd As Long)
+Public Function GetTopOwnerFormHwnd(nFormHwnd As Long) As Long
     Dim iHwnd As Long
     
     iHwnd = GetOwnerHwnd(nFormHwnd)

@@ -10,6 +10,11 @@ Begin VB.UserControl SSTabEx
    ScaleHeight     =   2880
    ScaleWidth      =   3840
    ToolboxBitmap   =   "ctlSSTabEx.ctx":0048
+   Begin VB.Timer tmrCheckDuplicationByIDEPaste 
+      Interval        =   1
+      Left            =   792
+      Top             =   1548
+   End
    Begin VB.Timer tmrTabHoverEffect 
       Enabled         =   0   'False
       Interval        =   50
@@ -145,15 +150,15 @@ Private Type RECT
 End Type
 
 Private Type POINTAPI
-    x As Long
-    y As Long
+    X As Long
+    Y As Long
 End Type
 
 Private Type WINDOWPOS
    hWnd As Long
    hWndInsertAfter As Long
-   x As Long
-   y As Long
+   X As Long
+   Y As Long
    cx As Long
    cy As Long
    Flags As Long
@@ -195,7 +200,7 @@ Private Declare Function ReleaseDC Lib "user32" (ByVal hWnd As Long, ByVal hDC A
 Private Const LOGPIXELSX As Long = 88
 Private Const LOGPIXELSY As Long = 90
 
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 Private Declare Function GetForegroundWindow Lib "user32" () As Long
 Private Declare Function ValidateRect Lib "user32" (ByVal hWnd As Long, lpRect As RECT) As Long
 Private Declare Function GetClientRect Lib "user32" (ByVal hWnd As Long, lpRect As RECT) As Long
@@ -304,9 +309,9 @@ Private Const TIS_SELECTED = 3
 Private Const TIS_DISABLED = 4
 Private Const TIS_FOCUSED = 5
 
-Private Declare Function GetPixel Lib "gdi32" (ByVal hDC As Long, ByVal x As Long, ByVal y As Long) As Long
-Private Declare Function SetPixelV Lib "gdi32" (ByVal hDC As Long, ByVal x As Long, ByVal y As Long, ByVal crColor As Long) As Long
-Private Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal XSrc As Long, ByVal YSrc As Long, ByVal dwRop As Long) As Long
+Private Declare Function GetPixel Lib "gdi32" (ByVal hDC As Long, ByVal X As Long, ByVal Y As Long) As Long
+Private Declare Function SetPixelV Lib "gdi32" (ByVal hDC As Long, ByVal X As Long, ByVal Y As Long, ByVal crColor As Long) As Long
+Private Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal XSrc As Long, ByVal YSrc As Long, ByVal dwRop As Long) As Long
 Private Declare Function PlgBlt Lib "gdi32" (ByVal hdcDest As Long, lpPoint As POINTAPI, ByVal hdcSrc As Long, ByVal nXSrc As Long, ByVal nYSrc As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hbmMask As Long, ByVal xMask As Long, ByVal yMask As Long) As Long
 
 Private Const HALFTONE = 4
@@ -327,7 +332,7 @@ End Type
 
 Private Declare Function GetColorAdjustment Lib "gdi32" (ByVal hDC As Long, lpca As COLORADJUSTMENT) As Long
 Private Declare Function SetColorAdjustment Lib "gdi32" (ByVal hDC As Long, lpca As COLORADJUSTMENT) As Long
-Private Declare Function StretchBlt Lib "gdi32" (ByVal hDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal XSrc As Long, ByVal YSrc As Long, ByVal nSrcWidth As Long, ByVal nSrcHeight As Long, ByVal dwRop As Long) As Long
+Private Declare Function StretchBlt Lib "gdi32" (ByVal hDC As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal XSrc As Long, ByVal YSrc As Long, ByVal nSrcWidth As Long, ByVal nSrcHeight As Long, ByVal dwRop As Long) As Long
 Private Declare Function SetStretchBltMode Lib "gdi32" (ByVal hDC As Long, ByVal nStretchMode As Long) As Long
 
 Private Type DLLVERSIONINFO
@@ -351,6 +356,11 @@ Private Declare Function GetThemeAppProperties Lib "uxtheme" () As Long
 
 Private Const S_OK As Long = &H0
 Private Const STAP_ALLOW_CONTROLS As Long = (1 * (2 ^ 1))
+
+Private Declare Function FindWindowEx Lib "user32" Alias "FindWindowExA" (ByVal hwndParent As Long, ByVal hwndChildAfter As Long, ByVal lpszClass As String, ByVal lpszCaption As String) As Long
+Private Declare Function GetWindowThreadProcessId Lib "user32" (ByVal hWnd As Long, lpdwProcessId As Long) As Long
+Private Declare Function GetCurrentProcessId Lib "kernel32" () As Long
+
 
 Private Const cAuxTransparentColor As Long = &HFF01FF ' Not the MaskColor, but another transparent color for internal operations
 Private Const cTabPictureDistanceToCaption As Long = 3
@@ -459,20 +469,20 @@ Attribute KeyPress.VB_UserMemId = -603
 Public Event KeyUp(KeyCode As Integer, Shift As Integer)
 Attribute KeyUp.VB_Description = "Occurs when the user releases a key while an object has the focus."
 Attribute KeyUp.VB_UserMemId = -604
-Public Event MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Public Event MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 Attribute MouseDown.VB_Description = "Occurs when the user presses the mouse button while an object has the focus."
 Attribute MouseDown.VB_UserMemId = -605
-Public Event MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Public Event MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 Attribute MouseMove.VB_Description = "Occurs when the user moves the mouse."
 Attribute MouseMove.VB_UserMemId = -606
-Public Event MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Public Event MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
 Attribute MouseUp.VB_Description = "Occurs when the user releases the mouse button while an object has the focus."
 Attribute MouseUp.VB_UserMemId = -607
 Public Event OLECompleteDrag(Effect As Long)
 Attribute OLECompleteDrag.VB_Description = "Occurs when a source component is dropped onto a target component, informing the source component that a drag action was either performed or canceled."
-Public Event OLEDragDrop(Data As DataObject, Effect As Long, Button As Integer, Shift As Integer, x As Single, y As Single)
+Public Event OLEDragDrop(Data As DataObject, Effect As Long, Button As Integer, Shift As Integer, X As Single, Y As Single)
 Attribute OLEDragDrop.VB_Description = "Occurs when a source component is dropped onto a target component  when the source component determines that a drop can occur."
-Public Event OLEDragOver(Data As DataObject, Effect As Long, Button As Integer, Shift As Integer, x As Single, y As Single, State As Integer)
+Public Event OLEDragOver(Data As DataObject, Effect As Long, Button As Integer, Shift As Integer, X As Single, Y As Single, State As Integer)
 Attribute OLEDragOver.VB_Description = "Occurs when one component is dragged over another."
 Public Event OLEGiveFeedback(Effect As Long, DefaultCursors As Boolean)
 Attribute OLEGiveFeedback.VB_Description = "Occurs after every OLEDragOver event."
@@ -494,7 +504,7 @@ Public Event TabMouseEnter(nTab As Integer)
 Attribute TabMouseEnter.VB_Description = "Occurs when the mouse pointer enters a tab."
 Public Event TabMouseLeave(nTab As Integer)
 Attribute TabMouseLeave.VB_Description = "Occurs when the mouse pointer leaves a tab."
-Public Event TabRightClick(nTab As Integer, Shift As Integer, x As Single, y As Single)
+Public Event TabRightClick(nTab As Integer, Shift As Integer, X As Single, Y As Single)
 Attribute TabRightClick.VB_Description = "Occurs when the user right-clicks on a tab."
 Public Event TabSelChange()
 Attribute TabSelChange.VB_Description = "Occurs after the current tab has already changed."
@@ -1888,8 +1898,8 @@ Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, wP
             Dim iwp As WINDOWPOS
             
             CopyMemory iwp, ByVal lParam, Len(iwp)
-            If iwp.x > -15000 \ Screen_TwipsPerPixelX Then
-                iwp.x = iwp.x - 75000 \ Screen_TwipsPerPixelX
+            If iwp.X > -15000 \ Screen_TwipsPerPixelX Then
+                iwp.X = iwp.X - 75000 \ Screen_TwipsPerPixelX
                 CopyMemory ByVal lParam, iwp, Len(iwp)
             End If
             
@@ -1928,7 +1938,7 @@ Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, wP
                 Dim iHwnd As Long
                 
                 GetCursorPos iPt2
-                iHwnd = WindowFromPoint(iPt2.x, iPt2.y)
+                iHwnd = WindowFromPoint(iPt2.X, iPt2.Y)
                 If iHwnd = mUserControlHwnd Then
                     mNoActivate = True
                 End If
@@ -1996,11 +2006,11 @@ Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, wP
                 iDestDC = iPs.hDC
                 GetWindowRect hWnd, iControlRect
                 
-                iPt.x = iControlRect.Left + iPs.rcPaint.Left
-                iPt.y = iControlRect.Top + iPs.rcPaint.Top
+                iPt.X = iControlRect.Left + iPs.rcPaint.Left
+                iPt.Y = iControlRect.Top + iPs.rcPaint.Top
                 ScreenToClient hWnd, iPt
-                iControlRect.Left = iControlRect.Left - iPt.x
-                iControlRect.Top = iControlRect.Top - iPt.y
+                iControlRect.Left = iControlRect.Left - iPt.X
+                iControlRect.Top = iControlRect.Top - iPt.Y
                 
                 iTempDC = CreateCompatibleDC(iDestDC)
                 iTempBmp = CreateCompatibleBitmap(iDestDC, iControlRect.Right - iControlRect.Left, iControlRect.Bottom - iControlRect.Top)
@@ -2011,8 +2021,8 @@ Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, wP
                 iWidth = iControlRect.Right - iControlRect.Left
                 iHeight = iControlRect.Bottom - iControlRect.Top
                 
-                iPt.x = iControlRect.Left + iPs.rcPaint.Left
-                iPt.y = iControlRect.Top + iPs.rcPaint.Top
+                iPt.X = iControlRect.Left + iPs.rcPaint.Left
+                iPt.Y = iControlRect.Top + iPs.rcPaint.Top
                 ScreenToClient mUserControlHwnd, iPt
                 
                 
@@ -2028,27 +2038,27 @@ Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, wP
                 TranslateColor iColor, 0&, iBKColor
                 
                 ' set the part of the update rect of the control that must be painted with the backgroung bitmap because is inside the tab body
-                If iPt.y < mTabBodyRect.Top Then
-                    iHeight = iHeight - (mTabBodyRect.Top - 1 - iPt.y)
-                    iTop = (mTabBodyRect.Top - 1 - iPt.y)
-                    iPt.y = mTabBodyRect.Top - 1
+                If iPt.Y < mTabBodyRect.Top Then
+                    iHeight = iHeight - (mTabBodyRect.Top - 1 - iPt.Y)
+                    iTop = (mTabBodyRect.Top - 1 - iPt.Y)
+                    iPt.Y = mTabBodyRect.Top - 1
                     If (mTabBodyRect.Top + iHeight - 2) > mTabBodyRect.Bottom Then
                         iHeight = mTabBodyRect.Bottom - mTabBodyRect.Top + 2
                     End If
-                ElseIf iPt.y + iHeight > mTabBodyRect.Bottom Then
-                    iHeight = mTabBodyRect.Bottom - iPt.y
+                ElseIf iPt.Y + iHeight > mTabBodyRect.Bottom Then
+                    iHeight = mTabBodyRect.Bottom - iPt.Y
                     iTop = 0
                 End If
                 
-                If iPt.x < mTabBodyRect.Left Then
-                    iWidth = iWidth - (mTabBodyRect.Left - iPt.x)
-                    iLeft = (mTabBodyRect.Left - 1 - iPt.x)
-                    iPt.x = mTabBodyRect.Left - 1
+                If iPt.X < mTabBodyRect.Left Then
+                    iWidth = iWidth - (mTabBodyRect.Left - iPt.X)
+                    iLeft = (mTabBodyRect.Left - 1 - iPt.X)
+                    iPt.X = mTabBodyRect.Left - 1
                     If (mTabBodyRect.Left + iWidth - 2) > mTabBodyRect.Right Then
                         iWidth = mTabBodyRect.Right - mTabBodyRect.Left + 2
                     End If
-                ElseIf iPt.x + iWidth > mTabBodyRect.Right Then
-                    iWidth = mTabBodyRect.Right - iPt.x
+                ElseIf iPt.X + iWidth > mTabBodyRect.Right Then
+                    iWidth = mTabBodyRect.Right - iPt.X
                     iLeft = 0
                 End If
                 
@@ -2096,7 +2106,7 @@ Private Function ISubclass_WindowProc(ByVal hWnd As Long, ByVal iMsg As Long, wP
                 End If
 
                 If (iHeight > 0) And (iWidth > 0) Then
-                    BitBlt iDestDC, iLeft, iTop, iWidth, iHeight, UserControl.hDC, iPt.x, iPt.y, vbSrcCopy
+                    BitBlt iDestDC, iLeft, iTop, iWidth, iHeight, UserControl.hDC, iPt.X, iPt.Y, vbSrcCopy
                 End If
                 TransparentBlt iDestDC, iPs.rcPaint.Left, iPs.rcPaint.Top, iPs.rcPaint.Right - iPs.rcPaint.Left, iPs.rcPaint.Bottom - iPs.rcPaint.Top, iTempDC, iPs.rcPaint.Left, iPs.rcPaint.Top, iPs.rcPaint.Right - iPs.rcPaint.Left, iPs.rcPaint.Bottom - iPs.rcPaint.Top, iBKColor
                 DeleteDC iTempDC
@@ -2145,6 +2155,17 @@ Private Function IsMouseButtonPressed(nButton As vbExMouseButtonsConstants) As B
     IsMouseButtonPressed = GetAsyncKeyState(iButton) <> 0
 End Function
 
+Private Sub tmrCheckDuplicationByIDEPaste_Timer()
+    If (Not Ambient.UserMode) Then
+        If Not IsMsgBoxShown Then
+            tmrCheckDuplicationByIDEPaste.Enabled = False
+            CheckContainedControlsConsistency
+        End If
+    Else
+        tmrCheckDuplicationByIDEPaste.Enabled = False
+    End If
+End Sub
+
 Private Sub tmrDraw_Timer()
     Draw
 End Sub
@@ -2169,7 +2190,7 @@ Private Sub tmrTabMouseLeave_Timer()
     Dim iHwnd As Long
     
     GetCursorPos iPt
-    iHwnd = WindowFromPoint(iPt.x, iPt.y)
+    iHwnd = WindowFromPoint(iPt.X, iPt.Y)
     If iHwnd <> mUserControlHwnd Then
         tmrTabMouseLeave.Enabled = False
         RaiseEvent_TabMouseLeave (mTabUnderMouse)
@@ -2219,9 +2240,22 @@ Friend Sub StoreVisibleControlsInSelectedTab()
     On Error Resume Next
     Set mTabData(mTabSel).Controls = New Collection
     For Each iCtl In UserControl.ContainedControls
-        If iCtl.Left > -15000 Then
-            iCtlName = ControlName(iCtl)
-            mTabData(mTabSel).Controls.Add iCtlName, iCtlName
+        If TypeName(iCtl) = "Line" Then
+            Err.Clear
+            If iCtl.X1 > -15000 Then
+                If Err.Number = 0 Then
+                    iCtlName = ControlName(iCtl)
+                    mTabData(mTabSel).Controls.Add iCtlName, iCtlName
+                End If
+            End If
+        Else
+            Err.Clear
+            If iCtl.Left > -15000 Then
+                If Err.Number = 0 Then
+                    iCtlName = ControlName(iCtl)
+                    mTabData(mTabSel).Controls.Add iCtlName, iCtlName
+                End If
+            End If
         End If
     Next
 End Sub
@@ -2487,12 +2521,12 @@ Private Sub UserControl_LostFocus()
     PostDrawMessage
 End Sub
 
-Private Sub UserControl_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub UserControl_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Dim iX As Single
     Dim iY As Single
     
-    iX = x * mXCorrection
-    iY = y * mYCorrection
+    iX = X * mXCorrection
+    iY = Y * mYCorrection
     
     RaiseEvent MouseDown(Button, Shift, iX, iY)
     
@@ -2508,24 +2542,24 @@ Private Sub UserControl_MouseDown(Button As Integer, Shift As Integer, x As Sing
     End If
 End Sub
 
-Private Sub UserControl_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub UserControl_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Dim iX As Single
     Dim iY As Single
     
-    iX = x * mXCorrection
-    iY = y * mYCorrection
+    iX = X * mXCorrection
+    iY = Y * mYCorrection
     
     RaiseEvent MouseMove(Button, Shift, iX, iY)
     ProcessMouseMove Button, Shift, iX, iY
 End Sub
 
-Private Sub ProcessMouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ProcessMouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Dim t As Integer
     Dim iX As Long
     Dim iY As Long
     
-    iX = pScaleX(x, vbTwips, vbPixels)
-    iY = pScaleX(y, vbTwips, vbPixels)
+    iX = pScaleX(X, vbTwips, vbPixels)
+    iY = pScaleX(Y, vbTwips, vbPixels)
     
     ' first check for the active tab, because in some cases it is bigger and can overlap surrounding tabs
     If (mTabSel > -1) And (mTabSel < mTabs) Then
@@ -2584,12 +2618,12 @@ Private Sub ProcessMouseMove(Button As Integer, Shift As Integer, x As Single, y
     mTabUnderMouse = -1
 End Sub
 
-Private Sub UserControl_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub UserControl_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Dim iX As Single
     Dim iY As Single
     
-    iX = x * mXCorrection
-    iY = y * mYCorrection
+    iX = X * mXCorrection
+    iY = Y * mYCorrection
     
     RaiseEvent MouseUp(Button, Shift, iX, iY)
     If mTabUnderMouse > -1 Then
@@ -2603,12 +2637,12 @@ Private Sub UserControl_OLECompleteDrag(Effect As Long)
     RaiseEvent OLECompleteDrag(Effect)
 End Sub
 
-Private Sub UserControl_OLEDragDrop(Data As DataObject, Effect As Long, Button As Integer, Shift As Integer, x As Single, y As Single)
-    RaiseEvent OLEDragDrop(Data, Effect, Button, Shift, x, y)
+Private Sub UserControl_OLEDragDrop(Data As DataObject, Effect As Long, Button As Integer, Shift As Integer, X As Single, Y As Single)
+    RaiseEvent OLEDragDrop(Data, Effect, Button, Shift, X, Y)
 End Sub
 
-Private Sub UserControl_OLEDragOver(Data As DataObject, Effect As Long, Button As Integer, Shift As Integer, x As Single, y As Single, State As Integer)
-    RaiseEvent OLEDragOver(Data, Effect, Button, Shift, x, y, State)
+Private Sub UserControl_OLEDragOver(Data As DataObject, Effect As Long, Button As Integer, Shift As Integer, X As Single, Y As Single, State As Integer)
+    RaiseEvent OLEDragOver(Data, Effect, Button, Shift, X, Y, State)
 End Sub
 
 Private Sub UserControl_OLEGiveFeedback(Effect As Long, DefaultCursors As Boolean)
@@ -2780,6 +2814,8 @@ Private Sub UserControl_Resize()
 End Sub
 
 Private Sub UserControl_Show()
+    Dim iAuxLeft As Long
+    
     If mUserControlShown Then
         Exit Sub
     End If
@@ -2797,6 +2833,7 @@ Private Sub UserControl_Show()
         Dim c As Long
         Dim iCtl As Control
         Dim iCtlName As String
+        Dim iIsLine As Boolean
         
         On Error Resume Next
         If mSubclassedControlsForMoveHwnds.Count > 0 Then
@@ -2808,13 +2845,27 @@ Private Sub UserControl_Show()
         End If
     
         For Each iCtl In UserControl.ContainedControls
-            If iCtl.Left >= -15000 Then
+            iAuxLeft = 0
+            iIsLine = False
+            If TypeName(iCtl) = "Line" Then
+                iAuxLeft = iCtl.X1
+                iIsLine = True
+            Else
+                iAuxLeft = iCtl.Left
+            End If
+            If iAuxLeft >= -15000 Then
                 iCtlName = ControlName(iCtl)
                 If Not ControlIsInTab(iCtlName, mTabSel) Then
-                    iCtl.Left = iCtl.Left - 75000
+                    If iIsLine Then
+                        iCtl.X1 = iCtl.X1 - 75000
+                        iCtl.X2 = iCtl.X2 - 75000
+                    Else
+                        iCtl.Left = iCtl.Left - 75000
+                    End If
+                    iAuxLeft = iAuxLeft - 75000
                 End If
             End If
-            If iCtl.Left < -15000 Then
+            If iAuxLeft < -15000 Then
                 iHwnd = 0
                 iHwnd = iCtl.hWnd
                 If iHwnd <> 0 Then
@@ -2842,7 +2893,7 @@ Private Sub UserControl_Show()
     Else
         HideAllContainedControls
         MakeContainedControlsInSelTabVisible
-        CheckContainedControlsConsistency
+        If Not IsMsgBoxShown Then CheckContainedControlsConsistency
     End If
     mUserControlShown = True
     SubclassControlsPainting
@@ -5126,33 +5177,33 @@ Private Sub RotatePic(picSrc As PictureBox, picDest As PictureBox, nDirection As
     
     'Set the coordinates of the parallelogram
     If nDirection = efn90DegreesClockWise Then ' 90 degrees
-        pt(0).x = iHeight
-        pt(0).y = 0
-        pt(1).x = iHeight
-        pt(1).y = iWidth
-        pt(2).x = 0
-        pt(2).y = 0
+        pt(0).X = iHeight
+        pt(0).Y = 0
+        pt(1).X = iHeight
+        pt(1).Y = iWidth
+        pt(2).X = 0
+        pt(2).Y = 0
     ElseIf nDirection = efn90DegreesCounterClockWise Then ' 270 degrees
-        pt(0).x = 0
-        pt(0).y = iWidth
-        pt(1).x = 0
-        pt(1).y = 0
-        pt(2).x = iHeight
-        pt(2).y = iWidth
+        pt(0).X = 0
+        pt(0).Y = iWidth
+        pt(1).X = 0
+        pt(1).Y = 0
+        pt(2).X = iHeight
+        pt(2).Y = iWidth
     ElseIf nDirection = efnFlipVertical Then ' vertical
-        pt(0).x = 0
-        pt(0).y = iHeight
-        pt(1).x = iWidth
-        pt(1).y = iHeight
-        pt(2).x = 0
-        pt(2).y = 0
+        pt(0).X = 0
+        pt(0).Y = iHeight
+        pt(1).X = iWidth
+        pt(1).Y = iHeight
+        pt(2).X = 0
+        pt(2).Y = 0
     ElseIf nDirection = efnFlipHorizontal Then ' horizontal
-        pt(0).x = iWidth
-        pt(0).y = 0
-        pt(1).x = 0
-        pt(1).y = 0
-        pt(2).x = iWidth
-        pt(2).y = iHeight
+        pt(0).X = iWidth
+        pt(0).Y = 0
+        pt(1).X = 0
+        pt(1).Y = 0
+        pt(2).X = iWidth
+        pt(2).Y = iHeight
     End If
     
     picDest.Width = picSrc.Height
@@ -5379,43 +5430,43 @@ Private Sub SetButtonFaceColor()
 End Sub
 
 Private Sub SetThemedTabTransparentPixels(nIsLeftTab As Boolean, nIsRightTab As Boolean, nIsTopTab As Boolean)
-    Dim x As Long
+    Dim X As Long
     Dim X2 As Long
     Dim iYLenght As Long
     
     If nIsLeftTab Or nIsTopTab Then
-        For x = 0 To 5
-            iYLenght = mTABITEM_TopLeftCornerTransparencyMask(x)
+        For X = 0 To 5
+            iYLenght = mTABITEM_TopLeftCornerTransparencyMask(X)
             If iYLenght < 0 Then
                 iYLenght = picAux.ScaleHeight - iYLenght
             End If
             If iYLenght > 0 Then
-                picAux.Line (x, 0)-(x, iYLenght), cAuxTransparentColor
+                picAux.Line (X, 0)-(X, iYLenght), cAuxTransparentColor
             End If
-        Next x
+        Next X
     End If
     If nIsRightTab Then
-        For x = 0 To 5
-            X2 = picAux.ScaleWidth - 1 - x
-            iYLenght = mTABITEMRIGHTEDGE_RightSideTransparencyMask(x)
+        For X = 0 To 5
+            X2 = picAux.ScaleWidth - 1 - X
+            iYLenght = mTABITEMRIGHTEDGE_RightSideTransparencyMask(X)
             If iYLenght < 0 Then
                 iYLenght = picAux.ScaleHeight - iYLenght
             End If
             If iYLenght > 0 Then
                 picAux.Line (X2, 0)-(X2, iYLenght), cAuxTransparentColor
             End If
-        Next x
+        Next X
     ElseIf nIsTopTab Then
-        For x = 0 To 5
-            X2 = picAux.ScaleWidth - 1 - x
-            iYLenght = mTABITEM_TopRightCornerTransparencyMask(x)
+        For X = 0 To 5
+            X2 = picAux.ScaleWidth - 1 - X
+            iYLenght = mTABITEM_TopRightCornerTransparencyMask(X)
             If iYLenght < 0 Then
                 iYLenght = picAux.ScaleHeight - iYLenght
             End If
             If iYLenght > 0 Then
                 picAux.Line (X2, 0)-(X2, iYLenght), cAuxTransparentColor
             End If
-        Next x
+        Next X
     End If
     
 End Sub
@@ -5478,9 +5529,9 @@ End Sub
 
 Private Sub SetThemeExtraData()
     Dim iRect As RECT
-    Dim x As Long
+    Dim X As Long
     Dim X2 As Long
-    Dim y As Long
+    Dim Y As Long
     Dim iCol As Long
     Dim iCol_H As Long
     Dim iCol_L As Long
@@ -5510,13 +5561,13 @@ Private Sub SetThemeExtraData()
     ColorRGBToHLS mThemedInactiveReferenceTabBackColor, mThemedInactiveReferenceTabBackColor_H, mThemedInactiveReferenceTabBackColor_L, mThemedInactiveReferenceTabBackColor_S
     
     ' transparency mask for top left corner of TABITEM and TABITEMRIGHTEDGE
-    For x = 0 To 5
-        mTABITEM_TopLeftCornerTransparencyMask(x) = 0
-    Next x
-    For x = 0 To 5
-        For y = 0 To picAux.ScaleHeight - 1
+    For X = 0 To 5
+        mTABITEM_TopLeftCornerTransparencyMask(X) = 0
+    Next X
+    For X = 0 To 5
+        For Y = 0 To picAux.ScaleHeight - 1
             iToChange = False
-            iCol = GetPixel(picAux.hDC, x, y)
+            iCol = GetPixel(picAux.hDC, X, Y)
             ColorRGBToHLS iCol, iCol_H, iCol_L, iCol_S
             If Abs(iCol_H - mButtonFace_H) <= cHTolerance Then
                 If Abs(iCol_L - mButtonFace_L) <= cLTolerance Then
@@ -5526,29 +5577,29 @@ Private Sub SetThemeExtraData()
                 End If
             End If
             If Not iToChange Then
-                If y < (6) Then
-                    mTABITEM_TopLeftCornerTransparencyMask(x) = y
+                If Y < (6) Then
+                    mTABITEM_TopLeftCornerTransparencyMask(X) = Y
                 Else
-                    mTABITEM_TopLeftCornerTransparencyMask(x) = y - picAux.ScaleHeight - 1 ' negative values point to pixels left to reach the bottom
+                    mTABITEM_TopLeftCornerTransparencyMask(X) = Y - picAux.ScaleHeight - 1 ' negative values point to pixels left to reach the bottom
                 End If
                 Exit For
             End If
-        Next y
-        If y = picAux.ScaleHeight Then
-            mTABITEM_TopLeftCornerTransparencyMask(x) = -1
+        Next Y
+        If Y = picAux.ScaleHeight Then
+            mTABITEM_TopLeftCornerTransparencyMask(X) = -1
         End If
-        If mTABITEM_TopLeftCornerTransparencyMask(x) = 0 Then Exit For
-    Next x
+        If mTABITEM_TopLeftCornerTransparencyMask(X) = 0 Then Exit For
+    Next X
     
     ' transparency mask for top right corner of TABITEM
-    For x = 0 To 5
-        mTABITEM_TopRightCornerTransparencyMask(x) = 0
-    Next x
-    For x = 0 To 5
-        X2 = picAux.ScaleWidth - 1 - x
-        For y = 0 To picAux.ScaleHeight - 1
+    For X = 0 To 5
+        mTABITEM_TopRightCornerTransparencyMask(X) = 0
+    Next X
+    For X = 0 To 5
+        X2 = picAux.ScaleWidth - 1 - X
+        For Y = 0 To picAux.ScaleHeight - 1
             iToChange = False
-            iCol = GetPixel(picAux.hDC, X2, y)
+            iCol = GetPixel(picAux.hDC, X2, Y)
             ColorRGBToHLS iCol, iCol_H, iCol_L, iCol_S
             If Abs(iCol_H - mButtonFace_H) <= cHTolerance Then
                 If Abs(iCol_L - mButtonFace_L) <= cLTolerance Then
@@ -5558,31 +5609,31 @@ Private Sub SetThemeExtraData()
                 End If
             End If
             If Not iToChange Then
-                If y < (6) Then
-                    mTABITEM_TopRightCornerTransparencyMask(x) = y
+                If Y < (6) Then
+                    mTABITEM_TopRightCornerTransparencyMask(X) = Y
                 Else
-                    mTABITEM_TopRightCornerTransparencyMask(x) = y - picAux.ScaleHeight - 1 ' negative values point to pixels left to reach the bottom
+                    mTABITEM_TopRightCornerTransparencyMask(X) = Y - picAux.ScaleHeight - 1 ' negative values point to pixels left to reach the bottom
                 End If
                 Exit For
             End If
-        Next y
-        If y = picAux.ScaleHeight Then
-            mTABITEM_TopRightCornerTransparencyMask(x) = -1
+        Next Y
+        If Y = picAux.ScaleHeight Then
+            mTABITEM_TopRightCornerTransparencyMask(X) = -1
         End If
-        If mTABITEM_TopRightCornerTransparencyMask(x) = 0 Then Exit For
-    Next x
+        If mTABITEM_TopRightCornerTransparencyMask(X) = 0 Then Exit For
+    Next X
     
     ' transparency mask for right side of TABITEMRIGHTEDGE
     picAux.Cls
     DrawThemeBackground mTheme, picAux.hDC, TABP_TABITEMRIGHTEDGE, TIS_NORMAL, iRect, iRect
-    For x = 0 To 5
-        mTABITEMRIGHTEDGE_RightSideTransparencyMask(x) = 0
-    Next x
-    For x = 0 To 5
-        X2 = picAux.ScaleWidth - 1 - x
-        For y = 0 To picAux.ScaleHeight - 1
+    For X = 0 To 5
+        mTABITEMRIGHTEDGE_RightSideTransparencyMask(X) = 0
+    Next X
+    For X = 0 To 5
+        X2 = picAux.ScaleWidth - 1 - X
+        For Y = 0 To picAux.ScaleHeight - 1
             iToChange = False
-            iCol = GetPixel(picAux.hDC, X2, y)
+            iCol = GetPixel(picAux.hDC, X2, Y)
             ColorRGBToHLS iCol, iCol_H, iCol_L, iCol_S
             If Abs(iCol_H - mButtonFace_H) <= cHTolerance Then
                 If Abs(iCol_L - mButtonFace_L) <= cLTolerance Then
@@ -5592,19 +5643,19 @@ Private Sub SetThemeExtraData()
                 End If
             End If
             If Not iToChange Then
-                If y < (6) Then
-                    mTABITEMRIGHTEDGE_RightSideTransparencyMask(x) = y
+                If Y < (6) Then
+                    mTABITEMRIGHTEDGE_RightSideTransparencyMask(X) = Y
                 Else
-                    mTABITEMRIGHTEDGE_RightSideTransparencyMask(x) = y - picAux.ScaleHeight - 1 ' negative values point to pixels left to reach the bottom
+                    mTABITEMRIGHTEDGE_RightSideTransparencyMask(X) = Y - picAux.ScaleHeight - 1 ' negative values point to pixels left to reach the bottom
                 End If
                 Exit For
             End If
-        Next y
-        If y = picAux.ScaleHeight Then
-            mTABITEMRIGHTEDGE_RightSideTransparencyMask(x) = -1 ' all the column of pixels
+        Next Y
+        If Y = picAux.ScaleHeight Then
+            mTABITEMRIGHTEDGE_RightSideTransparencyMask(X) = -1 ' all the column of pixels
         End If
-        If mTABITEMRIGHTEDGE_RightSideTransparencyMask(x) = 0 Then Exit For
-    Next x
+        If mTABITEMRIGHTEDGE_RightSideTransparencyMask(X) = 0 Then Exit For
+    Next X
     
     DrawThemeBackground mTheme, picAux.hDC, TABP_PANE, 0&, iRect, iRect
     iColB = GetPixel(picAux.hDC, 15, 10)
@@ -5620,14 +5671,14 @@ Private Sub SetThemeExtraData()
     iThreshold = 120
     mThemedTabBodyBottomShadowPixels = 0
     Do
-        For y = picAux.ScaleHeight - 9 To picAux.ScaleHeight - 1
-            iCol = GetPixel(picAux.hDC, 15, y)
+        For Y = picAux.ScaleHeight - 9 To picAux.ScaleHeight - 1
+            iCol = GetPixel(picAux.hDC, 15, Y)
             ColorRGBToHLS iCol, iCol_H, iCol_L, iCol_S
             If Abs(iCol_L - iColB_L) > iThreshold Then
-                mThemedTabBodyBottomShadowPixels = picAux.ScaleHeight - y - 1
+                mThemedTabBodyBottomShadowPixels = picAux.ScaleHeight - Y - 1
                 Exit For
             End If
-        Next y
+        Next Y
         If mThemedTabBodyBottomShadowPixels = 0 Then
             iThreshold = iThreshold - 10
             If iThreshold < 1 Then
@@ -5638,14 +5689,14 @@ Private Sub SetThemeExtraData()
     Loop While mThemedTabBodyBottomShadowPixels = 0
     
     mThemedTabBodyRightShadowPixels = 0
-    For x = picAux.ScaleWidth - 9 To picAux.ScaleWidth - 1
-        iCol = GetPixel(picAux.hDC, x, 15)
+    For X = picAux.ScaleWidth - 9 To picAux.ScaleWidth - 1
+        iCol = GetPixel(picAux.hDC, X, 15)
         ColorRGBToHLS iCol, iCol_H, iCol_L, iCol_S
         If Abs(iCol_L - iColB_L) > iThreshold Then
-            mThemedTabBodyRightShadowPixels = picAux.ScaleWidth - x - 1
+            mThemedTabBodyRightShadowPixels = picAux.ScaleWidth - X - 1
             Exit For
         End If
-    Next x
+    Next X
     
     picAux.Cls
 End Sub
@@ -5824,7 +5875,10 @@ Private Sub SetVisibleControls(iPreviousTab As Integer)
     Dim iHwnd As Long
     Dim c As Long
     Dim iLeft As Long
+    Dim iIsLine As Boolean
     
+    If Not Ambient.UserMode Then CheckIfContainedControlChangedToArray
+
     If (Not mAmbientUserMode) And mChangeControlsBackColor And (mTabBackColor <> vbButtonFace) Then
         iContainedControlsString = GetContainedControlsString
         If iContainedControlsString <> mLastContainedControlsString Then
@@ -5844,16 +5898,26 @@ Private Sub SetVisibleControls(iPreviousTab As Integer)
     If mAmbientUserMode Then StoreControlsTabStop
     Set mTabData(iPreviousTab).Controls = New Collection
     For Each iCtl In UserControl.ContainedControls
+        iIsLine = TypeName(iCtl) = "Line"
         iLeft = -15001
         On Error Resume Next
-        iLeft = iCtl.Left
+        If iIsLine Then
+            iLeft = iCtl.X1
+        Else
+            iLeft = iCtl.Left
+        End If
         On Error GoTo 0
         If iLeft > -15000 Then
             iCtlName = ControlName(iCtl)
             If Not IsControlInOtherTab(iCtlName, iPreviousTab) Then
                 mTabData(iPreviousTab).Controls.Add iCtlName, iCtlName
             End If
-            iCtl.Left = iCtl.Left - 75000
+            If iIsLine Then
+                iCtl.X1 = iCtl.X1 - 75000
+                iCtl.X2 = iCtl.X2 - 75000
+            Else
+                iCtl.Left = iCtl.Left - 75000
+            End If
         End If
     Next
     
@@ -5863,7 +5927,13 @@ Private Sub SetVisibleControls(iPreviousTab As Integer)
             Set iCtl = GetContainedControlByName(iCtlName)
             If Not iCtl Is Nothing Then
                 On Error Resume Next
-                iCtl.Left = iCtl.Left + 75000
+                iIsLine = TypeName(iCtl) = "Line"
+                If iIsLine Then
+                    iCtl.X1 = iCtl.X1 + 75000
+                    iCtl.X2 = iCtl.X2 + 75000
+                Else
+                    iCtl.Left = iCtl.Left + 75000
+                End If
                 On Error GoTo 0
                 If mAmbientUserMode Then
                     On Error Resume Next
@@ -5901,7 +5971,7 @@ Private Sub SetVisibleControls(iPreviousTab As Integer)
             End If
         Next
     End If
-    
+
 End Sub
 
 Private Function IsControlInOtherTab(nCtlName, nTab As Integer) As Boolean
@@ -6239,7 +6309,7 @@ Private Function GetContainerByHwnd(nHwnd As Long) As Object
     
 End Function
 
-Private Function ControlIsContainer(nControlName) As Boolean
+Private Function ControlIsContainer(nControlName)
     Dim iStr As String
     
     On Error Resume Next
@@ -6460,8 +6530,8 @@ End Function
 Private Function PictureToGrayScale(nPic As StdPicture) As StdPicture
     Dim iWidth As Long
     Dim iHeight As Long
-    Dim x As Long
-    Dim y As Long
+    Dim X As Long
+    Dim Y As Long
     Dim iColor As Long
 
     If nPic Is Nothing Then Exit Function
@@ -6477,15 +6547,15 @@ Private Function PictureToGrayScale(nPic As StdPicture) As StdPicture
     
     Set picAux.Picture = nPic
 
-    For x = 0 To picAux.ScaleWidth - 1
-        For y = 0 To picAux.ScaleHeight - 1
-            iColor = GetPixel(picAux.hDC, x, y)
+    For X = 0 To picAux.ScaleWidth - 1
+        For Y = 0 To picAux.ScaleHeight - 1
+            iColor = GetPixel(picAux.hDC, X, Y)
             If iColor <> mMaskColor Then
                 iColor = ToGray(iColor)
             End If
-            SetPixelV picAux2.hDC, x, y, iColor
-        Next y
-    Next x
+            SetPixelV picAux2.hDC, X, Y, iColor
+        Next Y
+    Next X
 
     Set PictureToGrayScale = picAux2.Image
     picAux.Cls
@@ -6540,18 +6610,18 @@ Private Function MouseIsOverAContainedControl() As Boolean
     UserControl.ScaleMode = vbTwips
     GetCursorPos iPt
     ScreenToClient mUserControlHwnd, iPt
-    iPt.x = iPt.x * Screen_TwipsPerPixelX
-    iPt.y = iPt.y * Screen_TwipsPerPixely
+    iPt.X = iPt.X * Screen_TwipsPerPixelX
+    iPt.Y = iPt.Y * Screen_TwipsPerPixely
     
     On Error Resume Next
     For Each iCtl In UserControl.ContainedControls
         iWidth = -1
         iWidth = iCtl.Width
         If iWidth <> -1 Then
-            If iCtl.Left <= iPt.x Then
-                If iCtl.Left + iCtl.Width >= iPt.x Then
-                    If iCtl.Top <= iPt.y Then
-                        If iCtl.Top + iCtl.Height >= iPt.y Then
+            If iCtl.Left <= iPt.X Then
+                If iCtl.Left + iCtl.Width >= iPt.X Then
+                    If iCtl.Top <= iPt.Y Then
+                        If iCtl.Top + iCtl.Height >= iPt.Y Then
                             MouseIsOverAContainedControl = True
                             Err.Clear
                             Exit Function
@@ -6594,56 +6664,18 @@ Friend Property Get TabControlsNames(Index) As Object
 End Property
 
 Friend Property Set TabControlsNames(Index, nValue As Object)
-'    Dim iVar
-'    Dim iCtl As Object
-'    Dim iHwnd As Long
-    
     If (Index < 0) Or (Index >= mTabs) Then
         RaiseError 380, TypeName(Me) ' invalid property value
         Exit Property
     End If
     Set mTabData(Index).Controls = nValue
-'    If Index = mTabSel Then
-'        For Each iVar In mTabData(Index).Controls
-'            Set iCtl = GetContainedControlByName(iVar)
-'            If Not iCtl Is Nothing Then
-'                On Error Resume Next
-'                iHwnd = 0
-'                iHwnd = mSubclassedControlsForMoveHwnds(CStr(iCtl.hWnd))
-'                If iHwnd <> 0 Then
-'                    mSubclassedControlsForMoveHwnds.Remove CStr(iHwnd)
-'                    DetachMessage Me, iHwnd, WM_WINDOWPOSCHANGING
-'                End If
-'                If iCtl.Left <= -15000 Then
-'                    iCtl.Left = iCtl.Left + 75000
-'                End If
-'                On Error GoTo 0
-'            End If
-'        Next
-'    Else
-'        For Each iVar In mTabData(Index).Controls
-'            Set iCtl = GetContainedControlByName(iVar)
-'            If Not iCtl Is Nothing Then
-'                On Error Resume Next
-'                iHwnd = 0
-'                iHwnd = mSubclassedControlsForMoveHwnds(CStr(iCtl.hWnd))
-'                If iHwnd = 0 Then
-'                    mSubclassedControlsForMoveHwnds.Add iHwnd, CStr(iHwnd)
-'                    AttachMessage Me, iHwnd, WM_WINDOWPOSCHANGING
-'                End If
-'                If iCtl.Left > -15000 Then
-'                    iCtl.Left = iCtl.Left - 75000
-'                End If
-'                On Error GoTo 0
-'            End If
-'        Next
-'    End If
 End Property
 
 Friend Sub HideAllContainedControls()
     Dim iCtl As Control
     Dim c As Long
     Dim iHwnd As Long
+    Dim iIsLine As Boolean
     
     If mSubclassedControlsForMoveHwnds.Count > 0 Then
         For c = 1 To mSubclassedControlsForMoveHwnds.Count
@@ -6655,8 +6687,16 @@ Friend Sub HideAllContainedControls()
     
     On Error Resume Next
     For Each iCtl In UserControl.ContainedControls
-        If iCtl.Left > -15000 Then
-            iCtl.Left = iCtl.Left - 75000
+        iIsLine = TypeName(iCtl) = "Line"
+        If iIsLine Then
+            If iCtl.X1 > -15000 Then
+                iCtl.X1 = iCtl.X1 - 75000
+                iCtl.X2 = iCtl.X2 - 75000
+            End If
+        Else
+            If iCtl.Left > -15000 Then
+                iCtl.Left = iCtl.Left - 75000
+            End If
         End If
     Next
 End Sub
@@ -6666,6 +6706,7 @@ Friend Sub MakeContainedControlsInSelTabVisible()
     Dim iCtlName As Variant
     Dim iHwnd As Long
     Dim c As Long
+    Dim iIsLine As Boolean
     
     If mSubclassedControlsForMoveHwnds.Count > 0 Then
         For c = 1 To mSubclassedControlsForMoveHwnds.Count
@@ -6679,7 +6720,17 @@ Friend Sub MakeContainedControlsInSelTabVisible()
     For Each iCtlName In mTabData(mTabSel).Controls
         Set iCtl = GetContainedControlByName(iCtlName)
         If Not iCtl Is Nothing Then
-            iCtl.Left = iCtl.Left + 75000
+            iIsLine = TypeName(iCtl) = "Line"
+            If iIsLine Then
+                If iCtl.X1 < -15000 Then
+                    iCtl.X1 = iCtl.X1 + 75000
+                    iCtl.X2 = iCtl.X2 + 75000
+                End If
+            Else
+                If iCtl.Left < -15000 Then
+                    iCtl.Left = iCtl.Left + 75000
+                End If
+            End If
             If mAmbientUserMode And mSubclassed Then
                 iHwnd = 0
                 iHwnd = iCtl.hWnd
@@ -6693,7 +6744,7 @@ Friend Sub MakeContainedControlsInSelTabVisible()
 
 End Sub
 
-Private Sub CheckContainedControlsConsistency()
+Private Sub CheckContainedControlsConsistency(Optional nCheckControlsThatChangedToArray As Boolean)
     Dim t As Long
     Dim iCCList As Collection
     Dim iAllCtInTabs As Collection
@@ -6701,8 +6752,19 @@ Private Sub CheckContainedControlsConsistency()
     Dim iStr As String
     Dim iCtl As Control
     Dim iCtlName As Variant
+    Dim iCtlName2 As Variant
     Dim iCtlsInTabsToRemove As Collection
     Dim iShowedNewControls As Boolean
+    Dim iThereAreMissingControls As Boolean
+    Dim iAuxFound As Boolean
+    Dim iCtlsTypesAndRects As Collection
+    Dim iAuxTypeAndRect_CtrlInTab As String
+    Dim iAuxTypeAndRect_CC As String
+    Dim iFound As Boolean
+    Dim t2 As Long
+    Dim c2 As Long
+    Dim iListCtlsNowArrayToUpdateInfo As Collection
+    Dim iIsLine As Boolean
     
     Set iCCList = New Collection
     For Each iCtl In UserControl.ContainedControls
@@ -6720,6 +6782,104 @@ Private Sub CheckContainedControlsConsistency()
     Next t
     On Error GoTo 0
     
+    iThereAreMissingControls = False
+    For Each iCtlName In iAllCtInTabs
+        iAuxFound = False
+        For Each iCtlName2 In iCCList
+            If iCtlName2 = iCtlName Then
+                iAuxFound = True
+                Exit For
+            End If
+        Next
+        If Not iAuxFound Then
+            iThereAreMissingControls = True
+            If nCheckControlsThatChangedToArray Then
+                iAuxFound = False
+                For Each iCtlName2 In iCCList
+                    If iCtlName2 = iCtlName & "(0)" Then
+                        iAuxFound = True
+                        Exit For
+                    End If
+                Next
+                If iAuxFound Then
+                    If iListCtlsNowArrayToUpdateInfo Is Nothing Then Set iListCtlsNowArrayToUpdateInfo = New Collection
+                    iListCtlsNowArrayToUpdateInfo.Add iCtlName, iCtlName
+                End If
+            Else
+                Exit For
+            End If
+        End If
+    Next
+    
+    If iThereAreMissingControls Then
+        If nCheckControlsThatChangedToArray Then
+            If Not iListCtlsNowArrayToUpdateInfo Is Nothing Then
+                For t = 0 To mTabs - 1
+                    For c = 1 To mTabData(t).Controls.Count
+                        iStr = mTabData(t).Controls(c)
+                        iFound = False
+                        For Each iCtlName In iListCtlsNowArrayToUpdateInfo
+                            If iCtlName = iStr Then
+                                iFound = True
+                            End If
+                        Next
+                        If iFound Then
+                            iStr = iStr & "(0)"
+                            mTabData(t).Controls.Add iStr, iStr, c
+                            mTabData(t).Controls.Remove (c + 1)
+                        End If
+                    Next c
+                Next t
+            End If
+        Else
+            ' This fixes SStab paste bug, read http://www.vbforums.com/showthread.php?871285&p=5359379&viewfull=1#post5359379
+            Set iCtlsTypesAndRects = New Collection
+            For Each iCtl In UserControl.ContainedControls
+                iStr = ControlName(iCtl)
+                iCtlsTypesAndRects.Add GetControlTypeAndRect(iStr), iStr
+            Next
+            
+            For t = 0 To mTabs - 1
+                For c = 1 To mTabData(t).Controls.Count
+                    iStr = mTabData(t).Controls(c)
+                    iAuxTypeAndRect_CtrlInTab = GetControlTypeAndRect(iStr)
+                    If iAuxTypeAndRect_CtrlInTab = "-" Then ' if the control is not found it may have been en converted to an array
+                        iAuxTypeAndRect_CtrlInTab = GetControlTypeAndRect(iStr & "(0)")
+                    End If
+                    For Each iCtlName In iCCList
+                        iAuxTypeAndRect_CC = GetControlTypeAndRect(CStr(iCtlName))
+                        If iAuxTypeAndRect_CC = iAuxTypeAndRect_CtrlInTab Then
+                            iFound = False
+                            For t2 = 0 To mTabs - 1
+                                For c2 = 1 To mTabData(t).Controls.Count
+                                    If mTabData(t).Controls(c) = iCtlName Then
+                                        iFound = True
+                                    End If
+                                Next c2
+                            Next t2
+                            If Not iFound Then
+                                mTabData(t).Controls.Add iCtlName, iCtlName, c
+                                mTabData(t).Controls.Remove (c + 1)
+                            End If
+                        End If
+                    Next
+                Next c
+            Next t
+            
+            On Error Resume Next
+            Set iAllCtInTabs = New Collection
+            For t = 0 To mTabs - 1
+                For c = 1 To mTabData(t).Controls.Count
+                    iStr = mTabData(t).Controls(c)
+                    iAllCtInTabs.Add iStr, iStr
+                Next c
+            Next t
+            On Error GoTo 0
+        End If
+    End If
+    
+    If nCheckControlsThatChangedToArray Then Exit Sub
+    
     ' check if contained control is on any tab
     iShowedNewControls = False
     On Error Resume Next
@@ -6730,9 +6890,18 @@ Private Sub CheckContainedControlsConsistency()
             ' place it in the visible tab
             mTabData(mTabSel).Controls.Add iCtlName, iCtlName
             Set iCtl = GetContainedControlByName(iCtlName)
-            If iCtl.Left <= -15000 Then
-                iCtl.Left = iCtl.Left + 75000
-                iShowedNewControls = True
+            iIsLine = TypeName(iCtl) = "Line"
+            If iIsLine Then
+                If iCtl.X1 <= -15000 Then
+                    iCtl.X1 = iCtl.X1 + 75000
+                    iCtl.X2 = iCtl.X2 + 75000
+                    iShowedNewControls = True
+                End If
+            Else
+                If iCtl.Left <= -15000 Then
+                    iCtl.Left = iCtl.Left + 75000
+                    iShowedNewControls = True
+                End If
             End If
         End If
     Next
@@ -6766,6 +6935,47 @@ Private Sub CheckContainedControlsConsistency()
         Next t
     End If
 End Sub
+
+Private Sub CheckIfContainedControlChangedToArray()
+    CheckContainedControlsConsistency True
+End Sub
+
+Private Function GetControlTypeAndRect(iCtlName As String) As String
+    Dim iCtl As Object
+    Dim iSng As Long
+    
+    Set iCtl = GetParentControlByName(iCtlName)
+    If Not iCtl Is Nothing Then
+        On Error Resume Next
+        GetControlTypeAndRect = TypeName(iCtl) & "."
+        iSng = 0
+        iSng = iCtl.Left
+        GetControlTypeAndRect = GetControlTypeAndRect & CStr(iSng) & "."
+        iSng = 0
+        iSng = iCtl.Top
+        GetControlTypeAndRect = GetControlTypeAndRect & CStr(iSng) & "."
+        iSng = 0
+        iSng = iCtl.Width
+        GetControlTypeAndRect = GetControlTypeAndRect & CStr(iSng) & "."
+        iSng = 0
+        iSng = iCtl.Height
+        GetControlTypeAndRect = GetControlTypeAndRect & CStr(iSng)
+    Else
+        GetControlTypeAndRect = "-"
+    End If
+End Function
+
+Private Function GetParentControlByName(ByVal nControlName As String) As Object
+    Dim iCtl As Object
+
+    For Each iCtl In UserControl.Parent.Controls
+        If StrComp(nControlName, ControlName(iCtl), vbTextCompare) = 0 Then
+            Set GetParentControlByName = iCtl
+            Exit For
+        End If
+    Next
+End Function
+
 
 Public Property Get ContainedControls() As VBRUN.ContainedControls
 Attribute ContainedControls.VB_Description = "Returns a collection of the controls that were added to the control."
@@ -6807,6 +7017,7 @@ Private Sub RearrangeContainedControlsPositions()
     Dim iCtl As Control
     Dim iTabBodyStart As Single
     Dim iTabBodyStart_Prev As Single
+    Dim iIsLine As Boolean
     
     If (mTabOrientation = ssTabOrientationTop) Or (mTabOrientation = ssTabOrientationBottom) Then
         iTabBodyStart = pScaleY(mTabBodyStart - 5, vbPixels, vbTwips)
@@ -6822,36 +7033,78 @@ Private Sub RearrangeContainedControlsPositions()
     On Error Resume Next
     If mTabOrientation = mTabOrientation_Prev Then
         For Each iCtl In UserControl.ContainedControls
+            iIsLine = TypeName(iCtl) = "Line"
             If mTabOrientation = ssTabOrientationTop Then
-                iCtl.Top = iCtl.Top - iTabBodyStart_Prev + iTabBodyStart
+                If iIsLine Then
+                    iCtl.Y1 = iCtl.Y1 - iTabBodyStart_Prev + iTabBodyStart
+                    iCtl.Y2 = iCtl.Y2 - iTabBodyStart_Prev + iTabBodyStart
+                Else
+                    iCtl.Top = iCtl.Top - iTabBodyStart_Prev + iTabBodyStart
+                End If
             ElseIf mTabOrientation = ssTabOrientationBottom Then
-                iCtl.Top = iCtl.Top + iTabBodyStart_Prev - iTabBodyStart
+                If iIsLine Then
+                    iCtl.Y1 = iCtl.Y1 + iTabBodyStart_Prev - iTabBodyStart
+                    iCtl.Y2 = iCtl.Y2 + iTabBodyStart_Prev - iTabBodyStart
+                Else
+                    iCtl.Top = iCtl.Top + iTabBodyStart_Prev - iTabBodyStart
+                End If
             ElseIf mTabOrientation = ssTabOrientationLeft Then
-                iCtl.Left = iCtl.Left - iTabBodyStart_Prev + iTabBodyStart
+                If iIsLine Then
+                    iCtl.X1 = iCtl.X1 - iTabBodyStart_Prev + iTabBodyStart
+                    iCtl.X2 = iCtl.X2 - iTabBodyStart_Prev + iTabBodyStart
+                Else
+                    iCtl.Left = iCtl.Left - iTabBodyStart_Prev + iTabBodyStart
+                End If
             ElseIf mTabOrientation = ssTabOrientationRight Then
-                iCtl.Left = iCtl.Left + iTabBodyStart_Prev - iTabBodyStart
+                If iIsLine Then
+                    iCtl.X1 = iCtl.X1 + iTabBodyStart_Prev - iTabBodyStart
+                    iCtl.X2 = iCtl.X2 + iTabBodyStart_Prev - iTabBodyStart
+                Else
+                    iCtl.Left = iCtl.Left + iTabBodyStart_Prev - iTabBodyStart
+                End If
             End If
         Next
     Else
         For Each iCtl In UserControl.ContainedControls
+            iIsLine = TypeName(iCtl) = "Line"
             If mTabOrientation_Prev = ssTabOrientationTop Then
-                iCtl.Top = iCtl.Top - iTabBodyStart_Prev
+                If iIsLine Then
+                    iCtl.Y1 = iCtl.Y1 - iTabBodyStart_Prev
+                    iCtl.Y2 = iCtl.Y2 - iTabBodyStart_Prev
+                Else
+                    iCtl.Top = iCtl.Top - iTabBodyStart_Prev
+                End If
             ElseIf mTabOrientation_Prev = ssTabOrientationBottom Then
-'                iCtl.Top = iCtl.Top + iTabBodyStart_Prev
+                '
             ElseIf mTabOrientation_Prev = ssTabOrientationLeft Then
-                iCtl.Left = iCtl.Left - iTabBodyStart_Prev
+                If iIsLine Then
+                    iCtl.X1 = iCtl.X1 - iTabBodyStart_Prev
+                    iCtl.X2 = iCtl.X2 - iTabBodyStart_Prev
+                Else
+                    iCtl.Left = iCtl.Left - iTabBodyStart_Prev
+                End If
             ElseIf mTabOrientation_Prev = ssTabOrientationRight Then
-'                iCtl.Left = iCtl.Left + iTabBodyStart_Prev
+                '
             End If
         
             If mTabOrientation = ssTabOrientationTop Then
-                iCtl.Top = iCtl.Top + iTabBodyStart
+                If iIsLine Then
+                    iCtl.Y1 = iCtl.Y1 + iTabBodyStart
+                    iCtl.Y2 = iCtl.Y2 + iTabBodyStart
+                Else
+                    iCtl.Top = iCtl.Top + iTabBodyStart
+                End If
             ElseIf mTabOrientation = ssTabOrientationBottom Then
-'                iCtl.Top = iCtl.Top - iTabBodyStart
+                '
             ElseIf mTabOrientation = ssTabOrientationLeft Then
-                iCtl.Left = iCtl.Left + iTabBodyStart
+                If iIsLine Then
+                    iCtl.X1 = iCtl.X1 + iTabBodyStart
+                    iCtl.X2 = iCtl.X2 + iTabBodyStart
+                Else
+                    iCtl.Left = iCtl.Left + iTabBodyStart
+                End If
             ElseIf mTabOrientation = ssTabOrientationRight Then
-'                iCtl.Left = iCtl.Left - iTabBodyStart
+                '
             End If
         Next
     End If
@@ -7063,3 +7316,19 @@ Public Property Get Object() As Object
     Set Object = Me
 End Property
 
+Private Function IsMsgBoxShown() As Boolean
+    Dim iHwnd As Long
+     
+    Do Until IsWindowLocal(iHwnd)
+        iHwnd = FindWindowEx(0&, iHwnd, "#32770", vbNullString)
+        If iHwnd = 0 Then Exit Function
+    Loop
+    IsMsgBoxShown = True
+End Function
+
+Private Function IsWindowLocal(ByVal nHwnd As Long) As Boolean
+    Dim iIdProcess As Long
+    
+    Call GetWindowThreadProcessId(nHwnd, iIdProcess)
+    IsWindowLocal = (iIdProcess = GetCurrentProcessId())
+End Function

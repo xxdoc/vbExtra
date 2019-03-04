@@ -534,7 +534,7 @@ Private Sub UserControl_ReadProperties(PropBag As PropertyBag)
 '        On Error GoTo 0
 '    End If
     
-    Call pvCreate
+    pvCreate
     
     If mAmbientUserMode Then
         mUserControlHwnd = UserControl.hWnd
@@ -572,7 +572,7 @@ End Sub
 'Private Functions and Sub
 '----------------------------------------------------------------------------------------------------------------
 
-Private Function pvCreate()
+Private Sub pvCreate()
 
     Dim lStyle As Long
     Dim lExStyle As Long
@@ -654,7 +654,7 @@ Private Function pvCreate()
     
     Me.Value = mValue
 
-End Function
+End Sub
 
 Private Function IsValidDate(vDate As Variant) As Boolean
     Dim iDate As Date
@@ -794,7 +794,7 @@ Public Property Let UpDown(ByVal nValue As Boolean)
     If mUpDown <> nValue Then
         mUpDown = nValue
         PropertyChanged "UpDown"
-        Call pvCreate
+        pvCreate
     End If
 End Property
 
@@ -806,7 +806,7 @@ Public Property Let CheckBox(ByVal nValue As Boolean)
     If mCheckBox <> nValue Then
         mCheckBox = nValue
         PropertyChanged "CheckBox"
-        Call pvCreate
+        pvCreate
     End If
 End Property
 

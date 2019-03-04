@@ -76,7 +76,7 @@ Private Declare Function ColorRGBToHLS Lib "shlwapi.dll" (ByVal clrRGB As Long, 
 Private Declare Function ColorHLSToRGB Lib "shlwapi.dll" (ByVal wHue As Long, ByVal wLuminance As Long, ByVal wSaturation As Long) As Long
 Private Declare Function SetDIBitsToDevice Lib "gdi32" (ByVal hDC As Long, ByVal x As Long, ByVal y As Long, ByVal dx As Long, ByVal dy As Long, ByVal SrcX As Long, ByVal SrcY As Long, ByVal Scan As Long, ByVal NumScans As Long, Bits As Any, BitsInfo As BITMAPINFOHEADER, ByVal wUsage As Long) As Long
 
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 Private Declare Function GetObjectAPI Lib "gdi32" Alias "GetObjectA" (ByVal hObject As Long, ByVal nCount As Long, lpObject As Any) As Long
 Private Declare Function VarPtrArray Lib "msvbvm60" Alias "VarPtr" (Ptr() As Any) As Long
 Private Declare Function OleCreatePictureIndirect Lib "olepro32" (PicDesc As PicBmp, RefIID As GUID, ByVal fPictureOwnsHandle&, iPic As IPicture) As Long
@@ -524,19 +524,12 @@ Public Function AdjustPictureWithHLS(nSourcePic As StdPicture, Optional HAdditio
 
 End Function
 
-Public Function AdjustColorWithHLS(nColor As Long, Optional HAddition As Long, Optional LAddition As Long, Optional SAddition As Long, Optional LFactor As Single = 1, Optional SFactor As Single = 1) As Long
-    Dim r1 As Long
-    Dim g1 As Long
-    Dim b1 As Long
+Public Function AdjustColorWithHLS(ByVal nColor As Long, Optional HAddition As Long, Optional LAddition As Long, Optional SAddition As Long, Optional LFactor As Single = 1, Optional SFactor As Single = 1) As Long
     Dim H1 As Long
     Dim L1 As Long
     Dim S1 As Long
     
-    r1 = nColor And 255 ' R
-    g1 = (nColor \ 256) And 255 ' G
-    b1 = (nColor \ 65536) And 255 ' B
-    
-    ColorRGBToHLS RGB(r1, g1, b1), H1, L1, S1
+    ColorRGBToHLS nColor, H1, L1, S1
     
     H1 = H1 + HAddition
     If H1 > 240 Then H1 = H1 - 240
@@ -556,20 +549,14 @@ Public Function AdjustColorWithHLS(nColor As Long, Optional HAddition As Long, O
     
 End Function
 
-Public Function SetColorToSameHue(nColor As Long, nReferenceColor As Long) As Long
+Public Function SetColorToSameHue(ByVal nColor As Long, nReferenceColor As Long) As Long
     Dim iColor As Long
     Dim iReferenceColor As Long
     
-    Dim r1 As Long
-    Dim g1 As Long
-    Dim b1 As Long
     Dim H1 As Long
     Dim L1 As Long
     Dim S1 As Long
     
-    Dim r2 As Long
-    Dim g2 As Long
-    Dim b2 As Long
     Dim H2 As Long
     Dim L2 As Long
     Dim S2 As Long
@@ -577,17 +564,8 @@ Public Function SetColorToSameHue(nColor As Long, nReferenceColor As Long) As Lo
     TranslateColor nColor, 0, iColor
     TranslateColor nReferenceColor, 0, iReferenceColor
 
-    r1 = iColor And 255 ' R
-    g1 = (iColor \ 256) And 255 ' G
-    b1 = (iColor \ 65536) And 255 ' B
-    
-    ColorRGBToHLS RGB(r1, g1, b1), H1, L1, S1
-    
-    r2 = iReferenceColor And 255 ' R
-    g2 = (iReferenceColor \ 256) And 255 ' G
-    b2 = (iReferenceColor \ 65536) And 255 ' B
-    
-    ColorRGBToHLS RGB(r2, g2, b2), H2, L2, S2
+    ColorRGBToHLS iColor, H1, L1, S1
+    ColorRGBToHLS iReferenceColor, H2, L2, S2
     
     SetColorToSameHue = ColorHLSToRGB(H2, L1, S1)
 End Function
